@@ -6,6 +6,16 @@ Project Atlas is the authoritative public map for this body of work in physical 
 
 The governing questions are: **How much? Enough?** Measure reality, then judge sufficiency against a purpose.
 
+## Start here
+
+- [`CANONICAL_INVENTORY.md`](CANONICAL_INVENTORY.md) — current public project/system inventory and dispositions.
+- [`MIGRATION_LEDGER.md`](MIGRATION_LEDGER.md) — what was copied, pinned, treated as upstream, or deliberately withheld.
+- [`SOURCE_SNAPSHOTS.md`](SOURCE_SNAPSHOTS.md) — how exact legacy repository snapshots are preserved and recovered.
+- [`MIGRATION_QUEUE.md`](MIGRATION_QUEUE.md) — finite P1/P2 finishing queue.
+- [`PROJECT_CARD_TEMPLATE.md`](PROJECT_CARD_TEMPLATE.md) — standard control record for durable systems.
+- [`LEGACY_REPOSITORY_MAP.md`](LEGACY_REPOSITORY_MAP.md) — historical repository-to-canonical-home mapping.
+- [`AUTOMATION_STATUS.md`](AUTOMATION_STATUS.md) — current automation/completion status.
+
 ## Estate map
 
 | Repository | Role |
@@ -64,4 +74,4 @@ Lifecycle labels are `active`, `validated`, `incubator`, `archived`, `upstream`,
 
 **Lifecycle:** `active`
 
-**Estate status:** skeleton established 15 September 2026. Canonical source migration and verification are the current work. Until a project-specific README says otherwise, material should be treated as not yet independently reproduced from this estate.
+**Bulk rescue status:** complete as of 15 September 2026. Sixteen exact legacy repository snapshots are now registered beneath canonical homes, selected high-value source has been copied directly into the new estate, and third-party/protected boundaries are explicit. The remaining work is verification, artifact recovery where old GitHub snapshots were incomplete, and editorial consolidation—not another bulk rescue operation.
