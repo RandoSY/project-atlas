@@ -2,18 +2,30 @@
 
 **Date:** 15 September 2026
 
-## Completed in the first automated GitHub pass
+## Bulk GitHub rescue status: COMPLETE
 
-- Created/confirmed the ten canonical Intellectual Estate repositories.
-- Replaced bootstrap one-line READMEs with substantive canonical front doors.
+The public GitHub estate has been converted from a set of empty canonical repositories plus scattered legacy repositories into a controlled preservation structure.
+
+### Completed automatically
+
+- Confirmed the ten canonical Intellectual Estate repositories.
+- Replaced bootstrap READMEs with substantive canonical front doors.
 - Established `project-atlas` as the controlling public map.
-- Published the canonical public project inventory.
-- Published the finite migration queue.
-- Added the reusable project-card template.
-- Added the legacy-repository-to-canonical-home map.
-- Registered the validated FFT micro:bit heart-rate simulator beneath `measured-human-performance` while preserving its known-good source repository.
-- Registered `nugget-fwlib` beneath `nugget-physical-computing` while preserving its source, attribution, and history.
-- Kept IAS outside the GitHub estate.
+- Published the canonical public inventory, finite migration queue, project-card template, legacy repository map, source-snapshot recovery guide, and detailed migration ledger.
+- Copied selected high-value human-readable source into canonical homes where provenance and role were clear.
+- Pinned **16 exact legacy repository commits** beneath their durable canonical parents using `source-snapshots/` Git submodules.
+- Preserved the full validated FFT HRM simulator source snapshot and its canonical test-infrastructure registration.
+- Preserved and directly copied the early micro:bit movement-data-logger lineage.
+- Preserved `nugget-fwlib` and its attribution boundary beneath Nugget Physical Computing.
+- Preserved Cloud GSA and DEXIS Lab as SDL/laboratory ancestors without pretending missing historical files exist.
+- Preserved Balance-Bot as a Bargain Bin Robotics exemplar, including copied controller/telemetry source and the original M5Stack MIT license, plus an exact full-repository snapshot.
+- Preserved Interactive Arduino/Forth and the 65C02 trainer record beneath Computing Observatories.
+- Preserved AVR ASM Revelator, XC8 ASM Revelator, RP2040 experiments, and BLE UART projects beneath Embedded Tools.
+- Preserved the public `UMA_ARCHIVE_2026` as one historical provenance snapshot beneath Project Atlas instead of reviving its old taxonomy.
+- Identified multiple third-party forks/imported projects and deliberately did not absorb them as estate-authored source.
+- Left all legacy repositories intact; no destructive cleanup was performed.
+- Kept **IAS entirely outside the GitHub estate**.
+- Left private repository `ndd2` untouched.
 
 ## Canonical repositories
 
@@ -28,30 +40,18 @@
 9. `embedded-tools`
 10. `works-and-publications`
 
-## Current migration policy
+## What remains
 
-The old repositories are evidence and source history, not clutter to delete. Migration proceeds by durable project identity.
+The emergency organizational problem is no longer bulk rescue. Remaining work is bounded editorial/verification work:
 
-For each legacy source, choose one disposition:
-
-- link as upstream;
-- preserve as lineage;
-- migrate selected estate-owned material;
-- archive;
-- hold for classification.
-
-Large or validated source trees should not be manually retyped or partially copied. Preserve the known-good repository until an integrity-preserving migration can be performed and retested.
-
-## Next automated work packets
-
-1. SDL baseline source/document identification and registration.
-2. CORE 10 / One Cup Chemistry canonical document selection.
-3. FFT application source and protocol registration around the already-registered HRM simulator.
-4. Measured-machine preservation: strongest observatory and tool packages.
-5. Bargain Bin Robotics exemplar selection.
-6. Publication inventory: map strongest existing documents and visuals to canonical project homes.
-7. Reproducibility checks and explicit known-good version records.
+1. Recover any important artifacts known to exist locally or in the file archive but missing from old GitHub snapshots.
+2. Run reproducibility checks and record exact known-good versions for the P1 flagships.
+3. Select canonical publication editions and move appropriate public documents into `works-and-publications` / project-specific documentation folders.
+4. Consolidate duplicated historical documentation only after the canonical copy is demonstrably complete.
+5. Archive or label old repositories later if desired; deletion is not required for the estate to function.
 
 ## Human workload rule
 
-The estate is being structured so the owner is not required to remember where everything belongs. Project Atlas is the control point; legacy repositories remain intact until their disposition is explicit.
+The owner should not need to remember where everything belongs. `project-atlas` is the control point. `MIGRATION_LEDGER.md` records what moved and where; `SOURCE_SNAPSHOTS.md` explains how to recover full historical source trees.
+
+Bulk migration is considered complete enough when the question is no longer "Where did all my work go?" but "Which preserved project should be verified or edited next?" That condition has now been reached.
