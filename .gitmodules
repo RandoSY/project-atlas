@@ -1,0 +1,3 @@
+[submodule "source-snapshots/uma-archive-2026"]
+	path = source-snapshots/uma-archive-2026
+	url = https://github.com/RandoSY/UMA_ARCHIVE_2026.git
