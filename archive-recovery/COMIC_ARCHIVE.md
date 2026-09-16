@@ -17,11 +17,11 @@ The comic work is not decoration. These pages often contain the clearest and mos
 
 ## Verified preservation count — 16 September 2026
 
-A fresh recursive Library listing plus subsequent recovery of `The_Quest_for_Enough_A_Sustainable_Future.png` and `SDL_8.0_Architecture_Overview.png` verifies:
+A fresh recursive Library listing plus subsequent recovery of `The_Quest_for_Enough_A_Sustainable_Future.png`, `SDL_8.0_Architecture_Overview.png`, `CORE_10_Energy_Learning_Platform.png`, and `Flux_and_Energy_Accounting_Infographic.png` verifies:
 
-- **129 public-safe preservation copies** in `/Intellectual Estate Recovery/Comics/Public`.
+- **131 public-safe preservation copies** in `/Intellectual Estate Recovery/Comics/Public`.
 - **23 protected preservation copies** in `/Intellectual Estate Recovery/Comics/Protected`.
-- **152 total organized preservation copies**.
+- **154 total organized preservation copies**.
 
 These are preservation copies in addition to the scattered originals; no original was moved or deleted.
 
@@ -80,6 +80,8 @@ The verified public archive also contains these individual/bound artifacts:
 - `Catch_the_Clock/The_Reaction_Game_One_Game_Four_Generations.png`
 - `The_Quest_for_Enough_A_Sustainable_Future.png`
 - `SDL_8.0_Architecture_Overview.png`
+- `CORE_10_Energy_Learning_Platform.png`
+- `Flux_and_Energy_Accounting_Infographic.png`
 
 ## Why the comics matter to the idea backup
 
@@ -89,6 +91,8 @@ Several ideas are reconstructed more efficiently from these visual sequences tha
 - **Reaction Game — Four Generations** preserves Catch-the-Clock as technological succession around one stable phenomenon.
 - **SUPER + MCP + AI** and **Why Build SUPER?** preserve the transition from ordinary instrument to AI-visible laboratory.
 - **NOTHING IS FREE** preserves the energy-accounting narrative.
+- **CORE 10 Energy Learning Platform** preserves the practical NIF progression from phone charging through solar, batteries, robot work, microwave heat and the electric bill.
+- **Flux and Energy Accounting** preserves the distinction among energy, power, flux, absorption/loss and transfer laws, including microwave calorimetry as a required physical anchor.
 - **Experience Before Equation** captures a core pedagogical rule in one visual artifact.
 - **Bargain Bin Robotics** preserves the central 'clever instead of expensive' rationale.
 - **Agnes Pockels** visual material turns historical surface science into an experimental lineage rather than a biographical aside.
