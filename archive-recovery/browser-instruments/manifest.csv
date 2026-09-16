@@ -1,0 +1,88 @@
+category,title,source_html,screencap_png,source_html_bytes,png_bytes
+Nugget / Embedded,65C02 Nugget CPU Trainer — v7 VIA Experiment Board,65c02_nugget_simulator_v7.html,65c02_nugget_simulator_v7.png,87736,630296
+Nugget / Embedded,Arduino A0 Potentiometer Bit-Transmission Simulator,arduino_a0_bitshow_simulator.html,arduino_a0_bitshow_simulator.png,81032,266275
+Nugget / Embedded,Arduino POT A/D Serial Bit Show — One-File Simulator,arduino_pot_adc_bit_show_simulator.html,arduino_pot_adc_bit_show_simulator.png,40825,339338
+Other,PlateLab C3 Communications & Training Console,COMM_TEST_CONSOLE.html,COMM_TEST_CONSOLE.png,12351,167870
+CORE12,Core 12 RC Control Laboratory,Core12_RC_Dashboard.html,Core12_RC_Dashboard.png,37102,212756
+Robot / Motion / LiDAR,CuteBot Patient LiDAR BLE UART Dashboard,cutebot_patient_lidar_ble_dashboard.html,cutebot_patient_lidar_ble_dashboard.png,20625,390060
+Robot / Motion / LiDAR,CuteBot Patient LiDAR BLE UART Dashboard — Tabbed,cutebot_patient_lidar_ble_dashboard_tabs.html,cutebot_patient_lidar_ble_dashboard_tabs.png,26462,487493
+Other,Catch the Clock — Dark One-Bit Memory Simulator,dark_catch_the_clock_dashboard.html,dark_catch_the_clock_dashboard.png,33674,282408
+Other,Catch the Clock — Dark One-Bit Memory Simulator,dark_catch_the_clock_dashboard_button_green_fixed.html,dark_catch_the_clock_dashboard_button_green_fixed.png,64831,263407
+Other,Catch the Clock — Dark One-Bit Memory Simulator,dark_catch_the_clock_dashboard_button_really_green.html,dark_catch_the_clock_dashboard_button_really_green.png,65805,264858
+Other,Catch the Clock — Dark One-Bit Memory Simulator,dark_catch_the_clock_dashboard_combined_logic.html,dark_catch_the_clock_dashboard_combined_logic.png,65002,276196
+Other,Catch the Clock — Dark One-Bit Memory Simulator,dark_catch_the_clock_dashboard_compact_terminal.html,dark_catch_the_clock_dashboard_compact_terminal.png,60095,239926
+Other,Catch the Clock — Dark One-Bit Memory Simulator,dark_catch_the_clock_dashboard_no_output_qclear.html,dark_catch_the_clock_dashboard_no_output_qclear.png,64452,238912
+Other,Catch the Clock — Dark One-Bit Memory Simulator,dark_catch_the_clock_dashboard_pic_supervisor.html,dark_catch_the_clock_dashboard_pic_supervisor.png,52244,247652
+Other,Catch the Clock — Dark One-Bit Memory Simulator,dark_catch_the_clock_dashboard_slowclocks.html,dark_catch_the_clock_dashboard_slowclocks.png,36916,250322
+Other,Catch the Clock — Dark One-Bit Memory Simulator,dark_catch_the_clock_dashboard_stateaware_schematic.html,dark_catch_the_clock_dashboard_stateaware_schematic.png,61895,239335
+Pico / Frequency Meter,Pico W BLE Frequency Meter Console,dashboard.html,dashboard.png,27731,370025
+Pico / Frequency Meter,Pico W BLE Frequency Meter Console,dashboard_compatible_debug_v1_1_1.html,dashboard_compatible_debug_v1_1_1.png,39421,380008
+DropperGuard,Dropper Guard S3 BLE Master Dashboard,dropper_guard_s3_ble_dashboard.html,dropper_guard_s3_ble_dashboard.png,25699,261638
+DropperGuard,Dropper Guard S3 Master Dashboard,dropper_guard_s3_dashboard.html,dropper_guard_s3_dashboard.png,25452,214565
+DropperGuard,DropperGuard BLE Test Console r10 AGC Heritage · micro:bit V2 Jig,DropperGuard_BLE_Test_Console_r10_OrientationMapper.html,DropperGuard_BLE_Test_Console_r10_OrientationMapper.png,115667,308293
+DropperGuard,DropperGuard BLE Test Console r11 AGC Heritage · micro:bit V2 Jig,DropperGuard_BLE_Test_Console_r11_Setup_Calibration.html,DropperGuard_BLE_Test_Console_r11_Setup_Calibration.png,128579,314797
+DropperGuard,DropperGuard BLE Test Console r9 AGC Heritage · micro:bit V2 Jig,DropperGuard_BLE_Test_Console_r9_Operator_3D.html,DropperGuard_BLE_Test_Console_r9_Operator_3D.png,111304,304873
+DropperGuard,DropperGuard BLE Test Console · micro:bit V2 Jig,DropperGuard_BLE_Test_Console_v1.html,DropperGuard_BLE_Test_Console_v1.png,51063,306991
+DropperGuard,DropperGuard BLE Test Console v3 Demo · micro:bit V2 Jig,DropperGuard_BLE_Test_Console_v3_Full_Demo.html,DropperGuard_BLE_Test_Console_v3_Full_Demo.png,84509,315440
+DropperGuard,DropperGuard BLE Test Console v4 AGC Heritage · micro:bit V2 Jig,DropperGuard_BLE_Test_Console_v4_AGC_Heritage.html,DropperGuard_BLE_Test_Console_v4_AGC_Heritage.png,99906,305462
+DropperGuard,DropperGuard BLE Test Console v7.1 AGC Heritage · micro:bit V2 Jig,DropperGuard_BLE_Test_Console_v7_1_TipDown.html,DropperGuard_BLE_Test_Console_v7_1_TipDown.png,109841,305486
+DropperGuard,DropperGuard BLE Test Console v8 AGC Heritage · micro:bit V2 Jig,DropperGuard_BLE_Test_Console_v8_AxisMap3D.html,DropperGuard_BLE_Test_Console_v8_AxisMap3D.png,111561,306876
+Scale / Mass,PicoScale v0.3.0 BLE Dashboard,escale_ble_interface(15).html,escale_ble_interface_15_.png,24915,402730
+SQM / EyeDrop,UMA · EyeDrop SQM+ Dashboard,EyeDrop_SQM_Plus_Dashboard_v1.html,EyeDrop_SQM_Plus_Dashboard_v1.png,46691,497201
+SQM / EyeDrop,UMA EyeDrop SQM+ · Statistical Dashboard v2,EyeDrop_SQM_Plus_Dashboard_v2_Statistical.html,EyeDrop_SQM_Plus_Dashboard_v2_Statistical.png,78635,555840
+SQM / EyeDrop,UMA · EyeDrop SQM+ Dashboard v2,EyeDrop_SQM_Plus_Dashboard_v2_Statistical_Core.html,EyeDrop_SQM_Plus_Dashboard_v2_Statistical_Core.png,72561,593698
+Fair Fitness / Walking,Fair Fitness Tester FFT+ R2,fair_fitness_console.html,fair_fitness_console.png,72784,343136
+Fair Fitness / Walking,Fair Fitness Tester FFT+ R2,fair_fitness_console_R2.0.2-D1.html,fair_fitness_console_R2.0.2-D1.png,55486,291451
+Thermal / Energy,Microwave Power Simulator — Fit Window,javascript_microwave_power_simulator_one_window_v2.html,javascript_microwave_power_simulator_one_window_v2.png,22998,638475
+Robot / Motion / LiDAR,Lazy LiDAR Dashboard Exhibit v0.4-review,lazy_lidar_dashboard_exhibit_latest.html,lazy_lidar_dashboard_exhibit_latest.png,68908,204316
+Robot / Motion / LiDAR,Lazy LiDAR Virtual Robot Lab,lazy_lidar_virtual_robot_lab_scroll_safe.html,lazy_lidar_virtual_robot_lab_scroll_safe.png,68616,200233
+Other,micro:bit V2 Zephyr BLE IMU Viewer v6,microbit_ble_accel_viewer_v6.html,microbit_ble_accel_viewer_v6.png,5867,70802
+Fair Fitness / Walking,micro:bit v2 Fair Fitness BLE Dashboard,microbit_v2_fair_fitness_ble_dashboard_R4f_display.html,microbit_v2_fair_fitness_ble_dashboard_R4f_display.png,32891,357766
+Fair Fitness / Walking,micro:bit v2 Fair Fitness BLE Dashboard R4g Sync,microbit_v2_fair_fitness_ble_dashboard_R4g_sync.html,microbit_v2_fair_fitness_ble_dashboard_R4g_sync.png,35050,360879
+Scale / Mass,Static Call Graph - [miniscale\miniscale.axf],miniscale.htm,miniscale.png,53436,349650
+Other,MMM Pastel Dashboard Clone,MMM_pastel_dashboard_clone.html,MMM_pastel_dashboard_clone.png,13357,630379
+Robot / Motion / LiDAR,MotionCart Lab Dashboard — M5StickC Plus2 / StickS3,MotionCart_Dashboard.html,MotionCart_Dashboard.png,32821,264626
+Other,Nugget Bridge Dashboard,nugget_bridge_dashboard.html,nugget_bridge_dashboard.png,36981,389762
+Thermal / Energy,Orbit-Style Thermostat Emulator,orbit_style_thermostat_dashboard.html,orbit_style_thermostat_dashboard.png,30470,340182
+Pendulum,Seconds Pendulum — Nano VL53L1X Web Serial Dashboard,pendulum_webserial_dashboard.html,pendulum_webserial_dashboard.png,15592,242583
+Nugget / Embedded,PIC16F18424 ICSP Web Serial Programmer,pic16f18424-web-serial.html,pic16f18424-web-serial.png,34658,95443
+Pico / Frequency Meter,Pico W BLE UART Console,pico_w_ble_uart_console_r1.html,pico_w_ble_uart_console_r1.png,17175,117298
+Pico / Frequency Meter,Pico W BLE UART Console,pico_w_ble_uart_console_singlefile_r1_1.html,pico_w_ble_uart_console_singlefile_r1_1.png,17787,139207
+Nugget / Embedded,REDBoard One-Bit Reflex Dashboard,redboard_one_bit_reflex_dashboard.html,redboard_one_bit_reflex_dashboard.png,26421,379512
+Nugget / Embedded,REDBoard One-Bit Reflex Dashboard — Tabbed,redboard_one_bit_reflex_dashboard_tabbed.html,redboard_one_bit_reflex_dashboard_tabbed.png,29805,321678
+Robot / Motion / LiDAR,Robot8051 ESP32-C3 BLE Dashboard,robot8051_ble_dashboard.html,robot8051_ble_dashboard.png,14575,243941
+Pendulum,Seconds Pendulum WebBLE Dashboard,seconds_pendulum_webble_dashboard.html,seconds_pendulum_webble_dashboard.png,49920,380938
+Pendulum,Seconds Pendulum WebBLE Dashboard — Tabbed Layout,seconds_pendulum_webble_dashboard_tabbed.html,seconds_pendulum_webble_dashboard_tabbed.png,51726,364963
+Pendulum,Seconds Pendulum WebBLE Dashboard — Tabbed Layout v4,seconds_pendulum_webble_dashboard_tabbed_v4.html,seconds_pendulum_webble_dashboard_tabbed_v4.png,62216,355748
+Other,Slide Rule Scientific Workstation v7,slide_rule_scientific_workstation_v7_math_visible.html,slide_rule_scientific_workstation_v7_math_visible.png,125918,186801
+Tea Time / Beer–Lambert,TeaTime Beer–Lambert Lab Dashboard — Randall Young / UMA-GSA,teatime_beer_lambert_dashboard.html,teatime_beer_lambert_dashboard.png,60335,399946
+Tea Time / Beer–Lambert,TeaTime Beer–Lambert Lab Dashboard — Randall Young / UMA-GSA,teatime_beer_lambert_modeling_dashboard.html,teatime_beer_lambert_modeling_dashboard.png,81022,407409
+Tea Time / Beer–Lambert,TeaTime Modern Lab Dashboard,teatime_modern_dashboard.html,teatime_modern_dashboard.png,25407,447152
+Nugget / Embedded,ATtiny817 Xplained Mini GSA Serial Dashboard,tiny817_gsa_serial_dashboard.html,tiny817_gsa_serial_dashboard.png,16152,218212
+Nugget / Embedded,ATtiny817 Xplained Mini GSA Serial Dashboard,tiny817_gsa_serial_dashboard_v2_dtr.html,tiny817_gsa_serial_dashboard_v2_dtr.png,16720,221648
+DSKY / Mission Console,UMA-DSKY Dashboard — ISL v1.0 Prototype,uma_dsky_dashboard.html,uma_dsky_dashboard.png,34982,665920
+DSKY / Mission Console,UMA-DSKY Dashboard — Apollo Analog Elegant Edition,uma_dsky_dashboard_apollo_elegant.html,uma_dsky_dashboard_apollo_elegant.png,47989,760434
+DSKY / Mission Console,UMA-DSKY Dashboard — ISL v1.0,uma_dsky_dashboard_v2.html,uma_dsky_dashboard_v2.png,69024,762367
+DSKY / Mission Console,UMA-DSKY Mission Console — ISL v1.0 RC1,uma_dsky_mission_console_rc1.html,uma_dsky_mission_console_rc1.png,54751,579661
+Scale / Mass,UMA eScale Minimal Web Serial LCD - R1 v0.1.0,UMA_eScale_Minimal_WebSerial_LCD_R1_v0_1_0.html,UMA_eScale_Minimal_WebSerial_LCD_R1_v0_1_0.png,14365,557000
+Scale / Mass,UMA eScale Web Serial Dashboard - R1c v0.1.2,UMA_eScale_WebSerial_Dashboard_R1c_v0_1_2.html,UMA_eScale_WebSerial_Dashboard_R1c_v0_1_2.png,35359,360462
+Scale / Mass,UMA eScale Web Serial Dashboard - R1d v0.1.3,UMA_eScale_WebSerial_Dashboard_R1d_v0_1_3.html,UMA_eScale_WebSerial_Dashboard_R1d_v0_1_3.png,41149,363115
+Scale / Mass,UMA eScale Web Serial Dashboard - R1e v0.1.4,UMA_eScale_WebSerial_Dashboard_R1e_v0_1_4.html,UMA_eScale_WebSerial_Dashboard_R1e_v0_1_4.png,44465,364864
+Scale / Mass,UMA eScale Web Serial Dashboard - R1f v0.1.5,UMA_eScale_WebSerial_Dashboard_R1f_v0_1_5.html,UMA_eScale_WebSerial_Dashboard_R1f_v0_1_5.png,45030,368211
+Pico / Frequency Meter,UMA RP2040 PIO Monte Carlo Duty-Cycle Workbench,uma_pio_webserial_dashboard.html,uma_pio_webserial_dashboard.png,31205,415836
+Pico / Frequency Meter,UMA RP2040 PIO Duty-Cycle Workbench — Tabbed Web Serial Dashboard,uma_pio_webserial_dashboard_tabbed.html,uma_pio_webserial_dashboard_tabbed.png,42215,348706
+Other,UMA Workbench — Universal Measurement Dashboard,uma_workbench_dashboard.html,uma_workbench_dashboard.png,27661,199017
+Virtual DMM,Virtual DMM — ESP32-C3 · WebBLE · Rev 3,virtual_dmm_rev3_test.html,virtual_dmm_rev3_test.png,41292,407043
+Virtual DMM,Virtual DMM — ESP32-C3 · WebBLE · Rev 3,virtual_dmm_rev3_test_c.html,virtual_dmm_rev3_test_c.png,43558,407483
+Virtual DMM,Virtual DMM — ESP32-C3 · WebBLE · Rev 3,virtual_dmm_rev3_test_l.html,virtual_dmm_rev3_test_l.png,50846,428744
+Virtual DMM,Virtual DMM · UMA Platform · ESP32-C3,virtual_dmm_v2.html,virtual_dmm_v2.png,54735,196175
+Virtual DMM,Virtual DMM - WebBLE,virtual_dmm_webble.html,virtual_dmm_webble.png,12949,227024
+Virtual DMM,Virtual DMM - WebBLE (Tabbed),virtual_dmm_webble_tabbed.html,virtual_dmm_webble_tabbed.png,17153,200473
+Virtual DMM,Virtual DMM - WebBLE Tabbed Console - Release 0.2.0,virtual_dmm_webble_tabbed_release_0_2_0.html,virtual_dmm_webble_tabbed_release_0_2_0.png,25012,209044
+Virtual Oscilloscope,Virtual Oscilloscope — RP2040 · WebSocket · Rev 1,virtual_oscilloscope2.html,virtual_oscilloscope2.png,52194,102275
+Virtual Oscilloscope,Virtual Oscilloscope — RP2040 · WebSocket · Rev 1BB,virtual_oscilloscope2_dc_offset_fixed.html,virtual_oscilloscope2_dc_offset_fixed.png,55028,109514
+Virtual Oscilloscope,Virtual Oscilloscope — RP2040 · WebSocket · Rev 1A,virtual_oscilloscope2_graticule_fixed.html,virtual_oscilloscope2_graticule_fixed.png,49316,105020
+Virtual Oscilloscope,Virtual Oscilloscope — RP2040 · WebSocket · Rev 1B,virtual_oscilloscope2_graticule_slider.html,virtual_oscilloscope2_graticule_slider.png,50004,109037
+Virtual Oscilloscope,Virtual Oscilloscope — RP2040 · WebSocket · Rev 1BB,virtual_oscilloscope2_graticule_slider_fixed2.html,virtual_oscilloscope2_graticule_slider_fixed2.png,50169,109891
+Virtual Oscilloscope,Virtual Oscilloscope — RP2040 · WebSocket · Rev 1BB,virtual_oscilloscope2_graticule_slider_fixed3.html,virtual_oscilloscope2_graticule_slider_fixed3.png,50740,110137
+SQM / EyeDrop,WALKWISE / SQM+ Dashboard 3,walkwise_sqm_dashboard3.html,walkwise_sqm_dashboard3.png,44623,465323
