@@ -21,6 +21,7 @@ INDEXES = [
     ROOT / "baselines" / "verified_LAB12_source_2026-11-03.json",
     ROOT / "baselines" / "verified_core10_original_releases_2026-11-03.json",
     ROOT / "baselines" / "verified_core12_flux_and_lab12_portable_2026-11-03.json",
+    ROOT / "baselines" / "verified_kitchen_historical_originals_2026-11-03.json",
 ]
 
 
