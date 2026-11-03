@@ -1,0 +1,75 @@
+{
+  "format": 1,
+  "date": "2026-11-03",
+  "purpose": "Immutable references to eleven public canonical repository branch heads during the Core10/Core12 estate baseline pass",
+  "disclaimer": "A dated pointer to Git commits is not a byte-for-byte offsite backup and does not imply all source files exist or releases have been tested. Branch heads naturally change after new commits; these SHAs are historical landmarks.",
+  "protected_private_work_excluded": true,
+  "repositories": [
+    {
+      "repository": "RandoSY/project-atlas",
+      "default_branch": "main",
+      "observed_commit": "13d0db4259155706c05ad2f46888a9cac37fc85b",
+      "commit_url": "https://github.com/RandoSY/project-atlas/commit/13d0db4259155706c05ad2f46888a9cac37fc85b"
+    },
+    {
+      "repository": "RandoSY/core-10",
+      "default_branch": "main",
+      "observed_commit": "96109faa2fc5d0578981ea40d2bdf5b8c62ecbae",
+      "commit_url": "https://github.com/RandoSY/core-10/commit/96109faa2fc5d0578981ea40d2bdf5b8c62ecbae"
+    },
+    {
+      "repository": "RandoSY/software-defined-laboratory",
+      "default_branch": "main",
+      "observed_commit": "e365d0a3845801776c14269eb8f69e0e1ffa9806",
+      "commit_url": "https://github.com/RandoSY/software-defined-laboratory/commit/e365d0a3845801776c14269eb8f69e0e1ffa9806"
+    },
+    {
+      "repository": "RandoSY/nugget-physical-computing",
+      "default_branch": "main",
+      "observed_commit": "99aa3814f490b48742707b3c712edbfc161e50c8",
+      "commit_url": "https://github.com/RandoSY/nugget-physical-computing/commit/99aa3814f490b48742707b3c712edbfc161e50c8"
+    },
+    {
+      "repository": "RandoSY/measured-world-lab",
+      "default_branch": "main",
+      "observed_commit": "0db4ffc317bcbe08104939c09364a501416dde7d",
+      "commit_url": "https://github.com/RandoSY/measured-world-lab/commit/0db4ffc317bcbe08104939c09364a501416dde7d"
+    },
+    {
+      "repository": "RandoSY/measured-human-performance",
+      "default_branch": "main",
+      "observed_commit": "bc659faf867e4f95c93b6af44358dfdec8441d0b",
+      "commit_url": "https://github.com/RandoSY/measured-human-performance/commit/bc659faf867e4f95c93b6af44358dfdec8441d0b"
+    },
+    {
+      "repository": "RandoSY/bargain-bin-robotics",
+      "default_branch": "main",
+      "observed_commit": "36f00ff6fc826fb94fd6997f0177786677de049e",
+      "commit_url": "https://github.com/RandoSY/bargain-bin-robotics/commit/36f00ff6fc826fb94fd6997f0177786677de049e"
+    },
+    {
+      "repository": "RandoSY/computing-observatories",
+      "default_branch": "main",
+      "observed_commit": "77b4a0336ebab0dafcdcf474000d2a85e9015ccd",
+      "commit_url": "https://github.com/RandoSY/computing-observatories/commit/77b4a0336ebab0dafcdcf474000d2a85e9015ccd"
+    },
+    {
+      "repository": "RandoSY/embedded-tools",
+      "default_branch": "main",
+      "observed_commit": "426e34d63eee7cab17193e60aa5203a508138e08",
+      "commit_url": "https://github.com/RandoSY/embedded-tools/commit/426e34d63eee7cab17193e60aa5203a508138e08"
+    },
+    {
+      "repository": "RandoSY/works-and-publications",
+      "default_branch": "main",
+      "observed_commit": "e18672501530a7d850ff1e6a27812b04b58fbd1e",
+      "commit_url": "https://github.com/RandoSY/works-and-publications/commit/e18672501530a7d850ff1e6a27812b04b58fbd1e"
+    },
+    {
+      "repository": "RandoSY/PDP11_to_the_MSP430",
+      "default_branch": "main",
+      "observed_commit": "fb69958a9f32e342aad0e896b8eea924fd6e48c8",
+      "commit_url": "https://github.com/RandoSY/PDP11_to_the_MSP430/commit/fb69958a9f32e342aad0e896b8eea924fd6e48c8"
+    }
+  ]
+}
