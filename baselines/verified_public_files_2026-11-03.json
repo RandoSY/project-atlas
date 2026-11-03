@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "baseline_date": "2026-11-03",
+  "scope": "public author-owned curriculum and measurement source archive",
+  "meaning": "expected Git blob SHA-1 locks original bytes; null checks existence only. This is a baseline existence/integrity check, not hardware validation.",
+  "protected_work_excluded": true,
+  "artifacts": [
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Teacher_Manual_v0.2/part-01.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "fc5df121391aa84d02cad74c58f5f542ad17ddc7"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Teacher_Manual_v0.2/part-02.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "d6e28e99b8ced8b58bc815d7b4ae5b6f3eb3e080"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Teacher_Manual_v0.2/part-03.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "9a6ecdec36f358b6b1d1149b25faa2c53d185e1e"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Teacher_Manual_v0.2/part-04.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "3e26325b035d4aed6490865c2133587f0a63d79c"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Teacher_Manual_v0.2/part-05.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "d2499ede14e8f0537a2534cb9d714b08170d4196"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Teacher_Manual_v0.2/part-06.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "db87feb13c7e468801b284d6cbd6e99b5973b2f3"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Teacher_Manual_v0.2/part-07.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "2fb66f94f3e6fb2452c21c3906c0e1f6d6bbbf68"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Teacher_Manual_v0.2/part-08.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "65336230aaad44404de87ccd5dc6fef59db9366f"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Student_Lab_Book_v0.2/part-01.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "e38f7a8a170f51a03ddd69ea43427dac07e91620"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Student_Lab_Book_v0.2/part-02.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "0f9ff95a072f8a044ac1ea859e4d29c5678ecfd7"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Student_Lab_Book_v0.2/part-03.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "40234fbf94c74e0030be327d79dc470d02a6bba4"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Student_Lab_Book_v0.2/part-04.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "02807e782cd76ae55d5ca9971acfd7cdb68f6eb1"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Student_Lab_Book_v0.2/part-05.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "756686e7f4ff405370303ea9868de15b41621b6e"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Student_Lab_Book_v0.2/part-06.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "9aa893b5120df74a45befbe0513e086a55eab104"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Student_Lab_Book_v0.2/part-07.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "5a5c4a9943a23a636c20ed5894193077e6749fd8"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Student_Lab_Book_v0.2/part-08.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "83ee49824158498dd6317a3fe83297e5a535b023"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Student_Lab_Book_v0.2/part-09.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "664c2108498ddf3736994590d9df240133a3645d"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/archive/Student_Lab_Book_v0.2/part-10.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "77bf9af631bbef6a7f9f05ce30e7d4141e9dbcee"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "kitchen-inquiry-lab/Kitchen_Inquiry_Lab_Canonical_Map.md",
+      "branch": "main",
+      "expected_git_blob_sha1": null
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "one-cup-chemistry/Teacher_Manual_v0.2_OCC17_Revised_Canonical_Map.md",
+      "branch": "main",
+      "expected_git_blob_sha1": null
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "kitchen-inquiry-lab/CORE10_Microwave_Water_Heating_Handoff_Packet_v0.1.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "ec24f66781c5a1cb39c1f83a6b2b1fc90f3047af"
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Its_All_About_the_Flux.text.txt",
+      "branch": "main",
+      "expected_git_blob_sha1": "22c738ab5fe5d5234c548a0410d49b9d63af726e"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "path": "platforms/lab12-pdp12-linc/v1.2/dashboard/lab12_dashboard.html",
+      "branch": "main",
+      "expected_git_blob_sha1": "e456feacd5a506682c0e20a27036a5debc5fafd1"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "path": "platforms/lab12-pdp12-linc/v1.2/documentation/PRECISION_GRAPH_GUIDE.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "75d20e5ae696d095add3939aaf94e5e7275bd191"
+    },
+    {
+      "repo": "RandoSY/project-atlas",
+      "path": "baselines/CORE10_CORE12_PUBLIC_PRESERVATION_BASELINE_2026-11-03.md",
+      "branch": "main",
+      "expected_git_blob_sha1": "d862fd6c87ac5f0255709c6e455f48270b320755"
+    }
+  ]
+}
