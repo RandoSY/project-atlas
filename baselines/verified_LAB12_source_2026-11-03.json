@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "baseline_date": "2026-11-03",
+  "scope": "LAB-12 v1.2 published source",
+  "meaning": "Exact Git blob identities of committed files. Physical target hardware not validated; a missing protocol guide remains a release gap.",
+  "artifacts": [
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/README.md",
+      "expected_git_blob_sha1": "d1053da17c84cc06f17e76e3b6cfed421870368c"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/RELEASE_MANIFEST.json",
+      "expected_git_blob_sha1": "9321be711dd7414180e4a619f6c7844e98555fb9"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/dashboard/OPEN_IN_CHROME.cmd",
+      "expected_git_blob_sha1": "ef912eb3ba92bd4d993d510b06ac78f5f28da564"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/dashboard/lab12_dashboard.html",
+      "expected_git_blob_sha1": "e456feacd5a506682c0e20a27036a5debc5fafd1"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/documentation/PRECISION_GRAPH_GUIDE.md",
+      "expected_git_blob_sha1": "75d20e5ae696d095add3939aaf94e5e7275bd191"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/documentation/RELEASE_NOTES.md",
+      "expected_git_blob_sha1": "1297a9d77df7344e224072dea0079e54f03bf1ee"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/documentation/TEACHER_OPERATOR_GUIDE.md",
+      "expected_git_blob_sha1": "572b7f1ab2ab2416e228e7c2bacf2a229f8c3216"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/documentation/WIRING.md",
+      "expected_git_blob_sha1": "96369807386c236a69910c1f0aafd2939c96d108"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/msp430_new/README.md",
+      "expected_git_blob_sha1": "8d4e68ddd31e635291f35ff2f8216413cdc78912"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/msp430_new/cooling_main.c",
+      "expected_git_blob_sha1": "89ce653098f73f4c6918b2c8e0f9269adcb4df2c"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/pico_w/labcore.py",
+      "expected_git_blob_sha1": "9541ad7423a6fb64b3783a9686e819eb88d24af2"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/pico_w/main.py",
+      "expected_git_blob_sha1": "ae3abc7ec265f013f6ff323e1019d60872042ef2"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/pico_w/protocol.py",
+      "expected_git_blob_sha1": "9c9d6e871169c9e56db28d2a22d7c3d83dcd1b04"
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/tests/test_lab12.py",
+      "expected_git_blob_sha1": "bd8f087bca1c27c5989b8664f240d8b58dcae7b2"
+    }
+  ]
+}
