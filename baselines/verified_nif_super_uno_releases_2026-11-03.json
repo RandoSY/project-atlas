@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "baseline_date": "2026-11-03",
+  "scope": "Core10 Nothing Is Free Web Lab v0.3, SDL SUPER v0.5 Newton Cooling, and UNO/MFS v1.2 original PDF",
+  "meaning": "Binary-source Git blobs and release/readme files independently checked. The NIF ZIP is a development prototype with insecure defaults, not production-ready deployment; preservation does not imply hardware/clinical/classroom validation.",
+  "artifacts": [
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "nothing-is-free/releases/v0.3/NIF_Web_Lab_v0_3_Phone_First.zip",
+      "expected_git_blob_sha1": "3f99f96d8d6660447ea34797ca5ac099ec2c8497",
+      "size_bytes": 1745478
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "nothing-is-free/releases/v0.3/README.md",
+      "expected_git_blob_sha1": "ec926355ce4467d60a60b0252bc6044ad88895c8",
+      "size_bytes": 1166
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "archive/super-sdl-v0.5.0/README.md",
+      "expected_git_blob_sha1": "dd08f04bf301c7a65cd7d57ff57da64e205618ab",
+      "size_bytes": 938
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "archive/super-sdl-v0.5.0/SUPER_CircuitPython_MCP_Dynamic_Lab_v0_5.zip",
+      "expected_git_blob_sha1": "a2262113d06bdd1af9a27b7e406e0a8f117496e2",
+      "size_bytes": 92070
+    },
+    {
+      "repo": "RandoSY/nugget-physical-computing",
+      "branch": "main",
+      "path": "archive/uno-mfs-desktop-lab-controller/v1.2.0/docs/UNO_MFS_Desktop_Lab_Controller_Professional_User_Guide_v1.2.0.pdf",
+      "expected_git_blob_sha1": "8c54a8f3236f14ca37d5d6a34cfb4c603dc74974",
+      "size_bytes": 610228
+    }
+  ]
+}
