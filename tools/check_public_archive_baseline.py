@@ -20,8 +20,8 @@ INDEX = ROOT / "baselines" / "verified_public_files_2026-11-03.json"
 
 
 def git_blob_sha1(data: bytes) -> str:
-    # Git's object identity = SHA1(b"blob <length>\\0" + raw bytes).
-    prefix = b"blob " + str(len(data)).encode("ascii") + b"\\0"
+    # Git's object identity = SHA1(b"blob <length>\0" + raw bytes).
+    prefix = b"blob " + str(len(data)).encode("ascii") + b"\0"
     return hashlib.sha1(prefix + data).hexdigest()
 
 
