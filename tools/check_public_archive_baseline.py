@@ -14,6 +14,9 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
+from io import BytesIO
+from pypdf import PdfReader
+from pypdf.errors import PdfReadError
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 INDEXES = [
@@ -62,8 +65,26 @@ def main() -> int:
             actual = git_blob_sha1(data)
             if expected and expected.lower() != actual:
                 raise ValueError(f"blob SHA1 changed; expected {expected}, found {actual}")
+            if "expected_size_bytes" in e and len(data) != e["expected_size_bytes"]:
+                raise ValueError(f"size changed; expected {e['expected_size_bytes']}, got {len(data)}")
+            if e.get("expected_sha256"):
+                digest = hashlib.sha256(data).hexdigest()
+                if digest != e["expected_sha256"].lower():
+                    raise ValueError(f"SHA256 mismatch; expected {e['expected_sha256']}, got {digest}")
+            if e.get("expected_pdf_pages") is not None:
+                if not data.startswith(b"%PDF-") or not data.rstrip().endswith(b"%%EOF"):
+                    raise ValueError("PDF header or EOF trailer missing")
+                reader = PdfReader(BytesIO(data), strict=True)
+                if reader.is_encrypted:
+                    raise ValueError("Unexpected encrypted PDF")
+                pages = len(reader.pages)
+                if pages != e["expected_pdf_pages"]:
+                    raise ValueError(f"PDF page count changed: expected {e['expected_pdf_pages']}, got {pages}")
+                for i, page in enumerate(reader.pages, 1):
+                    if len((page.extract_text() or "").strip()) < 100:
+                        raise ValueError(f"PDF page {i} lacks expected extractable text")
             print(f"OK  {identifier} [{len(data)} bytes]")
-        except (OSError, urllib.error.URLError, ValueError) as exc:
+        except (OSError, urllib.error.URLError, ValueError, PdfReadError) as exc:
             bad += 1
             print(f"FAIL {identifier}: {exc}", file=sys.stderr)
     print(f"Checked {len(entries)}: {len(entries)-bad} OK, {bad} failed")
