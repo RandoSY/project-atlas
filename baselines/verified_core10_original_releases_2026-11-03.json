@@ -1,0 +1,197 @@
+{
+  "schema_version": 1,
+  "baseline_date": "2026-11-03",
+  "scope": "Core10 One Cup Chemistry v0.2 original PDFs and byte-preserving split original release; independently browsable OCC teacher guide extractions",
+  "meaning": "Every Git blob is checked for exact original SHA-1 byte identity; only GitHub-published files are included. Release ZIP requires running reconstruction script; physical experiment validation is not inferred.",
+  "artifacts": [
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-00_Measure_Like_a_Chemist_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "7c71efbca195220af98a1f7d4ca9085c9c2796c7",
+      "size_bytes": 3171
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-01_Water_as_the_First_Standard_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "c953190cf6a376aa9dc8ae5e64e9a01ff6722828",
+      "size_bytes": 2872
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-02_Newton_Cooling_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "44e24e281a2153d6ba63cb341aaab96ea3e860f7",
+      "size_bytes": 3062
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-03_Salt_Changes_the_Curve_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "f7eb0174a008ec7ed598cb938685adb43fc626a2",
+      "size_bytes": 3142
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-04_The_Heat_Capacity_Trap_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "6ce6960e9c67c0505cdf35071aed269ac62ee935",
+      "size_bytes": 2972
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-05_Heat_of_Dissolution_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "b51c5c9de84063b759bd499c808fd18ec5c2d922",
+      "size_bytes": 3349
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-06_Grams_Are_Not_Moles_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "236953696242f9d87156d315615c4a0b3d856ca5",
+      "size_bytes": 2926
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-07_Conductivity_Reveals_Ions_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "ac295a50b2e2373fdffaca95476de1382c546a4c",
+      "size_bytes": 3143
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-08_Freezing_and_Deicing_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "2c0bef8386cce32949fa60b48be8ed1ba4454600",
+      "size_bytes": 3070
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-09_From_Saturated_Solution_to_Crystal_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "880eba1d89966d14b9dbfa39f91a07815a6b6f94",
+      "size_bytes": 2936
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-10_Water_Inside_a_Solid_Hydrates_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "c9e240b056be77d7312e8b077cbe1b05864994f8",
+      "size_bytes": 3204
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-11_See_the_Lattice_Diffraction_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "9d415d7be7b2a893ea0868dd79d73b0ec4fa7a99",
+      "size_bytes": 3282
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-13_Make_a_Solid_from_Two_Clear_Solutions_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "73082cc8815b85f2b7a5cee508e2fb7f1264fc92",
+      "size_bytes": 2963
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-16_Light_Becomes_Concentration_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "c36d12bd047ba7c9ac51a22bf2aef2a9f469db3f",
+      "size_bytes": 3069
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/OCC-19_Can_the_Reasoner_Find_the_Flaw_Teacher_Guide_v0.2.md",
+      "expected_git_blob_sha1": "a2cb17dd720ee4e90c192fab5b2f92c1de56c55f",
+      "size_bytes": 3369
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/README.md",
+      "expected_git_blob_sha1": "8fdf41aecbb2185ab479fb01a0a6a44e017c06b8",
+      "size_bytes": 4282
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/experiments/Teacher_Experiment_Compendium_OCC00_to_OCC19_v0.2.md",
+      "expected_git_blob_sha1": "a7a6145380b54a5fbf750668ac0191c966e9606e",
+      "size_bytes": 59103
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/original-editions/Cooling_Curves_Brines_AI_Reasoning_Teachers_Guide.pdf",
+      "expected_git_blob_sha1": "fada54ba71580007b2619fd33249fd390650a490",
+      "size_bytes": 492368
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/original-editions/One_Cup_Chemistry_Student_Lab_Book_v0_2_BRANDED.pdf",
+      "expected_git_blob_sha1": "213a3ae7d4f82345e4ddcccab6c0112bc12e6a8d",
+      "size_bytes": 1411599
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/original-editions/One_Cup_Chemistry_Teacher_Manual_v0_2_BRANDED.pdf",
+      "expected_git_blob_sha1": "877331f68252ef0cdb3cf0dfde2155b896cb1800",
+      "size_bytes": 1678510
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/releases/v0.2/archive-parts/One_Cup_Chemistry_Complete_Bundle_v0_2.zip.part01",
+      "expected_git_blob_sha1": "736d7e118dcfb349f8154744c8ce1d545e0c4822",
+      "size_bytes": 1050000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/releases/v0.2/archive-parts/One_Cup_Chemistry_Complete_Bundle_v0_2.zip.part02",
+      "expected_git_blob_sha1": "3970e1a00ba6de612747b1196f3a23decc0557b6",
+      "size_bytes": 1050000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/releases/v0.2/archive-parts/One_Cup_Chemistry_Complete_Bundle_v0_2.zip.part03",
+      "expected_git_blob_sha1": "32e207689b178ec7d7c1df3fcfe0f5cba6299a42",
+      "size_bytes": 1050000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/releases/v0.2/archive-parts/One_Cup_Chemistry_Complete_Bundle_v0_2.zip.part04",
+      "expected_git_blob_sha1": "981afb7c4b4651ef33417157dceafc93ae255265",
+      "size_bytes": 1050000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/releases/v0.2/archive-parts/One_Cup_Chemistry_Complete_Bundle_v0_2.zip.part05",
+      "expected_git_blob_sha1": "6e582af56155c1f8d42ef27229f3deafc8dbcaf1",
+      "size_bytes": 111975
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/releases/v0.2/README.md",
+      "expected_git_blob_sha1": "5126bb2daa5087764f59cffc1c5cc1857aff19cb",
+      "size_bytes": 1498
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "one-cup-chemistry/releases/v0.2/rebuild_one_cup_bundle.py",
+      "expected_git_blob_sha1": "807abfe0b225c07c5f0019c908641a28a85371ad",
+      "size_bytes": 2282
+    }
+  ]
+}
