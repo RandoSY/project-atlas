@@ -16,7 +16,10 @@ import urllib.parse
 import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-INDEX = ROOT / "baselines" / "verified_public_files_2026-11-03.json"
+INDEXES = [
+    ROOT / "baselines" / "verified_public_files_2026-11-03.json",
+    ROOT / "baselines" / "verified_LAB12_source_2026-11-03.json",
+]
 
 
 def git_blob_sha1(data: bytes) -> str:
@@ -38,10 +41,13 @@ def fetch_entry(entry: dict) -> bytes:
 
 
 def main() -> int:
-    manifest = json.loads(INDEX.read_text(encoding="utf-8"))
+    entries = []
+    for index in INDEXES:
+        manifest = json.loads(index.read_text(encoding="utf-8"))
+        entries.extend(manifest["artifacts"])
+        print(f"Loaded {index.name}: {len(manifest['artifacts'])} paths")
     bad = 0
-    entries = manifest["artifacts"]
-    print(f"Baseline {manifest['baseline_date']}; {len(entries)} published paths")
+    print(f"Checking {len(entries)} combined archive baseline paths")
     for e in entries:
         identifier = f"{e['repo']}:{e['path']}"
         try:
