@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "baseline_date": "2026-11-03",
+  "scope": "Core12 original illustrated flux PDF reconstructed from eight binary parts, and LAB12 v1.2 portable source/protocol",
+  "meaning": "These 12 exact published Git objects are checked by Project Atlas. Core12 PDF source SHA256 is 68e58cd5cc4434b7466b32509782b1fe792c9bd1e6caf168d427f0f3a23bc100. LAB12 portable curated source SHA256 is 23e625e2ba798e85f55f7a6aa13b8e0b92442a3c0cca768bb029ba01326195e1. Neither implies target hardware validation.",
+  "artifacts": [
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/documentation/PROTOCOL.md",
+      "expected_git_blob_sha1": "868dcdd7239d795e59af4aea0beb53affc20389f",
+      "size_bytes": 3636
+    },
+    {
+      "repo": "RandoSY/software-defined-laboratory",
+      "branch": "main",
+      "path": "platforms/lab12-pdp12-linc/v1.2/releases/LAB12_v1_2_Portable_Source_and_Protocol_2026-11-03.zip",
+      "expected_git_blob_sha1": "8af56a36afc0bc9948f8d4746ee335c05bb9ed79",
+      "size_bytes": 93091
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Flux_Original_2026/archive-parts/CORE12_PRO_Unit_8_Its_All_About_the_Flux.pdf.part01",
+      "expected_git_blob_sha1": "ce95128f076200417f816d9af8f8090fcda4919f",
+      "size_bytes": 900000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Flux_Original_2026/archive-parts/CORE12_PRO_Unit_8_Its_All_About_the_Flux.pdf.part02",
+      "expected_git_blob_sha1": "210d5cd48b1e0f87bc9f6b1c1ce4bbdaa62979f5",
+      "size_bytes": 900000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Flux_Original_2026/archive-parts/CORE12_PRO_Unit_8_Its_All_About_the_Flux.pdf.part03",
+      "expected_git_blob_sha1": "7036ce01d515a73b0788fc63a8e37e2a98a9f694",
+      "size_bytes": 900000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Flux_Original_2026/archive-parts/CORE12_PRO_Unit_8_Its_All_About_the_Flux.pdf.part04",
+      "expected_git_blob_sha1": "97d567a2e0626bb57f5d62df7936ccd040d342b0",
+      "size_bytes": 900000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Flux_Original_2026/archive-parts/CORE12_PRO_Unit_8_Its_All_About_the_Flux.pdf.part05",
+      "expected_git_blob_sha1": "3ea52f035ca79b5663ad9c71c918684f54027ae3",
+      "size_bytes": 900000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Flux_Original_2026/archive-parts/CORE12_PRO_Unit_8_Its_All_About_the_Flux.pdf.part06",
+      "expected_git_blob_sha1": "2fd1e6e4c9e6d09b607aae120d7e7046bdd307ad",
+      "size_bytes": 900000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Flux_Original_2026/archive-parts/CORE12_PRO_Unit_8_Its_All_About_the_Flux.pdf.part07",
+      "expected_git_blob_sha1": "5175408ded01ab13eb760d0f9913501b8cc1580e",
+      "size_bytes": 900000
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Flux_Original_2026/archive-parts/CORE12_PRO_Unit_8_Its_All_About_the_Flux.pdf.part08",
+      "expected_git_blob_sha1": "969bca4c949aae8d569052a093db74e6192de485",
+      "size_bytes": 852568
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Flux_Original_2026/README.md",
+      "expected_git_blob_sha1": "a8bfeb569afdd63757f76e302f777d450004dd45",
+      "size_bytes": 921
+    },
+    {
+      "repo": "RandoSY/core-10",
+      "branch": "main",
+      "path": "recovered-publications/CORE12_PRO_Unit_8_Flux_Original_2026/rebuild_flux_pdf.py",
+      "expected_git_blob_sha1": "d3479e40217d81dea440126ca163727f3378f9da",
+      "size_bytes": 2222
+    }
+  ]
+}
