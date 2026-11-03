@@ -1,0 +1,27 @@
+name: Public Curriculum Archive Baseline
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'baselines/**'
+      - 'tools/check_public_archive_baseline.py'
+      - '.github/workflows/public-archive-baseline.yml'
+  schedule:
+    - cron: '17 13 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify frozen public artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check archive paths and Git blob identities
+        run: python tools/check_public_archive_baseline.py
