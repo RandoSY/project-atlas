@@ -84,6 +84,13 @@
       "text":"Connect the Kitchen Inquiry Lab, One Cup Chemistry, and the Personal Energy Laboratory.",
       "start":"Compare the energy an appliance uses with the heat gained by a cup of water.",
       "url":"/atlas/core-10/"
+    },
+    {
+      "title":"Galileo’s Water Clock",
+      "topic":"Time and accumulation",
+      "text":"Calibrate a stream of water as an interval timer, then transfer it to a rolling-ball experiment.",
+      "start":"Compare steady and draining flow in the browser model.",
+      "url":"/atlas/water-clock/"
     }
   ],
   "evidence": "A measured run, a simulated example, and a working dashboard are different kinds of evidence. Read the captions and validation notes before you draw a conclusion. A good first experiment is one you can explain and repeat."

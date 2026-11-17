@@ -76,7 +76,7 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
     prefix = "../" if directory else ""
     destinations = (("Home", ""), ("Exhibits", "exhibits"), ("Ideas", "ideas"),
                     ("Projects", "inventory"), ("Repositories", "repositories"))
-    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10", "pop-can-calorimeter"}
+    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10", "pop-can-calorimeter", "water-clock"}
     nav = []
     for name, dest in destinations:
         attr = ' aria-current="page"' if dest == directory else ''
@@ -163,6 +163,9 @@ def home(n):
 <a class="atlas-mini" href="instruments/">
 <img src="instruments/screens/frequency-meter.webp" width="1240" height="945" alt="">
 <div><b id="home-instruments">Virtual Instruments</b><span>Five wireless builds and the dashboards that make them usable.</span></div></a>
+<a class="atlas-mini atlas-mini-wide" href="water-clock/">
+<img src="water-clock/media/apparatus.webp" width="1350" height="1043" alt="">
+<div><b id="home-water-clock">Galileo’s Water Clock</b><span>Weigh water, infer elapsed time, and test the clock on a ramp.</span></div></a>
 </div>
 <p class="atlas-all"><a href="exhibits/">Browse all exhibits →</a></p>
 <section class="atlas-directory" aria-labelledby="read">
@@ -218,7 +221,7 @@ def start_here():
 <dl class="sg-nav-list">{''.join(places)}</dl>
 </section>
 <section aria-labelledby="sg-exhibits">
-<h2 id="sg-exhibits">Six places to begin</h2>
+<h2 id="sg-exhibits">Seven places to begin</h2>
 <p>Try the first move before reading everything.</p>
 <ul class="sg-exhibits">{''.join(exhibits)}</ul>
 </section>
@@ -243,6 +246,9 @@ def exhibits():
         ("Premier CORE 10 activity", "../pop-can-calorimeter/", "Pop-Can Calorimeter",
          "Follow a tea light from grams of fuel to joules in the water, compare heating rates, and account for where the rest of the energy went.",
          "../pop-can-calorimeter/media/picoscale.webp", 1440, 847),
+        ("Physical calculus", "../water-clock/", "Galileo’s Water Clock",
+         "Make time measurable with a cup and scale. Calibrate the flow, try the original interactive lab, and transfer the clock to an inclined plane.",
+         "../water-clock/media/apparatus.webp", 1350, 1043),
         ("Current experiment", "../sqm-plus/", "SQM+ Hallway Observatory",
          "Run a marked 11-meter leg and see why a stopwatch and a wearable answer two different questions.",
          "../sqm-plus/media/hallway.svg", 1280, 610),
@@ -280,6 +286,7 @@ def core():
 <p class="atlas-kicker">Signature Kitchen Inquiry Lab</p>
 <h2 id="core-signature"><a href="../pop-can-calorimeter/">Pop-Can Calorimeter</a></h2>
 <p>One candle creates two records: the mass of fuel consumed and the heat gained by the water. This is where CORE 10 connects measurement, chemistry, watts, and evidence about where the energy went.</p>
+<p>For a companion lesson in rate and accumulation, visit <a href="../water-clock/">Galileo’s Water Clock</a>. In this experiment the mass goes up, and its slope can tell time.</p>
 </section>
 <section aria-labelledby="start">
 <h2 id="start">Start here</h2>
@@ -455,6 +462,14 @@ def pop_can_calorimeter():
          source=f"{CORE}/tree/main/kitchen-inquiry-lab")
 
 
+def water_clock():
+    page("water-clock", "Galileo’s Water Clock",
+         "A hands-on path from water mass to elapsed time, then from time to motion.",
+         (WEB / "water-clock.html").read_text(encoding="utf-8"),
+         header="EXPERIENCE BEFORE EQUATION · MEASUREMENT LADDER",
+         extra='<link rel="stylesheet" href="../assets/water-clock.css">\n')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--atlas-source", type=Path, default=WEB.parent)
@@ -478,6 +493,7 @@ def main():
     singing_rule()
     sqm_plus()
     pop_can_calorimeter()
+    water_clock()
     repo_archive(manifest, args.atlas_source / "LEGACY_REPOSITORY_MAP.md")
     for name, title, summary, file, exclude in [
         ("ideas", "Idea index", "The durable ideas behind the work, from measurement and teaching to open instruments and publication.",
@@ -489,7 +505,7 @@ def main():
         families = (f'<section class="atlas-family-list" aria-labelledby="families">'
                     f'<h2 id="families">Project families</h2>{homes("../")}</section>') if name == "inventory" else ""
         page(name, title, summary, f'<article>{body}</article>{families}', source=f"{ATLAS_MAIN}/{file}")
-    print(f"Built eleven pages and indexed {len(manifest['repositories'])} public repositories.")
+    print(f"Built twelve pages and indexed {len(manifest['repositories'])} public repositories.")
 
 if __name__ == "__main__":
     main()

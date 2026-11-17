@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>The Changing World — Interactive Calculus Lab</title>
+<style>
+:root{--navy:#14324f;--teal:#0f766e;--gold:#c79a3b;--ink:#1f2937;--muted:#64748b;--paper:#f8fafc;--panel:#fff;--line:#cbd5e1;--soft:#eef4f8;--blue:#2563eb;--green:#059669;--orange:#ea580c;--red:#b91c1c}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;overflow:hidden;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{height:72px;background:var(--navy);color:white;padding:11px 24px;border-bottom:4px solid var(--gold);display:flex;align-items:center;justify-content:space-between;gap:20px}
+header h1{margin:0;font-size:clamp(20px,2.4vw,31px)}header p{margin:3px 0 0;color:#dbeafe;font-size:13px}.memory-key{font-size:12px;max-width:520px;text-align:right;color:#e2e8f0;line-height:1.25}.memory-key b{color:#fde68a}
+.tabs{height:48px;display:flex;align-items:end;gap:5px;padding:7px 16px 0;background:#e8eef4;border-bottom:1px solid #b8c4d0}.tab-btn{height:40px;padding:0 17px;border:1px solid #b8c4d0;border-bottom:0;border-radius:10px 10px 0 0;background:#f6f8fa;color:var(--navy);font-weight:800;cursor:pointer}.tab-btn.active{background:white;color:var(--teal);box-shadow:0 -2px 8px rgba(15,23,42,.05)}
+.app{height:calc(100vh - 120px);display:grid;grid-template-columns:320px minmax(0,1fr);gap:12px;max-width:1700px;margin:0 auto;padding:12px}.controls{height:100%;overflow:hidden;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 3px 14px rgba(15,23,42,.07);padding:11px}.controls h2{margin:0 0 6px;color:var(--navy);font-size:16px}.controls.minimal{align-self:start;height:auto}.buttons{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:6px 0}.buttons button{border:0;border-radius:8px;padding:7px 8px;font-weight:800;cursor:pointer;background:var(--navy);color:white;font-size:12px}.buttons .secondary{background:#e2e8f0;color:var(--navy)}.buttons .gold{background:var(--gold);color:#1f2937}
+details{border-top:1px solid #e2e8f0;padding:6px 0}summary{font-weight:800;color:var(--navy);cursor:pointer;font-size:13px}.row{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;margin:5px 0 2px}.row label{font-size:11.5px}.value{font-variant-numeric:tabular-nums;font-weight:700;color:var(--teal);min-width:65px;text-align:right;font-size:11px}input[type=range]{width:100%;height:16px;accent-color:var(--teal)}select{width:100%;padding:4px;border:1px solid var(--line);border-radius:7px;background:white;font-size:11.5px}.check{display:flex;gap:6px;font-size:11px;margin:4px 0}.hint{font-size:10.5px;line-height:1.3;color:var(--muted);background:#f8fafc;border-left:3px solid var(--gold);padding:5px 7px;border-radius:5px;margin:5px 0 0}
+.workspace{min-width:0;height:100%;overflow:hidden}.tab-panel{display:none;height:100%}.tab-panel.active{display:block}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;box-shadow:0 3px 14px rgba(15,23,42,.06);min-width:0;overflow:hidden}.card h3{margin:0 0 6px;color:var(--navy);font-size:16px}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;height:100%}.tab-stack{display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;height:100%}
+canvas{display:block;width:100%;height:auto;max-height:calc(100vh - 245px);background:white;border:1px solid #e2e8f0;border-radius:9px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:6px}.metric{background:var(--soft);border:1px solid #dbe6ee;border-radius:7px;padding:5px 6px}.metric span{display:block;font-size:10px;color:var(--muted)}.metric b{display:block;margin-top:1px;font-variant-numeric:tabular-nums;color:var(--navy);font-size:12px;white-space:nowrap}.status{margin-top:5px;padding:6px 8px;border-radius:7px;background:#ecfdf5;color:#065f46;font-size:11px;font-weight:700;border:1px solid #a7f3d0}.status.warn{background:#fff7ed;color:#9a3412;border-color:#fed7aa}.equations{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:6px}.eqbox{background:#f8fafc;border:1px solid var(--line);border-radius:8px;padding:7px;font-family:Cambria,"Times New Roman",serif;font-size:17px;line-height:1.3}.small{font-family:Inter,system-ui,sans-serif;font-size:10px;color:var(--muted);margin-top:2px}
+.referent-wrap{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px}.referent-banner{background:white;border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}.referent-banner h2{margin:0;color:var(--navy);font-size:19px}.referent-banner p{margin:3px 0 0;font-size:12.5px;color:#475569}.referent-banner .chain{font-family:Cambria,"Times New Roman",serif;font-size:18px;color:var(--navy);font-weight:700;text-align:right}.referent-card{display:flex;flex-direction:column;min-height:0}.referent-card canvas{flex:1;min-height:0;max-height:none;height:100%;object-fit:contain}.memory-note{margin-top:6px;background:#fff8e6;border:1px solid #e7c66d;border-radius:8px;padding:7px 9px;font-size:11.5px;line-height:1.3}.memory-note b{color:#7c5a00}
+.bridge{height:100%;display:grid;grid-template-columns:1.15fr .85fr;gap:12px}.bridge .card{height:100%}.bridge h2{margin:0 0 8px;color:var(--navy)}.bridge .big-eq{font-family:Cambria,"Times New Roman",serif;font-size:clamp(20px,2vw,29px);padding:10px 0;color:#172554}.bridge .ladder{display:grid;gap:8px}.bridge .rung{padding:10px;border-radius:9px;border:1px solid var(--line);background:#f8fafc}.bridge .rung b{color:var(--teal)}.bridge ul{margin:8px 0 0;padding-left:20px;line-height:1.45}
+@media(max-width:1050px){body{overflow:auto}.app{height:auto;grid-template-columns:1fr}.controls{height:auto;overflow:visible}.workspace,.tab-panel,.grid2,.referent-wrap,.bridge{height:auto}.grid2,.bridge{grid-template-columns:1fr}.memory-key{display:none}canvas{max-height:none}.tabs{position:sticky;top:0;z-index:5;overflow-x:auto}.tab-btn{white-space:nowrap}}
+/* Atlas presentation: give the original controls room on small screens. */
+@media(max-width:640px){
+ header{height:auto;padding:12px 16px;flex-wrap:wrap;gap:8px}
+ .memory-key{text-align:left}
+ .tabs{height:auto;flex-wrap:wrap;align-items:stretch;padding:6px 10px}
+ .tab-btn{padding:0 10px;border:1px solid #b8c4d0;border-radius:8px}
+ .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ canvas{max-height:none}
+}
+</style>
+</head>
+<body data-active-tab="referent">
+<header><div><h1>The Changing World — Interactive Calculus Lab</h1><p>Simulation only · <a href="./" style="color:inherit">Back to the Water Clock exhibit</a></p></div><div class="memory-key"><b>The lifelong key:</b> water makes rate → accumulation visible; the ramp makes acceleration → velocity → position visible.</div></header>
+<nav class="tabs" aria-label="Lab views">
+<button class="tab-btn active" data-tab="referent">★ The Referent</button>
+<button class="tab-btn" data-tab="water">Water Clock</button>
+<button class="tab-btn" data-tab="ramp">Galileo Ramp</button>
+<button class="tab-btn" data-tab="bridge">Calculus Bridge</button>
+</nav>
+<div class="app">
+<aside class="controls">
+<h2>Experiment Controls</h2>
+<div class="buttons"><button id="playBtn">▶ Run</button><button id="resetBtn" class="secondary">↺ Reset</button><button id="stepBtn" class="secondary">+ 0.10 s</button><button id="csvBtn" class="gold">Export CSV</button></div>
+<details open class="master"><summary>Master</summary>
+<div class="row"><label for="speed">Simulation speed</label><span class="value" id="speedVal"></span></div><input id="speed" type="range" min="0.1" max="5" step="0.1" value="1" />
+<div class="row"><label for="sampleDt">Analysis interval Δt</label><span class="value" id="sampleDtVal"></span></div><input id="sampleDt" type="range" min="0.05" max="1.5" step="0.05" value="0.25" />
+<label class="check"><input id="showTangent" type="checkbox" checked /> Show tangent / derivative overlays</label><label class="check"><input id="showRects" type="checkbox" checked /> Show accumulation rectangles</label></details>
+<details open class="water-controls"><summary>Water clock</summary>
+<div class="row"><label for="flowModel">Flow model</label></div><select id="flowModel"><option value="torricelli">Torricelli variable flow</option><option value="constant">Ideal constant flow</option></select>
+<div class="row"><label for="h0">Initial water depth</label><span class="value" id="h0Val"></span></div><input id="h0" type="range" min="5" max="50" step="1" value="24" />
+<div class="row"><label for="areaRes">Reservoir cross-section</label><span class="value" id="areaResVal"></span></div><input id="areaRes" type="range" min="50" max="500" step="5" value="150" />
+<div class="row"><label for="outletD">Outlet diameter</label><span class="value" id="outletDVal"></span></div><input id="outletD" type="range" min="1" max="10" step="0.1" value="5.3" />
+<div class="row"><label for="cd">Discharge coefficient C<sub>d</sub></label><span class="value" id="cdVal"></span></div><input id="cd" type="range" min="0.30" max="1.00" step="0.01" value="0.62" />
+<div class="row"><label for="rho">Water density</label><span class="value" id="rhoVal"></span></div><input id="rho" type="range" min="0.95" max="1.05" step="0.001" value="0.998" />
+<div id="constFlowWrap"><div class="row"><label for="constFlow">Constant mass-flow rate</label><span class="value" id="constFlowVal"></span></div><input id="constFlow" type="range" min="1" max="80" step="1" value="20" /></div>
+<p class="hint">Torricelli: q decreases as reservoir head falls. Constant-flow mode is the introductory arithmetic case.</p></details>
+<details open class="ramp-controls"><summary>Galileo ramp / ball</summary>
+<div class="row"><label for="angle">Ramp angle θ</label><span class="value" id="angleVal"></span></div><input id="angle" type="range" min="1" max="30" step="0.5" value="12" />
+<div class="row"><label for="rampLength">Ramp length</label><span class="value" id="rampLengthVal"></span></div><input id="rampLength" type="range" min="0.5" max="5" step="0.1" value="2.4" />
+<div class="row"><label for="radius">Ball radius</label><span class="value" id="radiusVal"></span></div><input id="radius" type="range" min="1" max="10" step="0.5" value="3.0" />
+<div class="row"><label for="mass">Ball mass</label><span class="value" id="massVal"></span></div><input id="mass" type="range" min="0.05" max="2" step="0.05" value="0.25" />
+<div class="row"><label for="muS">Static friction coefficient μ<sub>s</sub></label><span class="value" id="muSVal"></span></div><input id="muS" type="range" min="0.01" max="0.80" step="0.01" value="0.25" />
+<div class="row"><label for="g">Gravity g</label><span class="value" id="gVal"></span></div><input id="g" type="range" min="9.5" max="10.1" step="0.01" value="9.81" />
+<div class="row"><label for="v0">Initial speed v₀</label><span class="value" id="v0Val"></span></div><input id="v0" type="range" min="0" max="1.5" step="0.05" value="0" />
+<p class="hint">Solid sphere: I = 2mr²/5 and a = 5g sinθ/7 while rolling without slip.</p></details>
+</aside>
+
+<main class="workspace">
+<section id="tab-referent" class="tab-panel active"><div class="referent-wrap">
+<div class="referent-banner"><div><h2>The lifelong referent</h2><p>Come back here years later. The apparatus is the memory hook; the mathematics grows naturally from what the apparatus does.</p></div><div class="chain">rate → accumulated state<br/>slope → rate</div></div>
+<div class="grid2"><section class="card referent-card"><canvas id="referentWater" width="500" height="390"></canvas><div class="memory-note"><b>Water clock:</b> flow is a rate you can see; collected water is a total you can weigh. Integration builds the total. Slope reads the rate back out.</div></section>
+<section class="card referent-card"><canvas id="referentRamp" width="500" height="390"></canvas><div class="memory-note"><b>Ramp and ball:</b> acceleration accumulates into velocity; velocity accumulates into position. Differentiate the histories to walk back down the ladder.</div></section></div></div></section>
+
+<section id="tab-water" class="tab-panel"><div class="grid2">
+<section class="card"><h3>Water Clock — Physical View</h3><canvas id="waterCanvas" width="720" height="420"></canvas><div class="metrics"><div class="metric"><span>time</span><b id="wmTime">0.00 s</b></div><div class="metric"><span>water depth h(t)</span><b id="wmH">0 cm</b></div><div class="metric"><span>flow q(t)</span><b id="wmQ">0 g/s</b></div><div class="metric"><span>mass m(t)</span><b id="wmM">0 g</b></div></div></section>
+<section class="card"><h3>Water Clock — Rate and Accumulation</h3><canvas id="waterGraph" width="720" height="420"></canvas><div class="equations"><div class="eqbox">q(t) = dm/dt<div class="small">Slope of accumulated mass gives instantaneous flow.</div></div><div class="eqbox">m(t) − m(0) = ∫₀ᵗ q(τ)dτ<div class="small">Accumulating the rate gives mass.</div></div></div></section>
+</div></section>
+
+<section id="tab-ramp" class="tab-panel"><div class="grid2">
+<section class="card"><h3>Galileo Ramp — Physical View</h3><canvas id="rampCanvas" width="720" height="420"></canvas><div class="metrics"><div class="metric"><span>position x(t)</span><b id="rmX">0 m</b></div><div class="metric"><span>velocity v(t)</span><b id="rmV">0 m/s</b></div><div class="metric"><span>acceleration a(t)</span><b id="rmA">0 m/s²</b></div><div class="metric"><span>angular speed ω(t)</span><b id="rmW">0 rad/s</b></div></div><div id="rollingStatus" class="status">Rolling without slipping.</div></section>
+<section class="card"><h3>Motion — Derivatives and Double Integration</h3><canvas id="motionGraph" width="720" height="500"></canvas><div class="equations"><div class="eqbox">v(t) = dx/dt &nbsp; and &nbsp; a(t) = dv/dt<div class="small">Differentiation moves down the motion ladder.</div></div><div class="eqbox">x(t) = x₀ + ∫₀ᵗv(τ)dτ<div class="small">Integration moves back up the ladder.</div></div></div></section>
+</div></section>
+
+<section id="tab-bridge" class="tab-panel"><div class="bridge">
+<section class="card"><h2>Calculus Bridge</h2><p>The apparatus comes first. The notation is a compact way to say what you have already seen happen.</p><div class="big-eq">m(t) = m(0) + ∫₀ᵗ q(τ)dτ</div><div class="big-eq">q(t) = dm/dt</div><div class="big-eq">v(t) = v(0) + ∫₀ᵗ a(τ)dτ</div><div class="big-eq">x(t) = x(0) + ∫₀ᵗ v(τ)dτ</div><div class="big-eq">v(t) = dx/dt &nbsp;&nbsp; a(t) = dv/dt</div></section>
+<section class="card"><h2>How to re-enter the idea years later</h2><div class="ladder"><div class="rung"><b>1. Picture the water clock.</b><br>Water crosses a boundary every second. That is rate.</div><div class="rung"><b>2. Picture the beaker on the scale.</b><br>The collected mass remembers the preceding flow. That is accumulation.</div><div class="rung"><b>3. Picture the ball on the ramp.</b><br>Constant-ish acceleration grows velocity; velocity grows position.</div><div class="rung"><b>4. Now ask the two calculus questions.</b><br>How fast is it changing now? How much has accumulated?</div></div><ul><li>Integral: rate → accumulated state.</li><li>Derivative: state history → local rate.</li><li>Fundamental Theorem: under appropriate conditions, these two viewpoints fit together.</li></ul></section>
+</div></section>
+</main>
+</div>
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const controls = ["speed","sampleDt","flowModel","h0","areaRes","outletD","cd","rho","constFlow","angle","rampLength","radius","mass","muS","g","v0","showTangent","showRects"];
+const state = { t:0, running:false, last:null };
+
+function n(id){ return Number($(id).value); }
+function fmt(x,d=2){ return Number.isFinite(x) ? x.toFixed(d) : "—"; }
+function clamp(x,a,b){ return Math.max(a,Math.min(b,x)); }
+
+function updateLabels(){
+  $("speedVal").textContent = fmt(n("speed"),1)+"×";
+  $("sampleDtVal").textContent = fmt(n("sampleDt"),2)+" s";
+  $("h0Val").textContent = fmt(n("h0"),0)+" cm";
+  $("areaResVal").textContent = fmt(n("areaRes"),0)+" cm²";
+  $("outletDVal").textContent = fmt(n("outletD"),1)+" mm";
+  $("cdVal").textContent = fmt(n("cd"),2);
+  $("rhoVal").textContent = fmt(n("rho"),3)+" g/mL";
+  $("constFlowVal").textContent = fmt(n("constFlow"),0)+" g/s";
+  $("angleVal").textContent = fmt(n("angle"),1)+"°";
+  $("rampLengthVal").textContent = fmt(n("rampLength"),1)+" m";
+  $("radiusVal").textContent = fmt(n("radius"),1)+" cm";
+  $("massVal").textContent = fmt(n("mass"),2)+" kg";
+  $("muSVal").textContent = fmt(n("muS"),2);
+  $("gVal").textContent = fmt(n("g"),2)+" m/s²";
+  $("v0Val").textContent = fmt(n("v0"),2)+" m/s";
+  $("constFlowWrap").style.display = $("flowModel").value === "constant" ? "block" : "none";
+}
+
+function waterParams(){
+  const h0 = n("h0")/100;
+  const A = n("areaRes")*1e-4;
+  const d = n("outletD")*1e-3;
+  const Ao = Math.PI*d*d/4;
+  const Cd = n("cd");
+  const rho = n("rho")*1000; // kg/m3
+  const g = n("g");
+  return {h0,A,d,Ao,Cd,rho,g};
+}
+
+function waterAt(t){
+  const p = waterParams();
+  const totalG = p.rho*p.A*p.h0*1000;
+  if ($("flowModel").value === "constant"){
+    const qg = n("constFlow");
+    const m = Math.min(totalG, qg*t);
+    const h = Math.max(0,p.h0 - (m/1000)/(p.rho*p.A));
+    return {h,qg: h>0 ? qg : 0,m,totalG,tEmpty:totalG/qg};
+  }
+  const k = p.Cd*p.Ao*Math.sqrt(2*p.g)/p.A;
+  const root = Math.max(0, Math.sqrt(p.h0)-0.5*k*t);
+  const h = root*root;
+  const qv = p.Cd*p.Ao*Math.sqrt(2*p.g*h);
+  const qg = p.rho*qv*1000;
+  const m = p.rho*p.A*(p.h0-h)*1000;
+  const tEmpty = 2*Math.sqrt(p.h0)/k;
+  return {h,qg,m,totalG,tEmpty};
+}
+
+function rampParams(){
+  const theta=n("angle")*Math.PI/180, L=n("rampLength"), r=n("radius")/100, m=n("mass"), muS=n("muS"), g=n("g"), v0=n("v0");
+  const muReq=(2/7)*Math.tan(theta);
+  const rolling=muS>=muReq;
+  const muK=0.8*muS;
+  const aRoll=(5/7)*g*Math.sin(theta);
+  const aSlip=Math.max(0,g*(Math.sin(theta)-muK*Math.cos(theta)));
+  const a=rolling?aRoll:aSlip;
+  const alpha=rolling?a/r:(2.5*muK*g*Math.cos(theta)/r);
+  let tEnd;
+  if(a>1e-9) tEnd=(-v0+Math.sqrt(v0*v0+2*a*L))/a;
+  else tEnd=v0>0?L/v0:Infinity;
+  return {theta,L,r,m,muS,muReq,muK,g,v0,rolling,a,alpha,tEnd};
+}
+
+function rampAt(t){
+  const p=rampParams();
+  const tt=Math.min(t,p.tEnd);
+  let x=p.v0*tt+0.5*p.a*tt*tt;
+  x=Math.min(p.L,x);
+  let v=p.v0+p.a*tt;
+  let omega;
+  if(p.rolling) omega=v/p.r;
+  else omega=p.alpha*tt;
+  if(t>=p.tEnd && Number.isFinite(p.tEnd)) v=0;
+  return {...p,x,v,omega,tt,finished:t>=p.tEnd};
+}
+
+function clearCanvas(c){ const x=c.getContext("2d"); x.clearRect(0,0,c.width,c.height); return x; }
+function rr(ctx,x,y,w,h,r,fill,stroke="#94a3b8",lw=1){
+  ctx.beginPath(); ctx.roundRect(x,y,w,h,r); if(fill){ctx.fillStyle=fill;ctx.fill();} if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=lw;ctx.stroke();}
+}
+function text(ctx,s,x,y,size=14,color="#1f2937",weight="400",align="left"){
+  ctx.fillStyle=color;ctx.font=`${weight} ${size}px system-ui, sans-serif`;ctx.textAlign=align;ctx.fillText(s,x,y);
+}
+
+function drawWater(){
+  const c=$("waterCanvas"),ctx=clearCanvas(c), W=c.width,H=c.height; const w=waterAt(state.t),p=waterParams();
+  text(ctx,"Reservoir",180,38,18,"#14324f","800","center");
+  rr(ctx,70,55,220,115,12,"#fff","#475569",3);
+  const frac=clamp(w.h/p.h0,0,1), wh=100*frac;
+  ctx.fillStyle="#8dd3f5";ctx.fillRect(78,162-wh,204,wh);
+  rr(ctx,165,170,30,14,2,"#d6b66e","#a16207",2);
+  const flowFrac=Math.sqrt(frac);
+  if(w.qg>0){ctx.strokeStyle=`rgba(14,165,233,${0.35+0.55*flowFrac})`;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(180,184);ctx.lineTo(180,255);ctx.stroke();
+    for(let i=0;i<5;i++){const phase=(state.t*3+i/5)%1;ctx.beginPath();ctx.arc(180,192+60*phase,3+2*flowFrac,0,Math.PI*2);ctx.fillStyle="#38bdf8";ctx.fill();}}
+  text(ctx,"flow",215,224,13,"#0f766e","800");
+  // beaker
+  ctx.beginPath();ctx.moveTo(70,270);ctx.lineTo(290,270);ctx.lineTo(255,380);ctx.lineTo(105,380);ctx.closePath();ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#475569";ctx.lineWidth=3;ctx.stroke();
+  const bf=clamp(w.m/w.totalG,0,1), yTop=372-88*bf;
+  ctx.beginPath();ctx.moveTo(108,372);ctx.lineTo(252,372);ctx.lineTo(281-(29*bf),yTop);ctx.lineTo(79+(29*bf),yTop);ctx.closePath();ctx.fillStyle="#bae6fd";ctx.fill();
+  text(ctx,"Beaker",180,263,15,"#14324f","800","center");
+  rr(ctx,72,384,216,28,4,"#1f2937","#111827",2);rr(ctx,140,389,80,18,3,"#022c22","#052e16",1);text(ctx,fmt(w.m,1)+" g",180,403,13,"#86efac","800","center");
+  // explanatory panel
+  rr(ctx,345,55,330,300,12,"#f8fafc","#cbd5e1",1.5);
+  text(ctx,$("flowModel").value==="constant"?"Constant-flow model":"Torricelli variable-flow model",365,90,17,"#14324f","800");
+  text(ctx,"Current head h(t)",365,130,13,"#64748b","700"); text(ctx,fmt(w.h*100,2)+" cm",625,130,16,"#0f766e","800","right");
+  text(ctx,"Mass-flow rate q(t)",365,165,13,"#64748b","700"); text(ctx,fmt(w.qg,2)+" g/s",625,165,16,"#0f766e","800","right");
+  text(ctx,"Accumulated mass m(t)",365,200,13,"#64748b","700"); text(ctx,fmt(w.m,1)+" g",625,200,16,"#0f766e","800","right");
+  text(ctx,"Time to empty",365,235,13,"#64748b","700"); text(ctx,fmt(w.tEmpty,1)+" s",625,235,16,"#0f766e","800","right");
+  text(ctx,"Rate → total",365,285,15,"#14324f","800");
+  text(ctx,"m(t) = m(0) + ∫ q(τ)dτ",365,315,18,"#1f2937","400");
+  $("wmTime").textContent=fmt(state.t,2)+" s"; $("wmH").textContent=fmt(w.h*100,2)+" cm"; $("wmQ").textContent=fmt(w.qg,2)+" g/s"; $("wmM").textContent=fmt(w.m,1)+" g";
+}
+
+function axes(ctx,x,y,w,h,xmax,ymax,title,xlab,ylab){
+  ctx.strokeStyle="#94a3b8";ctx.lineWidth=1;ctx.strokeRect(x,y,w,h); text(ctx,title,x+4,y-8,13,"#14324f","800");
+  ctx.strokeStyle="#e2e8f0";ctx.lineWidth=1;
+  for(let i=1;i<5;i++){let xx=x+i*w/5;ctx.beginPath();ctx.moveTo(xx,y);ctx.lineTo(xx,y+h);ctx.stroke();let yy=y+i*h/5;ctx.beginPath();ctx.moveTo(x,yy);ctx.lineTo(x+w,yy);ctx.stroke();}
+  text(ctx,"0",x-3,y+h+17,10,"#64748b","400","right"); text(ctx,fmt(xmax,1),x+w,y+h+17,10,"#64748b","400","center"); text(ctx,fmt(ymax,1),x-6,y+4,10,"#64748b","400","right");
+  text(ctx,xlab,x+w/2,y+h+31,11,"#64748b","600","center");
+  ctx.save();ctx.translate(x-36,y+h/2);ctx.rotate(-Math.PI/2);text(ctx,ylab,0,0,11,"#64748b","600","center");ctx.restore();
+}
+function plotFn(ctx,fn,tmax,ymax,x,y,w,h,color,lw=2,dash=[]){ctx.save();ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.setLineDash(dash);ctx.beginPath();for(let i=0;i<=250;i++){const t=tmax*i/250,val=fn(t);const px=x+w*i/250,py=y+h-h*val/ymax;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.stroke();ctx.restore();}
+function tangentLine(ctx,t0,y0,slope,tmax,ymax,x,y,w,h,color){const span=tmax*.18,t1=Math.max(0,t0-span),t2=Math.min(tmax,t0+span);ctx.strokeStyle=color;ctx.lineWidth=2;ctx.setLineDash([7,5]);ctx.beginPath();for(const [j,t] of [[0,t1],[1,t2]]){const yy=y0+slope*(t-t0),px=x+w*t/tmax,py=y+h-h*yy/ymax;if(j===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.stroke();ctx.setLineDash([]);}
+
+function drawWaterGraph(){
+  const c=$("waterGraph"),ctx=clearCanvas(c),W=c.width,H=c.height; const now=waterAt(state.t); const horizon=Math.max(8,Math.min(now.tEmpty,Math.max(state.t*1.25,8)));
+  let qmax=0,mmax=0;for(let i=0;i<=200;i++){const z=waterAt(horizon*i/200);qmax=Math.max(qmax,z.qg);mmax=Math.max(mmax,z.m);}qmax=Math.max(1,qmax*1.12);mmax=Math.max(1,mmax*1.12);
+  const x=70,w=610,h=135; const y1=42,y2=250;
+  axes(ctx,x,y1,w,h,horizon,qmax,"Mass-flow rate q(t)","time (s)","g/s");
+  axes(ctx,x,y2,w,h,horizon,mmax,"Accumulated mass m(t)","time (s)","g");
+  if($("showRects").checked){const dt=n("sampleDt");ctx.fillStyle="rgba(199,154,59,.20)";ctx.strokeStyle="rgba(199,154,59,.55)";for(let t=0;t<Math.min(state.t,horizon);t+=dt){const q=waterAt(t).qg;const xx=x+w*t/horizon,ww=w*Math.min(dt,horizon-t)/horizon,hh=h*q/qmax;ctx.fillRect(xx,y1+h-hh,ww,hh);ctx.strokeRect(xx,y1+h-hh,ww,hh);}}
+  plotFn(ctx,t=>waterAt(t).qg,horizon,qmax,x,y1,w,h,"#2563eb",2.5);
+  plotFn(ctx,t=>waterAt(t).m,horizon,mmax,x,y2,w,h,"#059669",2.5);
+  const t0=Math.min(state.t,horizon),z=waterAt(t0); const px=x+w*t0/horizon;ctx.fillStyle="#b91c1c";ctx.beginPath();ctx.arc(px,y2+h-h*z.m/mmax,4.5,0,Math.PI*2);ctx.fill();
+  if($("showTangent").checked) tangentLine(ctx,t0,z.m,z.qg,horizon,mmax,x,y2,w,h,"#b91c1c");
+  text(ctx,"Derivative at cursor: dm/dt = "+fmt(z.qg,2)+" g/s",350,222,12,"#b91c1c","700","center");
+}
+
+function drawRamp(){
+  const c=$("rampCanvas"),ctx=clearCanvas(c),W=c.width,H=c.height,z=rampAt(state.t); const p=z; const start={x:95,y:95},end={x:625,y:330};
+  // support
+  ctx.fillStyle="#d1d5db";ctx.strokeStyle="#64748b";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(55,350);ctx.lineTo(140,350);ctx.lineTo(105,112);ctx.closePath();ctx.fill();ctx.stroke();
+  // ramp
+  ctx.strokeStyle="#475569";ctx.lineWidth=16;ctx.beginPath();ctx.moveTo(start.x,start.y);ctx.lineTo(end.x,end.y);ctx.stroke();ctx.strokeStyle="#cbd5e1";ctx.lineWidth=10;ctx.stroke();
+  // gates
+  for(const f of [.2,.45,.7,.9]){const x=start.x+(end.x-start.x)*f,y=start.y+(end.y-start.y)*f;ctx.strokeStyle="#64748b";ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x,y+8);ctx.lineTo(x,y+70);ctx.stroke();ctx.fillStyle="#f59e0b";ctx.beginPath();ctx.arc(x,y+73,5,0,Math.PI*2);ctx.fill();}
+  // ball position; distance fraction along actual ramp
+  const f=clamp(z.x/z.L,0,1), bx=start.x+(end.x-start.x)*f,by=start.y+(end.y-start.y)*f-16;
+  ctx.save();ctx.translate(bx,by);const ang=z.omega*state.t;ctx.rotate(ang);ctx.fillStyle="#9ca3af";ctx.strokeStyle="#475569";ctx.lineWidth=2;ctx.beginPath();ctx.arc(0,0,18,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.strokeStyle="#334155";ctx.beginPath();ctx.moveTo(-12,0);ctx.lineTo(12,0);ctx.moveTo(0,-12);ctx.lineTo(0,12);ctx.stroke();ctx.restore();
+  text(ctx,"Release",90,63,14,"#14324f","800","center");
+  text(ctx,"θ = "+fmt(n("angle"),1)+"°",575,80,15,"#14324f","800");
+  // side calculation box
+  rr(ctx,375,105,300,145,10,"rgba(248,250,252,.95)","#cbd5e1",1.5);
+  text(ctx,z.rolling?"ROLLING WITHOUT SLIP":"SLIPPING",395,135,16,z.rolling?"#065f46":"#9a3412","800");
+  text(ctx,"required μs = (2/7) tanθ = "+fmt(z.muReq,3),395,168,12,"#475569","600");
+  text(ctx,"actual μs = "+fmt(z.muS,3),395,193,12,"#475569","600");
+  text(ctx,"a = "+fmt(z.a,3)+" m/s²",395,218,14,"#0f766e","800");
+  $("rmX").textContent=fmt(z.x,3)+" m";$("rmV").textContent=fmt(z.v,3)+" m/s";$("rmA").textContent=fmt(z.finished?0:z.a,3)+" m/s²";$("rmW").textContent=fmt(z.omega,2)+" rad/s";
+  const st=$("rollingStatus"); if(z.rolling){st.className="status";st.textContent="Rolling without slipping. The solid-sphere result a = (5/7)g sinθ is valid.";} else {st.className="status warn";st.textContent="Static friction is insufficient for no-slip rolling. The simulation uses kinetic sliding with μk = 0.8 μs and computes translational and angular acceleration separately.";}
+}
+
+function motionValue(type,t){const z=rampAt(t);if(type==="x")return z.x;if(type==="v")return z.v;if(type==="a")return z.finished?0:z.a;return 0;}
+function drawMotionGraph(){
+  const c=$("motionGraph"),ctx=clearCanvas(c),z=rampAt(state.t),horizon=Math.max(4,Number.isFinite(z.tEnd)?z.tEnd*1.15:8); const x=75,w=600,h=105,ys=[42,195,348];
+  const vmax=Math.max(1,rampAt(Math.min(horizon,z.tEnd)).v*1.15,z.v*1.2); const xmax=Math.max(.5,z.L*1.08); const amax=Math.max(.5,z.a*1.2);
+  axes(ctx,x,ys[0],w,h,horizon,amax,"Acceleration a(t)","time (s)","m/s²");
+  axes(ctx,x,ys[1],w,h,horizon,vmax,"Velocity v(t)","time (s)","m/s");
+  axes(ctx,x,ys[2],w,h,horizon,xmax,"Position x(t)","time (s)","m");
+  plotFn(ctx,t=>motionValue("a",t),horizon,amax,x,ys[0],w,h,"#ea580c",2.4);
+  plotFn(ctx,t=>motionValue("v",t),horizon,vmax,x,ys[1],w,h,"#2563eb",2.4);
+  plotFn(ctx,t=>motionValue("x",t),horizon,xmax,x,ys[2],w,h,"#059669",2.4);
+  const t0=Math.min(state.t,horizon),zz=rampAt(t0),px=x+w*t0/horizon;
+  if($("showTangent").checked && !zz.finished){
+    tangentLine(ctx,t0,zz.x,zz.v,horizon,xmax,x,ys[2],w,h,"#b91c1c");
+    tangentLine(ctx,t0,zz.v,zz.a,horizon,vmax,x,ys[1],w,h,"#b91c1c");
+  }
+  ctx.fillStyle="#b91c1c";for(const [ymax,yy,val] of [[amax,ys[0],zz.finished?0:zz.a],[vmax,ys[1],zz.v],[xmax,ys[2],zz.x]]){ctx.beginPath();ctx.arc(px,yy+h-h*val/ymax,4,0,Math.PI*2);ctx.fill();}
+}
+
+function render(){updateLabels();drawWater();drawWaterGraph();drawRamp();drawMotionGraph();}
+
+function reset(){state.t=0;state.last=null;render();}
+function toggleRun(){state.running=!state.running;$("playBtn").textContent=state.running?"❚❚ Pause":"▶ Run";state.last=null;}
+function step(){state.running=false;$("playBtn").textContent="▶ Run";state.t+=0.10;render();}
+
+function exportCSV(){
+  const dt=n("sampleDt"),end=Math.max(state.t,0.001),rows=[["t_s","water_h_cm","water_q_g_s","water_mass_g","ramp_x_m","ramp_v_m_s","ramp_a_m_s2","ramp_omega_rad_s","ramp_regime"]];
+  for(let t=0;t<=end+1e-9;t+=dt){const w=waterAt(t),r=rampAt(t);rows.push([t,w.h*100,w.qg,w.m,r.x,r.v,r.finished?0:r.a,r.omega,r.rolling?"rolling":"slipping"]);}
+  const csv=rows.map(r=>r.map(v=>typeof v==="number"?v.toFixed(6):v).join(",")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="changing_world_calculus_data.csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function animate(ts){
+  if(state.running){if(state.last==null)state.last=ts;const dt=Math.min(.05,(ts-state.last)/1000)*n("speed");state.last=ts;state.t+=dt;render();} else state.last=null;
+  requestAnimationFrame(animate);
+}
+
+
+
+function drawReferentWater(){
+  const c=$("referentWater"),ctx=clearCanvas(c),w=waterAt(state.t),p=waterParams();
+  text(ctx,"WATER CLOCK",250,35,20,"#14324f","800","center");
+  rr(ctx,65,62,205,92,10,"#fff","#475569",3);
+  const frac=clamp(w.h/p.h0,0,1), wh=76*frac; ctx.fillStyle="#8dd3f5";ctx.fillRect(73,146-wh,189,wh);
+  rr(ctx,147,154,40,14,2,"#d6b66e","#a16207",2);
+  if(w.qg>0){ctx.strokeStyle="#38bdf8";ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(167,168);ctx.lineTo(167,226);ctx.stroke();}
+  ctx.beginPath();ctx.moveTo(70,235);ctx.lineTo(265,235);ctx.lineTo(235,325);ctx.lineTo(100,325);ctx.closePath();ctx.fillStyle="#fff";ctx.fill();ctx.strokeStyle="#475569";ctx.lineWidth=3;ctx.stroke();
+  const bf=clamp(w.m/w.totalG,0,1),yt=317-68*bf;ctx.beginPath();ctx.moveTo(103,317);ctx.lineTo(232,317);ctx.lineTo(257-(25*bf),yt);ctx.lineTo(78+(25*bf),yt);ctx.closePath();ctx.fillStyle="#bae6fd";ctx.fill();
+  rr(ctx,76,335,184,28,4,"#1f2937","#111827",2);rr(ctx,128,340,80,18,3,"#022c22","#052e16",1);text(ctx,fmt(w.m,1)+" g",168,354,12,"#86efac","800","center");
+  text(ctx,"RATE",350,100,16,"#0f766e","800"); text(ctx,"q(t)",350,132,27,"#14324f","400");
+  text(ctx,"accumulates",350,174,14,"#64748b","700"); text(ctx,"↓",391,207,24,"#c79a3b","800","center");
+  text(ctx,"TOTAL",350,240,16,"#0f766e","800"); text(ctx,"m(t)",350,274,27,"#14324f","400");
+  text(ctx,"Slope of m(t) takes you back to q(t).",285,335,13,"#b91c1c","700");
+}
+
+function drawReferentRamp(){
+  const c=$("referentRamp"),ctx=clearCanvas(c),z=rampAt(state.t); text(ctx,"GALILEO RAMP",250,35,20,"#14324f","800","center");
+  const start={x:65,y:90},end={x:300,y:285};ctx.fillStyle="#d1d5db";ctx.strokeStyle="#64748b";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(45,305);ctx.lineTo(110,305);ctx.lineTo(75,100);ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.strokeStyle="#475569";ctx.lineWidth=16;ctx.beginPath();ctx.moveTo(start.x,start.y);ctx.lineTo(end.x,end.y);ctx.stroke();ctx.strokeStyle="#cbd5e1";ctx.lineWidth=10;ctx.stroke();
+  const f=clamp(z.x/z.L,0,1),bx=start.x+(end.x-start.x)*f,by=start.y+(end.y-start.y)*f-13;ctx.fillStyle="#9ca3af";ctx.strokeStyle="#475569";ctx.lineWidth=2;ctx.beginPath();ctx.arc(bx,by,16,0,Math.PI*2);ctx.fill();ctx.stroke();
+  text(ctx,"ACCELERATION",345,85,14,"#ea580c","800");text(ctx,"a(t)",345,115,25,"#14324f","400");text(ctx,"accumulates",345,148,13,"#64748b","700");text(ctx,"↓",385,178,22,"#c79a3b","800","center");
+  text(ctx,"VELOCITY",345,205,14,"#2563eb","800");text(ctx,"v(t)",345,235,25,"#14324f","400");text(ctx,"accumulates",345,268,13,"#64748b","700");text(ctx,"↓",385,297,22,"#c79a3b","800","center");
+  text(ctx,"POSITION",345,326,14,"#059669","800");text(ctx,"x(t)",345,356,25,"#14324f","400");
+}
+
+const originalRender = render;
+render = function(){ originalRender(); drawReferentWater(); drawReferentRamp(); };
+
+function setTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===name));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+name));
+  document.body.dataset.activeTab=name;
+  const master=document.querySelector('details.master');
+  const wc=document.querySelector('details.water-controls');
+  const ramp=document.querySelector('details.ramp-controls');
+  master.style.display='block';
+  wc.style.display=(name==='water')?'block':'none';
+  ramp.style.display=(name==='ramp')?'block':'none';
+  document.querySelector('.controls').classList.toggle('minimal',name==='referent'||name==='bridge');
+  setTimeout(render,20);
+}
+document.querySelectorAll('.tab-btn').forEach(b=>b.addEventListener('click',()=>setTab(b.dataset.tab)));
+const firstTab=location.hash.slice(1);
+setTab(['referent','water','ramp','bridge'].includes(firstTab) ? firstTab : 'referent');
+
+for(const id of controls){$(id).addEventListener("input",()=>{updateLabels();render();});$(id).addEventListener("change",()=>{updateLabels();render();});}
+$("playBtn").addEventListener("click",toggleRun);$("resetBtn").addEventListener("click",reset);$("stepBtn").addEventListener("click",step);$("csvBtn").addEventListener("click",exportCSV);
+updateLabels();reset();requestAnimationFrame(animate);
+</script></body></html>

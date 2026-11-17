@@ -145,31 +145,31 @@ foot(1)
 pdf.showPage()
 
 # 2 / Match the question to the resource
-header("Exhibit map","Six places to begin","Each card opens the exhibit. Try its first action before reading everything.")
+header("Exhibit map","Seven places to begin","Each card opens the exhibit. Try its first action before reading everything.")
 for i,row in enumerate(data["exhibits"]):
     x=42+(i%2)*270
-    y=161+(i//2)*152
-    bg(x,y,258,140,"cream" if i<2 else "wash","border")
-    kicker(x+13,y+12,row["topic"])
-    ty=wrap(x+13,y+30,row["title"],232,16.8,17.2,"Display",max_lines=2)
-    sy=wrap(x+13,ty+5,row["text"],230,9.05,11.0,ink="muted",max_lines=3)
-    note_end=wrap(x+13,sy+4,row["start"],231,8.9,10.8,"Strong",max_lines=2)
-    assert note_end <= y+120
-    a(x+13,y+125,"Open exhibit",row["url"],8.3)
-rule(42,570,621)
-kicker(43,637,"Read the evidence")
-wrap(43,656,data["evidence"],432,8.9,11.8,ink="muted",max_lines=3)
+    y=161+(i//2)*135
+    bg(x,y,258,125,"cream" if i in (0,1,6) else "wash","border")
+    kicker(x+13,y+10,row["topic"])
+    ty=wrap(x+13,y+24,row["title"],232,16.5,16.8,"Display",max_lines=2)
+    sy=wrap(x+13,ty+4,row["text"],230,8.9,10.4,ink="muted",max_lines=3)
+    note_end=wrap(x+13,sy+3,row["start"],231,8.8,10.2,"Strong",max_lines=2)
+    assert note_end <= y+110
+    a(x+13,y+111,"Open exhibit",row["url"],8.3)
+bg(312,566,258,125,"wash","border")
+kicker(325,581,"Read the evidence")
+wrap(325,599,data["evidence"],231,8.9,11.8,ink="muted",max_lines=7)
 home="/atlas/"
-a(43,701,"Open Project Atlas",home,9)
-t(43,719,"project-atlas-lab.duckdns.org/atlas/",8.7,"Body","muted")
+a(43,702,"Open Project Atlas",home,9)
+t(43,721,"project-atlas-lab.duckdns.org/atlas/",8.7,"Body","muted")
 q=QrCodeWidget(urljoin(data["origin"],home),barLevel="M",barBorder=4)
 bounds=q.getBounds()
 ww,hh=bounds[2]-bounds[0],bounds[3]-bounds[1]
-sz=73
+sz=49
 qr=Drawing(sz,sz,transform=[sz/ww,0,0,sz/hh,-bounds[0]*sz/ww,-bounds[1]*sz/hh])
 qr.add(q)
-bg(497,646,73,73,"white",radius=0)
-renderPDF.draw(qr,pdf,497,H-646-73)
+bg(521,693,49,49,"white",radius=0)
+renderPDF.draw(qr,pdf,521,H-693-49)
 foot(2)
 pdf.showPage()
 pdf.save()

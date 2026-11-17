@@ -1,6 +1,6 @@
 # Project Atlas on the web
 
-The eleven static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. The two illustrations use the same dark grid, teal, and gold visual language, with subjects drawn for Atlas and CORE 10.
+The twelve generated static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. The recovered Water Clock model is a separate standalone HTML file.
 
 The Idea Index and Project Inventory are rendered from the canonical Markdown at the root of this repository. Their off-GitHub sections are deliberately omitted from the rendered site. The full repository browser uses a snapshot of GitHub's public listing, distinguishes forks, and adds historical project homes from the legacy map. Only the generated `web/atlas/` directory belongs in the Nginx web root.
 
@@ -70,3 +70,12 @@ The CORE 10 exhibit distinguishes the measured candle-only mass-loss endpoints, 
 ## Start Here guide
 
 The home-page callout above the Singing Rule links to `/atlas/start-here/` and a two-page printable PDF. Edit `start-here.json` to update the first stops, site map, exhibit descriptions, and CAP guidance in both editions. Rebuild the web page with `python3 web/build_atlas.py`. Rebuild the PDF with `python3 web/build_start_here_pdf.py` using ReportLab and the DejaVu and Liberation fonts listed in that script. Serve both from the generated site.
+
+## Galileo’s Water Clock
+
+Author the exhibit text in `water-clock.html` and rebuild the site. The public assets preserve the experiment’s design and materials without claiming a measured run:
+
+- `atlas/water-clock/Water-Clock-Lesson-v0.2.pdf` is the web-optimized edition of `CORE10_Galileos_Water_Clock_Illustrated_Lesson_and_Dashboard_Guide_v0.2.pdf`. The apparatus image is a raster export of page 3.
+- The dashboard image is from `dashboard_live.png`, cropped to the controls and demo data, omitting the original status/IP strip.
+- `SDL_ATOM_Water_Clock_v0.2.zip` is the original source package. Both Wi-Fi configuration values are blank. The package is a bench-test candidate, not a hardware-validated release.
+- `model.html` is adapted from `The_Changing_World_Interactive_Calculus_Lab_Tabs.html`. Atlas adds a return link, initial-tab fragments, and narrow-screen styling. The model and CSV computations are unchanged.

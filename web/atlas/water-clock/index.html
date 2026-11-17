@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A hands-on path from water mass to elapsed time, then from time to motion.">
+<title>Galileo’s Water Clock · Randall Young</title>
+<link rel="stylesheet" href="../assets/calculus-theme.css">
+<link rel="stylesheet" href="../assets/atlas.css">
+<link rel="stylesheet" href="../assets/navigation.css">
+<link rel="stylesheet" href="../assets/water-clock.css">
+</head>
+<body><main>
+<nav class="atlas-nav" aria-label="Project Atlas"><a href="../">Home</a> <a href="../exhibits/" class="atlas-nav-section" aria-current="location">Exhibits</a> <a href="../ideas/">Ideas</a> <a href="../inventory/">Projects</a> <a href="../repositories/">Repositories</a></nav>
+<p>RANDALL YOUNG · EXPERIENCE BEFORE EQUATION · MEASUREMENT LADDER</p>
+<h1>Galileo’s Water Clock</h1>
+<p>A hands-on path from water mass to elapsed time, then from time to motion.</p>
+<section class="wc-hero" aria-labelledby="wc-question">
+<div>
+<p class="atlas-kicker">CORE 10 · Software-Defined Laboratory</p>
+<h2 id="wc-question">Can a cup of water tell you how long something took?</h2>
+<p>Catch water during an event and weigh it. If the stream is steady and you know how many grams arrive each second, the cup becomes an interval timer. Then give that timer a harder job. Time a ball rolling down an incline.</p>
+<p class="wc-cta"><a class="wc-button" href="model.html#water">Try the water-clock model</a><a href="#classroom">Run the classroom lab</a></p>
+</div>
+<figure>
+<a href="media/apparatus.webp"><img src="media/apparatus.webp" width="1350" height="1043" alt="Original lesson diagram showing an elevated reservoir draining into a cup on an I²C scale connected to an ATOM Matrix"></a>
+<figcaption>Original v0.2 workbench illustration. The reservoir is separate from the scale.</figcaption>
+</figure>
+</section>
+
+<section class="wc-section" id="classroom" aria-labelledby="wc-classroom">
+<p class="atlas-kicker">01 · Physical experiment</p>
+<h2 id="wc-classroom">Build the clock before you time the ball</h2>
+<p>Start with a reservoir, a small outlet, a collection cup, a scale, and a stopwatch. You can run the first version by hand. The instrumented version uses an original M5Stack ATOM Matrix and an I²C weighing module, configured to sample twice per second.</p>
+<ol class="wc-steps">
+<li><h3>Calibrate</h3><p>Tare the empty cup. Collect water over known stopwatch intervals, starting at the same reservoir level. Plot mass versus time. If the plot is close to a straight line, its slope gives the flow in grams per second.</p></li>
+<li><h3>Test it</h3><p>Use the fitted flow to predict the duration of a separate collection. Compare with a stopwatch. Then let the reservoir drain and see whether the estimate drifts as the water level falls.</p></li>
+<li><h3>Transfer to the ramp</h3><p>Collect only while the ball is moving. Release from rest, keep the ramp angle fixed, and repeat at several distances. Compare a plot of distance versus inferred time squared with an independent timing check.</p></li>
+</ol>
+<p class="wc-note"><strong>Worked example, not a recorded trial</strong> At a steady 2 g/s, collecting 6 g takes 3 seconds. If the flow changes appreciably, use a calibration curve over the same reservoir conditions instead of dividing by a single rate.</p>
+</section>
+
+<section class="wc-section" id="dashboard" aria-labelledby="wc-dashboard">
+<p class="atlas-kicker">02 · Recovered dashboard</p>
+<h2 id="wc-dashboard">The graph tests the clock, too</h2>
+<figure class="wc-dashboard">
+<p class="wc-tag">Original interface · Synthetic demonstration data</p>
+<a href="media/dashboard.webp"><img loading="lazy" decoding="async" src="media/dashboard.webp" width="1400" height="810" alt="Five-tab Water Clock dashboard with a teal accumulated-mass trace and dashed gold constant-flow fit"></a>
+<figcaption>The teal trace shows the demo samples. The dashed gold line shows a constant-flow fit. The archived screenshot demonstrates the interface, not a physical trial.</figcaption>
+</figure>
+<p>In the Analysis tab, a pattern in the residuals—the difference between each reading and the fitted line—can reveal a changing flow even when the mass plot looks nearly straight. The v0.2 kit is a <strong>bench-test candidate</strong>. The archive contains the lesson, software, and a test plan, but no verified physical run was recovered.</p>
+</section>
+
+<section class="wc-section" id="model" aria-labelledby="wc-model">
+<p class="atlas-kicker">03 · Browser lab</p>
+<h2 id="wc-model">From a stream to calculus</h2>
+<p>In the recovered <em>Changing World</em> lab, compare <strong>Ideal constant flow</strong> with <strong>Torricelli variable flow</strong>. Watch what happens to the slope of the mass curve as the reservoir empties. Then switch to <strong>Galileo Ramp</strong> and follow a second kind of accumulation, from acceleration to velocity to distance.</p>
+<p class="wc-cta"><a class="wc-button" href="model.html#water">Open Water Clock model</a><a href="model.html#ramp">Go straight to the ramp</a></p>
+<p class="wc-caption">The browser lab is a simulation. Its CSV contains model outputs, not instrument readings.</p>
+</section>
+
+<section class="wc-section" id="downloads" aria-labelledby="wc-downloads">
+<p class="atlas-kicker">04 · Original materials</p>
+<h2 id="wc-downloads">Teach it or build it</h2>
+<ul class="wc-downloads">
+<li><a href="Water-Clock-Lesson-v0.2.pdf">Illustrated lesson and dashboard guide</a> · 17-page PDF with apparatus, wiring, classroom prompts, and commissioning checks.</li>
+<li><a href="SDL_ATOM_Water_Clock_v0.2.zip" download>ATOM Water Clock v0.2 source kit</a> · PlatformIO and Arduino editions, editable dashboard, and the original bench test plan. Keep the device dashboard on a trusted local network.</li>
+<li><a href="https://doi.org/10.21014/actaimeko.v15i3.2316">Independent historical reconstruction</a> · Roma Tre researchers compare water-clock and electronic timing on an inclined plane.</li>
+</ul>
+<p>Next in Atlas, see how the <a href="../instruments/">Virtual Instruments</a> scale turns force into a reading, or take up a related question in <a href="/calculus/">Ten Problems That Teach Calculus</a>.</p>
+</section>
+
+<footer>
+<p><a href="../">Project Atlas home</a> · <a href="https://github.com/RandoSY/project-atlas">View the source on GitHub</a></p>
+</footer>
+</main></body>
+</html>
