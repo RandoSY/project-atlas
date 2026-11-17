@@ -1,0 +1,83 @@
+{
+  "origin": "https://project-atlas-lab.duckdns.org",
+  "title": "Start Here",
+  "subtitle": "A getting-started guide to Randall Young’s Project Atlas",
+  "intro": "Project Atlas is a public guide to experiments, classroom activities, instruments, and their source records. You do not need to understand the whole archive to use it. Pick one question, try one thing, and follow the evidence.",
+  "routes": [
+    {
+      "title": "Try something in the browser",
+      "text": "Pluck the virtual Singing Rule. Predict what shortening the ruler does, then test your prediction.",
+      "label": "Pluck the model",
+      "url": "/atlas/singing-rule/#model"
+    },
+    {
+      "title": "Teach an inquiry lesson",
+      "text": "Start with the Pop-Can Calorimeter. Ask where the energy went before introducing joules or watts.",
+      "label": "Open the classroom challenge",
+      "url": "/atlas/pop-can-calorimeter/#challenge"
+    },
+    {
+      "title": "Build a measuring instrument",
+      "text": "Pick one build from Virtual Instruments. Get one trustworthy reading before adding a wireless dashboard.",
+      "label": "Browse the instrument builds",
+      "url": "/atlas/instruments/"
+    }
+  ],
+  "navigation": [
+    {"title":"Home","url":"/atlas/","text":"The front door, with a flagship activity and quick links."},
+    {"title":"Exhibits","url":"/atlas/exhibits/","text":"Illustrated activities, interactive models, and things to build or try."},
+    {"title":"Ideas","url":"/atlas/ideas/","text":"The principles and designs that recur across projects."},
+    {"title":"Projects","url":"/atlas/inventory/","text":"Project families, status, intended next steps, and canonical homes."},
+    {"title":"Repositories","url":"/atlas/repositories/","text":"Search the public GitHub index, including earlier versions and upstream forks."}
+  ],
+  "workflow": [
+    {"title":"Capture","text":"Write down what you observed and how you measured it."},
+    {"title":"Analyze","text":"Compare it with a model, reference, or another run."},
+    {"title":"Publish","text":"Save the method, evidence, result, and limits so someone else can repeat it."}
+  ],
+  "exhibits": [
+    {
+      "title":"The Singing Rule",
+      "topic":"Motion",
+      "text":"See the original ruler and Bluetooth setup, then compare measured ringdown with a model you can pluck.",
+      "start":"Shorten the virtual ruler and predict what its frequency will do.",
+      "url":"/atlas/singing-rule/"
+    },
+    {
+      "title":"Pop-Can Calorimeter",
+      "topic":"Energy",
+      "text":"Follow candle mass loss and water heating. Learn why fuel power and heat captured by the water are different quantities.",
+      "start":"Switch between two heating curves with equal total water heat.",
+      "url":"/atlas/pop-can-calorimeter/"
+    },
+    {
+      "title":"SQM+ Hallway Observatory",
+      "topic":"Measurement",
+      "text":"Use an 11 m course to separate stopwatch speed, device recording, and experimental step detection.",
+      "start":"Change the candidate count in the calculator without changing the timed speed.",
+      "url":"/atlas/sqm-plus/"
+    },
+    {
+      "title":"Virtual Instruments",
+      "topic":"Physical computing",
+      "text":"See original dashboard captures and Pico W or ESP32 build paths for five wireless instruments.",
+      "start":"Pick a voltmeter, frequency meter, scale, ToF ruler, or thermometer.",
+      "url":"/atlas/instruments/"
+    },
+    {
+      "title":"Ten Problems That Teach Calculus",
+      "topic":"Mathematics",
+      "text":"Start with a motion problem where total distance and net change are not the same thing.",
+      "start":"Try Problem 06, then use the worked solutions or handouts.",
+      "url":"/calculus/"
+    },
+    {
+      "title":"CORE 10",
+      "topic":"Curriculum",
+      "text":"Connect the Kitchen Inquiry Lab, One Cup Chemistry, and the Personal Energy Laboratory.",
+      "start":"Compare the energy an appliance uses with the heat gained by a cup of water.",
+      "url":"/atlas/core-10/"
+    }
+  ],
+  "evidence": "A measured run, a simulated example, and a working dashboard are different kinds of evidence. Read the captions and validation notes before you draw a conclusion. A good first experiment is one you can explain and repeat."
+}

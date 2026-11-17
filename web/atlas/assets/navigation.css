@@ -13,6 +13,18 @@
 }
 .atlas-nav .atlas-nav-section{background:#edf1e7}
 .atlas-kicker{color:#285b53;font-size:.79rem;letter-spacing:.11em;text-transform:uppercase;font-weight:720}
+.atlas-start{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.7rem 1.05rem;align-items:center;
+  border:1px solid #adc8ba;border-left:.28rem solid #188677;border-radius:.6rem;
+  background:#e5efe5;padding:.72rem .95rem;margin:1rem 0 0
+}
+.atlas-start h2{margin:.14rem 0 .2rem;font-size:clamp(1.42rem,4vw,1.85rem)}
+.atlas-start p{margin:.2rem 0;font-size:.9rem}
+.atlas-start .atlas-kicker{font-size:.68rem}
+.atlas-start-actions{display:flex;gap:.2rem .7rem;align-items:center;flex-wrap:wrap;font-size:.88rem}
+.atlas-start-actions a{display:inline-flex;align-items:center;gap:.3rem;min-height:2.75rem}
+.atlas-start-primary{background:#114f4b;color:#fff;border-radius:.4rem;padding:0 .7rem;font-weight:700}
+.atlas-start-primary:hover{background:#17433d;color:#fff}
 .atlas-feature{
   display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);gap:1.1rem;
   align-items:center;background:#f1e9d6;border:1px solid #cbbf9d;border-radius:.75rem;
@@ -56,6 +68,7 @@
 .atlas-collection-note{font-size:.94rem;color:#3b5550;margin-top:1.3rem}
 .atlas-family-list{border-top:1px solid #b9cac1;padding-top:1rem}
 @media(max-width:620px){
+ .atlas-start{grid-template-columns:1fr}
  .atlas-nav{gap:.12rem .16rem;margin-bottom:1.12rem}
  .atlas-nav a{padding:.22rem .32rem;font-size:.87rem;min-height:2.75rem}
  .atlas-feature,.atlas-exhibits{grid-template-columns:1fr}

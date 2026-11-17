@@ -82,6 +82,8 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
         attr = ' aria-current="page"' if dest == directory else ''
         if dest == "exhibits" and directory in exhibit_children:
             attr = ' class="atlas-nav-section" aria-current="location"'
+        if not dest and directory == "start-here":
+            attr = ' class="atlas-nav-section" aria-current="location"'
         url = (prefix or "./") + ((dest + "/") if dest else "")
         nav.append(f'<a href="{url}"{attr}>{name}</a>')
     footer_home = link("Project Atlas home", "../") + " · " if directory else ""
@@ -134,6 +136,17 @@ def homes(prefix=""):
 
 def home(n):
     page("", "Project Atlas", "Randall Young’s public working archive of experiments, instruments, and the ideas that connect them.", f"""
+<section class="atlas-start" aria-labelledby="atlas-start-title">
+<div>
+<p class="atlas-kicker">New to Project Atlas?</p>
+<h2 id="atlas-start-title"><a href="start-here/">Start Here</a></h2>
+<p>Choose one thing to try, teach, or build. Then find your way to the evidence and source.</p>
+</div>
+<div class="atlas-start-actions">
+<a class="atlas-start-primary" href="start-here/">Open the guide <span aria-hidden="true">→</span></a>
+<a href="start-here/Project-Atlas-Start-Here.pdf" download>Download PDF</a>
+</div>
+</section>
 <section class="atlas-feature" aria-labelledby="home-singing">
 <div>
 <p class="atlas-kicker">Flagship activity · Experience before equation</p>
@@ -162,6 +175,57 @@ def home(n):
 </ul>
 </section>
 """, header="HOW MUCH? ENOUGH?")
+
+
+def start_here():
+    data = json.loads((WEB / "start-here.json").read_text(encoding="utf-8"))
+    routes = [
+        f'<li><h3>{esc(row["title"])}</h3><p>{esc(row["text"])}</p>'
+        f'<p class="sg-action">{link(row["label"], row["url"])}</p></li>'
+        for row in data["routes"]
+    ]
+    places = [
+        f'<div><dt>{link(row["title"], row["url"])}</dt><dd>{esc(row["text"])}</dd></div>'
+        for row in data["navigation"]
+    ]
+    exhibits = [
+        f'<li><p class="atlas-kicker">{esc(row["topic"])}</p>'
+        f'<h3>{link(row["title"], row["url"])}</h3><p>{esc(row["text"])}</p>'
+        f'<p class="sg-first"><strong>First move</strong> {esc(row["start"])}</p></li>'
+        for row in data["exhibits"]
+    ]
+    workflow = [
+        f'<li><strong>{esc(row["title"])}</strong><p>{esc(row["text"])}</p></li>'
+        for row in data["workflow"]
+    ]
+    page("start-here", data["title"], data["subtitle"], f"""
+<div class="sg-guide">
+<p class="sg-intro">{esc(data['intro'])}</p>
+<p><a class="sg-download" href="Project-Atlas-Start-Here.pdf" download>Download the two-page PDF</a></p>
+<section aria-labelledby="sg-entry">
+<h2 id="sg-entry">Choose your first stop</h2>
+<ol class="sg-routes">{''.join(routes)}</ol>
+</section>
+<section aria-labelledby="sg-nav">
+<h2 id="sg-nav">Find your way around Atlas</h2>
+<dl class="sg-nav-list">{''.join(places)}</dl>
+</section>
+<section aria-labelledby="sg-exhibits">
+<h2 id="sg-exhibits">Six places to begin</h2>
+<p>Try the first move before reading everything.</p>
+<ul class="sg-exhibits">{''.join(exhibits)}</ul>
+</section>
+<section class="sg-method" aria-labelledby="sg-workflow">
+<h2 id="sg-workflow">Capture → Analyze → Publish</h2>
+<ol>{''.join(workflow)}</ol>
+</section>
+<section class="sg-evidence" aria-labelledby="sg-evidence">
+<h2 id="sg-evidence">Read the evidence</h2>
+<p>{esc(data['evidence'])}</p>
+</section>
+</div>
+""", extra='<link rel="stylesheet" href="../assets/start-here.css">\n',
+         header="PROJECT ATLAS · GETTING STARTED")
 
 
 def exhibits():
@@ -400,6 +464,7 @@ def main():
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     home(len(manifest["repositories"]))
+    start_here()
     exhibits()
     core()
     instruments()
@@ -417,7 +482,7 @@ def main():
         families = (f'<section class="atlas-family-list" aria-labelledby="families">'
                     f'<h2 id="families">Project families</h2>{homes("../")}</section>') if name == "inventory" else ""
         page(name, title, summary, f'<article>{body}</article>{families}', source=f"{ATLAS_MAIN}/{file}")
-    print(f"Built ten pages and indexed {len(manifest['repositories'])} public repositories.")
+    print(f"Built eleven pages and indexed {len(manifest['repositories'])} public repositories.")
 
 if __name__ == "__main__":
     main()
