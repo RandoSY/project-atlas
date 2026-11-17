@@ -1,0 +1,539 @@
+{
+  "as_of": "2026-11-16",
+  "repositories": [
+    {
+      "name": "4e4th05a",
+      "fork": true,
+      "archived": false,
+      "description": "4e4th 0.5a - MSP430G2553 Forth project for naken_asm. Build on CamelForth 0.5a."
+    },
+    {
+      "name": "Adafruit_Microbit",
+      "fork": true,
+      "archived": false,
+      "description": "example code for using microbit with arduino IDE"
+    },
+    {
+      "name": "arduino-alvik-mpy",
+      "fork": true,
+      "archived": false,
+      "description": "Alvik Robot library"
+    },
+    {
+      "name": "arduino-pico",
+      "fork": true,
+      "archived": false,
+      "description": "Raspberry Pi Pico Arduino core, for all RP2040 boards"
+    },
+    {
+      "name": "Arduino_Alvik",
+      "fork": true,
+      "archived": false,
+      "description": "Library to drive Alvik robot"
+    },
+    {
+      "name": "Arduino_AlvikCarrier",
+      "fork": true,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "Arduino_Core_STM32",
+      "fork": true,
+      "archived": false,
+      "description": "STM32 core support for Arduino"
+    },
+    {
+      "name": "avr-asm-revelator",
+      "fork": false,
+      "archived": false,
+      "description": "Read-only inspection tool for avr-gcc and avr-objdump AVR assembly output."
+    },
+    {
+      "name": "balance-bot",
+      "fork": false,
+      "archived": false,
+      "description": "Prep Shawn's Seminar"
+    },
+    {
+      "name": "bargain-bin-robotics",
+      "fork": false,
+      "archived": false,
+      "description": "Robotics by substituting cleverness for cost: Lazy LiDAR, low-cost robot platforms, missions, sensing, and educational autonomy."
+    },
+    {
+      "name": "BirdBrain-Java-Library",
+      "fork": true,
+      "archived": false,
+      "description": "The java library for HummingbirdBit and Finch."
+    },
+    {
+      "name": "BirdBrain-Python-Library",
+      "fork": true,
+      "archived": false,
+      "description": "This library issues http requests to the Hummingbird Bit and micro:bit via the BlueBird Connector. You must have the BlueBird Connector installed and running for it to work!"
+    },
+    {
+      "name": "bitio",
+      "fork": true,
+      "archived": false,
+      "description": "A micro:bit I/O device library for Python"
+    },
+    {
+      "name": "ble-uart-echo-demo",
+      "fork": false,
+      "archived": false,
+      "description": "A MakeCode project"
+    },
+    {
+      "name": "boardlab",
+      "fork": true,
+      "archived": false,
+      "description": "Vendor-independent board development for Visual Studio Code, powered by Arduino CLI"
+    },
+    {
+      "name": "BusPirate5-firmware",
+      "fork": true,
+      "archived": false,
+      "description": "Bus Pirate v5 Firmware"
+    },
+    {
+      "name": "circuitpython-ble",
+      "fork": true,
+      "archived": false,
+      "description": "Implentation of BLE Uart communication using circuitpython"
+    },
+    {
+      "name": "circuitpython-org",
+      "fork": true,
+      "archived": false,
+      "description": "CircuitPython's website"
+    },
+    {
+      "name": "cloud-gsa-prototype",
+      "fork": false,
+      "archived": false,
+      "description": "codex push attempt"
+    },
+    {
+      "name": "codal-microbit-v2",
+      "fork": true,
+      "archived": false,
+      "description": "CODAL target for the micro:bit v2.x series of devices"
+    },
+    {
+      "name": "CodeCell",
+      "fork": true,
+      "archived": false,
+      "description": "A penny-sized board that can help you miniaturize DIY Robots, Wearables & other IoT projects!! It includes an Arduino friendly ESP32-C3 Wifi & BLE module, USBC LiPo Battery Charger with onboard Battery Connector, Light Sensor, and an optional Motion Sensor"
+    },
+    {
+      "name": "computing-observatories",
+      "fork": false,
+      "archived": false,
+      "description": "CRCL, Forth observatories, processor simulators, stack visualization, and visible-computing educational systems."
+    },
+    {
+      "name": "core-10",
+      "fork": false,
+      "archived": false,
+      "description": "CORE 10 educational architecture: Kitchen Inquiry Lab, One Cup Chemistry, NOTHING IS FREE, and related teaching materials."
+    },
+    {
+      "name": "DEXIS-Lab",
+      "fork": false,
+      "archived": false,
+      "description": "A browser-based platform for real-time STEM experiments"
+    },
+    {
+      "name": "eforth-stm32f4x-a",
+      "fork": true,
+      "archived": false,
+      "description": "Dr. C. H. Ting's eForth for the STM32F407 Discovery board - local studies by wa1tnr"
+    },
+    {
+      "name": "embedded-tools",
+      "fork": false,
+      "archived": false,
+      "description": "Embedded development infrastructure: debugWIRE LIGHTENING, RP2040 tools, programmers, bridges, and debugging utilities."
+    },
+    {
+      "name": "embedded_pedometer",
+      "fork": true,
+      "archived": false,
+      "description": "Accelerometer-based pedometer algorithm for embedded applications"
+    },
+    {
+      "name": "ESP32",
+      "fork": true,
+      "archived": false,
+      "description": "ESP32 Reference Files, PCB designs, Gerbers, code and projects using the ESP32 boards"
+    },
+    {
+      "name": "esp32-ble2mqtt",
+      "fork": true,
+      "archived": false,
+      "description": "A BLE to MQTT bridge running on an ESP32"
+    },
+    {
+      "name": "ESP32-Bus-Pirate",
+      "fork": true,
+      "archived": false,
+      "description": "A Hardware Hacking Tool with Web-Based CLI That Speaks Every Protocol"
+    },
+    {
+      "name": "esp32-ti-znp-coordinator",
+      "fork": false,
+      "archived": false,
+      "description": "ESP32-C6/H2 native Zigbee coordinator with TI ZNP serial compatibility for Zigbee2MQTT, diagnostics and validation."
+    },
+    {
+      "name": "Espruino",
+      "fork": true,
+      "archived": false,
+      "description": "The Espruino JavaScript interpreter - Official Repo"
+    },
+    {
+      "name": "FFT-HRM-Simulator-Microbit-V2",
+      "fork": false,
+      "archived": false,
+      "description": "BBC micro:bit V2 Bluetooth Heart Rate Service simulator for safely testing FFT+ and other BLE heart-rate clients."
+    },
+    {
+      "name": "forth-documents",
+      "fork": true,
+      "archived": false,
+      "description": "Forth douments, books, papers"
+    },
+    {
+      "name": "Interactive_Arduino",
+      "fork": false,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "jallib",
+      "fork": false,
+      "archived": false,
+      "description": "Automatically exported from code.google.com/p/jallib"
+    },
+    {
+      "name": "M5Stack-Core2-FactoryDemo-Upgrade",
+      "fork": true,
+      "archived": false,
+      "description": "M5Stack Core2 using Lib 'M5Core2', Coding with Visual Studio Code with pluggin PlateformeIO"
+    },
+    {
+      "name": "measured-human-performance",
+      "fork": false,
+      "archived": false,
+      "description": "FFT, SQM+, Tone Trainer, and shared infrastructure for transparent measurement of movement and physical performance."
+    },
+    {
+      "name": "measured-world-lab",
+      "fork": false,
+      "archived": false,
+      "description": "Low-cost instruments and experiments for mass, temperature, distance, conductivity, colorimetry, motion, and browser-based measurement."
+    },
+    {
+      "name": "micro-bit-WebBluetooth-UART",
+      "fork": true,
+      "archived": false,
+      "description": "micro:bit-WebBluetooth-UART"
+    },
+    {
+      "name": "Microbit-Smart-Car",
+      "fork": true,
+      "archived": false,
+      "description": "Yahboom micro:bit smart robot car with IR and APP"
+    },
+    {
+      "name": "microbit-v2-bootloader",
+      "fork": true,
+      "archived": false,
+      "description": "CODAL-based micro:bit V2 Bootloader for BirdBrain Products"
+    },
+    {
+      "name": "microbit-web-components",
+      "fork": true,
+      "archived": false,
+      "description": "Web Components library for micro:bit"
+    },
+    {
+      "name": "microbit_v2_ble_uart",
+      "fork": false,
+      "archived": false,
+      "description": "A MakeCode project"
+    },
+    {
+      "name": "micropython",
+      "fork": true,
+      "archived": false,
+      "description": "MicroPython - a lean and efficient Python implementation for microcontrollers and constrained systems"
+    },
+    {
+      "name": "micropython-microbit-v2",
+      "fork": true,
+      "archived": false,
+      "description": "Temporary home for MicroPython for micro:bit v2 as we stablise it before pushing upstream"
+    },
+    {
+      "name": "MotioSuit",
+      "fork": true,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "movement-data-logger",
+      "fork": false,
+      "archived": false,
+      "description": "A MakeCode project"
+    },
+    {
+      "name": "MSP430_Minimal",
+      "fork": false,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "n-able-Arduino",
+      "fork": true,
+      "archived": false,
+      "description": "An arduino core for ARM based BLE devices supported by the NimBLE stack."
+    },
+    {
+      "name": "NanoKVM",
+      "fork": true,
+      "archived": false,
+      "description": "NanoKVM: Affordable, Multifunctional, Nano RISC-V IP-KVM"
+    },
+    {
+      "name": "NimBLE-Arduino",
+      "fork": true,
+      "archived": false,
+      "description": "A fork of the NimBLE library structured for compilation with Arduino, for use with ESP32, nRF5x."
+    },
+    {
+      "name": "nugget-fwlib",
+      "fork": false,
+      "archived": false,
+      "description": "GCB support lib for the PIC16F18424"
+    },
+    {
+      "name": "nugget-physical-computing",
+      "fork": false,
+      "archived": false,
+      "description": "Low-cost physical-computing learning ladder from 555/7400 logic through PIC, AVR, Arduino, RP2040, and beyond."
+    },
+    {
+      "name": "palm",
+      "fork": true,
+      "archived": false,
+      "description": "🌴 Get alerted on excessive UV radiation with a backpack keychain 🗝"
+    },
+    {
+      "name": "pc-nrfconnect-ble",
+      "fork": true,
+      "archived": false,
+      "description": "Bluetooth low energy app for nRF Connect for Desktop"
+    },
+    {
+      "name": "pdfcraft",
+      "fork": true,
+      "archived": false,
+      "description": "PdfCraft: An open-source PDF reader and editor written by scratch in pure Rust"
+    },
+    {
+      "name": "PDP11_to_the_MSP430",
+      "fork": false,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "perfect-pic-plaground",
+      "fork": false,
+      "archived": false,
+      "description": "Automatically exported from code.google.com/p/perfect-pic-plaground"
+    },
+    {
+      "name": "PhotoPizza",
+      "fork": true,
+      "archived": false,
+      "description": "360° PRODUCT PHOTOGRAPHY TURNTABLE"
+    },
+    {
+      "name": "Physical_Computing_Pathways",
+      "fork": false,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "pico_drone",
+      "fork": true,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "Pico_Test_Equipment",
+      "fork": false,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "project-atlas",
+      "fork": false,
+      "archived": false,
+      "description": "Front door to the Rando Young Intellectual Estate: project map, chronology, principles, status, and lineage."
+    },
+    {
+      "name": "px-fwlib",
+      "fork": true,
+      "archived": false,
+      "description": "open source bare-metal C firmware and documentation for microcontrollers"
+    },
+    {
+      "name": "pxt-blelog",
+      "fork": true,
+      "archived": false,
+      "description": "Micro:bit Bluetooth Service for Data Logger"
+    },
+    {
+      "name": "PyBoard",
+      "fork": true,
+      "archived": false,
+      "description": "Pyboard STM32F405 Stuff"
+    },
+    {
+      "name": "rekabit-testdemo-program",
+      "fork": false,
+      "archived": false,
+      "description": "A MakeCode project"
+    },
+    {
+      "name": "rg_show_tipper",
+      "fork": false,
+      "archived": false,
+      "description": "A MakeCode project"
+    },
+    {
+      "name": "ROBOT_EDU",
+      "fork": false,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "rp2040_Experiments",
+      "fork": false,
+      "archived": false,
+      "description": "Working on simple Github operations with RasPi PICO"
+    },
+    {
+      "name": "runRemote",
+      "fork": true,
+      "archived": false,
+      "description": "Windows utility to run a command when a file (or files) change"
+    },
+    {
+      "name": "science-journal-arduino",
+      "fork": true,
+      "archived": false,
+      "description": "Science Journal Arduino code.  This is not an official Google Product."
+    },
+    {
+      "name": "SDL_CORE10_v0.6_WiFiGateway",
+      "fork": false,
+      "archived": false,
+      "description": "SDL / RobotEDU education instrumentation: Wi-Fi acquisition, responsive 50 Hz ATOM telemetry, browser analysis and programmer guides"
+    },
+    {
+      "name": "software-defined-laboratory",
+      "fork": false,
+      "archived": false,
+      "description": "SDL architecture for AI-assisted physical laboratories: discovery, MCP bridges, protocols, dashboards, and reference labs."
+    },
+    {
+      "name": "STC15lib",
+      "fork": true,
+      "archived": false,
+      "description": "STC15W408AS hardware abstraction layer"
+    },
+    {
+      "name": "STEM-Fusion",
+      "fork": false,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "tachyon",
+      "fork": true,
+      "archived": false,
+      "description": "Logic analyzer"
+    },
+    {
+      "name": "ten-problems-that-teach-calculus",
+      "fork": false,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "tiny-basic",
+      "fork": true,
+      "archived": false,
+      "description": "Tiny BASIC, Dr Dobb's first BASIC for microcomputers"
+    },
+    {
+      "name": "Tiny-bit",
+      "fork": true,
+      "archived": false,
+      "description": "Yahboom Tiny:bit smart robot car for micro:bit"
+    },
+    {
+      "name": "UMA_ARCHIVE_2026",
+      "fork": false,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "WeActStudio.STM32WB55CoreBoard",
+      "fork": true,
+      "archived": false,
+      "description": "STM32WB55CGU6 Core Board"
+    },
+    {
+      "name": "wifi-car-esp8266",
+      "fork": true,
+      "archived": false,
+      "description": "Simple code to control a Wifi Car with NodeMCU V3 microcontroller."
+    },
+    {
+      "name": "works-and-publications",
+      "fork": false,
+      "archived": false,
+      "description": "Papers, manuals, essays, illustrated briefs, and synthesis documents from the Rando Young Intellectual Estate."
+    },
+    {
+      "name": "xc8-asm-revelator",
+      "fork": false,
+      "archived": false,
+      "description": "Read-only inspection tool for Microchip XC8 / PIC-AS compiler output."
+    },
+    {
+      "name": "xrp-wpilib-firmware",
+      "fork": true,
+      "archived": false,
+      "description": ""
+    },
+    {
+      "name": "zeppp",
+      "fork": true,
+      "archived": false,
+      "description": "ZEPPP - Zero External Parts PIC Programmer"
+    },
+    {
+      "name": "zeptoforth",
+      "fork": true,
+      "archived": false,
+      "description": "A not-so-small Forth for Cortex-M"
+    }
+  ]
+}

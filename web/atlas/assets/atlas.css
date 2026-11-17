@@ -1,0 +1,21 @@
+:focus-visible{outline:3px solid #075a54;outline-offset:3px}
+nav a{display:inline-block;margin-right:1rem;padding:.2rem 0}
+footer{border-top:1px solid #bbcbc4;margin-top:2.4rem;padding-top:.8rem}
+figure{margin:0}
+figcaption,.meta{font-size:.9rem;color:#3e5653}
+section{margin-top:2rem}
+h3{font-family:Georgia,serif}
+[hidden]{display:none!important}
+.table-scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.96rem;margin:1rem 0 1.5rem}
+th,td{padding:.55rem .7rem;border-bottom:1px solid #c7d4ce;text-align:left!important;vertical-align:top}
+thead{background:#e6eee7}
+code{overflow-wrap:anywhere}
+.search-options{display:flex;gap:.7rem 1.25rem;flex-wrap:wrap;align-items:end}
+.search-options label{display:block;font-weight:600}
+input,select{display:block;box-sizing:border-box;font:inherit;max-width:100%;padding:.35rem .5rem;border:1px solid #66817d;border-radius:.25rem;background:#fff;color:#172b2c}
+#repo-search{width:min(22rem,80vw)}
+#repo-list{padding-left:1.25rem}
+#repo-list li{margin:.75rem 0}
+.kind{color:#3e5653;font-size:.86rem}
+article{overflow-wrap:anywhere}

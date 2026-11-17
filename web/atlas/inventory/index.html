@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The Atlas record of public systems, their documented maturity, and where to find them.">
+<title>Project inventory · Randall Young</title>
+<link rel="stylesheet" href="../assets/calculus-theme.css">
+<link rel="stylesheet" href="../assets/atlas.css">
+</head>
+<body><main>
+<p>RANDALL YOUNG · PROJECT ATLAS</p>
+<h1>Project inventory</h1>
+<p>The Atlas record of public systems, their documented maturity, and where to find them.</p>
+<article><details><summary>Jump to a section</summary><ol><li><a href="#core--sdl">CORE / SDL</a></li><li><a href="#core--instruments">CORE / Instruments</a></li><li><a href="#core--curriculum">CORE / Curriculum</a></li><li><a href="#core--measured-machine">CORE / Measured Machine</a></li><li><a href="#core--tools">CORE / Tools</a></li><li><a href="#core--robotics">CORE / Robotics</a></li><li><a href="#apps">APPS</a></li><li><a href="#transmission">TRANSMISSION</a></li><li><a href="#reading-the-inventory">Reading the inventory</a></li></ol></details>
+<p><strong>Control date:</strong> 15 September 2026</p>
+<p>This is the public decision inventory derived from Project Atlas. Platform ports, experiments, and historical names are folded beneath durable systems rather than treated as separate current obligations.</p>
+<p>Maturity labels describe the strongest currently recorded state, not a promise that every artifact has already been migrated into the new estate.</p>
+<h2 id="core--sdl">CORE / SDL</h2>
+<div class="table-scroll" role="region" aria-label="Project table" tabindex="0"><table>
+<thead>
+<tr class="header">
+<th>System</th>
+<th>Maturity</th>
+<th>Priority / disposition</th>
+<th>Canonical home</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SDL — Software-Defined Laboratory</td>
+<td>Bench-tested</td>
+<td>P1 FINISH</td>
+<td><code>software-defined-laboratory</code></td>
+</tr>
+<tr class="even">
+<td>SDL PC MCP Gateway / Python Bridge</td>
+<td>Bench-tested</td>
+<td>P1 FINISH</td>
+<td><code>software-defined-laboratory</code></td>
+</tr>
+<tr class="odd">
+<td>Traffic Cop Communications Monitor</td>
+<td>Bench-tested</td>
+<td>P2 PACKAGE</td>
+<td><code>software-defined-laboratory</code></td>
+</tr>
+<tr class="even">
+<td>SUPER Reference Hardware</td>
+<td>Implemented</td>
+<td>P2 REFERENCE</td>
+<td><code>software-defined-laboratory</code></td>
+</tr>
+<tr class="odd">
+<td>UNO + Multi-Function Shield Starter Node</td>
+<td>Validated / deployed</td>
+<td>P1 PACKAGE</td>
+<td><code>software-defined-laboratory</code></td>
+</tr>
+<tr class="even">
+<td>Pico W SDL Runtime / Reference Node</td>
+<td>Bench-tested</td>
+<td>P1 FINISH</td>
+<td><code>software-defined-laboratory</code></td>
+</tr>
+<tr class="odd">
+<td>micro:bit v2 / MicroBlocks Dynamic Node</td>
+<td>Implemented</td>
+<td>P3 HOLD</td>
+<td><code>software-defined-laboratory</code></td>
+</tr>
+<tr class="even">
+<td>YMP — Young Measurement Protocol</td>
+<td>Bench-tested</td>
+<td>P2 PACKAGE</td>
+<td><code>embedded-tools</code> + SDL use</td>
+</tr>
+<tr class="odd">
+<td>Web Serial / WebBLE Console Family</td>
+<td>Validated / deployed</td>
+<td>P2 PACKAGE</td>
+<td><code>software-defined-laboratory</code></td>
+</tr>
+<tr class="even">
+<td>Virtual Device Atlas / Browser-Native Virtual Lab</td>
+<td>Bench-tested</td>
+<td>P2 PACKAGE</td>
+<td><code>software-defined-laboratory</code></td>
+</tr>
+<tr class="odd">
+<td>UMA Workbench / DeviceOps / Dashboard Commander</td>
+<td>Implemented</td>
+<td>P3 CONSOLIDATE</td>
+<td><code>software-defined-laboratory</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="core--instruments">CORE / Instruments</h2>
+<div class="table-scroll" role="region" aria-label="Project table" tabindex="0"><table>
+<thead>
+<tr class="header">
+<th>System</th>
+<th>Maturity</th>
+<th>Priority / disposition</th>
+<th>Canonical home</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Physics Motion Lab / IMU Motion Puck</td>
+<td>Implemented</td>
+<td>P3 PACKAGE</td>
+<td><code>measured-world-lab</code></td>
+</tr>
+<tr class="even">
+<td>eScale / HX711 Instrument Family</td>
+<td>Validated / deployed</td>
+<td>P2 PACKAGE</td>
+<td><code>measured-world-lab</code></td>
+</tr>
+<tr class="odd">
+<td>Temperature / DS18B20 Instrument Family</td>
+<td>Validated / deployed</td>
+<td>P1 PACKAGE</td>
+<td><code>measured-world-lab</code> + SDL reference</td>
+</tr>
+<tr class="even">
+<td>Distance / HC-SR04 / ToF Instrument Family</td>
+<td>Bench-tested</td>
+<td>P3 PACKAGE</td>
+<td><code>measured-world-lab</code></td>
+</tr>
+<tr class="odd">
+<td>Low-Cost Conductivity Meter</td>
+<td>Implemented</td>
+<td>P2 PACKAGE</td>
+<td><code>measured-world-lab</code></td>
+</tr>
+<tr class="even">
+<td>Beer-Lambert / Colorimetry Instrument</td>
+<td>Implemented</td>
+<td>P2 PACKAGE</td>
+<td><code>measured-world-lab</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="core--curriculum">CORE / Curriculum</h2>
+<div class="table-scroll" role="region" aria-label="Project table" tabindex="0"><table>
+<thead>
+<tr class="header">
+<th>System</th>
+<th>Maturity</th>
+<th>Priority / disposition</th>
+<th>Canonical home</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CORE 10</td>
+<td>Implemented</td>
+<td>P1 FINISH</td>
+<td><code>core-10</code></td>
+</tr>
+<tr class="even">
+<td>Kitchen Inquiry Lab</td>
+<td>Implemented</td>
+<td>P1 PACKAGE</td>
+<td><code>core-10</code></td>
+</tr>
+<tr class="odd">
+<td>One Cup Chemistry</td>
+<td>Implemented</td>
+<td>P1 FINISH</td>
+<td><code>core-10</code></td>
+</tr>
+<tr class="even">
+<td>NOTHING IS FREE / Personal Energy Laboratory</td>
+<td>Implemented</td>
+<td>P1 PACKAGE</td>
+<td><code>core-10</code></td>
+</tr>
+<tr class="odd">
+<td>Microwave Water Heating + Electricity Cost</td>
+<td>Bench-tested</td>
+<td>P1 PROTECT</td>
+<td><code>core-10</code></td>
+</tr>
+<tr class="even">
+<td>Measurement Ladder: Ruler -&gt; Water Clock -&gt; e</td>
+<td>Implemented</td>
+<td>P2 PACKAGE</td>
+<td><code>core-10</code></td>
+</tr>
+<tr class="odd">
+<td>Three Mirrors: Physical / Paper / Analog / Digital</td>
+<td>Implemented</td>
+<td>P2 PACKAGE</td>
+<td><code>core-10</code></td>
+</tr>
+<tr class="even">
+<td>TeaTime / Beer-Lambert Learning Activity</td>
+<td>Implemented</td>
+<td>P2 PACKAGE</td>
+<td><code>core-10</code></td>
+</tr>
+<tr class="odd">
+<td>Newton Cooling / Brine / Solution-Chemistry Sequence</td>
+<td>Implemented</td>
+<td>P2 PACKAGE</td>
+<td><code>core-10</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="core--measured-machine">CORE / Measured Machine</h2>
+<div class="table-scroll" role="region" aria-label="Project table" tabindex="0"><table>
+<thead>
+<tr class="header">
+<th>System</th>
+<th>Maturity</th>
+<th>Priority / disposition</th>
+<th>Canonical home</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Nugget / Initiator Learning Ladder</td>
+<td>Bench-tested</td>
+<td>P2 PACKAGE</td>
+<td><code>nugget-physical-computing</code></td>
+</tr>
+<tr class="even">
+<td>nugget-fwlib</td>
+<td>Validated / deployed</td>
+<td>P2 PUBLISH</td>
+<td><code>nugget-physical-computing</code> lineage</td>
+</tr>
+<tr class="odd">
+<td>px-fwlib STM32G0 / CLI Explorer</td>
+<td>Validated / deployed</td>
+<td>P3 UPSTREAM</td>
+<td><code>computing-observatories</code> / upstream</td>
+</tr>
+<tr class="even">
+<td>CH32V003 Observatory / CLI Explorer</td>
+<td>Validated / deployed</td>
+<td>P3 PACKAGE</td>
+<td><code>computing-observatories</code></td>
+</tr>
+<tr class="odd">
+<td>AVR eForth Observatory + MFS Emulation</td>
+<td>Validated / deployed</td>
+<td>P2 PACKAGE</td>
+<td><code>computing-observatories</code></td>
+</tr>
+<tr class="even">
+<td>MSP430 eForth Observatory</td>
+<td>Implemented</td>
+<td>P4 ARCHIVE</td>
+<td><code>computing-observatories</code></td>
+</tr>
+<tr class="odd">
+<td>CRCL / CIRCLE</td>
+<td>Bench-tested</td>
+<td>P2 PACKAGE</td>
+<td><code>computing-observatories</code></td>
+</tr>
+<tr class="even">
+<td>65C02 IDE / Simulator</td>
+<td>Bench-tested</td>
+<td>P3 ARCHIVE</td>
+<td><code>computing-observatories</code></td>
+</tr>
+<tr class="odd">
+<td>RCA COSMAC 1802 / Galileo / microForth</td>
+<td>Validated / deployed</td>
+<td>P2 PACKAGE</td>
+<td><code>computing-observatories</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="core--tools">CORE / Tools</h2>
+<div class="table-scroll" role="region" aria-label="Project table" tabindex="0"><table>
+<thead>
+<tr class="header">
+<th>System</th>
+<th>Maturity</th>
+<th>Priority / disposition</th>
+<th>Canonical home</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>DebugWire LIGHTENING</td>
+<td>Bench-tested</td>
+<td>P2 PROTECT</td>
+<td><code>embedded-tools</code></td>
+</tr>
+<tr class="even">
+<td>RP2040 Common Tool: SWD/JTAG + Virtual CPUs</td>
+<td>Designed</td>
+<td>P4 ARCHIVE</td>
+<td><code>embedded-tools</code></td>
+</tr>
+<tr class="odd">
+<td>PIC12F1571 RP2040 Programmer</td>
+<td>Bench-tested</td>
+<td>P3 PACKAGE</td>
+<td><code>embedded-tools</code></td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="core--robotics">CORE / Robotics</h2>
+<div class="table-scroll" role="region" aria-label="Project table" tabindex="0"><table>
+<thead>
+<tr class="header">
+<th>System</th>
+<th>Maturity</th>
+<th>Priority / disposition</th>
+<th>Canonical home</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bargain Bin Robotics</td>
+<td>Implemented</td>
+<td>P2 PACKAGE</td>
+<td><code>bargain-bin-robotics</code></td>
+</tr>
+<tr class="even">
+<td>Lazy LiDAR</td>
+<td>Bench-tested</td>
+<td>P2 PACKAGE</td>
+<td><code>bargain-bin-robotics</code></td>
+</tr>
+<tr class="odd">
+<td>STC15W Low-Cost Rover / NIF Robot</td>
+<td>Implemented</td>
+<td>P2 FINISH</td>
+<td><code>bargain-bin-robotics</code> + <code>core-10</code> NIF</td>
+</tr>
+<tr class="even">
+<td>Alvik -&gt; RP2040 / XRP / Maker Pi Ports</td>
+<td>Designed</td>
+<td>P4 HOLD</td>
+<td><code>bargain-bin-robotics</code> lineage</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="apps">APPS</h2>
+<div class="table-scroll" role="region" aria-label="Project table" tabindex="0"><table>
+<thead>
+<tr class="header">
+<th>System</th>
+<th>Maturity</th>
+<th>Priority / disposition</th>
+<th>Canonical home</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>FFT — Fair Fitness Testing / Fair Fitness Scout</td>
+<td>Validated / deployed</td>
+<td>P1 FINISH</td>
+<td><code>measured-human-performance</code></td>
+</tr>
+<tr class="even">
+<td>SQM+ / WALKWISE</td>
+<td>Bench-tested</td>
+<td>P2 CONSOLIDATE</td>
+<td><code>measured-human-performance</code></td>
+</tr>
+<tr class="odd">
+<td>Tone Trainer</td>
+<td>Bench-tested</td>
+<td>P3 HOLD</td>
+<td><code>measured-human-performance</code></td>
+</tr>
+<tr class="even">
+<td>PlateLab</td>
+<td>Bench-tested</td>
+<td>P3 HOLD</td>
+<td><code>measured-human-performance</code></td>
+</tr>
+<tr class="odd">
+<td>Q-Meter / MAX_Q / WiseWalking lineage</td>
+<td>Bench-tested</td>
+<td>P4 ARCHIVE</td>
+<td>SQM+ lineage</td>
+</tr>
+<tr class="even">
+<td>Dropper Guard / MedDock lineage</td>
+<td>Bench-tested</td>
+<td>P4 ARCHIVE</td>
+<td>historical APPS lineage</td>
+</tr>
+<tr class="odd">
+<td>ESMR / Recovery Program concepts</td>
+<td>Designed</td>
+<td>P4 ARCHIVE</td>
+<td>historical APPS lineage</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="transmission">TRANSMISSION</h2>
+<div class="table-scroll" role="region" aria-label="Project table" tabindex="0"><table>
+<thead>
+<tr class="header">
+<th>System</th>
+<th>Maturity</th>
+<th>Priority / disposition</th>
+<th>Canonical home</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Project Atlas</td>
+<td>Bench-tested</td>
+<td>P1 MAINTAIN</td>
+<td><code>project-atlas</code></td>
+</tr>
+<tr class="even">
+<td>NOT TALK, DO — Integrated Concept Systems Brief</td>
+<td>Validated / deployed</td>
+<td>P2 PUBLISH</td>
+<td><code>works-and-publications</code></td>
+</tr>
+<tr class="odd">
+<td>Full Measure (Enough)</td>
+<td>Designed</td>
+<td>P2 WRITE</td>
+<td><code>works-and-publications</code></td>
+</tr>
+<tr class="even">
+<td>CORE 10 Teacher / Student Guides</td>
+<td>Implemented</td>
+<td>P1 FINISH</td>
+<td><code>works-and-publications</code> + <code>core-10</code></td>
+</tr>
+<tr class="odd">
+<td>SDL User / Programmer Guides</td>
+<td>Bench-tested</td>
+<td>P1 FINISH</td>
+<td><code>works-and-publications</code> + SDL</td>
+</tr>
+<tr class="even">
+<td>Zigbee Textbook / Courseware</td>
+<td>Implemented</td>
+<td>P4 ARCHIVE</td>
+<td><code>works-and-publications</code></td>
+</tr>
+<tr class="odd">
+<td>Infographics / Comics / Visual Explainers</td>
+<td>Validated / deployed</td>
+<td>P3 PACKAGE</td>
+<td><code>works-and-publications</code> + canonical projects</td>
+</tr>
+<tr class="even">
+<td>AI-Laboratory Research / Writing Program</td>
+<td>Implemented</td>
+<td>P2 PACKAGE</td>
+<td><code>works-and-publications</code></td>
+</tr>
+<tr class="odd">
+<td>Master Project Catalog / Historical Inventories</td>
+<td>Validated / deployed</td>
+<td>P3 ARCHIVE</td>
+<td><code>works-and-publications</code> / provenance</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="reading-the-inventory">Reading the inventory</h2>
+<ul>
+<li><code>FINISH</code> means spend active finishing energy now.</li>
+<li><code>PACKAGE</code> / <code>PUBLISH</code> means turn existing work into a durable release without broadening scope.</li>
+<li><code>MAINTAIN</code> means reliability and preservation only.</li>
+<li><code>CONSOLIDATE</code> means merge variants beneath a durable parent.</li>
+<li><code>HOLD</code> means preserve but do not actively grow.</li>
+<li><code>ARCHIVE</code> means deliberate closure, not failure.</li>
+<li><code>UPSTREAM</code> means the work primarily belongs to another project and estate-specific contributions should remain clearly attributed.</li>
+<li><code>PROTECT</code> means preserve with special boundaries and deliberate public-release decisions.</li>
+</ul>
+<p>The purpose of this inventory is to reduce obligations by making the disposition of each durable idea explicit.</p>
+</article>
+<footer>
+<nav aria-label="Project Atlas"><a href="../">Atlas home</a> <a href="../core-10/">CORE 10</a> <a href="../ideas/">Idea index</a> <a href="../inventory/" aria-current="page">Project inventory</a> <a href="../repositories/">All repositories</a></nav>
+<p><a href="https://github.com/RandoSY/project-atlas/blob/main/CANONICAL_INVENTORY.md">View the source on GitHub</a></p>
+</footer>
+</main></body>
+</html>

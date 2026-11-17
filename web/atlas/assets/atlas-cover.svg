@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" width="1600" height="800" role="img">
+<title>Project Atlas</title>
+<desc>An abstract map connects a laboratory flask, an instrument trace and a book around a central compass.</desc>
+<defs>
+ <linearGradient id="sky" x2="1" y2="1" gradientUnits="objectBoundingBox"><stop stop-color="#071522"/><stop offset="1" stop-color="#02080f"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#0c7e91" stop-opacity=".38"/><stop offset="1" stop-color="#07212d" stop-opacity="0"/></radialGradient>
+ <pattern id="grid" width="66" height="66" patternUnits="userSpaceOnUse"><path d="M0 66V0H66" fill="none" stroke="#217885" stroke-opacity=".3"/></pattern>
+</defs>
+<rect width="1600" height="800" fill="url(#sky)"/><rect width="1600" height="800" fill="url(#glow)"/>
+<rect x="58" y="58" width="1484" height="684" rx="16" fill="url(#grid)" stroke="#1b5662"/>
+<g fill="none" stroke="#42bfb1" stroke-width="2" opacity=".45">
+ <circle cx="800" cy="400" r="265"/><circle cx="800" cy="400" r="336" stroke-dasharray="3 13"/>
+ <path d="M200 400h1200M800 100v600M390 200l410 200 410 200m0-400L800 400 390 600"/>
+</g>
+<g fill="#0a222b" stroke="#53ccbe" stroke-width="6">
+ <circle cx="366" cy="261" r="101"/><circle cx="1234" cy="261" r="101"/><circle cx="1234" cy="565" r="101"/>
+ <path d="M330 209h72m-56 0v33l-47 77h134l-47-77v-33m-62 67h84" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M1176 276h22l16-50 31 74 17-43h31" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M1234 542q-26-24-64-15v71q38-9 64 14 26-23 64-14v-71q-38-9-64 15v70" fill="none" stroke-linejoin="round"/>
+</g>
+<g fill="none" stroke="#f3c666" stroke-width="5" stroke-linecap="round">
+ <path d="M467 261h81l105 93m480-93h-81l-105 93m186 211h-81L947 459"/>
+ <circle cx="800" cy="400" r="157" fill="#09212c"/>
+ <circle cx="800" cy="400" r="124" stroke-width="2"/>
+ <path d="M800 268v22m0 220v22M668 400h22m220 0h22"/>
+ <path d="M854 343l-30 81-78 33 30-81z" fill="#f3c666"/><path d="M746 457l30-81 48 48z" fill="#0e6972"/>
+</g>
+<g fill="#f3c666"><circle cx="800" cy="400" r="9"/><circle cx="467" cy="261" r="7"/><circle cx="1133" cy="261" r="7"/><circle cx="1133" cy="565" r="7"/></g>
+</svg>
