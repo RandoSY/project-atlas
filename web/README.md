@@ -26,7 +26,7 @@ Review the changes to the public snapshot and generated HTML before committing. 
 python3 -m http.server 8000 --directory web
 ```
 
-Open `http://127.0.0.1:8000/atlas/`. The CORE 10 and first-page downloads link to their existing original copies on GitHub rather than creating new copies. The calculus link goes to the existing IONOS page.
+Open `http://127.0.0.1:8000/atlas/`. The CORE 10 and first-page downloads link to their existing original copies on GitHub rather than creating new copies. The calculus link stays on the current origin and expects the separate calculus site at `/calculus/`. The standalone preview serves Atlas only.
 
 ## First install on the existing IONOS VM
 

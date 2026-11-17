@@ -21,7 +21,7 @@ CORE = f"{ESTATE}/core-10"
 ATLAS_MAIN = f"{ATLAS}/blob/main"
 CORE_MAIN = f"{CORE}/blob/main"
 CORE_RAW = f"https://raw.githubusercontent.com/{OWNER}/core-10/main"
-CALCULUS = "http://74.208.252.58/calculus/"
+CALCULUS = "/calculus/"
 FAMILIES = {
     "software-defined-laboratory": ("Software-Defined Laboratory", "Make instruments and experiments work across hardware, dashboards, and AI clients."),
     "core-10": ("CORE 10", "Teach science with ordinary phenomena and real measurements."),
