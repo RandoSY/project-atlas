@@ -1,0 +1,7 @@
+run_id,configuration,time_s,candle_mass_g,water_temperature_C,initial_water_mass_g,ambient_temperature_C,event,notes
+,,,,,,,baseline,
+,,,,,,,heating_start,
+,,,,,,,sample,
+,,,,,,,sample,
+,,,,,,,heating_end,
+,,,,,,,cooling_sample,

@@ -1,0 +1,30 @@
+{
+  "apparatus": {
+    "width": 602,
+    "height": 662,
+    "alt": "Illustration of a water-filled aluminum can supported above a tea light, with a temperature probe in the water.",
+    "caption": "Apparatus illustration from the CORE 10 graphic. The stand supports the can independently. This is a diagram of the idea, not a photograph of a measured run.",
+    "source": "Core 10: Pop-Can Calorimeter Infographic.png"
+  },
+  "picoscale": {
+    "width": 1440,
+    "height": 847,
+    "alt": "Diagram connects the candle scale and water thermometer to a dashboard with a falling mass trace and rising temperature trace.",
+    "caption": "The archived PicoScale design drawing. The plot and displayed values are illustrative, not a recorded CSV.",
+    "source": "popcan_picoscale.png"
+  },
+  "candle-bench": {
+    "width": 1073,
+    "height": 861,
+    "alt": "Archival photo of a tea light on a gravimetric test bench with scale and data-acquisition hardware.",
+    "caption": "Actual bench photograph from the related candle-only gravimetry experiment. It documents the measurement lineage, not the pop-can setup. This historical rig is not a classroom safety template.",
+    "source": "UMA_KitchenLab_Human_Candle_Learning_Guide_v5.pdf, Figure 1; cropped genuine photo"
+  },
+  "mass-endpoints": {
+    "width": 1440,
+    "height": 774,
+    "alt": "Two measured candle mass endpoints are connected by a downward straight line over 12.5 minutes.",
+    "caption": "Candle-only evidence from the Gravimetric Combustion Learning Guide, figure 3. The two end masses were measured. The straight line between them is an interpolation, not a continuous measured burn-rate trace.",
+    "source": "UMA_KitchenLab_Human_Candle_Learning_Guide_v5.pdf, Figure 3"
+  }
+}

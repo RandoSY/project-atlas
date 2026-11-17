@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A premier CORE 10 activity about fuel, heat, and where the energy goes.">
+<title>Pop-Can Calorimeter · Randall Young</title>
+<link rel="stylesheet" href="../assets/calculus-theme.css">
+<link rel="stylesheet" href="../assets/atlas.css">
+<link rel="stylesheet" href="../assets/navigation.css">
+<link rel="stylesheet" href="../assets/pop-can.css">
+<script src="../assets/pop-can.js" defer></script>
+</head>
+<body><main>
+<nav class="atlas-nav" aria-label="Project Atlas"><a href="../">Home</a> <a href="../exhibits/" class="atlas-nav-section" aria-current="location">Exhibits</a> <a href="../ideas/">Ideas</a> <a href="../inventory/">Projects</a> <a href="../repositories/">Repositories</a></nav>
+<p>RANDALL YOUNG · CORE 10 · KITCHEN INQUIRY LAB</p>
+<h1>Pop-Can Calorimeter</h1>
+<p>A premier CORE 10 activity about fuel, heat, and where the energy goes.</p>
+<p class="pc-lead">A tea light loses mass. Water in a pop can warms up. Neither observation alone tells the whole story. <strong>Put a scale and a thermometer on the same clock, and you can begin to account for where the energy went.</strong></p>
+<nav class="pc-jump" aria-label="Calorimeter sections">
+<a href="#setup">See the setup</a><a href="#levels">Follow the ideas</a><a href="#evidence">What was measured</a><a href="#model">Try the model</a><a href="#challenge">Teach it</a>
+</nav>
+
+<section class="pc-opening" id="setup" aria-labelledby="setup-title">
+<div class="pc-open-copy">
+<p class="pc-kicker">ONE CANDLE · TWO MEASUREMENTS</p>
+<h2 id="setup-title">A scale on the input side. A thermometer on the output side.</h2>
+<dl class="pc-ledger">
+<dt>What did the candle use?</dt><dd>Measure the decrease in candle mass. Use a separate energy-per-gram reference if you need a fuel-energy estimate.</dd>
+<dt>What did the water gain?</dt><dd>Measure the mass of the water and how much warmer it got. The water is the part of the system we can account for most directly.</dd>
+<dt>What did time reveal?</dt><dd>Watch how both quantities change. Two runs can end at the same temperature but deliver that heat at different rates.</dd>
+</dl>
+</div>
+<figure class="pc-figure"><a href="media/apparatus.webp"><img src="media/apparatus.webp" width="602" height="662" fetchpriority="high" alt="Illustration of a water-filled aluminum can supported above a tea light, with a temperature probe in the water."></a><figcaption>Apparatus illustration from the CORE 10 graphic. The stand supports the can independently. This is a diagram of the idea, not a photograph of a measured run.</figcaption></figure>
+</section>
+
+<section class="pc-section" id="levels" aria-labelledby="levels-title">
+<p class="pc-kicker">EXPERIENCE BEFORE EQUATION</p>
+<h2 id="levels-title">One apparatus, six levels of inquiry</h2>
+<ol class="pc-path">
+<li><div><h3>Observe the change</h3><p>Before calculating anything, predict which quantity goes up and which goes down. Is temperature the same thing as energy? What if the amount of water doubles?</p></div></li>
+<li><div><h3>Make two measurements you trust</h3><p>Check the scale with a known mass and allow it to settle. Check the probe against a reference and keep it clear of the can wall. Begin with water mass, start and finish temperatures, candle mass before and after, and elapsed time. A scale change smaller than its repeatability is not evidence of a reliable burn rate.</p></div></li>
+<li><div><h3>Wire up the same experiment</h3><p>Use an eScale or HX711 load-cell channel for candle mass and a logging probe such as a DS18B20 for water temperature. Put both on a common time base, mark the heating interval, and record the signals with units. An independent stand keeps the can off the candle scale. Check a no-flame baseline and protect the scale and wiring from heat. The browser displays the readings. The instruments make them.</p></div></li>
+<li><div><h3>Count joules and watts</h3><p>With water mass in grams, calculate <strong>Q<sub>water</sub> ≈ m<sub>water</sub> × 4.184 × ΔT</strong> in joules. Divide by seconds for the average net heating rate of the water, or by grams of candle mass lost for water heat captured per gram. These are three different quantities.</p></div></li>
+<li><div><h3>Let the curves earn the calculus</h3><p>The slope of mass versus time gives a burn rate when its sign is reversed. The slope of water temperature, multiplied by <em>mc</em>, gives the rate of energy accumulation in the water. The area under that rate curve gives the net energy gained by the water. Estimate slope over a suitable window because sample-to-sample differences can amplify noise. Integrating a rate derived from the same temperature trace is a consistency check, not a second independent measurement.</p></div></li>
+<li><div><h3>Account for what went elsewhere</h3><p>Some energy heats the can and stand, warms moving air, radiates outward, or leaves with evaporation. If you have a defensible value for the wax’s heat of combustion, estimate fuel energy from mass lost × that value. The ratio <em>Q</em><sub>water</sub>/<em>Q</em><sub>fuel</sub> is the measured setup’s estimated <strong>capture fraction</strong>, not a measurement of the wax’s intrinsic energy content.</p></div></li>
+</ol>
+<figure class="pc-figure"><a href="media/picoscale.webp"><img src="media/picoscale.webp" width="1440" height="847" loading="lazy" decoding="async" alt="Diagram connects the candle scale and water thermometer to a dashboard with a falling mass trace and rising temperature trace."></a><figcaption>The archived PicoScale design drawing. The plot and displayed values are illustrative, not a recorded CSV.</figcaption></figure>
+<p class="pc-note"><strong>For a classroom demonstration.</strong> Use an adult-supervised open-flame setup on a stable, fire-resistant surface. Use a supported, open vessel with safe edges and keep the electronics away from the flame and hot water. Use the pre-recorded evidence or interactive model where an open flame is not appropriate.</p>
+</section>
+
+<section class="pc-section" id="evidence" aria-labelledby="evidence-title">
+<p class="pc-kicker">MEASURED ENDPOINTS · CANDLE-ONLY RUN</p>
+<h2 id="evidence-title">What the scale actually saw</h2>
+<p>The archived <em>UMA KitchenLab Gravimetric Combustion Learning Guide</em> (v5) records <strong>0.695 g of mass loss over 12½ minutes</strong> in a candle-only run. That gives an average burn rate of about <strong>0.0556 g/min</strong>. Using the guide’s classroom reference of 42 kJ per gram of paraffin gives an estimated fuel power of about <strong>39 W</strong>. The scale measured mass, not watts. And those 39 W are not the heat captured by the water.</p>
+<div class="pc-gallery">
+<figure class="pc-figure"><a href="media/candle-bench.webp"><img src="media/candle-bench.webp" width="1073" height="861" loading="lazy" decoding="async" alt="Archival photo of a tea light on a gravimetric test bench with scale and data-acquisition hardware."></a><figcaption>Actual bench photograph from the related candle-only gravimetry experiment. It documents the measurement lineage, not the pop-can setup. This historical rig is not a classroom safety template.</figcaption></figure>
+<figure class="pc-figure"><a href="media/mass-endpoints.webp"><img src="media/mass-endpoints.webp" width="1440" height="774" loading="lazy" decoding="async" alt="Two measured candle mass endpoints are connected by a downward straight line over 12.5 minutes."></a><figcaption>Candle-only evidence from the Gravimetric Combustion Learning Guide, figure 3. The two end masses were measured. The straight line between them is an interpolation, not a continuous measured burn-rate trace.</figcaption></figure>
+</div>
+<p class="pc-note">The measured endpoints and candle-only apparatus survive in the guide. No paired original candle-mass and water-temperature time series was recovered for this exhibit. The graphics and model below do not fill in that missing record.</p>
+</section>
+
+<section class="pc-section" id="model" aria-labelledby="model-title">
+<p class="pc-kicker">ILLUSTRATIVE MODEL · NOT A RECORDED RUN</p>
+<h2 id="model-title">Same water heat. Different power curves.</h2>
+<p>Change the example readings. Then switch the rate profile from steady to front-loaded. The curve changes, but its area stays the same when the total water heat and elapsed time stay fixed.</p>
+<div class="pc-model" data-pop-can-model>
+ <div class="pc-fields">
+  <label>Water mass (g)<input id="pc-water" type="number" min="1" max="2000" step="any" value="100" inputmode="decimal"></label>
+  <label>Temperature rise (°C)<input id="pc-delta" type="number" min="0" max="100" step="any" value="10" inputmode="decimal"></label>
+  <label>Candle mass lost (g)<input id="pc-fuel" type="number" min="0" max="100" step="any" value="0.30" inputmode="decimal"></label>
+  <label>Elapsed time (s)<input id="pc-time" type="number" min="1" max="7200" step="any" value="180" inputmode="decimal"></label>
+  <label class="pc-profile">Illustrative rate profile<select id="pc-profile"><option value="steady">Steady</option><option value="front">Front-loaded</option></select></label>
+ </div>
+ <div class="pc-results">
+  <div class="pc-readouts">
+   <div><span>Water heat</span><output id="pc-heat">4.18 kJ</output></div>
+   <div><span>Average water rate</span><output id="pc-power">23.24 W</output></div>
+   <div><span>Water heat per gram used</span><output id="pc-per-gram">13.95 kJ/g</output></div>
+  </div>
+  <svg viewBox="0 0 500 205" role="img" aria-labelledby="pc-plot-title pc-plot-note">
+    <title id="pc-plot-title">Illustrative net water heating rate versus time</title>
+    <desc id="pc-plot-note">The area under the line is heat gained by the water. A sloping curve and a horizontal line can have the same area.</desc>
+    <text x="15" y="18">Net water heating rate (W)</text>
+    <path d="M78 27V163H475M78 95H475" fill="none" stroke="#75958d" stroke-opacity=".6"/>
+    <path id="pc-area" d="M78 163V95H475V163Z" fill="#6dc8b2" fill-opacity=".38"/>
+    <path id="pc-trace" d="M78 95H475" fill="none" stroke="#ffcd79" stroke-width="3"/>
+    <text id="pc-ymax" x="67" y="35" text-anchor="end">46.5</text>
+    <text id="pc-yavg" x="67" y="100" text-anchor="end">23.2</text>
+    <text x="67" y="168" text-anchor="end">0</text>
+    <text x="78" y="187">0 s</text><text id="pc-tmax" x="475" y="187" text-anchor="end">180 s</text>
+  </svg>
+  <p class="pc-model-note" id="pc-model-note" role="status">The shaded area is the net heat added to the water. The model does not estimate the candle’s total power.</p>
+ </div>
+</div>
+<noscript><p>To check by hand, use 100 × 4.184 × 10 = 4,184 J. Divide by 180 s for the average rate, or divide by 0.30 g for captured heat per gram of candle mass lost.</p></noscript>
+</section>
+
+<section class="pc-section" id="challenge" aria-labelledby="challenge-title">
+<p class="pc-kicker">MODEL-ELICITING CHALLENGE</p>
+<h2 id="challenge-title">Which arrangement does more with a gram of fuel?</h2>
+<p>A new lab group wants a reliable way to compare two teacher-approved arrangements. Give them a protocol, not just an answer. Have teams change one variable, keep water mass and timing comparable, repeat runs, and report water heat per gram and their measurement uncertainty. Can a second team use the rule and reach the same conclusion? If two results are too close to distinguish with the instruments, say so.</p>
+<p><a href="media/run-sheet.csv" download>Download the blank data sheet</a> · <a href="../instruments/#scale">eScale build</a> · <a href="../instruments/#thermometer">Thermometer build</a></p>
+<h3>Where the ideas go next</h3>
+<div class="pc-transfers">
+<article><h4>CORE 10 · Change the energy source</h4><p>Keep the water-side calculation and compare the candle with metered electrical input. What changes is how the input gets measured.</p><a href="../core-10/">CORE 10 energy investigations</a></article>
+<article><h4>Calculus · Change the rate, not the total</h4><p>Compare heating curves and rate curves, and explain why equal areas can come from different shapes. That is accumulation you can measure.</p><a href="/calculus/">Ten Problems That Teach Calculus</a></article>
+<article><h4>Thermodynamics · Reuse the can</h4><p>In a separate hot/cold-water mixing experiment, compare energy balance with entropy change. For an ideal insulated mixture, energy redistributes while total entropy increases. Use Kelvin in <em>mc</em> ln(<em>T</em><sub>final</sub>/<em>T</em><sub>initial</sub>).</p><a href="https://openstax.org/books/university-physics-volume-2/pages/4-6-entropy">Entropy reference</a></article>
+</div>
+<p class="meta">Related work: <a href="../singing-rule/">The Singing Rule</a> makes the same move from an ordinary object to a recorded signal and a testable model. For the water calculation, see <a href="https://openstax.org/books/chemistry/pages/5-1-energy-basics">OpenStax on heat and specific heat capacity</a>.</p>
+</section>
+
+<footer>
+<p><a href="../">Project Atlas home</a> · <a href="https://github.com/RandoSY/core-10/tree/main/kitchen-inquiry-lab">View the source on GitHub</a></p>
+</footer>
+</main></body>
+</html>

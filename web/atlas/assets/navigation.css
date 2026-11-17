@@ -45,7 +45,7 @@
   border:1px solid #bdcfc4;background:#edf0e7;overflow:hidden;border-radius:.68rem;
   display:flex;flex-direction:column
 }
-.atlas-exhibit:first-child{background:#f1e9d6;border-color:#cbbf9d}
+.atlas-exhibit:first-child,.atlas-exhibit.atlas-premier{background:#f1e9d6;border-color:#cbbf9d}
 .atlas-exhibit-visual{display:block;background:#104048}
 .atlas-exhibit-visual img{aspect-ratio:1.8;object-fit:cover;object-position:center 44%;border-radius:0}
 .atlas-exhibit-body{padding:.75rem .9rem .9rem}

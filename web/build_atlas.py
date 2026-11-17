@@ -76,7 +76,7 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
     prefix = "../" if directory else ""
     destinations = (("Home", ""), ("Exhibits", "exhibits"), ("Ideas", "ideas"),
                     ("Projects", "inventory"), ("Repositories", "repositories"))
-    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10"}
+    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10", "pop-can-calorimeter"}
     nav = []
     for name, dest in destinations:
         attr = ' aria-current="page"' if dest == directory else ''
@@ -169,6 +169,9 @@ def exhibits():
         ("Flagship activity", "../singing-rule/", "The Singing Rule",
          "Pluck a ruler and follow the motion from the original bench photo to live traces, measured ringdown, and a model you can try.",
          "../singing-rule/media/bench.webp", 1440, 1084),
+        ("Premier CORE 10 activity", "../pop-can-calorimeter/", "Pop-Can Calorimeter",
+         "Follow a tea light from grams of fuel to joules in the water, compare heating rates, and account for where the rest of the energy went.",
+         "../pop-can-calorimeter/media/picoscale.webp", 1440, 847),
         ("Current experiment", "../sqm-plus/", "SQM+ Hallway Observatory",
          "Run a marked 11-meter leg and see why a stopwatch and a wearable answer two different questions.",
          "../sqm-plus/media/hallway.svg", 1280, 610),
@@ -184,7 +187,8 @@ def exhibits():
     ]
     blocks = []
     for label, url, title, description, image, width, height in cards:
-        blocks.append(f"""<article class="atlas-exhibit">
+        emphasis = " atlas-premier" if label.startswith("Premier") else ""
+        blocks.append(f"""<article class="atlas-exhibit{emphasis}">
 <a class="atlas-exhibit-visual" href="{esc(url)}" aria-label="Open {esc(title)}">
 <img src="{esc(image)}" width="{width}" height="{height}" alt="" decoding="async"></a>
 <div class="atlas-exhibit-body">
@@ -201,6 +205,11 @@ def exhibits():
 def core():
     page("core-10", "CORE 10", "A practical science and engineering curriculum that starts with something you can see, measure, and investigate.", f"""
 {cover('../assets/core10-cover.svg', 'Electrical energy enters a heating system while a thermometer measures the heat gained by the water.')}
+<section class="atlas-directory" aria-labelledby="core-signature">
+<p class="atlas-kicker">Signature Kitchen Inquiry Lab</p>
+<h2 id="core-signature"><a href="../pop-can-calorimeter/">Pop-Can Calorimeter</a></h2>
+<p>One candle creates two records: the mass of fuel consumed and the heat gained by the water. This is where CORE 10 connects measurement, chemistry, watts, and evidence about where the energy went.</p>
+</section>
 <section aria-labelledby="start">
 <h2 id="start">Start here</h2>
 <p>Heat a measured amount of water and record its temperature rise. Compare the heat it gained with the electricity the microwave used. Which number tells you what happened to the water, and which tells you what you paid for?</p>
@@ -350,6 +359,31 @@ def sqm_plus():
          source=f"{ESTATE}/measured-human-performance")
 
 
+def pop_can_calorimeter():
+    catalog = json.loads((WEB / "pop-can-media.json").read_text(encoding="utf-8"))
+    source = (WEB / "pop-can-calorimeter.html").read_text(encoding="utf-8")
+
+    def figure(match):
+        key = match.group(1)
+        item = catalog[key]
+        asset = f"media/{key}.webp"
+        if not (OUT / "pop-can-calorimeter" / asset).is_file():
+            raise FileNotFoundError(asset)
+        sized = f'width="{int(item["width"])}" height="{int(item["height"])}"'
+        load = 'fetchpriority="high"' if key == "apparatus" else 'loading="lazy" decoding="async"'
+        return (f'<figure class="pc-figure"><a href="{asset}">'
+                f'<img src="{asset}" {sized} {load} alt="{esc(item["alt"])}"></a>'
+                f'<figcaption>{esc(item["caption"])}</figcaption></figure>')
+
+    assert set(re.findall(r"@@([a-z0-9-]+)@@", source)) == catalog.keys()
+    body = re.sub(r"@@([a-z0-9-]+)@@", figure, source)
+    page("pop-can-calorimeter", "Pop-Can Calorimeter",
+         "A premier CORE 10 activity about fuel, heat, and where the energy goes.",
+         body, header="CORE 10 · KITCHEN INQUIRY LAB",
+         extra='<link rel="stylesheet" href="../assets/pop-can.css">\n<script src="../assets/pop-can.js" defer></script>\n',
+         source=f"{CORE}/tree/main/kitchen-inquiry-lab")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--atlas-source", type=Path, default=WEB.parent)
@@ -371,6 +405,7 @@ def main():
     instruments()
     singing_rule()
     sqm_plus()
+    pop_can_calorimeter()
     repo_archive(manifest, args.atlas_source / "LEGACY_REPOSITORY_MAP.md")
     for name, title, summary, file, exclude in [
         ("ideas", "Idea index", "The durable ideas behind the work, from measurement and teaching to open instruments and publication.",
@@ -382,7 +417,7 @@ def main():
         families = (f'<section class="atlas-family-list" aria-labelledby="families">'
                     f'<h2 id="families">Project families</h2>{homes("../")}</section>') if name == "inventory" else ""
         page(name, title, summary, f'<article>{body}</article>{families}', source=f"{ATLAS_MAIN}/{file}")
-    print(f"Built nine pages and indexed {len(manifest['repositories'])} public repositories.")
+    print(f"Built ten pages and indexed {len(manifest['repositories'])} public repositories.")
 
 if __name__ == "__main__":
     main()
