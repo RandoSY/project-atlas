@@ -1,0 +1,72 @@
+{
+  "bench": {
+    "width": 1440,
+    "height": 1084,
+    "alt": "Green plastic ruler held by binder clips at a glass table, with an orange wireless IMU secured at the free end.",
+    "caption": "The actual bench setup. A green plastic ruler is held at the table edge. Elastic bands secure an M5StickC Plus2 near its free end.",
+    "source": "IMG_20260509_213235022.jpg"
+  },
+  "mount": {
+    "width": 1120,
+    "height": 858,
+    "alt": "Close-up of the orange M5StickC Plus2 and the bands across the ruler.",
+    "caption": "Sensor attachment. This crop of the original photo shows why the board moves with the ruler and also adds mass.",
+    "source": "IMG_20260509_213235022.jpg"
+  },
+  "clamp": {
+    "width": 1054,
+    "height": 900,
+    "alt": "Close-up of the ruler crossing the glass table edge, held by clips.",
+    "caption": "Clamp and free-length reference. This crop of the same photo shows the held end. In your own trial, measure from the effective clamp line to the tip.",
+    "source": "IMG_20260509_213235022.jpg"
+  },
+  "ble-release-series": {
+    "width": 1440,
+    "height": 689,
+    "alt": "The original BLE motion console with multiple bursts on its live graph.",
+    "caption": "Live motion console, first archived view. A release produces a burst and the trace settles before another release.",
+    "source": "Screenshot 2026-05-09 212526.jpg"
+  },
+  "ble-live-trace": {
+    "width": 1440,
+    "height": 689,
+    "alt": "The original BLE motion console displaying two ringdowns with a command panel and log.",
+    "caption": "Live motion console, second archived view. The browser shows the changing signal next to controls and a log.",
+    "source": "Screenshot 2026-05-09 212628.jpg"
+  },
+  "historic-model": {
+    "width": 1026,
+    "height": 673,
+    "alt": "The archived spring-mass simulator with a spring drawing beside a fading oscillation.",
+    "caption": "Original Spring Mass Lab simulation capture. This explains the shape of a ringdown. It is not a recording of the ruler.",
+    "source": "Screenshot 2026-05-09 213732.jpg"
+  },
+  "acceleration": {
+    "width": 1600,
+    "height": 727,
+    "alt": "A measured acceleration waveform after release with successively smaller oscillations.",
+    "caption": "Measured run, acceleration-derived trace. The shrinking peaks show a ringdown after a release.",
+    "source": "05_ringdown_dynamic_g_zoom.png"
+  },
+  "gyroscope": {
+    "width": 1600,
+    "height": 727,
+    "alt": "A measured gyro x angular-rate trace showing the same ringdown.",
+    "caption": "Measured run, gyro x. Rotational rate also oscillates and fades, using a different sensor channel.",
+    "source": "06_ringdown_gx_zoom.png"
+  },
+  "spectrum": {
+    "width": 1600,
+    "height": 727,
+    "alt": "Frequency spectrum of the acceleration-derived ringdown with a broad peak near 2.24 hertz.",
+    "caption": "Measured run, FFT. The main peak lies near 2.2 Hz. The width and coarse sampling matter more than the last decimal.",
+    "source": "07_fft_dynamic_g_ringdown.png"
+  },
+  "axis": {
+    "width": 1440,
+    "height": 900,
+    "alt": "Principal-component variance plot, with almost all of the variance in the first component.",
+    "caption": "Measured run, PCA. Almost all acceleration variance in this window lies along one direction near the device z-axis. That identifies a direction at this sensor, not the full mode shape of the beam.",
+    "source": "09_accel_pca_variance_ringdown.png"
+  }
+}

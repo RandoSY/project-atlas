@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A tabletop experiment that turns one pluck into a waveform, a frequency, and a model.">
+<title>The Singing Rule · Randall Young</title>
+<link rel="stylesheet" href="../assets/calculus-theme.css">
+<link rel="stylesheet" href="../assets/atlas.css">
+<link rel="stylesheet" href="../assets/singing-rule.css">
+<script src="../assets/singing-rule.js" defer></script>
+</head>
+<body><main>
+<p>RANDALL YOUNG · FLAGSHIP ACTIVITY · EXPERIENCE BEFORE EQUATION</p>
+<h1>The Singing Rule</h1>
+<p>A tabletop experiment that turns one pluck into a waveform, a frequency, and a model.</p>
+<p class="sr-lead">Clamp a ruler to a table. Pull its free end down a little, let go, and watch. Before anyone writes an equation, there are already three questions worth answering: <strong>How fast does it move back and forth? Why does it quiet down? What changes if you shorten it?</strong></p>
+<nav class="sr-jump" aria-label="Singing Rule sections">
+  <a href="#bench">The bench</a><a href="#experiment">Try it</a><a href="#evidence">Measured run</a><a href="#model">Pluck the model</a><a href="#classroom">Teach it</a>
+</nav>
+<section class="sr-hero" id="bench" aria-label="Original bench photograph">
+<figure class="sr-figure"><a href="media/bench.webp"><img src="media/bench.webp" width="1440" height="1084" fetchpriority="high" alt="Green plastic ruler held by binder clips at a glass table, with an orange wireless IMU secured at the free end."></a><figcaption>The actual bench setup. A green plastic ruler is held at the table edge. Elastic bands secure an M5StickC Plus2 near its free end.</figcaption></figure>
+</section>
+<div class="sr-milestones" aria-label="Activity progression">
+  <span><b>01</b> See it move</span><span><b>02</b> Record the release</span><span><b>03</b> Explain the trace</span><span><b>04</b> Test a prediction</span>
+</div>
+<div class="sr-gallery">
+<figure class="sr-figure"><a href="media/mount.webp"><img src="media/mount.webp" width="1120" height="858" loading="lazy" decoding="async" alt="Close-up of the orange M5StickC Plus2 and the bands across the ruler."></a><figcaption>Sensor attachment. This crop of the original photo shows why the board moves with the ruler and also adds mass.</figcaption></figure>
+<figure class="sr-figure"><a href="media/clamp.webp"><img src="media/clamp.webp" width="1054" height="900" loading="lazy" decoding="async" alt="Close-up of the ruler crossing the glass table edge, held by clips."></a><figcaption>Clamp and free-length reference. This crop of the same photo shows the held end. In your own trial, measure from the effective clamp line to the tip.</figcaption></figure>
+</div>
+
+<section id="experiment" class="sr-section" aria-labelledby="experiment-title">
+<h2 id="experiment-title">Do the experiment first</h2>
+<p>Use a flexible ruler, a sturdy table, and a clamp. Use a small deflection, keep faces out of the swing path, and secure any device so it cannot fly off. The held end forms the boundary of a <strong>cantilever</strong>. Measure the free length <em>from the clamp line to the tip</em>, not the total length of the ruler.</p>
+<ol class="sr-steps">
+<li><b>See or hear the difference.</b> Pluck the bare ruler at a long overhang and then at a shorter one. Describe what changed. Use slow-motion video when the motion is too slow to make a useful audible tone. A microphone is a good noncontact pickup if the vibration is audible, but the loudest spectral peak is not necessarily the first bending mode.</li>
+<li><b>Count before calculating.</b> Record enough clear cycles. Time from one peak to another peak of the same sign several cycles later. Divide elapsed time by the number of complete cycles to get period <em>T</em>, then use <em>f</em> = 1/<em>T</em>. Compare peak heights as the motion dies down.</li>
+<li><b>Make it an instrument.</b> Secure the M5StickC Plus2 near the tip at a marked location. Start the original-style BLE motion console, wait for a quiet baseline, release, and record the ringdown. Keep device timestamps and acceleration and gyro axes in the CSV. For a first classroom alternative, a micro:bit v2 can stream acceleration over USB. It is a different sensor and adds a different load.</li>
+<li><b>Repeat on purpose.</b> Run three releases per length, keeping clamp, material, sensor position relative to the tip, and release size fixed within each test condition. Record attached mass, free length, sample rate, chosen axis, and any sample gaps. Compare bare and loaded runs as two different apparatus configurations.</li>
+</ol>
+<div class="sr-gallery">
+<figure class="sr-figure"><a href="media/ble-release-series.webp"><img src="media/ble-release-series.webp" width="1440" height="689" loading="lazy" decoding="async" alt="The original BLE motion console with multiple bursts on its live graph."></a><figcaption>Live motion console, first archived view. A release produces a burst and the trace settles before another release.</figcaption></figure>
+<figure class="sr-figure"><a href="media/ble-live-trace.webp"><img src="media/ble-live-trace.webp" width="1440" height="689" loading="lazy" decoding="async" alt="The original BLE motion console displaying two ringdowns with a command panel and log."></a><figcaption>Live motion console, second archived view. The browser shows the changing signal next to controls and a log.</figcaption></figure>
+</div>
+<p class="meta">The archived dashboards show the original acquisition workflow. They are images, not controls for a remotely connected device.</p>
+</section>
+
+<section id="evidence" class="sr-section" aria-labelledby="evidence-title">
+<p class="sr-kicker">EVIDENCE FROM THE ORIGINAL RUN</p>
+<h2 id="evidence-title">One release, three ways to see it</h2>
+<p>The recovered analysis of the M5StickC Plus2 capture recorded <strong>500 samples in 49.9 seconds</strong> at about <strong>10 Hz</strong>. In the cleaner second ringdown, the acceleration-derived signal and gyro x both pointed to a dominant oscillation at <strong>about 2.24 Hz</strong> (roughly 0.45 s per cycle). That agreement is useful. It is not three-decimal precision or an accuracy claim.</p>
+<div class="sr-gallery sr-evidence">
+<figure class="sr-figure"><a href="media/acceleration.webp"><img src="media/acceleration.webp" width="1600" height="727" loading="lazy" decoding="async" alt="A measured acceleration waveform after release with successively smaller oscillations."></a><figcaption>Measured run, acceleration-derived trace. The shrinking peaks show a ringdown after a release.</figcaption></figure>
+<figure class="sr-figure"><a href="media/gyroscope.webp"><img src="media/gyroscope.webp" width="1600" height="727" loading="lazy" decoding="async" alt="A measured gyro x angular-rate trace showing the same ringdown."></a><figcaption>Measured run, gyro x. Rotational rate also oscillates and fades, using a different sensor channel.</figcaption></figure>
+<figure class="sr-figure"><a href="media/spectrum.webp"><img src="media/spectrum.webp" width="1600" height="727" loading="lazy" decoding="async" alt="Frequency spectrum of the acceleration-derived ringdown with a broad peak near 2.24 hertz."></a><figcaption>Measured run, FFT. The main peak lies near 2.2 Hz. The width and coarse sampling matter more than the last decimal.</figcaption></figure>
+<figure class="sr-figure"><a href="media/axis.webp"><img src="media/axis.webp" width="1440" height="900" loading="lazy" decoding="async" alt="Principal-component variance plot, with almost all of the variance in the first component."></a><figcaption>Measured run, PCA. Almost all acceleration variance in this window lies along one direction near the device z-axis. That identifies a direction at this sensor, not the full mode shape of the beam.</figcaption></figure>
+</div>
+<ul>
+<li><b>Time domain.</b> Peaks recur at fairly regular intervals while their heights fall. That is the measured ringdown.</li>
+<li><b>Frequency domain.</b> The FFT makes the dominant rate easier to see. The 5 Hz Nyquist limit and only about 4.5 samples per cycle limit what can be claimed. A repeat at 25–50 samples/s, if the actual timestamps support that rate, would improve this slow-mode capture.</li>
+<li><b>Direction.</b> In the second ringdown, the first component explains about 99.5% of the acceleration variance and points near device z. The gyro’s dominant direction was near device x. A single IMU tells us about motion at its mounting point, not the full beam mode shape. Tilting the sensor also changes the projection of gravity on its accelerometer axes, so the acceleration trace is not a direct record of tip displacement.</li>
+</ul>
+<p class="sr-note"><strong>What survives.</strong> The apparatus photograph, dashboard views, measured-run plots, and analysis summary survive. The original CSV was not in the recovered bundle. The plots above are preserved evidence, not a newly reproduced analysis. The simulator below does not stand in for those measurements.</p>
+<p><a href="media/analysis-summary.txt" download>Download the archived measured-run analysis summary</a> · <a href="https://github.com/RandoSY/measured-world-lab/blob/main/archive/singing-rule/analysis_summary_recovered.md">Read the source and recovery notes on GitHub</a></p>
+</section>
+
+<section id="model" class="sr-section" aria-labelledby="model-title">
+<p class="sr-kicker">MODEL, NOT BENCH DATA</p>
+<h2 id="model-title">Pluck the virtual ruler</h2>
+<p>Try 20 cm, then 10 cm. Predict what the model does before you click. The ideal bare-ruler example uses 8 Hz at 20 cm, so halving the free length gives four times the frequency. The numbers here are illustrative, not fitted to the original 2.24 Hz run.</p>
+<div class="sr-lab" data-singing-lab>
+  <div class="sr-controls">
+    <label for="sr-length">Free length <output id="sr-lval" for="sr-length">20 cm</output></label>
+    <input id="sr-length" type="range" min="10" max="30" value="20" step="1">
+    <label for="sr-damping">Decay rate <output id="sr-dval" for="sr-damping">1.2 s⁻¹</output></label>
+    <input id="sr-damping" type="range" min="0.3" max="3" value="1.2" step="0.1">
+    <div class="sr-actions"><button id="sr-pluck" type="button">Pluck</button><label><input id="sr-sound" type="checkbox"> Play transposed model tone</label></div>
+    <p class="sr-model-readout"><output id="sr-hz" for="sr-length">8.00 Hz</output> <span>modeled fundamental</span></p>
+    <p class="meta" id="sr-caption">Sound is optional and plays at 32× the model frequency so slow motion can be heard. It is not an original recording.</p>
+  </div>
+  <div class="sr-model-visual">
+    <svg viewBox="0 0 500 132" role="img" aria-label="Illustrative cantilever with clamp at left and free tip at right">
+      <path d="M28 42H95V96H28Z" fill="#37655e"/><path d="M95 69H480" stroke="#658984" stroke-dasharray="5 7" opacity=".5"/>
+      <path id="sr-beam" d="M95 69Q215 69 345 69" fill="none" stroke="#e4b65c" stroke-width="9" stroke-linecap="round"/><circle id="sr-tip" cx="345" cy="69" r="7" fill="#ffe0a0"/>
+      <text x="29" y="118">Fixed clamp</text><text id="sr-tip-label" x="321" y="118">Free end</text>
+    </svg>
+    <svg viewBox="0 0 500 132" role="img" aria-label="Illustrative normalized ringdown trace for the selected length and decay rate">
+      <path d="M35 20V104H480M35 62H480" fill="none" stroke="#72968b" opacity=".6"/>
+      <path id="sr-trace" d="M35 62H480" fill="none" stroke="#70debe" stroke-width="1.8"/>
+      <text x="35" y="123">0 s</text><text x="456" y="123">2 s</text>
+    </svg>
+  </div>
+</div>
+<noscript><p>The model relation is <em>f</em> = 8(20/<em>L</em>)² Hz with <em>L</em> in cm. Enable JavaScript for the interactive plot and optional tone.</p></noscript>
+<div class="sr-gallery">
+<figure class="sr-figure"><a href="media/historic-model.webp"><img src="media/historic-model.webp" width="1026" height="673" loading="lazy" decoding="async" alt="The archived spring-mass simulator with a spring drawing beside a fading oscillation."></a><figcaption>Original Spring Mass Lab simulation capture. This explains the shape of a ringdown. It is not a recording of the ruler.</figcaption></figure>
+</div>
+<p><strong>From the curve to the equation.</strong> A first model is one damped oscillator, <em>m</em>x″ + <em>c</em>x′ + <em>k</em>x = 0. A cosine supplies the period. An exponential envelope supplies the fading amplitude. For a uniform, lightly damped, unloaded beam with the same cross-section and clamp, the first bending frequency scales approximately as <em>L</em><sup>−2</sup>. Attach a sensor and the mass distribution changes. That is a reason to test the model again, not a reason to discard an inconvenient data point.</p>
+</section>
+
+<section id="classroom" class="sr-section" aria-labelledby="classroom-title">
+<p class="sr-kicker">TEACHER'S CORNER</p>
+<h2 id="classroom-title">Can your ruler tell you its own length?</h2>
+<p>Give each group one ruler and three measured overhangs. Ask them to build a rule that predicts the unknown overhang from a recording of the vibration. Give the rule, units, calibration steps, and limits to another team. That team should be able to use it without asking its authors for help.</p>
+<div class="sr-cards">
+<div><h3>First pass</h3><p>Record the overhang, period from several peaks, and frequency. Plot frequency versus length, then versus 1/<em>L</em>². Which representation is easier to use for a prediction?</p></div>
+<div><h3>Check the claim</h3><p>Set aside a fourth length. Make a blind prediction, then measure the overhang with a physical ruler and report the error. Try changing only the attached mass to find where the rule stops working.</p></div>
+<div><h3>Extension</h3><p>Fit the decay envelope or compare spectra across three plucks. Ask why the initial amplitude changes more than frequency in a small-deflection model, and what evidence would make you revise it.</p></div>
+</div>
+<p><strong>Group handoff.</strong> Submit the diagram of your setup, one table of repeated measurements, the model and its calibration, one prediction the other team checked, and one limit on where the model should be used.</p>
+<p><a href="https://github.com/RandoSY/measured-world-lab/blob/main/archive/singing-rule/Singing_Ruler_Microbit_Executive_Summary.md">Micro:bit classroom adaptation</a> · <a href="../instruments/">Virtual Instruments exhibit</a> · <a href="https://gibbs.ccny.cuny.edu/teaching/s2024/labs/VibratingCantilever/SPVib.php">Cantilever theory and length dependence</a></p>
+</section>
+
+<footer>
+<nav aria-label="Project Atlas"><a href="../">Atlas home</a> <a href="../singing-rule/" aria-current="page">Singing Rule</a> <a href="../instruments/">Virtual instruments</a> <a href="../core-10/">CORE 10</a> <a href="../ideas/">Idea index</a> <a href="../inventory/">Project inventory</a> <a href="../repositories/">All repositories</a></nav>
+<p><a href="https://github.com/RandoSY/measured-world-lab/tree/main/archive/singing-rule">View the source on GitHub</a></p>
+</footer>
+</main></body>
+</html>

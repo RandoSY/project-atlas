@@ -1,0 +1,90 @@
+Cantilever beam M5StickC Plus2 motion capture analysis
+========================================================
+
+Input CSV:
+m5stick_plus2_motion_2026-05-10T01-35-02-644Z.csv
+
+Basic capture:
+- Samples: 500
+- Duration: 49.90 s
+- Median sample period: 0.100 s
+- Effective sample rate: 10.00 Hz
+- Markers found: 0
+
+Important limitation:
+- This run was captured at about 10 Hz, so the Nyquist limit is about 5 Hz.
+- The dominant cantilever mode is therefore measurable only if it is below 5 Hz.
+- The captured ringdown appears to be near 2.3 Hz, so it is safely below Nyquist, but only about 4.3 samples per cycle. That is enough to see the ringdown, but not enough for precision modal analysis.
+
+Waveform interpretation:
+- Two strong excitation/ringdown events are visible: one at the start of the capture and one around t = 8.6 to 9.0 s.
+- The second event is the cleanest window for analysis because the trace settles before and after it.
+- The acceleration waveform is dominated by az and by the acceleration resultant |a|.
+- The gyro waveform is dominated by gx.
+- This is exactly what a clamped-ruler/cantilever experiment should show: one major bending direction and one major rotational-rate axis.
+
+Dominant frequency estimates:
+- Full-record dynamic_g FFT peak: 2.340 Hz
+- Full-record gx FFT peak: 2.240 Hz
+- Second-ringdown dynamic_g FFT peak: 2.241 Hz
+- Second-ringdown gx FFT peak: 2.241 Hz
+
+PCA / Eigen-analysis, all samples:
+Acceleration covariance eigenvalues in g^2:
+  lambda1 = 0.0414161
+  lambda2 = 7.47728e-05
+  lambda3 = 3.16014e-05
+Acceleration variance ratios:
+  PC1 = 99.744 %
+  PC2 = 0.180 %
+  PC3 = 0.076 %
+Acceleration PC1 eigenvector [ax, ay, az]:
+  [-0.00225, -0.09178,  0.99578]
+
+Gyro covariance eigenvalues in (deg/s)^2:
+  lambda1 = 151.647
+  lambda2 = 0.54789
+  lambda3 = 0.00373129
+Gyro variance ratios:
+  PC1 = 99.638 %
+  PC2 = 0.360 %
+  PC3 = 0.002 %
+Gyro PC1 eigenvector [gx, gy, gz]:
+  [-0.99896, -0.04477, -0.00910]
+
+PCA / Eigen-analysis, second ringdown window 8.3 to 14.0 s:
+Acceleration covariance eigenvalues in g^2:
+  lambda1 = 0.0940736
+  lambda2 = 0.000434817
+  lambda3 = 7.25586e-06
+Acceleration variance ratios:
+  PC1 = 99.532 %
+  PC2 = 0.460 %
+  PC3 = 0.008 %
+Acceleration PC1 eigenvector [ax, ay, az]:
+  [-0.01801, -0.10025,  0.99480]
+
+Gyro covariance eigenvalues in (deg/s)^2:
+  lambda1 = 364.895
+  lambda2 = 0.190306
+  lambda3 = 0.00338028
+Gyro variance ratios:
+  PC1 = 99.947 %
+  PC2 = 0.052 %
+  PC3 = 0.001 %
+Gyro PC1 eigenvector [gx, gy, gz]:
+  [-0.99940, -0.03365, -0.00833]
+
+Plain-English eigenvector interpretation:
+- Acceleration PC1 points almost entirely along the device z-axis.
+- Gyro PC1 points almost entirely along the negative device x-axis.
+- The signs of PCA eigenvectors are arbitrary: [0, 0, 1] and [0, 0, -1] represent the same axis direction for mode-shape purposes.
+- The huge PC1 dominance means the ruler motion is essentially one-dimensional in the measured data.
+- That is the modal/eigenvector story: the cantilever has a preferred bending mode, and the sensor sees it as a dominant acceleration axis and a dominant angular-rate axis.
+
+Recommended next improvements:
+1. Increase BLE sample rate if stable. 25-50 Hz would make the ringdown and FFT much better.
+2. Add a MARK button press exactly at release/pluck.
+3. Use the same mounting orientation each time.
+4. Record ruler length, overhang length, mass placement, and clamp position.
+5. Repeat with different overhang lengths; the frequency should shift strongly with length.
