@@ -1,0 +1,47 @@
+<section class="tea-hero" aria-labelledby="tea-question">
+<div>
+<p class="atlas-kicker">CORE 10 · Kitchen Inquiry Lab</p>
+<h2 id="tea-question">Can you tell how strong the tea is without tasting it?</h2>
+<p>Make a series of dilutions from one cup of tea. Shine the same light through each sample and compare what gets through. Then see whether your calibration can identify an unlabeled sample from that same cup.</p>
+<p class="tea-actions"><a class="tea-button" href="#classroom">Run the dilution lab</a><a href="model.html">Open the original dashboard model</a></p>
+</div>
+<figure><img src="media/optical-bench.svg" width="1040" height="650" alt="An LED shines through a cuvette of tea toward a light detector in a covered chamber"><figcaption>Apparatus schematic. Keep the source, path length, and detector fixed when you swap samples.</figcaption></figure>
+</section>
+
+<section id="classroom" class="tea-section" aria-labelledby="tea-lab">
+<p class="atlas-kicker">01 · Physical experiment</p>
+<h2 id="tea-lab">Start with a blank. End with an unknown.</h2>
+<ol class="tea-steps">
+<li><h3>Make standards</h3><p>Use one filtered, cooled stock tea and the same water for the blank and all dilutions. For a first pass, try 0%, 25%, 50%, 75%, and 100% stock by volume. Keep the cuvette type, fill height, and orientation fixed.</p></li>
+<li><h3>Measure light</h3><p>Take a dark reading with the LED off. With the LED on and settings unchanged, read the water blank and the samples. Check the blank again at the end to see whether the source or detector drifted.</p></li>
+<li><h3>Predict an unknown</h3><p>Plot the log-transformed reading against the known stock fractions. Fit only the range that behaves approximately linearly, then estimate an unlabeled dilution inside that range. Check the prediction against how the sample was actually made.</p></li>
+</ol>
+<p><strong>Two ways to build it.</strong> The original low-cost path used a lamp or LED, a light-dependent resistor, and a digital voltmeter. That is a good comparison instrument, but divider voltage is not directly proportional to light. The documented upgrade pairs one LED color at a time and 10 mm cuvettes with a VEML7700 detector, fixed gain and integration time, and serial logging.</p>
+</section>
+
+<section id="law" class="tea-section" aria-labelledby="tea-law">
+<p class="atlas-kicker">02 · Experience before equation</p>
+<h2 id="tea-law">The detector sees light. The calibration estimates strength.</h2>
+<div class="tea-formula" aria-label="Transmittance equals sample minus dark divided by blank minus dark. A equals the negative base ten logarithm of transmittance."><code>T = (sample − dark) / (blank − dark)</code><code>A = −log<sub>10</sub>(T)</code></div>
+<p>With fixed path length and wavelength, ideal Beer–Lambert absorbance rises in proportion to concentration. The transmitted light does not. For example, 50% transmission gives <em>A</em> ≈ 0.301, while 25% gives <em>A</em> ≈ 0.602. Each additional 0.301 of <em>A</em> halves the transmitted light.</p>
+<p class="tea-note"><strong>What can you claim?</strong> Tea is a mixture, and particles can scatter light. Treat <em>A</em> as an optical attenuation index, or use your standards to report an equivalent fraction of this particular stock tea. It does not tell you the caffeine concentration or how strong another tea will taste. <a href="https://goldbook.iupac.org/terms/view/B00626">IUPAC definition</a>.</p>
+</section>
+
+<section id="model" class="tea-section" aria-labelledby="tea-model">
+<p class="atlas-kicker">03 · Recovered browser dashboard</p>
+<h2 id="tea-model">Watch the optical signal change as the tea steeps</h2>
+<p>Open <strong>Modeling &amp; Simulation</strong> and select <strong>Generate Model Run</strong>. The model starts with extraction, translates concentration to absorbance, and computes the transmitted light. It also models cooling separately. In the physical lab, fix the measurement conditions first so a change in the reading has a clear interpretation.</p>
+<figure class="tea-dashboard"><a href="media/dashboard.webp"><img src="media/dashboard.webp" width="1418" height="728" loading="lazy" decoding="async" alt="TeaTime dashboard showing plots for simulated extraction, absorbance, transmitted light, cooling, and mass"></a><figcaption>Recovery of the original modeling dashboard, displaying a generated run. These are simulated values, not sensor readings.</figcaption></figure>
+<p class="tea-actions"><a class="tea-button" href="model.html">Try the simulation</a></p>
+</section>
+
+<section id="downloads" class="tea-section" aria-labelledby="tea-downloads">
+<p class="atlas-kicker">04 · Original materials</p>
+<h2 id="tea-downloads">Build it, teach it, improve it</h2>
+<ul>
+<li><a href="TeaTime-Operators-Guide.pdf">VEML7700 Operator’s Guide</a> · optical chamber, wiring, firmware appendix, blank correction, and run sheet.</li>
+<li><a href="TeaTime-Teachers-Guide.pdf">VEML7700 Teacher’s Guide</a> · classroom sequence, calibration, unknown-sample challenge, and assessment.</li>
+</ul>
+<p><strong>Evidence status.</strong> The archive contains instrument designs, teaching guides, and a working browser model. No verified physical dilution-series data was recovered for this exhibit.</p>
+<p>For another way to turn a changing physical quantity into a measurement, try <a href="../water-clock/">Galileo’s Water Clock</a> or the <a href="../pop-can-calorimeter/">Pop-Can Calorimeter</a>.</p>
+</section>

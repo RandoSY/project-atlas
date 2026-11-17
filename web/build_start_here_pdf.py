@@ -145,23 +145,21 @@ foot(1)
 pdf.showPage()
 
 # 2 / Match the question to the resource
-header("Exhibit map","Seven places to begin","Each card opens the exhibit. Try its first action before reading everything.")
+header("Exhibit map","Eight places to begin","Each card opens the exhibit. Try its first action before reading everything.")
 for i,row in enumerate(data["exhibits"]):
     x=42+(i%2)*270
     y=161+(i//2)*135
-    bg(x,y,258,125,"cream" if i in (0,1,6) else "wash","border")
+    bg(x,y,258,125,"cream" if i in (0,1,6,7) else "wash","border")
     kicker(x+13,y+10,row["topic"])
     ty=wrap(x+13,y+24,row["title"],232,16.5,16.8,"Display",max_lines=2)
     sy=wrap(x+13,ty+4,row["text"],230,8.9,10.4,ink="muted",max_lines=3)
     note_end=wrap(x+13,sy+3,row["start"],231,8.8,10.2,"Strong",max_lines=2)
     assert note_end <= y+110
     a(x+13,y+111,"Open exhibit",row["url"],8.3)
-bg(312,566,258,125,"wash","border")
-kicker(325,581,"Read the evidence")
-wrap(325,599,data["evidence"],231,8.9,11.8,ink="muted",max_lines=7)
 home="/atlas/"
-a(43,702,"Open Project Atlas",home,9)
-t(43,721,"project-atlas-lab.duckdns.org/atlas/",8.7,"Body","muted")
+kicker(43,701,"Read the evidence")
+wrap(43,714,"A measured run, a simulation, and a working dashboard are different kinds of evidence.",415,8.5,10,ink="muted",max_lines=1)
+a(43,729,"Open Project Atlas",home,8.3)
 q=QrCodeWidget(urljoin(data["origin"],home),barLevel="M",barBorder=4)
 bounds=q.getBounds()
 ww,hh=bounds[2]-bounds[0],bounds[3]-bounds[1]

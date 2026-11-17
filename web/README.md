@@ -1,6 +1,6 @@
 # Project Atlas on the web
 
-The twelve generated static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. The recovered Water Clock model is a separate standalone HTML file.
+The thirteen generated static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. Water Clock and TeaTime also include standalone interactive models.
 
 The Idea Index and Project Inventory are rendered from the canonical Markdown at the root of this repository. Their off-GitHub sections are deliberately omitted from the rendered site. The full repository browser uses a snapshot of GitHub's public listing, distinguishes forks, and adds historical project homes from the legacy map. Only the generated `web/atlas/` directory belongs in the Nginx web root.
 
@@ -79,3 +79,8 @@ Author the exhibit text in `water-clock.html` and rebuild the site. The public a
 - The dashboard image is from `dashboard_live.png`, cropped to the controls and demo data, omitting the original status/IP strip.
 - `SDL_ATOM_Water_Clock_v0.2.zip` is the original source package. Both Wi-Fi configuration values are blank. The package is a bench-test candidate, not a hardware-validated release.
 - `model.html` is adapted from `The_Changing_World_Interactive_Calculus_Lab_Tabs.html`. Atlas adds a return link, initial-tab fragments, and narrow-screen styling. The model and CSV computations are unchanged.
+
+
+## TeaTime
+
+Edit `teatime.html` and rebuild the static site. The VEML7700 PDFs are web-optimized copies of the original Science of Tea Time operator and teacher guides. The optical path is a new schematic, not a bench photograph. The recovered `teatime_beer_lambert_modeling_dashboard.html` runs as a simulation on Atlas with its serial-connect controls disabled and a local return link. The dashboard image was captured from a generated model run. No physical readings are represented as recovered, and the guide’s standalone serial firmware is a separate build path.

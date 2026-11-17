@@ -1,0 +1,18 @@
+.tea-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;padding:1rem;background:#f1e8d6;border:1px solid #cbbf9d;border-radius:.7rem;align-items:center}
+.tea-hero h2,.tea-section h2{font-size:clamp(1.45rem,4vw,2rem);line-height:1.15;margin:.25rem 0 .6rem}
+.tea-hero p,.tea-section p{margin:.45rem 0}
+.tea-hero figure,.tea-dashboard{margin:0}
+.tea-hero figcaption,.tea-dashboard figcaption{font-size:.84rem;color:#3b5752;margin:.34rem 0}
+.tea-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.32rem .7rem;font-size:.92rem}
+.tea-actions a{display:inline-flex;align-items:center;min-height:2.75rem}
+.tea-button{background:#114f4b;color:#fff;border-radius:.4rem;padding:0 .72rem;font-weight:700}
+.tea-button:hover{background:#17433d;color:#fff}
+.tea-section{border-top:1px solid #b9cac1;padding-top:1rem;margin-top:1.65rem}
+.tea-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.68rem;padding:0;list-style:none;counter-reset:steps}
+.tea-steps li{counter-increment:steps;border:1px solid #b9ccc0;background:#edf0e7;border-radius:.55rem;padding:.7rem;margin:0;font-size:.92rem}
+.tea-steps h3{font-size:1.06rem;margin:0}
+.tea-steps h3:before{content:counter(steps,decimal-leading-zero) " / ";color:#25675c;font-size:.78rem}
+.tea-formula{background:#e4eee6;padding:.8rem .9rem;display:flex;flex-wrap:wrap;gap:.7rem 1.3rem;border-radius:.45rem}
+.tea-note{padding:.78rem .9rem;background:#f4ead5;border-left:.25rem solid #a36e1d}
+.tea-dashboard img{border-radius:.45rem}
+@media(max-width:680px){.tea-hero,.tea-steps{grid-template-columns:1fr}}

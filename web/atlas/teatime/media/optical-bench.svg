@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="650" viewBox="0 0 1040 650" role="img" aria-labelledby="title desc">
+<title id="title">What a TeaTime colorimeter measures</title>
+<desc id="desc">An LED shines through a matched cuvette of tea onto a detector inside a covered chamber. Compare the dark-corrected tea signal with a water blank.</desc>
+<rect width="1040" height="650" rx="24" fill="#10504c"/>
+<rect x="32" y="30" width="976" height="590" rx="20" fill="#123639" stroke="#72988a"/>
+<g font-family="system-ui, sans-serif" fill="#f6f0e2">
+<text x="78" y="94" font-size="21" letter-spacing="4" fill="#b4ded1" font-weight="700">TEATIME / OPTICAL BENCH</text>
+<text x="78" y="155" font-size="43" font-family="Georgia,serif" font-weight="700">How much light gets through?</text>
+<rect x="80" y="193" width="880" height="322" rx="20" fill="#0b2b2e" stroke="#7aa397" stroke-width="2" stroke-dasharray="11 7"/>
+<text x="110" y="230" font-size="19" fill="#c8e4d8">Light-tight chamber, viewed from above</text>
+<rect x="130" y="301" width="146" height="71" rx="24" fill="#eec87d"/>
+<path d="M162 319 h58 m-58 35 h58" stroke="#78531c" stroke-width="5" stroke-linecap="round"/>
+<path d="M286 337 h120" stroke="#f6d88b" stroke-width="11"/><path d="M406 324 l23 13 -23 13z" fill="#f6d88b"/>
+<rect x="443" y="266" width="155" height="139" rx="12" fill="#784b22" stroke="#eacfaa" stroke-width="4"/>
+<rect x="455" y="278" width="131" height="115" rx="8" fill="#b87535"/>
+<path d="M457 336 h126" stroke="#f6cc80" stroke-width="7"/>
+<path d="M607 337 h133" stroke="#ecd297" stroke-width="5" stroke-dasharray="9 6"/><path d="M740 326 l19 11 -19 11z" fill="#ecd297"/>
+<rect x="772" y="303" width="142" height="66" rx="10" fill="#a6d4bf"/><rect x="814" y="318" width="56" height="36" rx="5" fill="#27665e"/>
+<g text-anchor="middle" font-size="25" font-weight="700"><text x="203" y="454">LED</text><text x="520" y="454">10 mm cuvette</text><text x="840" y="454">Detector</text></g>
+<text x="79" y="567" font-size="25" fill="#f6e3b6">1. Read the water blank</text>
+<text x="525" y="567" font-size="25" fill="#c8e4d8">2. Swap in tea and compare</text>
+</g>
+</svg>

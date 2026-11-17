@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TeaTime Beer–Lambert Lab Dashboard — Randall Young / UMA-GSA</title>
+<style>
+  :root{
+    --bg:#08111d;
+    --bg2:#0d1728;
+    --panel:#101c31;
+    --panel2:#14233d;
+    --ink:#eef5ff;
+    --muted:#9fb4d3;
+    --line:#294569;
+    --accent:#5db1ff;
+    --accent2:#2ad8d6;
+    --good:#38d26e;
+    --warn:#f0b84d;
+    --bad:#ff6b87;
+    --orange:#ff9b4a;
+    --shadow:0 12px 28px rgba(0,0,0,.35);
+    --radius:16px;
+    --header-h:84px;
+    --tab-h:52px;
+  }
+  *{box-sizing:border-box}
+  html,body{
+    height:100%;
+    margin:0;
+    background:radial-gradient(circle at top left,#173661 0,#0b1423 36%,#08111d 100%);
+    color:var(--ink);
+    font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+    overflow:hidden;
+  }
+  body{display:flex;flex-direction:column}
+  .app{
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    width:100vw;
+    padding:10px;
+    gap:10px;
+  }
+  .header{
+    height:var(--header-h);
+    min-height:var(--header-h);
+    display:grid;
+    grid-template-columns:80px 1fr 390px;
+    gap:12px;
+    align-items:center;
+    background:linear-gradient(180deg,#13243d,#0d1a2d);
+    border:1px solid var(--line);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    padding:10px 14px;
+  }
+  .brand-badge{
+    height:58px;width:58px;border-radius:14px;
+    display:grid;place-items:center;
+    background:linear-gradient(180deg,#225c98,#153a63);
+    border:1px solid #5fb2ff;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);
+  }
+  .brand-badge svg{width:46px;height:46px}
+  .brand h1{
+    margin:0;
+    font-size:28px;
+    line-height:1;
+    letter-spacing:.2px;
+  }
+  .brand .sub{
+    color:#c9dbf6;
+    margin-top:5px;
+    font-size:13px;
+  }
+  .meta{
+    display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;
+  }
+  .meta .chip{
+    background:#0c1628;
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:8px 12px;
+    color:#d6e6ff;
+    font-size:12px;
+    font-weight:700;
+    white-space:nowrap;
+  }
+  .tabs{
+    min-height:var(--tab-h);
+    height:var(--tab-h);
+    display:flex;
+    gap:8px;
+    align-items:center;
+    background:linear-gradient(180deg,#101d31,#0d1829);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:7px;
+    box-shadow:var(--shadow);
+    overflow:auto hidden;
+  }
+  .tab{
+    border:none;
+    border-radius:999px;
+    padding:10px 14px;
+    background:#0d1829;
+    color:#cfe2ff;
+    font-size:13px;
+    font-weight:800;
+    cursor:pointer;
+    border:1px solid #284568;
+    white-space:nowrap;
+  }
+  .tab.active{
+    background:linear-gradient(180deg,#2873be,#19538a);
+    border-color:#74bcff;
+    color:white;
+  }
+  .content{
+    flex:1 1 auto;
+    min-height:0;
+    background:linear-gradient(180deg,#0f1a2c,#0b1423);
+    border:1px solid var(--line);
+    border-radius:20px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .tabPanel{
+    display:none;
+    height:100%;
+    overflow:auto;
+    padding:12px;
+  }
+  .tabPanel.active{display:block}
+  .grid{
+    display:grid;
+    gap:12px;
+  }
+  .g-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g-4{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .g-main{grid-template-columns:350px 1fr}
+  .card{
+    background:linear-gradient(180deg,#13223a,#101b2e);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:12px;
+    box-shadow:var(--shadow);
+  }
+  .card h3,.card h4{
+    margin:0 0 10px 0;
+    font-size:14px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:#d4e8ff;
+  }
+  .hero{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:12px;
+  }
+  .heroGraphic{
+    display:grid;
+    place-items:center;
+    min-height:280px;
+    background:radial-gradient(circle at 25% 25%,#1c3e68 0,#10233d 48%,#0b1524 100%);
+  }
+  .heroGraphic svg{max-width:100%;height:250px}
+  .kpiGrid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:10px;
+  }
+  .kpi{
+    background:#0d1728;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:10px;
+    min-height:82px;
+  }
+  .kpi .label{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--muted);
+    font-weight:700;
+  }
+  .kpi .value{
+    margin-top:5px;
+    font-size:24px;
+    font-weight:900;
+  }
+  .kpi small{color:var(--muted)}
+  .btnbar,.formgrid,.phaseGrid{
+    display:grid;
+    gap:8px;
+  }
+  .btnbar{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .phaseGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .formgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  button,input,select,textarea{
+    font-family:inherit;
+    font-size:14px;
+    border-radius:12px;
+    border:1px solid #36567e;
+    background:#0d1728;
+    color:var(--ink);
+  }
+  button{
+    padding:10px 12px;
+    font-weight:800;
+    cursor:pointer;
+  }
+  button:hover{filter:brightness(1.08)}
+  .primary{background:linear-gradient(180deg,#2873be,#19538a);border-color:#6db8ff}
+  .good{background:linear-gradient(180deg,#1f9a4f,#146f39);border-color:#4ce485}
+  .warn{background:linear-gradient(180deg,#bd7a28,#8e581a);border-color:#ffc766}
+  .danger{background:linear-gradient(180deg,#b73b58,#81273d);border-color:#ff7895}
+  .ghost{background:#13233b}
+  .phaseBtn.active{outline:2px solid var(--warn); box-shadow:0 0 0 3px rgba(240,184,77,.15) inset}
+  label{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    color:#d9e8ff;
+    font-size:12px;
+    font-weight:700;
+  }
+  input,select,textarea{padding:9px 10px}
+  textarea{min-height:160px;resize:vertical}
+  .split{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:12px;
+  }
+  .chartCard canvas{
+    width:100%;
+    height:290px;
+    background:linear-gradient(180deg,#08111d,#091221);
+    border:1px solid #203757;
+    border-radius:14px;
+  }
+  .miniCharts{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+  }
+  .miniCharts canvas{
+    width:100%;
+    height:220px;
+    background:linear-gradient(180deg,#08111d,#091221);
+    border:1px solid #203757;
+    border-radius:14px;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+  }
+  th,td{
+    border-bottom:1px solid #223957;
+    padding:8px;
+    text-align:left;
+    vertical-align:top;
+  }
+  th{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    color:#c4dcff;
+  }
+  .scrollTable{
+    max-height:340px;
+    overflow:auto;
+    border:1px solid #223957;
+    border-radius:14px;
+  }
+  .statusLine{
+    display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);margin-top:6px
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;
+    border:1px solid #2a496f;
+    border-radius:999px;
+    padding:4px 8px;
+    background:#0c1626;
+  }
+  .dot{
+    width:10px;height:10px;border-radius:50%;
+    display:inline-block;
+  }
+  .temp{background:var(--bad)}
+  .light{background:#ffd166}
+  .mass{background:var(--good)}
+  .dist{background:var(--accent)}
+  .note{
+    color:#dceaff;line-height:1.45;background:#0d1728;border:1px solid var(--line);border-radius:14px;padding:12px
+  }
+  .small{font-size:12px;color:var(--muted);line-height:1.4}
+  .savedRun{
+    display:grid;
+    grid-template-columns:1fr auto auto auto;
+    gap:8px;
+    align-items:center;
+    padding:10px;
+    border-bottom:1px solid #223957;
+  }
+  .savedRun:last-child{border-bottom:none}
+  .savedList{
+    border:1px solid #223957;
+    border-radius:14px;
+    overflow:auto;
+    max-height:420px;
+    background:#0d1728;
+  }
+  .right{text-align:right}
+  .footerline{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:10px;
+  }
+
+  @media (max-width:1100px){
+    .header{grid-template-columns:70px 1fr}
+    .meta{grid-column:1/-1;justify-content:flex-start}
+    .g-main,.split,.hero{grid-template-columns:1fr}
+    .kpiGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media (max-width:760px){
+    .app{padding:6px}
+    .header{height:auto;min-height:0}
+    .kpiGrid,.formgrid,.btnbar,.phaseGrid,.g-2,.g-3,.g-4,.miniCharts{grid-template-columns:1fr}
+    .brand h1{font-size:22px}
+  }
+#connectBtn,#disconnectBtn{display:none!important}
+.atlas-demo-strip{flex:0 0 auto}.app{flex:1 1 0;min-height:0;width:100%;height:auto}
+</style>
+</head>
+<body>
+<div class="atlas-demo-strip" style="padding:12px 18px;background:#e1f1ea;color:#123931;font:600 15px system-ui,sans-serif"><a style="color:inherit" href="./">← Back to the TeaTime exhibit</a> · Archived dashboard · Simulation only · No hardware required</div>
+<div class="app">
+  <div class="header">
+    <div class="brand-badge" aria-hidden="true">
+      <svg viewBox="0 0 64 64">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#84d0ff"/>
+            <stop offset="1" stop-color="#2bd8d5"/>
+          </linearGradient>
+        </defs>
+        <circle cx="32" cy="32" r="28" fill="#0f2b47" stroke="url(#g1)" stroke-width="2.5"/>
+        <path d="M20 20h18a8 8 0 0 1 0 16h-1a11 11 0 0 1-11 10h-2a12 12 0 0 1-12-12v-14h8z" fill="#87c8ff"/>
+        <path d="M38 24h4a5 5 0 0 1 0 10h-4" fill="none" stroke="#eaf7ff" stroke-width="3" stroke-linecap="round"/>
+        <path d="M22 18c2 2 2 4 0 6M30 16c2 2 2 4 0 6M38 18c2 2 2 4 0 6" stroke="#ffd166" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div class="brand">
+      <h1>TeaTime Beer–Lambert Lab Dashboard</h1>
+      <div class="sub">Randall Young • UMA / GSA • Beer–Lambert concentration + Temperature + Mass + Distance • Browser-based operator resource</div>
+    </div>
+    <div class="meta">
+      <div class="chip">Tabbed resource</div>
+      <div class="chip">Fits browser window</div>
+      <div class="chip">Data logging</div>
+      <div class="chip">Storage & retrieval</div>
+      <div class="chip" id="connChip">Offline</div>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="overview">Overview</button>
+    <button class="tab" data-tab="beer">Beer–Lambert Core</button>
+    <button class="tab" data-tab="modeling">Modeling & Simulation</button>
+    <button class="tab" data-tab="run">Run Control</button>
+    <button class="tab" data-tab="charts">Charts</button>
+    <button class="tab" data-tab="logging">Data Logging</button>
+    <button class="tab" data-tab="storage">Storage</button>
+    <button class="tab" data-tab="protocol">Protocol</button>
+    <button class="tab" data-tab="about">About</button>
+  </div>
+
+  <div class="content">
+    <section id="overview" class="tabPanel active">
+      <div class="hero">
+        <div class="card">
+          <h3>Mission</h3>
+          <div class="note">
+            TeaTime treats a cup of tea as a measured chemical-and-thermal event. The heart of the exercise is Beer–Lambert:
+            blank light intensity becomes I₀, transmitted tea intensity becomes I, absorbance is A = log₁₀(I₀/I),
+            and concentration follows from A = ε c ℓ when path length and calibration are known. Temperature, mass,
+            and distance make the concentration experiment repeatable and physically interpretable.
+          </div>
+          <div class="kpiGrid" style="margin-top:12px">
+            <div class="kpi"><div class="label">Phase</div><div class="value" id="phaseRead">Idle</div><small>current marked stage</small></div>
+            <div class="kpi"><div class="label">Elapsed</div><div class="value" id="elapsedRead">0.0 s</div><small>since run start</small></div>
+            <div class="kpi"><div class="label">Concentration</div><div class="value" id="scoreRead">--</div><small>c = A/(εℓ)</small></div>
+            <div class="kpi"><div class="label">Temperature</div><div class="value" id="tempRead">--</div><small>°C</small></div>
+            <div class="kpi"><div class="label">Absorbance A</div><div class="value" id="strengthRead">--</div><small>log₁₀(I₀/I)</small></div>
+            <div class="kpi"><div class="label">Water mass</div><div class="value" id="waterRead">--</div><small>mass minus cup tare</small></div>
+          </div>
+          <div class="statusLine">
+            <span class="badge"><i class="dot temp"></i>Temperature</span>
+            <span class="badge"><i class="dot light"></i>Light → absorbance → concentration</span>
+            <span class="badge"><i class="dot mass"></i>Mass</span>
+            <span class="badge"><i class="dot dist"></i>Distance / level</span>
+          </div>
+        </div>
+        <div class="card heroGraphic">
+          <svg viewBox="0 0 520 280">
+            <defs>
+              <linearGradient id="cupGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#79c7ff"/>
+                <stop offset="100%" stop-color="#2f87c8"/>
+              </linearGradient>
+              <linearGradient id="teaGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#d08a3b"/>
+                <stop offset="100%" stop-color="#8a4b18"/>
+              </linearGradient>
+              <linearGradient id="sensorGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#85e6ff"/>
+                <stop offset="100%" stop-color="#39a2ff"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="520" height="280" rx="20" fill="transparent"/>
+            <g transform="translate(40,20)">
+              <rect x="255" y="25" width="70" height="30" rx="10" fill="#173153" stroke="#73bfff"/>
+              <text x="290" y="45" fill="#eef7ff" text-anchor="middle" font-size="13" font-weight="700">TEMP</text>
+              <line x1="290" y1="55" x2="290" y2="160" stroke="#ff7e95" stroke-width="4"/>
+              <circle cx="290" cy="165" r="8" fill="#ff7e95"/>
+
+              <rect x="55" y="70" width="65" height="55" rx="12" fill="#173153" stroke="#73bfff"/>
+              <circle cx="72" cy="97" r="8" fill="#ffd166"/>
+              <rect x="88" y="88" width="20" height="18" rx="4" fill="#91d8ff"/>
+              <text x="87" y="135" fill="#dfeeff" text-anchor="middle" font-size="12" font-weight="700">LIGHT</text>
+
+              <rect x="140" y="75" width="170" height="120" rx="16" fill="none" stroke="url(#cupGrad)" stroke-width="6"/>
+              <path d="M145 140h160v42a12 12 0 0 1-12 12H157a12 12 0 0 1-12-12z" fill="url(#teaGrad)" opacity=".9"/>
+              <path d="M312 100h18a22 22 0 0 1 0 44h-18" fill="none" stroke="#d9eeff" stroke-width="6"/>
+              <text x="225" y="225" fill="#edf5ff" text-anchor="middle" font-size="20" font-weight="800">TeaTime</text>
+
+              <rect x="155" y="205" width="140" height="18" rx="7" fill="#6b7685"/>
+              <rect x="175" y="220" width="100" height="18" rx="6" fill="#2f3c4d"/>
+              <rect x="187" y="222" width="76" height="14" rx="4" fill="#1b2430"/>
+              <text x="225" y="233" fill="#95ffb7" text-anchor="middle" font-size="11" font-weight="700">MASS / SCALE</text>
+
+              <rect x="355" y="105" width="85" height="55" rx="12" fill="#173153" stroke="#73bfff"/>
+              <circle cx="374" cy="133" r="9" fill="#4db3ff"/>
+              <circle cx="400" cy="133" r="9" fill="#4db3ff"/>
+              <text x="397" y="175" fill="#dfeeff" text-anchor="middle" font-size="12" font-weight="700">DISTANCE</text>
+
+              <path d="M124 103h18M320 115h32M307 226h38M330 132h20" stroke="#7ed1ff" stroke-width="2" stroke-dasharray="6 6"/>
+              <path d="M440 133h20" stroke="#4db3ff" stroke-width="2"/>
+              <path d="M450 123l20 10-20 10" fill="none" stroke="#4db3ff" stroke-width="2"/>
+
+              <g transform="translate(350,28)">
+                <rect x="0" y="0" width="110" height="48" rx="12" fill="#0d1728" stroke="#2b4d75"/>
+                <polyline points="10,35 32,20 55,26 78,12 100,18" fill="none" stroke="#2ad8d6" stroke-width="3"/>
+                <polyline points="10,28 32,29 55,18 78,26 100,10" fill="none" stroke="#ff6b87" stroke-width="3"/>
+              </g>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="grid g-3" style="margin-top:12px">
+        <div class="card">
+          <h3>Suggested modern setup</h3>
+          <table>
+            <tbody>
+              <tr><td>Temperature</td><td>DS18B20, thermistor, or digital probe</td></tr>
+              <tr><td>Light</td><td>LED + LDR/photodiode or lux sensor jig</td></tr>
+              <tr><td>Mass</td><td>HX711 + load cell / eScale</td></tr>
+              <tr><td>Distance</td><td>HC-SR04, VL53L0X, or fixed geometry reference</td></tr>
+              <tr><td>Controller</td><td>Pico W / ESP32 / Arduino / PIC bridge</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Measures that matter</h3>
+          <table>
+            <tbody>
+              <tr><td>Cooling slope</td><td id="coolSlopeRead">--</td></tr>
+              <tr><td>Steep progress</td><td id="steepPctRead">--</td></tr>
+              <tr><td>Drink readiness</td><td id="readyRead">--</td></tr>
+              <tr><td>Latest light</td><td id="luxRead">--</td></tr>
+              <tr><td>Latest distance</td><td id="distRead">--</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3>Build-out status</h3>
+          <div class="note">
+            This version centers the Beer–Lambert relation professionally, then adds: tabbed browser layout, branding, inline graphic, serial/simulator run control,
+            event marking, absorbance/concentration charts, data logging, local storage save/retrieve, JSON import, CSV/JSON export,
+            automatic working-state persistence, and an accurate model/simulation function.
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="beer" class="tabPanel">
+      <div class="grid g-2">
+        <div class="card">
+          <h3>Beer–Lambert Core Model</h3>
+          <div class="note">
+            <b>Central relation:</b> A = ε c ℓ<br><br>
+            The tea solution is treated optically. The dashboard measures transmitted light intensity after blanking.
+            <b>I₀</b> is the blank/reference intensity, usually clear water in the same cup or optical cell. <b>I</b> is
+            the transmitted intensity through the tea. Absorbance is computed as <b>A = log₁₀(I₀ / I)</b>. If ε and ℓ are
+            known, concentration is <b>c = A / (εℓ)</b>. If ε is not known, the dashboard still gives a valid
+            <b>operational tea concentration index</b>, useful for repeatability and comparison.
+          </div>
+          <table style="margin-top:10px">
+            <thead><tr><th>Symbol</th><th>Dashboard meaning</th><th>Practical TeaTime note</th></tr></thead>
+            <tbody>
+              <tr><td>I₀</td><td>Blank light intensity</td><td>Set with clear water or empty optical path.</td></tr>
+              <tr><td>I</td><td>Measured transmitted intensity</td><td>Current sensor lux or ADC-derived light value.</td></tr>
+              <tr><td>A</td><td>Absorbance</td><td>A = log₁₀(I₀/I); increases as tea darkens.</td></tr>
+              <tr><td>ℓ</td><td>Optical path length</td><td>Keep fixed: cup width, cuvette, or jig spacing.</td></tr>
+              <tr><td>ε</td><td>Calibration slope / absorptivity</td><td>Known from standards or set to 1 for index units.</td></tr>
+              <tr><td>c</td><td>Concentration or concentration index</td><td>Primary chemical result of the exercise.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>Live Beer–Lambert Results</h3>
+          <div class="kpiGrid">
+            <div class="kpi"><div class="label">Blank I₀</div><div class="value" id="blankRead">--</div><small>reference intensity</small></div>
+            <div class="kpi"><div class="label">Transmitted I</div><div class="value" id="transRead">--</div><small>current light reading</small></div>
+            <div class="kpi"><div class="label">Absorbance A</div><div class="value" id="absRead">--</div><small>log₁₀(I₀/I)</small></div>
+            <div class="kpi"><div class="label">Path ℓ</div><div class="value" id="pathRead">--</div><small>cm</small></div>
+            <div class="kpi"><div class="label">ε / slope</div><div class="value" id="epsRead">--</div><small>A per concentration·cm</small></div>
+            <div class="kpi"><div class="label">Concentration c</div><div class="value" id="concRead">--</div><small id="concUnitsRead">index units</small></div>
+          </div>
+          <div class="note" style="margin-top:10px">
+            Professional rule: do not call this a true concentration unless ε or a calibration curve has been established.
+            Without calibration, call it a <b>Tea Concentration Index</b>. That is still a useful scientific measure.
+          </div>
+        </div>
+
+        <div class="card chartCard">
+          <h3>Absorbance vs Time</h3>
+          <canvas id="absChart" width="700" height="250"></canvas>
+        </div>
+        <div class="card chartCard">
+          <h3>Concentration / Index vs Time</h3>
+          <canvas id="concChart" width="700" height="250"></canvas>
+        </div>
+
+        <div class="card">
+          <h3>Optical calibration settings</h3>
+          <div class="formgrid">
+            <label>Path length ℓ (cm)<input id="pathLength" type="number" step="0.01" value="1.00" /></label>
+            <label>ε or calibration slope<input id="epsilon" type="number" step="0.0001" value="1.00" /></label>
+            <label>Concentration units<input id="concUnits" value="index units" /></label>
+            <label>Blank I₀ override<input id="blankOverride" type="number" placeholder="optional" /></label>
+          </div>
+          <div class="btnbar" style="margin-top:10px">
+            <button class="ghost" id="applyBlankOverrideBtn">Apply Blank Override</button>
+            <button class="ghost" id="clearBlankOverrideBtn">Clear Override</button>
+          </div>
+          <div class="footerline">For a true concentration lab, prepare known tea dilutions, measure A for each, and use the slope as εℓ or ε depending on how the calibration is defined.</div>
+        </div>
+
+        <div class="card">
+          <h3>Calibration standards</h3>
+          <div class="note">
+            Optional professional extension: create a strong tea stock, dilute it to known fractions such as 0%, 25%,
+            50%, 75%, and 100%, then measure absorbance. The slope of absorbance vs known concentration becomes the
+            calibration factor. This converts the dashboard from “strength index” to calibrated concentration.
+          </div>
+          <table style="margin-top:10px">
+            <thead><tr><th>Standard</th><th>Known concentration</th><th>Measured absorbance</th><th>Use</th></tr></thead>
+            <tbody>
+              <tr><td>Blank</td><td>0</td><td>A ≈ 0</td><td>Sets I₀</td></tr>
+              <tr><td>Low</td><td>0.25 stock</td><td>measured</td><td>linearity check</td></tr>
+              <tr><td>Medium</td><td>0.50 stock</td><td>measured</td><td>slope estimate</td></tr>
+              <tr><td>High</td><td>0.75–1.00 stock</td><td>measured</td><td>range check</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+
+    <section id="modeling" class="tabPanel">
+      <div class="grid g-2">
+        <div class="card">
+          <h3>Accurate simulation model</h3>
+          <div class="note">
+            The simulator is now model-first. It generates tea concentration, then computes absorbance and transmitted
+            light through Beer–Lambert. Temperature follows Newton cooling. Extraction follows first-order saturation,
+            optionally accelerated by temperature. Mass includes evaporation drift. Distance is derived from cup geometry
+            and liquid height when those values are supplied.
+          </div>
+          <table style="margin-top:10px">
+            <thead><tr><th>Subsystem</th><th>Model</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>Cooling</td><td>T = Tₐ + (T₀ − Tₐ)e<sup>−kt</sup></td><td>Tea cools toward room temperature.</td></tr>
+              <tr><td>Extraction</td><td>c = c∞(1 − e<sup>−kₑt</sup>)</td><td>Tea concentration rises toward saturation.</td></tr>
+              <tr><td>Temperature coupling</td><td>kₑ(T) = kₑ,ref Q10<sup>((T−Tref)/10)</sup></td><td>Hotter tea extracts faster.</td></tr>
+              <tr><td>Optics</td><td>A = εcℓ; I = I₀10<sup>−A</sup></td><td>Light is computed from concentration, not invented.</td></tr>
+              <tr><td>Mass</td><td>m = m₀ − rₑt</td><td>Slow evaporation / handling drift.</td></tr>
+              <tr><td>Level</td><td>h = V / area</td><td>Distance can represent fill height geometry.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>Model controls</h3>
+          <div class="btnbar">
+            <button class="primary" id="generateModelBtn">Generate Model Run</button>
+            <button class="good" id="fitModelBtn">Fit From Current Data</button>
+            <button class="ghost" id="overlayModelBtn">Toggle Overlay</button>
+            <button class="ghost" id="exportModelBtn">Export Model JSON</button>
+          </div>
+          <div class="formgrid" style="margin-top:10px">
+            <label>Duration (s)<input id="modelDuration" type="number" value="600" /></label>
+            <label>Sample interval (s)<input id="modelDt" type="number" step="0.1" value="1.0" /></label>
+            <label>Ambient temp Tₐ (°C)<input id="modelTamb" type="number" step="0.1" value="22.0" /></label>
+            <label>Initial tea temp T₀ (°C)<input id="modelT0" type="number" step="0.1" value="88.0" /></label>
+            <label>Cooling k (1/s)<input id="modelKcool" type="number" step="0.0001" value="0.0045" /></label>
+            <label>Steep start (s)<input id="modelSteepStart" type="number" step="1" value="30" /></label>
+            <label>Steep duration (s)<input id="modelSteepDuration" type="number" step="1" value="240" /></label>
+            <label>c∞ saturation<input id="modelCinf" type="number" step="0.001" value="1.000" /></label>
+            <label>kₑ,ref extraction (1/s)<input id="modelKext" type="number" step="0.0001" value="0.0100" /></label>
+            <label>Tref for extraction (°C)<input id="modelTref" type="number" step="0.1" value="80.0" /></label>
+            <label>Q10 temperature factor<input id="modelQ10" type="number" step="0.1" value="2.0" /></label>
+            <label>Blank I₀<input id="modelI0" type="number" step="1" value="880" /></label>
+            <label>ε / slope<input id="modelEps" type="number" step="0.0001" value="1.000" /></label>
+            <label>Path ℓ (cm)<input id="modelPath" type="number" step="0.01" value="1.00" /></label>
+            <label>Water mass m₀ (g)<input id="modelM0" type="number" step="0.1" value="250.0" /></label>
+            <label>Cup tare (g)<input id="modelCupTare" type="number" step="0.1" value="45.0" /></label>
+            <label>Evaporation rate (g/min)<input id="modelEvap" type="number" step="0.001" value="0.030" /></label>
+            <label>Cup area (cm²)<input id="modelArea" type="number" step="0.1" value="38.0" /></label>
+            <label>Sensor height (cm)<input id="modelSensorH" type="number" step="0.1" value="10.0" /></label>
+            <label>Noise level<input id="modelNoise" type="number" step="0.001" value="0.010" /></label>
+            <label>Random seed<input id="modelSeed" type="number" step="1" value="12345" /></label>
+          </div>
+          <div class="footerline">
+            Suggested use: generate a model run first, then replace model data with real sensor data and press “Fit From Current Data.”
+          </div>
+        </div>
+
+        <div class="card chartCard">
+          <h3>Model: Temperature</h3>
+          <canvas id="modelTempChart" width="700" height="250"></canvas>
+        </div>
+        <div class="card chartCard">
+          <h3>Model: Concentration and Absorbance</h3>
+          <canvas id="modelConcChart" width="700" height="250"></canvas>
+        </div>
+        <div class="card chartCard">
+          <h3>Model: Transmitted Light</h3>
+          <canvas id="modelLightChart" width="700" height="250"></canvas>
+        </div>
+        <div class="card chartCard">
+          <h3>Model: Mass and Level</h3>
+          <canvas id="modelMassChart" width="700" height="250"></canvas>
+        </div>
+
+        <div class="card">
+          <h3>Fit report</h3>
+          <textarea id="modelReport" readonly></textarea>
+        </div>
+        <div class="card">
+          <h3>Model validity notes</h3>
+          <div class="note">
+            This model is accurate enough for instructional TeaTime work when the optical path is fixed and the blank
+            is stable. It becomes increasingly quantitative as calibration improves. The most important real-world
+            error sources are ambient light leakage, tea-particle scattering, moving tea bag shadows, temperature probe
+            lag, and inconsistent optical path length. The model should be validated against real runs before being
+            presented as a virtual twin.
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section id="run" class="tabPanel">
+      <div class="grid g-main">
+        <div class="card">
+          <h3>Connection & run control</h3>
+          <div class="btnbar">
+            <button class="primary" id="connectBtn">Connect Serial</button>
+            <button class="ghost" id="disconnectBtn">Disconnect</button>
+            <button class="good" id="simBtn">Start Simulator</button>
+            <button class="danger" id="stopBtn">Stop Run</button>
+            <button class="warn" id="clearBtn">Clear Run</button>
+            <button class="ghost" id="exportCsvBtn">Export CSV</button>
+            <button class="ghost" id="exportJsonBtn">Export JSON</button>
+            <button class="ghost" id="saveWorkingBtn">Save Working State</button>
+          </div>
+          <div class="footerline" id="connStateText">Connection: offline</div>
+
+          <h3 style="margin-top:14px">Experiment phases</h3>
+          <div class="phaseGrid">
+            <button class="phaseBtn ghost" data-phase="Blank">Blank / Baseline</button>
+            <button class="phaseBtn ghost" data-phase="Pour">Pour Hot Water</button>
+            <button class="phaseBtn ghost" data-phase="Steep">Steep</button>
+            <button class="phaseBtn ghost" data-phase="Remove">Remove Bag</button>
+            <button class="phaseBtn ghost" data-phase="Cool">Cooling Curve</button>
+            <button class="phaseBtn ghost" data-phase="Taste">Taste / Score</button>
+          </div>
+
+          <h3 style="margin-top:14px">Calibration</h3>
+          <div class="btnbar">
+            <button class="ghost" id="tareBtn">Tare Mass</button>
+            <button class="ghost" id="blankBtn">Set Light Blank</button>
+            <button class="ghost" id="zeroDistBtn">Zero Distance</button>
+            <button class="ghost" id="markBtn">Mark Event</button>
+          </div>
+
+          <h3 style="margin-top:14px">Settings</h3>
+          <div class="formgrid">
+            <label>Tea Type<input id="teaType" value="Black tea" /></label>
+            <label>Operator<input id="operator" value="Randall Young" /></label>
+            <label>Target Steep (s)<input id="targetSteep" type="number" value="240" /></label>
+            <label>Target Drink Temp °C<input id="targetDrinkTemp" type="number" value="60" /></label>
+            <label>Cup Mass Tare (g)<input id="cupMass" type="number" value="0" /></label>
+            <label>Run Name<input id="runName" value="TeaTime Run" /></label>
+            <label>Path length ℓ (cm)<input id="pathLengthRun" type="number" step="0.01" value="1.00" /></label>
+            <label>ε / slope<input id="epsilonRun" type="number" step="0.0001" value="1.00" /></label>
+            <label>Concentration Units<input id="concUnitsRun" value="index units" /></label>
+            <label>Strength Weight<input id="wStrength" type="number" value="35" /></label>
+            <label>Temperature Weight<input id="wTemp" type="number" value="35" /></label>
+            <label>Repeatability Weight<input id="wRepeat" type="number" value="20" /></label>
+            <label>Handling Weight<input id="wHandle" type="number" value="10" /></label>
+          </div>
+        </div>
+
+        <div class="grid" style="gap:12px">
+          <div class="card chartCard">
+            <h3>Live composite chart</h3>
+            <canvas id="mainChart" width="1100" height="320"></canvas>
+            <div class="statusLine">
+              <span class="badge"><i class="dot temp"></i>Temperature</span>
+              <span class="badge"><i class="dot light"></i>Absorbance / concentration</span>
+              <span class="badge"><i class="dot mass"></i>Mass</span>
+              <span class="badge"><i class="dot dist"></i>Distance / level</span>
+            </div>
+          </div>
+          <div class="grid g-4">
+            <div class="kpi"><div class="label">Elapsed</div><div class="value" id="elapsedRun">0.0 s</div><small>time in run</small></div>
+            <div class="kpi"><div class="label">Temp</div><div class="value" id="tempRun">--</div><small>°C</small></div>
+            <div class="kpi"><div class="label">Light I</div><div class="value" id="luxRun">--</div><small>transmitted intensity</small></div>
+            <div class="kpi"><div class="label">Mass</div><div class="value" id="massRun">--</div><small>g</small></div>
+            <div class="kpi"><div class="label">Distance</div><div class="value" id="distRun">--</div><small>cm</small></div>
+            <div class="kpi"><div class="label">Cooling slope</div><div class="value" id="coolSlopeRun">--</div><small>°C/min</small></div>
+            <div class="kpi"><div class="label">Absorbance A</div><div class="value" id="steepPctRun">--</div><small>Beer–Lambert</small></div>
+            <div class="kpi"><div class="label">Concentration c</div><div class="value" id="readyRun">--</div><small>or tea index</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="charts" class="tabPanel">
+      <div class="miniCharts">
+        <div class="card chartCard"><h3>Temperature vs Time</h3><canvas id="tempChart" width="700" height="240"></canvas></div>
+        <div class="card chartCard"><h3>Light Intensity I vs Time</h3><canvas id="lightChart" width="700" height="240"></canvas></div>
+        <div class="card chartCard"><h3>Absorbance A vs Time</h3><canvas id="absChart2" width="700" height="240"></canvas></div>
+        <div class="card chartCard"><h3>Concentration c / Index vs Time</h3><canvas id="concChart2" width="700" height="240"></canvas></div>
+        <div class="card chartCard"><h3>Mass vs Time</h3><canvas id="massChart" width="700" height="240"></canvas></div>
+        <div class="card chartCard"><h3>Distance vs Time</h3><canvas id="distChart" width="700" height="240"></canvas></div>
+      </div>
+    </section>
+
+    <section id="logging" class="tabPanel">
+      <div class="split">
+        <div class="card">
+          <h3>Recent data points</h3>
+          <div class="scrollTable">
+            <table id="dataTable">
+              <thead><tr><th>#</th><th>t (s)</th><th>Phase</th><th>Temp °C</th><th>I</th><th>A</th><th>c</th><th>Mass g</th><th>Dist cm</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>Event marks</h3>
+            <div class="scrollTable">
+              <table id="markTable">
+                <thead><tr><th>#</th><th>t (s)</th><th>Phase/Event</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Raw serial / log stream</h3>
+            <textarea id="serialLog" readonly></textarea>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="storage" class="tabPanel">
+      <div class="grid g-2">
+        <div class="card">
+          <h3>Save / retrieve runs</h3>
+          <div class="formgrid">
+            <label>Saved Run Name<input id="saveName" value="TeaTime Run" /></label>
+            <label>Notes<input id="saveNotes" value="Standard tea test" /></label>
+          </div>
+          <div class="btnbar" style="margin-top:10px">
+            <button class="primary" id="saveRunBtn">Save Current Run</button>
+            <button class="ghost" id="refreshSavedBtn">Refresh Saved List</button>
+            <button class="ghost" id="importJsonBtn">Import JSON Run</button>
+            <input type="file" id="importFile" accept=".json,application/json" style="display:none" />
+          </div>
+          <div class="footerline">Runs are stored in your browser using localStorage. Working state is also autosaved.</div>
+        </div>
+        <div class="card">
+          <h3>Saved runs</h3>
+          <div id="savedRuns" class="savedList"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="protocol" class="tabPanel">
+      <div class="grid g-2">
+        <div class="card">
+          <h3>Operator protocol</h3>
+          <div class="note">
+            <b>1.</b> Place empty cup on scale and tare.<br>
+            <b>2.</b> Install the temperature probe at a repeatable depth and position.<br>
+            <b>3.</b> Arrange the light jig (LED + sensor) with fixed geometry, record path length ℓ, and set the blank I₀.<br>
+            <b>4.</b> If using distance, set the level/geometry reference and zero distance.<br>
+            <b>5.</b> Start the run and mark <b>Blank</b>.<br>
+            <b>6.</b> Pour hot water and mark <b>Pour</b>.<br>
+            <b>7.</b> Add the tea bag and mark <b>Steep</b>.<br>
+            <b>8.</b> Watch absorbance A and concentration/index c rise during steeping; remove the bag at target time and mark <b>Remove</b>.<br>
+            <b>9.</b> Continue logging through the cooling curve and mark <b>Cool</b>.<br>
+            <b>10.</b> When drinkable, taste and mark <b>Taste</b>.<br>
+            <b>11.</b> Save the run and export if needed.
+          </div>
+        </div>
+        <div class="card">
+          <h3>Interpretation guide</h3>
+          <table>
+            <thead><tr><th>Metric</th><th>Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>Cooling slope</td><td>How quickly the tea moves toward drinkable temperature.</td></tr>
+              <tr><td>Absorbance A</td><td>Primary optical measurement: A = log₁₀(I₀/I).</td></tr>
+              <tr><td>Concentration c</td><td>Primary chemical result: c = A/(εℓ), or concentration index if uncalibrated.</td></tr>
+              <tr><td>Water mass</td><td>Repeatable serving amount; detects drift or loss.</td></tr>
+              <tr><td>Distance / level</td><td>Cup level or optical path repeatability measure.</td></tr>
+              <tr><td>Composite score</td><td>A convenience indicator, not a substitute for judgement.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="tabPanel">
+      <div class="grid g-2">
+        <div class="card">
+          <h3>About this dashboard</h3>
+          <div class="note">
+            TeaTime is a compact Beer–Lambert concentration lab supported by temperature, mass, and distance measurements. It supports real instruments or simulator mode. The design goal is
+            an operator-friendly browser resource with tabs, modest charts, storage and retrieval, and an attractive branded face.
+            It is intended as the final dashboard/control-panel layer in your modern setup.
+          </div>
+          <div class="footerline">Accepted input: JSON lines like {"tempC":82.1,"lux":210,"massG":248.3,"distCm":3.2} or CSV lines: ms,tempC,lux,massG,distCm</div>
+        </div>
+        <div class="card">
+          <h3>Normal build-out notes</h3>
+          <table>
+            <tbody>
+              <tr><td>Beer–Lambert core</td><td>Blank I₀, transmitted I, absorbance A, path length ℓ, ε/slope, concentration c.</td></tr>
+              <tr><td>Modeling</td><td>Newton cooling, first-order extraction, temperature coupling, Beer–Lambert optics, evaporation and level geometry.</td></tr>
+              <tr><td>Branding</td><td>Header, emblem, UMA/GSA identity, inline lab graphic.</td></tr>
+              <tr><td>Run control</td><td>Serial connect, simulator, phase buttons, calibration helpers.</td></tr>
+              <tr><td>Logging</td><td>Recent data table, marks table, raw log text.</td></tr>
+              <tr><td>Storage</td><td>Save current run, load/delete saved runs, autosave working state.</td></tr>
+              <tr><td>Export</td><td>CSV and JSON export, JSON import.</td></tr>
+              <tr><td>Tabs</td><td>All content contained within window-height panels.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const STORE_KEY = "teatime_beer_lambert_saved_runs_v3";
+  const WORKING_KEY = "teatime_beer_lambert_working_state_v3";
+  const colors = { temp:"#ff6b87", light:"#ffd166", mass:"#38d26e", dist:"#5db1ff" };
+
+  let port=null, reader=null, writer=null;
+  let running=false, simTimer=null, startStamp=null;
+  let phase="Idle";
+  let lightBlank=null, distZero=0;
+  let data=[], marks=[], serialLines=[];
+  let modelData=[], showModelOverlay=true;
+  let autosaveTimer=null;
+
+  function nowSec(){ return startStamp ? (performance.now() - startStamp)/1000 : 0; }
+  function fmt(n,d=1){ return Number.isFinite(n) ? n.toFixed(d) : "--"; }
+
+  function setConnectionLabel(text){
+    $("connStateText").textContent = "Connection: " + text;
+    $("connChip").textContent = text;
+  }
+
+  function setPhase(p){
+    phase = p;
+    $("phaseRead").textContent = p;
+    marks.push({t: currentT(), phase:p});
+    logLine("# MARK " + p + " @ " + currentT().toFixed(1) + "s");
+    sendCommand("MARK " + p);
+    document.querySelectorAll(".phaseBtn").forEach(btn => btn.classList.toggle("active", btn.dataset.phase === p));
+    refreshMarksTable();
+    persistWorkingState();
+  }
+
+  function currentT(){
+    if(data.length) return data[data.length-1].t;
+    return nowSec();
+  }
+
+  function logLine(line){
+    const s = String(line);
+    serialLines.push(s);
+    if(serialLines.length > 1200) serialLines.shift();
+    $("serialLog").value = serialLines.join("\n");
+    $("serialLog").scrollTop = $("serialLog").scrollHeight;
+  }
+
+  function sendCommand(cmd){
+    if(writer){
+      try{ writer.write(new TextEncoder().encode(cmd + "\n")); }catch(e){}
+    }
+  }
+
+  function parseLine(line){
+    const txt = line.trim();
+    if(!txt) return null;
+    try{
+      const j = JSON.parse(txt);
+      return {
+        t: Number.isFinite(+j.t) ? +j.t : nowSec(),
+        tempC:+j.tempC,
+        lux:+j.lux,
+        massG:+j.massG,
+        distCm:+j.distCm
+      };
+    }catch(e){}
+    const p = txt.split(",").map(x => x.trim());
+    if(p.length >= 5){
+      const ms = +p[0];
+      return {
+        t: Number.isFinite(ms) ? ms/1000 : nowSec(),
+        tempC:+p[1], lux:+p[2], massG:+p[3], distCm:+p[4]
+      };
+    }
+    return null;
+  }
+
+  function addSample(s){
+    if(!startStamp) startStamp = performance.now();
+    s.phase = phase;
+    data.push(s);
+    if(data.length > 4000) data.shift();
+    updateReadouts();
+    drawAll();
+    refreshDataTable();
+    queueAutosave();
+  }
+
+  function syncBeerInputs(source){
+    const ids = {
+      pathLength: ["pathLength","pathLengthRun"],
+      epsilon: ["epsilon","epsilonRun"],
+      concUnits: ["concUnits","concUnitsRun"]
+    };
+    if(source === "pathLength" || source === "pathLengthRun"){
+      const v = $(source).value;
+      ids.pathLength.forEach(id => { if(id !== source && $(id)) $(id).value = v; });
+    }
+    if(source === "epsilon" || source === "epsilonRun"){
+      const v = $(source).value;
+      ids.epsilon.forEach(id => { if(id !== source && $(id)) $(id).value = v; });
+    }
+    if(source === "concUnits" || source === "concUnitsRun"){
+      const v = $(source).value;
+      ids.concUnits.forEach(id => { if(id !== source && $(id)) $(id).value = v; });
+    }
+  }
+
+  function pathLengthCm(){ return +$("pathLength").value || +$("pathLengthRun").value || 1; }
+  function epsilonVal(){ return +$("epsilon").value || +$("epsilonRun").value || 1; }
+  function concUnits(){ return $("concUnits").value || $("concUnitsRun").value || "index units"; }
+
+  function getAbsorbance(d){
+    if(!d || !Number.isFinite(lightBlank) || !Number.isFinite(d.lux) || d.lux <= 0 || lightBlank <= 0) return NaN;
+    return Math.max(0, Math.log10(lightBlank / d.lux));
+  }
+
+  function getConcentration(d){
+    const A = getAbsorbance(d);
+    const denom = epsilonVal() * pathLengthCm();
+    if(!Number.isFinite(A) || !Number.isFinite(denom) || denom === 0) return NaN;
+    return A / denom;
+  }
+
+  function updateReadouts(){
+    const d = data[data.length-1];
+    const elapsed = d ? d.t : 0;
+    $("elapsedRead").textContent = fmt(elapsed,1) + " s";
+    $("elapsedRun").textContent = fmt(elapsed,1) + " s";
+
+    if(!d){
+      ["tempRead","strengthRead","waterRead","scoreRead","coolSlopeRead","steepPctRead","readyRead","luxRead","distRead",
+       "tempRun","luxRun","massRun","distRun","coolSlopeRun","steepPctRun","readyRun"].forEach(id => $(id).textContent="--");
+      return;
+    }
+
+    const cupMass = +$("cupMass").value || 0;
+    const waterMass = Number.isFinite(d.massG) ? d.massG - cupMass : NaN;
+    const slope = tempSlope(90);
+    const steepPct = getSteepPct();
+    const absorbance = getAbsorbance(d);
+    const concentration = getConcentration(d);
+    const ready = getReadyState(d.tempC);
+    const score = scoreTea(d);
+
+    $("tempRead").textContent = fmt(d.tempC,1);
+    $("strengthRead").textContent = Number.isFinite(absorbance) ? fmt(absorbance,3) : "--";
+    $("waterRead").textContent = Number.isFinite(waterMass) ? fmt(waterMass,1) + " g" : "--";
+    $("scoreRead").textContent = Number.isFinite(concentration) ? fmt(concentration,3) : "--";
+    $("coolSlopeRead").textContent = Number.isFinite(slope) ? fmt(slope,2) + " °C/min" : "--";
+    $("steepPctRead").textContent = Number.isFinite(steepPct) ? fmt(steepPct,0) + "%" : "--";
+    $("readyRead").textContent = ready;
+    $("luxRead").textContent = fmt(d.lux,0);
+    $("distRead").textContent = fmt(d.distCm - distZero,1);
+
+    if($("blankRead")){
+      $("blankRead").textContent = Number.isFinite(lightBlank) ? fmt(lightBlank,0) : "--";
+      $("transRead").textContent = fmt(d.lux,0);
+      $("absRead").textContent = Number.isFinite(absorbance) ? fmt(absorbance,3) : "--";
+      $("pathRead").textContent = fmt(pathLengthCm(),2);
+      $("epsRead").textContent = fmt(epsilonVal(),4);
+      $("concRead").textContent = Number.isFinite(concentration) ? fmt(concentration,3) : "--";
+      $("concUnitsRead").textContent = concUnits();
+    }
+
+    $("tempRun").textContent = fmt(d.tempC,1);
+    $("luxRun").textContent = fmt(d.lux,0);
+    $("massRun").textContent = fmt(d.massG,1);
+    $("distRun").textContent = fmt(d.distCm - distZero,1);
+    $("coolSlopeRun").textContent = Number.isFinite(slope) ? fmt(slope,2) : "--";
+    $("steepPctRun").textContent = Number.isFinite(absorbance) ? fmt(absorbance,3) : "--";
+    $("readyRun").textContent = Number.isFinite(concentration) ? fmt(concentration,3) + " " + concUnits() : "--";
+  }
+
+  function getStrengthProxy(d){
+    // Backward-compatible name: returns a scaled concentration/absorbance score for the composite model.
+    const c = getConcentration(d);
+    if(!Number.isFinite(c)) return NaN;
+    return Math.max(0, Math.min(100, c * 100));
+  }
+
+  function getReadyState(tempC){
+    if(!Number.isFinite(tempC)) return "--";
+    const target = +$("targetDrinkTemp").value || 60;
+    if(tempC > target + 5) return "Too hot";
+    if(tempC < target - 5) return "Cooling";
+    return "Ready";
+  }
+
+  function getSteepPct(){
+    const target = +$("targetSteep").value || 240;
+    const steepStart = marks.find(m => m.phase === "Steep");
+    if(!steepStart) return NaN;
+    const remove = marks.find(m => m.phase === "Remove" && m.t > steepStart.t);
+    const endT = remove ? remove.t : currentT();
+    return 100 * (endT - steepStart.t) / target;
+  }
+
+  function tempSlope(windowSec){
+    const end = currentT();
+    const pts = data.filter(d => Number.isFinite(d.tempC) && d.t >= end - windowSec);
+    if(pts.length < 5) return NaN;
+    const n = pts.length;
+    const sx = pts.reduce((a,p)=>a+p.t,0);
+    const sy = pts.reduce((a,p)=>a+p.tempC,0);
+    const sxx = pts.reduce((a,p)=>a+p.t*p.t,0);
+    const sxy = pts.reduce((a,p)=>a+p.t*p.tempC,0);
+    const den = (n*sxx - sx*sx);
+    if(!den) return NaN;
+    return ((n*sxy - sx*sy)/den)*60;
+  }
+
+  function scoreTea(d){
+    if(!d) return NaN;
+    const wS = +$("wStrength").value || 35;
+    const wT = +$("wTemp").value || 35;
+    const wR = +$("wRepeat").value || 20;
+    const wH = +$("wHandle").value || 10;
+    const total = wS+wT+wR+wH;
+    const s = Number.isFinite(getStrengthProxy(d)) ? Math.min(100,getStrengthProxy(d)) : 50;
+    const targetT = +$("targetDrinkTemp").value || 60;
+    const tempScore = Number.isFinite(d.tempC) ? Math.max(0, 100 - Math.abs(d.tempC-targetT)*8) : 50;
+    const repeat = Number.isFinite(getSteepPct()) ? Math.max(0,100 - Math.abs(getSteepPct()-100)) : 50;
+    const handle = 80;
+    return (s*wS + tempScore*wT + repeat*wR + handle*wH) / total;
+  }
+
+  function drawChart(canvas, seriesList){
+    if(!canvas) return;
+    const ctx = canvas.getContext("2d");
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0,0,W,H);
+    ctx.fillStyle = "#091221";
+    ctx.fillRect(0,0,W,H);
+
+    ctx.strokeStyle = "#1d3350";
+    ctx.lineWidth = 1;
+    ctx.setLineDash([]);
+    for(let i=0;i<=5;i++){
+      const y = 22 + i*(H-48)/5;
+      ctx.beginPath(); ctx.moveTo(46,y); ctx.lineTo(W-16,y); ctx.stroke();
+    }
+    for(let i=0;i<=6;i++){
+      const x = 46 + i*(W-62)/6;
+      ctx.beginPath(); ctx.moveTo(x,22); ctx.lineTo(x,H-26); ctx.stroke();
+    }
+
+    const allSources = [];
+    seriesList.forEach(s => {
+      const src = s.source || data;
+      if(src && src.length) allSources.push(...src);
+    });
+
+    if(allSources.length < 2){
+      ctx.fillStyle = "#93accd";
+      ctx.font = "18px Segoe UI";
+      ctx.fillText("No data yet. Connect serial, start simulator, or generate model.", 58, H/2);
+      return;
+    }
+
+    const allTimes = allSources.map(d => d.t).filter(Number.isFinite);
+    const xmin = Math.min(...allTimes);
+    const xmax = Math.max(...allTimes) || (xmin+1);
+
+    seriesList.forEach((s,idx) => {
+      const src = s.source || data;
+      const vals = (src || []).map(d => s.fn(d)).filter(v => Number.isFinite(v));
+      if(vals.length < 2) return;
+      let ymin = Math.min(...vals), ymax = Math.max(...vals);
+      // include comparable real data values in same scaling when overlaying same chart
+      seriesList.forEach(s2 => {
+        const vals2 = ((s2.source || data) || []).map(d => s2.fn(d)).filter(v => Number.isFinite(v));
+        if(vals2.length){
+          ymin = Math.min(ymin, ...vals2);
+          ymax = Math.max(ymax, ...vals2);
+        }
+      });
+      if(ymin === ymax){ ymin -= 1; ymax += 1; }
+
+      ctx.strokeStyle = s.color;
+      ctx.lineWidth = s.width || 2.2;
+      ctx.setLineDash(s.dash || []);
+      ctx.beginPath();
+      let started = false;
+      for(const d of src){
+        const v = s.fn(d);
+        if(!Number.isFinite(v) || !Number.isFinite(d.t)) continue;
+        const x = 46 + (d.t - xmin) / (xmax - xmin || 1) * (W-62);
+        const y = H-26 - (v - ymin) / (ymax - ymin || 1) * (H-48);
+        if(!started){ ctx.moveTo(x,y); started=true; }
+        else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = s.color;
+      ctx.font = "13px Segoe UI";
+      ctx.fillText(s.name, 58, 24 + idx*16);
+    });
+
+    ctx.fillStyle = "#9fb4d3";
+    ctx.font = "12px Segoe UI";
+    ctx.fillText("time", W-42, H-8);
+  }
+
+  function drawAll(){
+    let mainSeries = [
+      {name:"Temp", color:colors.temp, fn:d=>d.tempC},
+      {name:"Absorbance A", color:colors.light, fn:d=>getAbsorbance(d)},
+      {name:"Mass", color:colors.mass, fn:d=>d.massG},
+      {name:"Distance", color:colors.dist, fn:d=>d.distCm - distZero}
+    ];
+    if(showModelOverlay && modelData.length){
+      mainSeries = mainSeries.concat([
+        {name:"Model Temp", color:colors.temp, dash:[5,5], width:1.6, source:modelData, fn:d=>d.tempC},
+        {name:"Model A", color:colors.light, dash:[5,5], width:1.6, source:modelData, fn:d=>d.absorbance},
+        {name:"Model Mass", color:colors.mass, dash:[5,5], width:1.6, source:modelData, fn:d=>d.massG},
+        {name:"Model Distance", color:colors.dist, dash:[5,5], width:1.6, source:modelData, fn:d=>d.distCm - distZero}
+      ]);
+    }
+    drawChart($("mainChart"), mainSeries);
+    drawChart($("tempChart"), [{name:"Temperature °C", color:colors.temp, fn:d=>d.tempC}]);
+    drawChart($("lightChart"), [{name:"Light I", color:colors.light, fn:d=>d.lux}]);
+    if($("absChart")) drawChart($("absChart"), [{name:"Absorbance A", color:colors.light, fn:d=>getAbsorbance(d)}]);
+    if($("concChart")) drawChart($("concChart"), [{name:"Concentration c", color:colors.light, fn:d=>getConcentration(d)}]);
+    if($("absChart2")) drawChart($("absChart2"), [{name:"Absorbance A", color:colors.light, fn:d=>getAbsorbance(d)}]);
+    if($("concChart2")) drawChart($("concChart2"), [{name:"Concentration c", color:colors.light, fn:d=>getConcentration(d)}]);
+    drawChart($("massChart"), [{name:"Mass g", color:colors.mass, fn:d=>d.massG}]);
+    drawChart($("distChart"), [{name:"Distance cm", color:colors.dist, fn:d=>d.distCm - distZero}]);
+
+    if($("modelTempChart")) drawChart($("modelTempChart"), [
+      {name:"Model T", color:colors.temp, source:modelData, fn:d=>d.tempC},
+      ...(showModelOverlay && data.length ? [{name:"Real T", color:"#ffffff", source:data, dash:[4,5], width:1.4, fn:d=>d.tempC}] : [])
+    ]);
+    if($("modelConcChart")) drawChart($("modelConcChart"), [
+      {name:"Model c", color:colors.light, source:modelData, fn:d=>d.conc},
+      {name:"Model A", color:"#ff9b4a", source:modelData, fn:d=>d.absorbance}
+    ]);
+    if($("modelLightChart")) drawChart($("modelLightChart"), [
+      {name:"Model I", color:colors.light, source:modelData, fn:d=>d.lux},
+      ...(showModelOverlay && data.length ? [{name:"Real I", color:"#ffffff", source:data, dash:[4,5], width:1.4, fn:d=>d.lux}] : [])
+    ]);
+    if($("modelMassChart")) drawChart($("modelMassChart"), [
+      {name:"Model mass", color:colors.mass, source:modelData, fn:d=>d.massG},
+      {name:"Model distance", color:colors.dist, source:modelData, fn:d=>d.distCm}
+    ]);
+  }
+
+  function refreshDataTable(){
+    const tbody = document.querySelector("#dataTable tbody");
+    const recent = data.slice(-120).reverse();
+    tbody.innerHTML = recent.map((d,i)=>`
+      <tr>
+        <td>${data.length - i}</td>
+        <td>${fmt(d.t,1)}</td>
+        <td>${d.phase || ""}</td>
+        <td>${fmt(d.tempC,1)}</td>
+        <td>${fmt(d.lux,0)}</td>
+        <td>${fmt(getAbsorbance(d),3)}</td>
+        <td>${fmt(getConcentration(d),3)}</td>
+        <td>${fmt(d.massG,1)}</td>
+        <td>${fmt(d.distCm - distZero,1)}</td>
+      </tr>
+    `).join("");
+  }
+
+  function refreshMarksTable(){
+    const tbody = document.querySelector("#markTable tbody");
+    tbody.innerHTML = marks.slice().reverse().map((m,i)=>`
+      <tr><td>${marks.length - i}</td><td>${fmt(m.t,1)}</td><td>${m.phase}</td></tr>
+    `).join("");
+  }
+
+  async function connectSerial(){
+    if(!("serial" in navigator)){
+      alert("Web Serial not available. Use Chrome/Edge or simulator mode.");
+      return;
+    }
+    port = await navigator.serial.requestPort();
+    await port.open({ baudRate:9600 });
+    writer = port.writable.getWriter();
+    reader = port.readable.getReader();
+    running = true;
+    if(!startStamp) startStamp = performance.now();
+    setConnectionLabel("serial connected");
+
+    let buffer = "";
+    try{
+      while(running && port){
+        const {value,done} = await reader.read();
+        if(done) break;
+        const text = new TextDecoder().decode(value);
+        buffer += text;
+        const lines = buffer.split(/\r?\n/);
+        buffer = lines.pop();
+        for(const line of lines){
+          logLine(line);
+          const s = parseLine(line);
+          if(s) addSample(s);
+        }
+      }
+    }catch(err){
+      logLine("# Serial error: " + err.message);
+    }
+  }
+
+  async function disconnectSerial(){
+    running = false;
+    try{ if(reader){ await reader.cancel(); reader.releaseLock(); } }catch(e){}
+    try{ if(writer){ writer.releaseLock(); } }catch(e){}
+    try{ if(port){ await port.close(); } }catch(e){}
+    reader = null; writer = null; port = null;
+    setConnectionLabel("offline");
+  }
+
+  function startSimulator(){
+    if(!startStamp) startStamp = performance.now();
+    running = true;
+    setConnectionLabel("simulator");
+    if(phase === "Idle") setPhase("Blank");
+
+    let baseMass=265, baseLux=880, hot=89, startDelay=8;
+    lightBlank = Number.isFinite(lightBlank) ? lightBlank : baseLux;
+    clearInterval(simTimer);
+    simTimer = setInterval(()=>{
+      const t = nowSec();
+      let temp = 22, lux = baseLux, mass = 48, dist = 8.5;
+
+      if(t > startDelay){
+        mass = baseMass - Math.max(0, t-startDelay)*0.003;
+        dist = 3.3 + Math.sin(t/15)*0.02;
+        temp = hot - 0.058*Math.pow(Math.max(0,t-startDelay), 1.08);
+      }
+      if(t > 26){
+        lux = baseLux - 540*(1 - Math.exp(-(t-26)/100));
+      }
+      if(t > 250){
+        lux += 18*Math.sin(t/20);
+      }
+
+      temp += Math.sin(t/13)*0.25 + (Math.random()-.5)*0.18;
+      lux += (Math.random()-.5)*12;
+      mass += (Math.random()-.5)*0.2;
+      dist += (Math.random()-.5)*0.04;
+
+      addSample({t, tempC:temp, lux:lux, massG:mass, distCm:dist});
+    }, 500);
+  }
+
+  function stopRun(){
+    running = false;
+    clearInterval(simTimer);
+    setConnectionLabel(port ? "serial connected" : "stopped");
+    persistWorkingState();
+  }
+
+  function clearRun(){
+    if(!confirm("Clear current run data?")) return;
+    data = [];
+    marks = [];
+    serialLines = [];
+    startStamp = null;
+    phase = "Idle";
+    lightBlank = null;
+    distZero = 0;
+    $("phaseRead").textContent = "Idle";
+    $("serialLog").value = "";
+    document.querySelectorAll(".phaseBtn").forEach(btn => btn.classList.remove("active"));
+    updateReadouts();
+    refreshDataTable();
+    refreshMarksTable();
+    drawAll();
+    persistWorkingState();
+  }
+
+  function exportCSV(){
+    const lines = ["t_s,phase,tempC,lux,massG,distCm"];
+    data.forEach(d => lines.push([
+      d.t.toFixed(3), d.phase||"", d.tempC, d.lux, d.massG, d.distCm
+    ].join(",")));
+    downloadBlob(lines.join("\n"), "text/csv", safeFilename(runTitle() + "_data.csv"));
+  }
+
+  function exportJSON(){
+    const payload = currentRunObject(true);
+    downloadBlob(JSON.stringify(payload,null,2), "application/json", safeFilename(runTitle() + ".json"));
+  }
+
+  function currentRunObject(includeWorking=true){
+    return {
+      meta: {
+        name: $("runName").value || "TeaTime Run",
+        saveName: $("saveName").value || $("runName").value || "TeaTime Run",
+        notes: $("saveNotes").value || "",
+        teaType: $("teaType").value || "",
+        operator: $("operator").value || "",
+        createdAt: new Date().toISOString(),
+        targetSteep: +$("targetSteep").value || 240,
+        targetDrinkTemp: +$("targetDrinkTemp").value || 60,
+        cupMass: +$("cupMass").value || 0,
+        pathLength: pathLengthCm(),
+        epsilon: epsilonVal(),
+        concUnits: concUnits(),
+        weights: {
+          strength:+$("wStrength").value||35,
+          temperature:+$("wTemp").value||35,
+          repeatability:+$("wRepeat").value||20,
+          handling:+$("wHandle").value||10
+        },
+        lightBlank, distZero, phase,
+        includeWorking
+      },
+      data, marks, serialLines, modelData
+    };
+  }
+
+  function getSavedRuns(){
+    try{ return JSON.parse(localStorage.getItem(STORE_KEY) || "[]"); }catch(e){ return []; }
+  }
+
+  function setSavedRuns(arr){
+    localStorage.setItem(STORE_KEY, JSON.stringify(arr));
+  }
+
+  function saveCurrentRun(){
+    const runs = getSavedRuns();
+    const obj = currentRunObject(false);
+    obj.meta.savedAt = new Date().toISOString();
+    runs.unshift(obj);
+    setSavedRuns(runs);
+    renderSavedRuns();
+    alert("Run saved to browser storage.");
+  }
+
+  function renderSavedRuns(){
+    const box = $("savedRuns");
+    const runs = getSavedRuns();
+    if(!runs.length){
+      box.innerHTML = '<div class="savedRun"><div>No saved runs yet.</div></div>';
+      return;
+    }
+    box.innerHTML = runs.map((r,i)=>`
+      <div class="savedRun">
+        <div>
+          <div><b>${escapeHtml(r.meta.saveName || r.meta.name || ("Run " + (i+1)))}</b></div>
+          <div class="small">${escapeHtml(r.meta.teaType || "")} • ${escapeHtml(r.meta.operator || "")} • ${(r.data||[]).length} points</div>
+          <div class="small">${escapeHtml(r.meta.savedAt || r.meta.createdAt || "")}</div>
+        </div>
+        <button class="ghost" onclick="window.__teaLoad(${i})">Load</button>
+        <button class="ghost" onclick="window.__teaExportSaved(${i})">Export</button>
+        <button class="danger" onclick="window.__teaDelete(${i})">Delete</button>
+      </div>
+    `).join("");
+  }
+
+  function loadRunByIndex(i){
+    const runs = getSavedRuns();
+    const r = runs[i];
+    if(!r) return;
+    applyRunObject(r);
+    alert("Saved run loaded into working session.");
+  }
+
+  function deleteRunByIndex(i){
+    const runs = getSavedRuns();
+    if(!confirm("Delete saved run?")) return;
+    runs.splice(i,1);
+    setSavedRuns(runs);
+    renderSavedRuns();
+  }
+
+  function exportSavedByIndex(i){
+    const runs = getSavedRuns();
+    const r = runs[i];
+    if(!r) return;
+    downloadBlob(JSON.stringify(r,null,2), "application/json", safeFilename((r.meta.saveName || r.meta.name || "saved_run") + ".json"));
+  }
+
+  function applyRunObject(obj){
+    stopRun();
+    data = Array.isArray(obj.data) ? obj.data : [];
+    marks = Array.isArray(obj.marks) ? obj.marks : [];
+    serialLines = Array.isArray(obj.serialLines) ? obj.serialLines : [];
+    modelData = Array.isArray(obj.modelData) ? obj.modelData : [];
+    lightBlank = obj.meta?.lightBlank ?? null;
+    distZero = obj.meta?.distZero ?? 0;
+    phase = obj.meta?.phase ?? "Idle";
+
+    $("runName").value = obj.meta?.name || "TeaTime Run";
+    $("saveName").value = obj.meta?.saveName || obj.meta?.name || "TeaTime Run";
+    $("saveNotes").value = obj.meta?.notes || "";
+    $("teaType").value = obj.meta?.teaType || "";
+    $("operator").value = obj.meta?.operator || "";
+    $("targetSteep").value = obj.meta?.targetSteep ?? 240;
+    $("targetDrinkTemp").value = obj.meta?.targetDrinkTemp ?? 60;
+    $("cupMass").value = obj.meta?.cupMass ?? 0;
+    if($("pathLength")) $("pathLength").value = obj.meta?.pathLength ?? 1.00;
+    if($("pathLengthRun")) $("pathLengthRun").value = obj.meta?.pathLength ?? 1.00;
+    if($("epsilon")) $("epsilon").value = obj.meta?.epsilon ?? 1.00;
+    if($("epsilonRun")) $("epsilonRun").value = obj.meta?.epsilon ?? 1.00;
+    if($("concUnits")) $("concUnits").value = obj.meta?.concUnits ?? "index units";
+    if($("concUnitsRun")) $("concUnitsRun").value = obj.meta?.concUnits ?? "index units";
+    $("wStrength").value = obj.meta?.weights?.strength ?? 35;
+    $("wTemp").value = obj.meta?.weights?.temperature ?? 35;
+    $("wRepeat").value = obj.meta?.weights?.repeatability ?? 20;
+    $("wHandle").value = obj.meta?.weights?.handling ?? 10;
+
+    $("serialLog").value = serialLines.join("\n");
+    $("phaseRead").textContent = phase;
+    document.querySelectorAll(".phaseBtn").forEach(btn => btn.classList.toggle("active", btn.dataset.phase===phase));
+
+    updateReadouts();
+    refreshDataTable();
+    refreshMarksTable();
+    drawAll();
+    persistWorkingState();
+  }
+
+  function persistWorkingState(){
+    const obj = currentRunObject(true);
+    obj.meta.workingSavedAt = new Date().toISOString();
+    localStorage.setItem(WORKING_KEY, JSON.stringify(obj));
+  }
+
+  function restoreWorkingState(){
+    try{
+      const txt = localStorage.getItem(WORKING_KEY);
+      if(!txt) return;
+      const obj = JSON.parse(txt);
+      applyRunObject(obj);
+    }catch(e){}
+  }
+
+  function queueAutosave(){
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(persistWorkingState, 350);
+  }
+
+  function downloadBlob(content, type, filename){
+    const blob = new Blob([content], {type});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href), 500);
+  }
+
+  function safeFilename(s){
+    return String(s || "teatime").replace(/[^\w\-]+/g,"_");
+  }
+
+  function runTitle(){
+    return $("runName").value || "TeaTime_Run";
+  }
+
+  function escapeHtml(str){
+    return String(str || "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'}[m]));
+  }
+
+
+  function seededRandom(seed){
+    let x = Math.sin(seed) * 10000;
+    return function(){
+      x = Math.sin(x) * 10000;
+      return x - Math.floor(x);
+    };
+  }
+
+  function gaussian(rand){
+    let u = 0, v = 0;
+    while(u === 0) u = rand();
+    while(v === 0) v = rand();
+    return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+  }
+
+  function modelParam(id, fallback){
+    const el = $(id);
+    const v = el ? +el.value : NaN;
+    return Number.isFinite(v) ? v : fallback;
+  }
+
+  function generateModelRun(applyToData=true){
+    const duration = Math.max(10, modelParam("modelDuration",600));
+    const dt = Math.max(0.1, modelParam("modelDt",1));
+    const Tamb = modelParam("modelTamb",22);
+    const T0 = modelParam("modelT0",88);
+    const kcool = Math.max(0, modelParam("modelKcool",0.0045));
+    const steepStart = modelParam("modelSteepStart",30);
+    const steepDuration = modelParam("modelSteepDuration",240);
+    const steepEnd = steepStart + steepDuration;
+    const Cinf = Math.max(0, modelParam("modelCinf",1));
+    const kextRef = Math.max(0, modelParam("modelKext",0.01));
+    const Tref = modelParam("modelTref",80);
+    const Q10 = Math.max(0.01, modelParam("modelQ10",2));
+    const I0 = Math.max(1, modelParam("modelI0",880));
+    const eps = Math.max(0, modelParam("modelEps",1));
+    const path = Math.max(0.001, modelParam("modelPath",1));
+    const m0 = Math.max(0, modelParam("modelM0",250));
+    const cup = Math.max(0, modelParam("modelCupTare",45));
+    const evapGmin = Math.max(0, modelParam("modelEvap",0.03));
+    const area = Math.max(0.1, modelParam("modelArea",38));
+    const sensorH = modelParam("modelSensorH",10);
+    const noise = Math.max(0, modelParam("modelNoise",0.01));
+    const rand = seededRandom(modelParam("modelSeed",12345));
+
+    const generated = [];
+    let c = 0;
+    let lastT = 0;
+    for(let t=0; t<=duration+1e-9; t+=dt){
+      const tempTrue = Tamb + (T0 - Tamb) * Math.exp(-kcool * t);
+      const massWater = Math.max(0, m0 - evapGmin * (t/60));
+      const totalMass = cup + massWater;
+      const volumeMl = massWater; // water/tea density approximated as 1 g/mL
+      const heightCm = volumeMl / area;
+      const distCm = sensorH - heightCm;
+
+      const active = t >= steepStart && t <= steepEnd;
+      if(active){
+        const ktemp = kextRef * Math.pow(Q10, (tempTrue - Tref) / 10);
+        const delta = 1 - Math.exp(-ktemp * (t - lastT));
+        c += (Cinf - c) * delta;
+      }
+      // after bag removal concentration remains nearly fixed for simple model
+      const A = eps * c * path;
+      const Itrue = I0 * Math.pow(10, -A);
+
+      const tempNoisy = tempTrue + gaussian(rand) * noise * 2.0;
+      const luxNoisy = Math.max(0.1, Itrue * (1 + gaussian(rand) * noise));
+      const massNoisy = totalMass + gaussian(rand) * noise * 2.5;
+      const distNoisy = distCm + gaussian(rand) * noise * 0.5;
+
+      generated.push({
+        t:+t.toFixed(3),
+        phase: t < steepStart ? "Blank/Poured" : (t <= steepEnd ? "Steep" : "Cool"),
+        tempC:tempNoisy,
+        lux:luxNoisy,
+        massG:massNoisy,
+        distCm:distNoisy,
+        conc:c,
+        absorbance:A,
+        model:true
+      });
+      lastT = t;
+    }
+
+    modelData = generated;
+
+    // Sync Beer-Lambert dashboard settings with model settings.
+    if($("pathLength")) $("pathLength").value = path;
+    if($("pathLengthRun")) $("pathLengthRun").value = path;
+    if($("epsilon")) $("epsilon").value = eps;
+    if($("epsilonRun")) $("epsilonRun").value = eps;
+    lightBlank = I0;
+
+    if(applyToData){
+      if(!confirm("Replace current run data with generated model data?")) {
+        drawAll();
+        writeModelReport("Generated model overlay only. Current run data was not replaced.");
+        return;
+      }
+      data = generated.map(d => ({t:d.t, phase:d.phase, tempC:d.tempC, lux:d.lux, massG:d.massG, distCm:d.distCm}));
+      marks = [
+        {t:0, phase:"Model Start"},
+        {t:steepStart, phase:"Steep"},
+        {t:steepEnd, phase:"Remove"},
+        {t:Math.min(duration, steepEnd+1), phase:"Cool"}
+      ];
+      phase = "Model";
+      $("phaseRead").textContent = "Model";
+      serialLines.push("# Generated physics-based Beer-Lambert model run");
+      $("serialLog").value = serialLines.join("\n");
+      refreshDataTable();
+      refreshMarksTable();
+      updateReadouts();
+      persistWorkingState();
+    }
+    drawAll();
+    writeModelReport(modelSummary());
+  }
+
+  function modelSummary(){
+    const d = modelData;
+    if(!d.length) return "No model generated.";
+    const last = d[d.length-1];
+    const maxA = Math.max(...d.map(x=>x.absorbance).filter(Number.isFinite));
+    const maxC = Math.max(...d.map(x=>x.conc).filter(Number.isFinite));
+    return [
+      "MODEL SUMMARY",
+      "-------------",
+      "Samples: " + d.length,
+      "Duration: " + fmt(last.t,1) + " s",
+      "Final temperature: " + fmt(last.tempC,1) + " °C",
+      "Final absorbance A: " + fmt(last.absorbance,3),
+      "Max absorbance A: " + fmt(maxA,3),
+      "Final concentration/index c: " + fmt(last.conc,3),
+      "Max concentration/index c: " + fmt(maxC,3),
+      "Final transmitted light I: " + fmt(last.lux,0),
+      "Final mass: " + fmt(last.massG,1) + " g",
+      "",
+      "The simulated light channel is calculated from concentration through Beer–Lambert:",
+      "A = ε c ℓ; I = I₀ 10^(-A).",
+      "",
+      "Use Fit From Current Data after recording a real run to estimate cooling and optical extraction behavior."
+    ].join("\n");
+  }
+
+  function writeModelReport(text){
+    if($("modelReport")) $("modelReport").value = text;
+  }
+
+  function fitModelFromCurrentData(){
+    if(data.length < 8){
+      writeModelReport("Need at least 8 data points to estimate a model.");
+      return;
+    }
+
+    const validTemp = data.filter(d => Number.isFinite(d.tempC) && d.tempC > 0);
+    let report = [];
+    report.push("FIT REPORT");
+    report.push("----------");
+
+    // Estimate ambient as last 10% minimum-ish/median, initial as first few samples.
+    if(validTemp.length >= 8){
+      const nTail = Math.max(3, Math.floor(validTemp.length * 0.1));
+      const tail = validTemp.slice(-nTail).map(d=>d.tempC).sort((a,b)=>a-b);
+      const Tamb = tail[Math.floor(tail.length/2)];
+      const T0 = validTemp.slice(0,Math.min(5,validTemp.length)).reduce((a,d)=>a+d.tempC,0)/Math.min(5,validTemp.length);
+
+      // Fit ln(T-Tamb) = ln(T0-Tamb) - k t, using only points above Tamb + small margin.
+      const pts = validTemp
+        .map(d => ({t:d.t, y:d.tempC - Tamb}))
+        .filter(p => p.y > 1);
+      if(pts.length >= 5){
+        const n=pts.length;
+        const sx=pts.reduce((a,p)=>a+p.t,0);
+        const sy=pts.reduce((a,p)=>a+Math.log(p.y),0);
+        const sxx=pts.reduce((a,p)=>a+p.t*p.t,0);
+        const sxy=pts.reduce((a,p)=>a+p.t*Math.log(p.y),0);
+        const den=n*sxx-sx*sx;
+        const slope = den ? (n*sxy-sx*sy)/den : NaN;
+        const kcool = Number.isFinite(slope) ? Math.max(0,-slope) : NaN;
+
+        if(Number.isFinite(kcool) && $("modelKcool")){
+          $("modelTamb").value = Tamb.toFixed(2);
+          $("modelT0").value = T0.toFixed(2);
+          $("modelKcool").value = kcool.toFixed(5);
+        }
+        report.push("Cooling fit:");
+        report.push("  Ambient Tₐ ≈ " + fmt(Tamb,2) + " °C");
+        report.push("  Initial T₀ ≈ " + fmt(T0,2) + " °C");
+        report.push("  Cooling k ≈ " + fmt(kcool,5) + " 1/s");
+      }
+    }
+
+    // Estimate optical/extraction factor from absorbance vs time in steep phase or all data after absorbance begins.
+    const validA = data.map(d => ({t:d.t, A:getAbsorbance(d)})).filter(p => Number.isFinite(p.A) && p.A > 0);
+    if(validA.length >= 6){
+      const Amax = Math.max(...validA.map(p=>p.A));
+      const endA = validA[validA.length-1].A;
+      const Ainf = Math.max(Amax, endA) * 1.08;
+      const pts = validA.filter(p => Ainf - p.A > 0 && p.A < Ainf*0.95);
+      if(pts.length >= 5){
+        const t0 = pts[0].t;
+        const transformed = pts.map(p => ({t:p.t-t0, y:Math.log(Math.max(1e-9, 1 - p.A/Ainf))}));
+        const n=transformed.length;
+        const sx=transformed.reduce((a,p)=>a+p.t,0);
+        const sy=transformed.reduce((a,p)=>a+p.y,0);
+        const sxx=transformed.reduce((a,p)=>a+p.t*p.t,0);
+        const sxy=transformed.reduce((a,p)=>a+p.t*p.y,0);
+        const den=n*sxx-sx*sx;
+        const slope = den ? (n*sxy-sx*sy)/den : NaN;
+        const kext = Number.isFinite(slope) ? Math.max(0,-slope) : NaN;
+        const eps = epsilonVal();
+        const path = pathLengthCm();
+        const Cinf = (eps*path) ? Ainf/(eps*path) : Ainf;
+
+        if(Number.isFinite(kext)){
+          $("modelKext").value = kext.toFixed(5);
+          $("modelCinf").value = Cinf.toFixed(3);
+          $("modelSteepStart").value = Math.max(0, validA[0].t).toFixed(0);
+        }
+        report.push("");
+        report.push("Optical extraction fit:");
+        report.push("  A∞ estimate ≈ " + fmt(Ainf,3));
+        report.push("  kₑ estimate ≈ " + fmt(kext,5) + " 1/s");
+        report.push("  c∞ estimate ≈ " + fmt(Cinf,3) + " " + concUnits());
+        report.push("");
+        report.push("Caution: this is a first-order fit. It improves greatly with stable I₀, fixed path length, and clean steep-phase data.");
+      }
+    }
+
+    if(report.length <= 2){
+      report.push("Could not estimate model parameters from current data.");
+      report.push("Check that temperature and light/blank data exist.");
+    }
+    writeModelReport(report.join("\n"));
+    drawAll();
+    persistWorkingState();
+  }
+
+  function exportModelJSON(){
+    const payload = {
+      meta:{
+        name:"TeaTime Beer-Lambert model",
+        createdAt:new Date().toISOString(),
+        parameters:{
+          duration:modelParam("modelDuration",600),
+          dt:modelParam("modelDt",1),
+          Tamb:modelParam("modelTamb",22),
+          T0:modelParam("modelT0",88),
+          kcool:modelParam("modelKcool",0.0045),
+          steepStart:modelParam("modelSteepStart",30),
+          steepDuration:modelParam("modelSteepDuration",240),
+          Cinf:modelParam("modelCinf",1),
+          kext:modelParam("modelKext",0.01),
+          Tref:modelParam("modelTref",80),
+          Q10:modelParam("modelQ10",2),
+          I0:modelParam("modelI0",880),
+          epsilon:modelParam("modelEps",1),
+          path:modelParam("modelPath",1),
+          m0:modelParam("modelM0",250),
+          cupTare:modelParam("modelCupTare",45),
+          evapGmin:modelParam("modelEvap",0.03),
+          cupArea:modelParam("modelArea",38),
+          sensorHeight:modelParam("modelSensorH",10),
+          noise:modelParam("modelNoise",0.01),
+          seed:modelParam("modelSeed",12345)
+        }
+      },
+      modelData
+    };
+    downloadBlob(JSON.stringify(payload,null,2), "application/json", safeFilename("teatime_beer_lambert_model.json"));
+  }
+
+
+  // Events
+  if($("generateModelBtn")) $("generateModelBtn").addEventListener("click", ()=>generateModelRun(true));
+  if($("fitModelBtn")) $("fitModelBtn").addEventListener("click", fitModelFromCurrentData);
+  if($("overlayModelBtn")) $("overlayModelBtn").addEventListener("click", ()=>{ showModelOverlay = !showModelOverlay; drawAll(); writeModelReport("Model overlay is now " + (showModelOverlay ? "ON" : "OFF") + "."); });
+  if($("exportModelBtn")) $("exportModelBtn").addEventListener("click", exportModelJSON);
+
+  ["modelDuration","modelDt","modelTamb","modelT0","modelKcool","modelSteepStart","modelSteepDuration",
+   "modelCinf","modelKext","modelTref","modelQ10","modelI0","modelEps","modelPath","modelM0","modelCupTare",
+   "modelEvap","modelArea","modelSensorH","modelNoise","modelSeed"].forEach(id => {
+      if($(id)) $(id).addEventListener("input", ()=>{ if(modelData.length) { generateModelRun(false); } });
+   });
+
+  document.querySelectorAll(".tab").forEach(btn => {
+    btn.addEventListener("click", ()=>{
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".tabPanel").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      $(btn.dataset.tab).classList.add("active");
+      drawAll();
+    });
+  });
+  document.querySelectorAll(".phaseBtn").forEach(btn => btn.addEventListener("click", ()=>setPhase(btn.dataset.phase)));
+
+  // Atlas browser edition: the serial connection is disabled.
+  
+  $("simBtn").addEventListener("click", startSimulator);
+  $("stopBtn").addEventListener("click", stopRun);
+  $("clearBtn").addEventListener("click", clearRun);
+  $("exportCsvBtn").addEventListener("click", exportCSV);
+  $("exportJsonBtn").addEventListener("click", exportJSON);
+  $("saveWorkingBtn").addEventListener("click", ()=>{ persistWorkingState(); alert("Working state saved."); });
+
+  $("tareBtn").addEventListener("click", ()=>{
+    const d = data[data.length-1];
+    if(d && Number.isFinite(d.massG)) $("cupMass").value = d.massG.toFixed(1);
+    sendCommand("TARE"); logLine("# TARE");
+    persistWorkingState();
+  });
+  $("blankBtn").addEventListener("click", ()=>{
+    const d = data[data.length-1];
+    if(d && Number.isFinite(d.lux)) lightBlank = d.lux;
+    sendCommand("BLANK"); logLine("# LIGHT BLANK " + (Number.isFinite(lightBlank) ? lightBlank.toFixed(1) : ""));
+    persistWorkingState(); updateReadouts(); drawAll();
+  });
+  $("zeroDistBtn").addEventListener("click", ()=>{
+    const d = data[data.length-1];
+    if(d && Number.isFinite(d.distCm)) distZero = d.distCm;
+    sendCommand("ZERODIST"); logLine("# ZERO DIST " + fmt(distZero,2));
+    persistWorkingState(); updateReadouts(); drawAll(); refreshDataTable();
+  });
+  $("markBtn").addEventListener("click", ()=>setPhase(phase === "Idle" ? "Manual" : phase));
+
+  if($("applyBlankOverrideBtn")){
+    $("applyBlankOverrideBtn").addEventListener("click", ()=>{
+      const v = +$("blankOverride").value;
+      if(Number.isFinite(v) && v > 0){
+        lightBlank = v;
+        logLine("# BLANK OVERRIDE I0 = " + v);
+        updateReadouts(); drawAll(); persistWorkingState();
+      }
+    });
+  }
+  if($("clearBlankOverrideBtn")){
+    $("clearBlankOverrideBtn").addEventListener("click", ()=>{
+      $("blankOverride").value = "";
+      lightBlank = null;
+      logLine("# BLANK CLEARED");
+      updateReadouts(); drawAll(); persistWorkingState();
+    });
+  }
+
+  $("saveRunBtn").addEventListener("click", saveCurrentRun);
+  $("refreshSavedBtn").addEventListener("click", renderSavedRuns);
+  $("importJsonBtn").addEventListener("click", ()=>$("importFile").click());
+  $("importFile").addEventListener("change", async (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const txt = await file.text();
+    try{
+      const obj = JSON.parse(txt);
+      applyRunObject(obj);
+      alert("Imported run loaded.");
+    }catch(err){
+      alert("Could not import JSON.");
+    }
+    e.target.value = "";
+  });
+
+  ["teaType","operator","targetSteep","targetDrinkTemp","cupMass","runName","saveName","saveNotes","wStrength","wTemp","wRepeat","wHandle",
+    "pathLength","pathLengthRun","epsilon","epsilonRun","concUnits","concUnitsRun"]
+    .forEach(id => { if($(id)) $(id).addEventListener("input", ()=>{ syncBeerInputs(id); updateReadouts(); drawAll(); queueAutosave(); }); });
+
+  window.__teaLoad = loadRunByIndex;
+  window.__teaDelete = deleteRunByIndex;
+  window.__teaExportSaved = exportSavedByIndex;
+
+  setInterval(()=>{ updateReadouts(); }, 350);
+
+  // Initial render
+  setConnectionLabel("offline");
+  refreshDataTable();
+  refreshMarksTable();
+  renderSavedRuns();
+  drawAll();
+  restoreWorkingState();
+})();
+</script>
+</body>
+</html>
