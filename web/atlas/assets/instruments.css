@@ -1,0 +1,32 @@
+.lab-lead{font-size:1.22rem;max-width:68ch}
+.lab-index{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.55rem;margin:1.25rem 0 .65rem}
+.lab-index a{border:1px solid #9ab9ae;border-radius:.48rem;background:#eef1e8;padding:0;margin:0;overflow:hidden;font-size:.84rem;text-decoration:none}
+.lab-index img{border-radius:0;object-fit:cover;object-position:top;aspect-ratio:1.65;height:auto}
+.lab-index span{display:block;padding:.38rem .44rem}
+.lab-index b{color:#486259;margin-right:.2rem}
+.lab-index a:hover span,.lab-feature a:hover{background:#e1eee6}
+.lab-index a:hover span{text-decoration:underline}
+.lab-chain{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.5rem;list-style:none;padding:0}
+.lab-chain li{background:#0e3437;color:#f6f4e9;padding:.6rem .65rem;margin:0;border-radius:.5rem;font-size:.9rem}
+.lab-chain b,.lab-chain span{display:block}
+.lab-chain b{color:#f3c666}
+.lab-instrument{border-top:1px solid #a8c0b6;padding-top:1.15rem;scroll-margin-top:1rem}
+.lab-label{margin:0;font-weight:700;letter-spacing:.11em;color:#185e57;font-size:.78rem}
+.lab-instrument h2{font-size:clamp(1.85rem,5vw,2.85rem);margin:.25em 0}
+.lab-gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.25rem 0}
+.lab-gallery figure{background:#eef0e7;border:1px solid #c5d6cd;border-radius:.7rem;overflow:hidden;margin:0}
+.lab-gallery figure:only-child{grid-column:1/-1;max-width:44rem}
+.lab-gallery a{display:block;background:#0c2730;padding:.2rem}
+.lab-gallery img{border-radius:.5rem;height:auto}
+.lab-gallery a:focus-visible{outline-offset:-4px;outline-color:#efc05e}
+.lab-gallery figcaption{padding:.58rem .72rem .7rem;line-height:1.45}
+.lab-build li{padding-left:.12rem;margin:.65rem 0}
+.lab-code{overflow-x:auto;background:#e7eee5;border-left:.2rem solid #4d8578;padding:.65rem .8rem}
+.lab-feature{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1rem;background:#eaf0e7;border:1px solid #aac9bc;border-radius:.8rem;padding:1rem 1.15rem;margin:1.35rem 0}
+.lab-feature h2{font-size:clamp(1.6rem,4vw,2.25rem);margin:.25rem 0 .6rem}
+.lab-feature p{margin:.4rem 0 .5rem}
+.lab-feature img{object-fit:cover;object-position:top;aspect-ratio:1.75;height:auto}
+.lab-feature-links{font-size:.93rem}
+.lab-feature-links a{display:inline-block;margin-right:.65rem}
+caption{text-align:left;font-size:.93rem;color:#3e5653;margin:.5rem 0}
+@media(max-width:600px){.lab-index{grid-template-columns:repeat(2,minmax(0,1fr))}.lab-chain{grid-template-columns:repeat(2,minmax(0,1fr))}.lab-gallery,.lab-feature{grid-template-columns:1fr}}

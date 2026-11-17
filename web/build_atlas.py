@@ -75,9 +75,10 @@ def filter_manifest(rows, as_of):
 def page(directory, title, description, body, source=ATLAS, extra="", header="PROJECT ATLAS"):
     prefix = "../" if directory else ""
     current = {"": "Atlas home", "core-10": "CORE 10", "ideas": "Idea index",
-               "inventory": "Project inventory", "repositories": "All repositories"}[directory]
+               "inventory": "Project inventory", "repositories": "All repositories",
+               "instruments": "Virtual instruments"}[directory]
     nav = []
-    for name, dest in [("Atlas home", ""), ("CORE 10", "core-10"), ("Idea index", "ideas"),
+    for name, dest in [("Atlas home", ""), ("Virtual instruments", "instruments"), ("CORE 10", "core-10"), ("Idea index", "ideas"),
                        ("Project inventory", "inventory"), ("All repositories", "repositories")]:
         attr = ' aria-current="page"' if name == current else ''
         url = (prefix or "./") + ((dest + "/") if dest else "")
@@ -130,6 +131,15 @@ def homes():
 
 def home(n):
     page("", "Project Atlas", "Randall Young’s public working archive of experiments, instruments, teaching materials, and the ideas that connect them.", f"""
+<section class="lab-feature" aria-labelledby="home-instruments">
+<div>
+<p class="lab-label">FEATURED EXHIBIT · SOFTWARE-DEFINED LABORATORY</p>
+<h2 id="home-instruments"><a href="instruments/">Virtual Instruments</a></h2>
+<p>Start with a sensor on the bench. End with a wireless instrument you can read, control, and understand. Explore the original dashboard gallery and five Pico W / ESP32 build guides.</p>
+<p class="lab-feature-links"><a href="instruments/#dvm">Voltmeter</a><a href="instruments/#frequency">Frequency meter</a><a href="instruments/#scale">Scale</a><a href="instruments/#tof">ToF ruler</a><a href="instruments/#thermometer">Thermometer</a></p>
+</div>
+<a href="instruments/#frequency"><img src="instruments/screens/frequency-meter.webp" width="1240" height="945" alt="Preview of the original Pico W BLE frequency-meter LCD and controls"></a>
+</section>
 {cover('assets/atlas-cover.svg', 'A compass connects a laboratory flask, an instrument trace, and a book.')}
 <section aria-labelledby="start">
 <h2 id="start">Start here</h2>
@@ -149,7 +159,7 @@ def home(n):
 </ul>
 </section>
 <section aria-labelledby="families"><h2 id="families">Explore the work</h2>{homes()}</section>
-""", header="HOW MUCH? ENOUGH?")
+""", extra='<link rel="stylesheet" href="assets/instruments.css">\n', header="HOW MUCH? ENOUGH?")
 
 def core():
     page("core-10", "CORE 10", "A practical science and engineering curriculum that starts with something you can see, measure, and investigate.", f"""
@@ -229,6 +239,30 @@ def public_document(path, exclude, toc=False):
         result = f'<details><summary>Jump to a section</summary><ol>{jump}</ol></details>\n' + result
     return result.replace("<table>", '<div class="table-scroll" role="region" aria-label="Project table" tabindex="0"><table>').replace("</table>", "</table></div>")
 
+def instruments():
+    catalog = json.loads((WEB / "capture_catalog.json").read_text(encoding="utf-8"))
+    source = (WEB / "instruments.html").read_text(encoding="utf-8")
+
+    def figure(match):
+        key = match.group(1)
+        title, alt, caption, filename, width, height = catalog[key]
+        asset = f"screens/{key}.webp"
+        if not (OUT / "instruments" / asset).is_file():
+            raise FileNotFoundError(asset)
+        return (f'<figure><a href="{asset}" aria-label="Open full-size capture: {esc(title)}">'
+                f'<img loading="lazy" decoding="async" src="{asset}" width="{width}" height="{height}" alt="{esc(alt)}"></a>'
+                f'<figcaption><strong>{esc(title)}</strong><br>{esc(caption)}'
+                f'<br><code>{esc(filename)}</code></figcaption></figure>')
+
+    assert set(re.findall(r"@@([a-z0-9-]+)@@", source)) == catalog.keys()
+    body = re.sub(r"@@([a-z0-9-]+)@@", figure, source)
+    page("instruments", "Virtual Instruments",
+         "Five bench instruments, real control-dashboard captures, and practical wireless builds.",
+         body, header="SOFTWARE-DEFINED LABORATORY · EXPERIENCE BEFORE EQUATION",
+         extra='<link rel="stylesheet" href="../assets/instruments.css">\n',
+         source=f"{ATLAS}/tree/atlas-web-preview/web")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--atlas-source", type=Path, default=WEB.parent)
@@ -246,6 +280,7 @@ def main():
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     home(len(manifest["repositories"]))
     core()
+    instruments()
     repo_archive(manifest, args.atlas_source / "LEGACY_REPOSITORY_MAP.md")
     for name, title, summary, file, exclude in [
         ("ideas", "Idea index", "The durable ideas behind the work, from measurement and teaching to open instruments and publication.",
@@ -255,7 +290,7 @@ def main():
     ]:
         body = public_document(args.atlas_source / file, exclude, toc=True)
         page(name, title, summary, f'<article>{body}</article>', source=f"{ATLAS_MAIN}/{file}")
-    print(f"Built five pages and indexed {len(manifest['repositories'])} public repositories.")
+    print(f"Built six pages and indexed {len(manifest['repositories'])} public repositories.")
 
 if __name__ == "__main__":
     main()

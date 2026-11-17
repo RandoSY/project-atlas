@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Five bench instruments, real control-dashboard captures, and practical wireless builds.">
+<title>Virtual Instruments · Randall Young</title>
+<link rel="stylesheet" href="../assets/calculus-theme.css">
+<link rel="stylesheet" href="../assets/atlas.css">
+<link rel="stylesheet" href="../assets/instruments.css">
+</head>
+<body><main>
+<p>RANDALL YOUNG · SOFTWARE-DEFINED LABORATORY · EXPERIENCE BEFORE EQUATION</p>
+<h1>Virtual Instruments</h1>
+<p>Five bench instruments, real control-dashboard captures, and practical wireless builds.</p>
+<p class="lab-lead">The browser becomes the front panel. The Pico W or ESP32 still does the measuring. Keep those two jobs separate and the same instrument can use USB on the bench, Bluetooth across the room, or Wi-Fi on the lab network.</p>
+<nav class="lab-index" aria-label="Jump to an instrument">
+  <a href="#dvm"><img src="screens/dvm-controls.webp" width="1240" height="840" alt=""><span><b>01</b> DC voltmeter</span></a>
+  <a href="#frequency"><img src="screens/frequency-meter.webp" width="1240" height="945" alt=""><span><b>02</b> Frequency meter</span></a>
+  <a href="#scale"><img src="screens/scale-demo.webp" width="1240" height="840" alt=""><span><b>03</b> Electronic scale</span></a>
+  <a href="#tof"><img src="screens/tof-pendulum.webp" width="1240" height="1102" alt=""><span><b>04</b> ToF ruler</span></a>
+  <a href="#thermometer"><img src="screens/thermometer-lab12.webp" width="1240" height="840" alt=""><span><b>05</b> Thermometer</span></a>
+</nav>
+<p><a href="#wireless">See the common wireless build pattern</a></p>
+<p class="meta">Full-size images open when you select a capture. These are captures of working interface code, not generated mockups. Captions distinguish idle screens, browser simulations, and wired references. A screenshot is not a hardware validation record.</p>
+
+<section id="wireless" aria-labelledby="wireless-title">
+<h2 id="wireless-title">How a board becomes an instrument</h2>
+<ol class="lab-chain">
+<li><b>Sense</b><span>Probe, bridge, or sensor</span></li><li><b>Acquire</b><span>ADC, clock, or digital bus</span></li>
+<li><b>Calibrate</b><span>On-board values and status</span></li><li><b>Send</b><span>USB, BLE, or Wi-Fi</span></li>
+<li><b>Use</b><span>Read, control, plot, export</span></li>
+</ol>
+<ol class="lab-build">
+<li><strong>Get one trustworthy reading over USB first.</strong> Flash a Pico W build of MicroPython for simple slow sensors, or use Pico SDK C for the PIO counter. For ESP32, start with the exact board selected in Arduino/PlatformIO or ESP-IDF. Print the raw reading, calibrated value, units, and sensor status before writing the dashboard.</li>
+<li><strong>Keep acquisition local.</strong> Time pulses and conversions on the board, not by browser arrival time. Start with one to five reports per second for these displays. Include a sequence number and device timestamp. Send an explicit no-signal or sensor-error state and mark old readings stale after disconnection.</li>
+<li><strong>Pick the wireless path.</strong> For one nearby console, advertise a BLE UART service such as Nordic UART Service (NUS). The browser subscribes to telemetry notifications and writes permitted commands such as <code>TARE</code>; frame records by newline and reassemble BLE chunks before parsing. Use desktop Chrome or Edge for these Web Bluetooth examples. For Firefox or several viewers, have the instrument join the lab Wi-Fi as a station (STA), display its IP, and serve a read-only JSON endpoint and front panel on the same local origin. Start with polling; add SSE or WebSocket only if the experiment needs it.</li>
+<li><strong>Measure, then prove the path.</strong> Check the instrument against something known, then compare USB and wireless results from the same sample. Verify updates after disconnect and reconnect. Keep the board and its control endpoints on the lab LAN. The public Atlas gallery is for viewing, not for reaching private devices.</li>
+</ol>
+<p>Here is one <strong>proposed</strong> telemetry record for the common dashboard. Historical dashboards may use different commands or field names.</p>
+<pre class="lab-code"><code>{"id":"scale-01","quantity":"mass","seq":42,"t_ms":8300,
+ "value":250.1,"unit":"g","status":"ok"}</code></pre>
+<div class="table-scroll" role="region" aria-label="Example board wiring" tabindex="0">
+<table>
+<caption>Example pin choices for the starting builds below. GPIO numbers, not connector positions.</caption>
+<thead><tr><th scope="col">Input function</th><th scope="col">RP2040 Pico W</th><th scope="col">ESP32-S3-DevKitC-1</th></tr></thead>
+<tbody>
+<tr><th scope="row">DC voltage</th><td>GP26 / ADC0, AGND</td><td>GPIO4 / ADC1_CH3, GND</td></tr>
+<tr><th scope="row">Frequency input</th><td>GP14 / PIO example</td><td>GPIO5 / PCNT input</td></tr>
+<tr><th scope="row">HX711 scale</th><td>GP16 DOUT, GP17 SCK</td><td>GPIO6 DOUT, GPIO7 SCK</td></tr>
+<tr><th scope="row">ToF I²C</th><td>GP4 SDA, GP5 SCL</td><td>GPIO8 SDA, GPIO9 SCL</td></tr>
+<tr><th scope="row">DS18B20 1-Wire</th><td>GP18 DQ</td><td>GPIO10 DQ</td></tr>
+</tbody></table></div>
+<p class="meta">These are suggested new wiring assignments except where a historical example is cited. Other ESP32 boards and modules can expose different pins or peripherals. Check your exact board before wiring.</p>
+</section>
+
+<section class="lab-instrument" id="dvm">
+<p class="lab-label">01 / ELECTRICAL POTENTIAL</p><h2>DC voltmeter (DVM)</h2>
+<p>Start with a known low-voltage source, then measure a battery while it is unloaded and under a small load. The historical <strong>Virtual DMM</strong> has more modes. This build is deliberately just a DC voltmeter.</p>
+<div class="lab-gallery">
+<figure><a href="screens/dvm-controls.webp" aria-label="Open full-size capture: ESP32-C3 Virtual DMM · Controls"><img loading="lazy" decoding="async" src="screens/dvm-controls.webp" width="1240" height="840" alt="Live Circuit tab&#x27;s companion Controls panel with LCD, measurement controls and simulation state."></a><figcaption><strong>ESP32-C3 Virtual DMM · Controls</strong><br>Rev 3 L · Original dashboard capture in simulation. The mode and hold controls sit next to the large LCD.<br><code>virtual_dmm_rev3_test_l.html</code></figcaption></figure>
+<figure><a href="screens/dvm-circuit.webp" aria-label="Open full-size capture: Virtual DMM · Live Circuit"><img loading="lazy" decoding="async" src="screens/dvm-circuit.webp" width="1240" height="840" alt="A simulated voltage reading beside an annotated divider and ADC circuit."></a><figcaption><strong>Virtual DMM · Live Circuit</strong><br>Rev 3 L · The original browser simulation shows the divider, ADC node and reconstructed input voltage. Its historical front end is not the example divider in this guide.<br><code>virtual_dmm_rev3_test_l.html</code></figcaption></figure>
+<figure><a href="screens/dvm-calibration.webp" aria-label="Open full-size capture: Virtual DMM · Calibration"><img loading="lazy" decoding="async" src="screens/dvm-calibration.webp" width="1240" height="840" alt="A large zeroed LCD next to gain and offset fields on the calibration tab."></a><figcaption><strong>Virtual DMM · Calibration</strong><br>Release 0.2.0 · Original WebBLE calibration tab, disconnected. Gain and offset are separate from the meter controls.<br><code>virtual_dmm_webble_tabbed_release_0_2_0.html</code></figcaption></figure>
+</div>
+<ol class="lab-build">
+<li><strong>Wire it.</strong> For a known 0–5 V DC bench source, use a 10 kΩ resistor from source positive to the ADC node and another 10 kΩ from that node to ground. Join source negative to board ground. The divider gives a nominal 0–2.5 V at the ADC. Check that this fits the board’s actual ADC range and ESP32 attenuation setting. The divider is not input protection. No mains, negative voltages, or unknown sources.</li>
+<li><strong>Calibrate it.</strong> Record a shorted input and a known voltage measured with a reference meter, then fit gain and offset and check at a third point. On ESP32-S3 use ADC1 and the vendor’s ADC calibration support. Average slow readings and retain the raw ADC value for diagnostics.</li>
+<li><strong>Show it.</strong> Transmit <code>voltage</code> in <code>V</code>. Hold freezes the display, not the hardware. Flag out-of-range readings instead of showing a plausible but wrong number.</li>
+</ol>
+<p><a href="https://github.com/RandoSY/UMA_ARCHIVE_2026/tree/main/07_Dashboards_and_Virtual_Instruments/Virtual_DMM">Virtual DMM archive</a> · <a href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/adc/adc_oneshot.html">ESP32-S3 ADC documentation</a></p>
+</section>
+
+<section class="lab-instrument" id="frequency">
+<p class="lab-label">02 / TIME AND COUNTING</p><h2>Frequency meter</h2>
+<p>Start with a known 1 kHz, 3.3 V logic square wave. Watch how the reading changes as you change the gate time. A captured clock edge is the evidence. Wi-Fi and BLE merely carry the result.</p>
+<div class="lab-gallery">
+<figure><a href="screens/frequency-meter.webp" aria-label="Open full-size capture: Pico W BLE frequency meter · Readout"><img loading="lazy" decoding="async" src="screens/frequency-meter.webp" width="1240" height="945" alt="A green frequency display, measurement commands and BLE connection status."></a><figcaption><strong>Pico W BLE frequency meter · Readout</strong><br>Original WebBLE LCD and quick actions, disconnected. The displayed zero isn&#x27;t a measured signal.<br><code>dashboard_compatible_debug_v1_1_1.html</code></figcaption></figure>
+<figure><a href="screens/frequency-settings.webp" aria-label="Open full-size capture: Pico W BLE frequency meter · Settings"><img loading="lazy" decoding="async" src="screens/frequency-settings.webp" width="1240" height="840" alt="Separate controls for gate time, samples, generator frequency and duty."></a><figcaption><strong>Pico W BLE frequency meter · Settings</strong><br>Original WebBLE configuration, disconnected. The gate and the signal generator have distinct controls.<br><code>dashboard_compatible_debug_v1_1_1.html</code></figcaption></figure>
+<figure><a href="screens/frequency-usb-bench.webp" aria-label="Open full-size capture: RP2040 instrument bench · USB comparison"><img loading="lazy" decoding="async" src="screens/frequency-usb-bench.webp" width="1240" height="840" alt="Three counter channels displayed together in the Pico Instrument Console."></a><figcaption><strong>RP2040 instrument bench · USB comparison</strong><br>Original three-channel Pico dashboard in browser simulation. This related implementation uses USB Web Serial with hardware.<br><code>Pico_Test_Equipment/firmware/motherboard/dashboard</code></figcaption></figure>
+</div>
+<ol class="lab-build">
+<li><strong>Wire it.</strong> Join grounds and use a clean 3.3 V logic source. A Pico W loopback can use PWM output GP15 to counter input GP14 in the documented bench pattern. For an external source, confirm the levels first and condition them as needed.</li>
+<li><strong>Count it.</strong> On RP2040, use a PIO state machine to count rising edges while a hardware-derived gate runs. On ESP32-S3, use PCNT with a suitable glitch filter and handle counter limits. Do not assume PCNT is present on every ESP32 variant. Compute <code>Hz = edges / gate_seconds</code>. A 1 s gate gives 1 Hz count increments, not guaranteed 1 Hz accuracy. For slow signals, time successive edges and compute the reciprocal period instead.</li>
+<li><strong>Prove it.</strong> A loopback checks the path, not absolute timebase accuracy when both sides share a clock. Check an independent known source too. Publish Hz, gate duration, and count, and report no signal after a defined timeout.</li>
+</ol>
+<p><a href="https://github.com/RandoSY/Pico_Test_Equipment/blob/main/firmware/motherboard/README-dashboard.md">RP2040 instrument bench source and instructions</a> · <a href="https://docs.espressif.com/projects/esp-idf/en/stable/esp32s3/api-reference/peripherals/pcnt.html">ESP32-S3 PCNT</a></p>
+</section>
+
+<section class="lab-instrument" id="scale">
+<p class="lab-label">03 / FORCE INTO MASS</p><h2>Electronic scale (eScale)</h2>
+<p>Put an empty cup on the platform, tare it, and add a known mass. Then use the same instrument to follow added water or evaporation over time.</p>
+<div class="lab-gallery">
+<figure><a href="screens/scale-controls.webp" aria-label="Open full-size capture: PicoScale · Tare and calibration"><img loading="lazy" decoding="async" src="screens/scale-controls.webp" width="1240" height="840" alt="Large scale display with start, stop, tare, hold and calibration controls."></a><figcaption><strong>PicoScale · Tare and calibration</strong><br>PicoScale v0.3.0 · Original BLE console in local demo mode. The same view offers live tare and calibration.<br><code>escale_ble_interface(15).html</code></figcaption></figure>
+<figure><a href="screens/scale-demo.webp" aria-label="Open full-size capture: PicoScale · Browser demo load"><img loading="lazy" decoding="async" src="screens/scale-demo.webp" width="1240" height="840" alt="PicoScale Demo / Learn tab with selectable simulated weights."></a><figcaption><strong>PicoScale · Browser demo load</strong><br>PicoScale v0.3.0 · Built-in browser demo, no HX711 connected. Buttons let a learner try different loads before touching hardware.<br><code>escale_ble_interface(15).html</code></figcaption></figure>
+<figure><a href="screens/scale-diagnostics.webp" aria-label="Open full-size capture: PicoScale · Command terminal"><img loading="lazy" decoding="async" src="screens/scale-diagnostics.webp" width="1240" height="840" alt="Scale display above a command terminal and a status snapshot."></a><figcaption><strong>PicoScale · Command terminal</strong><br>PicoScale v0.3.0 · Original diagnostics view in local demo mode. Useful for seeing the separation between transport and the display.<br><code>escale_ble_interface(15).html</code></figcaption></figure>
+</div>
+<ol class="lab-build">
+<li><strong>Wire it.</strong> Mount a strain-gauge load cell according to its drawing. Connect its excitation and signal pairs to the HX711 breakout using the load-cell pinout, not guessed wire colors. Wire DOUT and SCK plus power and ground. Confirm 3.3 V logic compatibility. Some breakouts expose separate analog and digital supply pins.</li>
+<li><strong>Calibrate it.</strong> Tare the empty platform or cup. Record a known mass after the readings settle, compute counts per gram from the difference, then verify with a different mass and check repeatability after unloading. Watch for drift and uneven mounting.</li>
+<li><strong>Show it.</strong> Send grams, a stable/moving flag, and optionally raw counts. A tare command changes the zero, not the calibration slope. Keep demo and live visibly separate.</li>
+</ol>
+<p><a href="https://github.com/RandoSY/UMA_ARCHIVE_2026/blob/main/04_Measured_World_Instruments/Smart_eScale/SMART_ESCALE_ONE_PAGER.md">Smart eScale design record</a> · <a href="https://learn.sparkfun.com/tutorials/load-cell-amplifier-hx711-breakout-hookup-guide/introduction">HX711 hookup guide</a></p>
+</section>
+
+<section class="lab-instrument" id="tof">
+<p class="lab-label">04 / DISTANCE WITHOUT A TAPE</p><h2>Time-of-flight ruler</h2>
+<p>Point a VL53L1X at a matte card on a measured baseline. Move the card in steps and plot indicated distance minus the reference. Now try a dark or tilted target and compare. That's when a distance sensor becomes an exercise in measurement.</p>
+<div class="lab-gallery">
+<figure><a href="screens/tof-pendulum.webp" aria-label="Open full-size capture: VL53L1X ToF · Reference dashboard"><img loading="lazy" decoding="async" src="screens/tof-pendulum.webp" width="1240" height="1102" alt="A pendulum drawing, range and timing graph areas, and controls for a VL53L1X instrument."></a><figcaption><strong>VL53L1X ToF · Reference dashboard</strong><br>Seconds Pendulum · Original Nano / Web Serial dashboard, disconnected. This is the optical sensor’s wired dashboard lineage, not a wireless ruler capture.<br><code>pendulum_webserial_dashboard.html</code></figcaption></figure>
+</div>
+<ol class="lab-build">
+<li><strong>Wire it.</strong> Choose a VL53L1X breakout rated for the board’s power and logic. Connect SDA, SCL, and common ground, with pull-ups to the correct logic supply. Use the board’s recommended power pin. The usual seven-bit I²C address is <code>0x29</code>. The datasheet’s <code>0x52</code> notation is the shifted write address.</li>
+<li><strong>Read it.</strong> Use the matching driver to start ranging and wait for data-ready. Record millimeters and the range status, and reject invalid returns before plotting. Keep a fixed reference plane and test several distances against a tape. Compare repeatability before and after changing target angle or lighting.</li>
+<li><strong>Make it wireless.</strong> Replace the Nano/Web Serial transport shown above with Pico W or ESP32 acquisition and BLE or Wi-Fi telemetry. That is the proposed ruler path. The archived screenshot shows the real range-and-plot interface lineage, not a completed wireless ruler test.</li>
+</ol>
+<p><a href="https://github.com/RandoSY/UMA_ARCHIVE_2026/blob/main/04_Measured_World_Instruments/Tapeless_Ruler/TAPELESS_RULER_ONE_PAGER.md">Tapeless Ruler design record</a> · <a href="https://www.st.com/en/imaging-and-photonics-solutions/vl53l1x.html">ST VL53L1X specifications</a></p>
+</section>
+
+<section class="lab-instrument" id="thermometer">
+<p class="lab-label">05 / TEMPERATURE OVER TIME</p><h2>Thermometer</h2>
+<p>Measure the cooling of a cup of warm water. A single temperature is a reading. Timestamps and a log turn it into a cooling curve you can compare across cups, lids, and starting conditions.</p>
+<div class="lab-gallery">
+<figure><a href="screens/thermometer-lab12.webp" aria-label="Open full-size capture: LAB-12 · Digital cooling laboratory"><img loading="lazy" decoding="async" src="screens/thermometer-lab12.webp" width="1240" height="840" alt="The LAB-12 scope and a simulated temperature session."></a><figcaption><strong>LAB-12 · Digital cooling laboratory</strong><br>Original LAB-12 dashboard in browser demo mode. Its documented architecture pairs a DS18B20 and MSP430 with a Pico W. The capture is not physical cooling data.<br><code>software-defined-laboratory/platforms/lab12-pdp12-linc/v1.2/dashboard/lab12_dashboard.html</code></figcaption></figure>
+<figure><a href="screens/thermometer-unoq.webp" aria-label="Open full-size capture: UNO Q Spirit · Temperature monitor"><img loading="lazy" decoding="async" src="screens/thermometer-unoq.webp" width="1240" height="659" alt="Archived software-defined laboratory dashboard with a temperature readout and trend display."></a><figcaption><strong>UNO Q Spirit · Temperature monitor</strong><br>Archived screenshot from the separate UNO Q Spirit project, showing synthetic temperature telemetry. The local board address is masked.<br><code>software-defined-laboratory/platforms/uno-q-spirit/docs/images/dashboard-monitor.png</code></figcaption></figure>
+</div>
+<ol class="lab-build">
+<li><strong>Wire it.</strong> Use a powered, three-wire DS18B20. Connect VDD to 3.3 V, GND to ground, and DQ to the selected GPIO. Add a typical 4.7 kΩ pull-up from DQ to 3.3 V unless the breakout already has one. Use an immersion-rated probe if it goes into water, and keep the connector and board dry.</li>
+<li><strong>Read it.</strong> Start conversion, wait for completion (up to 750 ms at 12-bit resolution), read and check the scratchpad CRC, and timestamp the result on the board. Don't transmit the boot-time default as a live reading. For a cooling curve, a reading every few seconds is usually plenty.</li>
+<li><strong>Prove it.</strong> Compare in a stirred bath against a reference thermometer and capture ambient temperature separately. Log °C and device time over BLE or Wi-Fi. Keep missing samples visible, and hold probe depth constant so you know what changed between trials.</li>
+</ol>
+<p><a href="https://github.com/RandoSY/software-defined-laboratory/tree/main/platforms/lab12-pdp12-linc/v1.2">LAB-12 Pico W cooling workbench</a> · <a href="https://github.com/RandoSY/software-defined-laboratory/blob/main/docs/FIRST_ACCEPTANCE_PATH.md">SDL reference thermometer path</a> · <a href="https://www.analog.com/en/products/ds18b20.html">DS18B20 specifications</a></p>
+</section>
+
+<section aria-labelledby="lab-next"><h2 id="lab-next">Take it to the bench</h2>
+<p>Start with the instrument your experiment needs. Save one known input, one raw record, one screenshot, and one comparison against a reference. That is enough to tell a classroom demo from a measurement you can repeat.</p>
+<p><a href="https://github.com/RandoSY/measured-world-lab">Measured World Lab</a> · <a href="https://github.com/RandoSY/software-defined-laboratory">Software-Defined Laboratory</a> · <a href="https://github.com/RandoSY/project-atlas/blob/main/archive-recovery/browser-instruments/manifest.csv">Historical browser-instrument manifest</a> · <a href="https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html">Pico W pinout and manuals</a> · <a href="https://docs.espressif.com/projects/esp-idf/en/v5.0/esp32s3/hw-reference/esp32s3/user-guide-devkitc-1.html">ESP32-S3 board pinout</a></p>
+</section>
+
+<footer>
+<nav aria-label="Project Atlas"><a href="../">Atlas home</a> <a href="../instruments/" aria-current="page">Virtual instruments</a> <a href="../core-10/">CORE 10</a> <a href="../ideas/">Idea index</a> <a href="../inventory/">Project inventory</a> <a href="../repositories/">All repositories</a></nav>
+<p><a href="https://github.com/RandoSY/project-atlas/tree/atlas-web-preview/web">View the source on GitHub</a></p>
+</footer>
+</main></body>
+</html>

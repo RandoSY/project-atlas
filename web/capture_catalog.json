@@ -1,0 +1,98 @@
+{
+  "dvm-controls": [
+    "ESP32-C3 Virtual DMM · Controls",
+    "Live Circuit tab's companion Controls panel with LCD, measurement controls and simulation state.",
+    "Rev 3 L · Original dashboard capture in simulation. The mode and hold controls sit next to the large LCD.",
+    "virtual_dmm_rev3_test_l.html",
+    1240,
+    840
+  ],
+  "dvm-circuit": [
+    "Virtual DMM · Live Circuit",
+    "A simulated voltage reading beside an annotated divider and ADC circuit.",
+    "Rev 3 L · The original browser simulation shows the divider, ADC node and reconstructed input voltage. Its historical front end is not the example divider in this guide.",
+    "virtual_dmm_rev3_test_l.html",
+    1240,
+    840
+  ],
+  "dvm-calibration": [
+    "Virtual DMM · Calibration",
+    "A large zeroed LCD next to gain and offset fields on the calibration tab.",
+    "Release 0.2.0 · Original WebBLE calibration tab, disconnected. Gain and offset are separate from the meter controls.",
+    "virtual_dmm_webble_tabbed_release_0_2_0.html",
+    1240,
+    840
+  ],
+  "frequency-meter": [
+    "Pico W BLE frequency meter · Readout",
+    "A green frequency display, measurement commands and BLE connection status.",
+    "Original WebBLE LCD and quick actions, disconnected. The displayed zero isn't a measured signal.",
+    "dashboard_compatible_debug_v1_1_1.html",
+    1240,
+    945
+  ],
+  "frequency-settings": [
+    "Pico W BLE frequency meter · Settings",
+    "Separate controls for gate time, samples, generator frequency and duty.",
+    "Original WebBLE configuration, disconnected. The gate and the signal generator have distinct controls.",
+    "dashboard_compatible_debug_v1_1_1.html",
+    1240,
+    840
+  ],
+  "frequency-usb-bench": [
+    "RP2040 instrument bench · USB comparison",
+    "Three counter channels displayed together in the Pico Instrument Console.",
+    "Original three-channel Pico dashboard in browser simulation. This related implementation uses USB Web Serial with hardware.",
+    "Pico_Test_Equipment/firmware/motherboard/dashboard",
+    1240,
+    840
+  ],
+  "scale-controls": [
+    "PicoScale · Tare and calibration",
+    "Large scale display with start, stop, tare, hold and calibration controls.",
+    "PicoScale v0.3.0 · Original BLE console in local demo mode. The same view offers live tare and calibration.",
+    "escale_ble_interface(15).html",
+    1240,
+    840
+  ],
+  "scale-demo": [
+    "PicoScale · Browser demo load",
+    "PicoScale Demo / Learn tab with selectable simulated weights.",
+    "PicoScale v0.3.0 · Built-in browser demo, no HX711 connected. Buttons let a learner try different loads before touching hardware.",
+    "escale_ble_interface(15).html",
+    1240,
+    840
+  ],
+  "scale-diagnostics": [
+    "PicoScale · Command terminal",
+    "Scale display above a command terminal and a status snapshot.",
+    "PicoScale v0.3.0 · Original diagnostics view in local demo mode. Useful for seeing the separation between transport and the display.",
+    "escale_ble_interface(15).html",
+    1240,
+    840
+  ],
+  "tof-pendulum": [
+    "VL53L1X ToF · Reference dashboard",
+    "A pendulum drawing, range and timing graph areas, and controls for a VL53L1X instrument.",
+    "Seconds Pendulum · Original Nano / Web Serial dashboard, disconnected. This is the optical sensor’s wired dashboard lineage, not a wireless ruler capture.",
+    "pendulum_webserial_dashboard.html",
+    1240,
+    1102
+  ],
+  "thermometer-lab12": [
+    "LAB-12 · Digital cooling laboratory",
+    "The LAB-12 scope and a simulated temperature session.",
+    "Original LAB-12 dashboard in browser demo mode. Its documented architecture pairs a DS18B20 and MSP430 with a Pico W. The capture is not physical cooling data.",
+    "software-defined-laboratory/platforms/lab12-pdp12-linc/v1.2/dashboard/lab12_dashboard.html",
+    1240,
+    840
+  ],
+  "thermometer-unoq": [
+    "UNO Q Spirit · Temperature monitor",
+    "Archived software-defined laboratory dashboard with a temperature readout and trend display.",
+    "Archived screenshot from the separate UNO Q Spirit project, showing synthetic temperature telemetry. The local board address is masked.",
+    "software-defined-laboratory/platforms/uno-q-spirit/docs/images/dashboard-monitor.png",
+    1240,
+    659
+  ]
+}
