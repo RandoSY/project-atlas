@@ -121,18 +121,26 @@ for i, row in enumerate(data["routes"]):
     body_end=wrap(x+12,title_end+5,row["text"],143,9.1,12.1,ink="muted",max_lines=4)
     assert body_end <= 366
     a(x+12,369,row["label"],row["url"],size=8.0)
-t(43,398,"Find your way around Atlas",22,"Display")
+software = data["software_aside"]
+bg(42,398,528,102,"cream","border",radius=7)
+bg(42,407,3,84,"gold",radius=0)
+t(54,408,software["title"],15,"Display")
+end=wrap(54,428,software["status"],504,8.9,11.4,max_lines=2)
+end=wrap(54,end+3,software["advice"],504,8.9,11.4,max_lines=2)
+assert end <= 478
+a(54,480,software["label"],software["url"],8.5)
+t(43,515,"Find your way around Atlas",20,"Display")
 for i, row in enumerate(data["navigation"]):
-    y=437+i*36
-    if i%2==0: bg(42,y-4,528,35,"wash",radius=5)
-    a(53,y+6,row["title"],row["url"],9.3)
-    wrap(146,y+6,row["text"],411,9.05,12,max_lines=2)
-bg(42,628,528,97,"deep",radius=10)
-kicker(53,642,"A way to work with any exhibit","aqua")
+    y=545+i*22
+    if i%2==0: bg(42,y,528,21,"wash",radius=4)
+    a(53,y+5,row["title"],row["url"],9.0)
+    wrap(146,y+5,row["text"],411,8.8,10,max_lines=1)
+bg(42,664,528,74,"deep",radius=8)
+kicker(53,674,"A way to work with any exhibit","aqua")
 for i,row in enumerate(data["workflow"]):
     x=53+i*176
-    t(x,662,row["title"],11,"Strong","gold")
-    wrap(x,682,row["text"],155,8.4,11.2,ink="paper",max_lines=3)
+    t(x,689,row["title"],10.3,"Strong","gold")
+    wrap(x,705,row["text"],158,8.4,9.8,ink="paper",max_lines=3)
 foot(1)
 pdf.showPage()
 

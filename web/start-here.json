@@ -3,6 +3,13 @@
   "title": "Start Here",
   "subtitle": "A getting-started guide to Randall Young’s Project Atlas",
   "intro": "Project Atlas is a public guide to experiments, classroom activities, instruments, and their source records. You do not need to understand the whole archive to use it. Pick one question, try one thing, and follow the evidence.",
+  "software_aside": {
+    "title": "Make it your own",
+    "status": "A friendly heads-up. Some Atlas software is ready to run, some is a prototype, and some projects are still designs. Find the GitHub repo and start with its README.",
+    "advice": "Give your AI of choice the repo link, your hardware, and what you want to do. Ask it to adapt the code or build what’s missing, then test one small task on your setup.",
+    "label": "Find the project’s GitHub repo",
+    "url": "/atlas/repositories/"
+  },
   "routes": [
     {
       "title": "Try something in the browser",

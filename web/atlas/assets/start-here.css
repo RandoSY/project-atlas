@@ -3,6 +3,14 @@
 .sg-guide h3{font-size:1.12rem;line-height:1.24;margin:0 0 .45rem}
 .sg-guide .sg-intro{max-width:70ch}
 .sg-download{display:inline-flex;align-items:center;min-height:2.75rem;font-weight:700}
+.sg-aside{
+  background:#f2ead6;border:1px solid #cebc98;border-left:.28rem solid #996719;
+  border-radius:.55rem;padding:.88rem 1rem;margin:1rem 0 1.65rem
+}
+.sg-aside h2{margin:0 0 .45rem;font-size:1.42rem}
+.sg-aside p{max-width:72ch;font-size:.95rem;margin:.38rem 0}
+.sg-aside .sg-aside-link{font-weight:700;margin-bottom:0}
+.sg-aside-link a{display:inline-flex;align-items:center;min-height:2.75rem}
 .sg-guide :is(.sg-routes,.sg-exhibits,.sg-method ol){
   margin:0;padding:0;list-style:none;display:grid;gap:.7rem
 }
