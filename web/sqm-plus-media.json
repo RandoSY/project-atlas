@@ -1,0 +1,51 @@
+{
+  "one-walk": {
+    "width": 1440,
+    "height": 960,
+    "alt": "One Hallway Walk diagram with start and finish marks 11 meters apart, a stopwatch for speed, and an M5Stick for step candidates.",
+    "caption": "The current one-leg reference supplied for this exhibit. The stopwatch asks how fast. The M5Stick asks what motion it recorded and which events might be steps. The illustration shows one possible carry position.",
+    "source": "Measuring a hallway walk(1).png"
+  },
+  "live": {
+    "width": 1280,
+    "height": 720,
+    "alt": "SQM+ LAN dashboard ready to arm, with separate columns for candidate steps, cadence, step length, speed and elapsed time.",
+    "caption": "User-supplied interface reference. This earlier LAN v0.4 ready screen shows the separation between timing and candidate events. No walk has been recorded in this view.",
+    "source": "dashboard_lan_1280x720(2).png"
+  },
+  "steps": {
+    "width": 1422,
+    "height": 620,
+    "alt": "Early Step Analysis panel showing event intervals, motion markers and a manual reference-count field.",
+    "caption": "Archived Step Analysis view from a handheld simulation. Tall or short intervals are clues for investigation, not automatically missed steps or real footfalls.",
+    "source": "Hallway Observatory white paper, Figure 3"
+  },
+  "setup": {
+    "width": 1422,
+    "height": 620,
+    "alt": "Device Setup screen with course distance, sensor threshold, battery, and data-quality diagnostics.",
+    "caption": "Archived Device & Setup view with network identifiers already obscured. The point of this screen is to expose the instrument settings and the data-quality checks together.",
+    "source": "Hallway Observatory white paper, Figure 5"
+  },
+  "r8-bench": {
+    "width": 1440,
+    "height": 300,
+    "alt": "r8 state banner reads DONE and two legs saved. Trial type is seated handheld.",
+    "caption": "Nov 15 r8 physical bench capture, cropped to show its completion state. Two stationary segments were saved. This is an engineering test, not a completed hallway walk.",
+    "source": "Handheld_Step_Review/results/active_dashboard.png, upper state panel"
+  },
+  "reference-replay": {
+    "width": 1440,
+    "height": 840,
+    "alt": "Handheld reference trace above two filtered signals with threshold lines and candidate markers.",
+    "caption": "Archived SIMUL replay example, not a personal hallway trial. Gray lines are reference step-interval centers. Red points are detector events. Compare the gaps between detections before drawing conclusions from the count. Replay analysis by the SQM+ project using SIMUL reference data (CC BY-SA 4.0).",
+    "source": "Handheld_Step_Review/results/comparison.png"
+  },
+  "display-states": {
+    "width": 1250,
+    "height": 665,
+    "alt": "Three M5Stick S3 firmware preview screens show GO, WALK, and DONE.",
+    "caption": "The r8 framebuffer previews for GO, WALK, and DONE. These are rendered state previews, not snapshots of three real trials. The network-address footer is omitted.",
+    "source": "documentation/StickS3_Display_r8/07_go.png, 08_walk.png, and 15_done.png"
+  }
+}

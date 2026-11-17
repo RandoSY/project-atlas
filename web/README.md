@@ -1,6 +1,6 @@
 # Project Atlas on the web
 
-The seven static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. The two illustrations use the same dark grid, teal, and gold visual language, with subjects drawn for Atlas and CORE 10.
+The eight static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. The two illustrations use the same dark grid, teal, and gold visual language, with subjects drawn for Atlas and CORE 10.
 
 The Idea Index and Project Inventory are rendered from the canonical Markdown at the root of this repository. Their off-GitHub sections are deliberately omitted from the rendered site. The full repository browser uses a snapshot of GitHub's public listing, distinguishes forks, and adds historical project homes from the legacy map. Only the generated `web/atlas/` directory belongs in the Nginx web root.
 
@@ -47,3 +47,10 @@ The guide is authored in `instruments.html`; the generator inserts the capture c
 The flagship exhibit uses the original apparatus photo and detail crops, two archival dashboard views (browser chrome cropped), the archived Spring Mass Lab screenshot, and four plots from the recovered analysis archive. See `singing-rule-media.json` for each source filename and treatment. The raw sensor CSV was not in the recovered bundle.
 
 Edit `singing-rule.html` for the exhibit or `atlas/assets/singing-rule.js` for the browser model. The model is explicitly illustrative. Its frequency and decay are not fitted to the measured run.
+
+
+## SQM+ Hallway Observatory
+
+The hallway exhibit separates timed course speed, acquisition and transport integrity, and candidate-step validation. It uses the supplied one-hallway illustration and ready screen, selected dashboard and device-state captures, and a publicly licensed reference replay. Image sources and treatments are listed in `sqm-plus-media.json`. No personal walking times, counts, raw trials, LAN identifiers or device-control code are included. The interactive candidate calculator uses invented values. The acceptance worksheet is blank.
+
+Edit the exhibit body in `sqm-plus.html` and regenerate the static site with `python3 web/build_atlas.py`.

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A known distance, an independent clock, and a wearable under test.">
+<title>SQM+ Hallway Observatory · Randall Young</title>
+<link rel="stylesheet" href="../assets/calculus-theme.css">
+<link rel="stylesheet" href="../assets/atlas.css">
+<link rel="stylesheet" href="../assets/sqm-plus.css">
+<script src="../assets/sqm-plus.js" defer></script>
+</head>
+<body><main>
+<p>RANDALL YOUNG · SOFTWARE-DEFINED WALKING LABORATORY · MEASUREMENT FIRST</p>
+<h1>SQM+ Hallway Observatory</h1>
+<p>A known distance, an independent clock, and a wearable under test.</p>
+<p class="sq-lead">Eleven meters of hallway. Two marks on the floor. One M5Stick S3. The question is not whether the dashboard can draw a convincing waveform. It’s <strong>which measurements still hold up when that waveform gets messy?</strong></p>
+<nav class="sq-jump" aria-label="SQM+ exhibit sections">
+  <a href="#findings">What the tests showed</a><a href="#dashboard">Dashboard gallery</a><a href="#benchmark">Detector benchmark</a><a href="#protocol">The 11 m protocol</a><a href="#test">Try the numbers</a><a href="#evidence">Next acceptance test</a>
+</nav>
+<div class="sq-hero">
+<figure class="sq-figure"><a href="media/one-walk.webp"><img src="media/one-walk.webp" width="1440" height="960" fetchpriority="high" alt="One Hallway Walk diagram with start and finish marks 11 meters apart, a stopwatch for speed, and an M5Stick for step candidates."></a><figcaption>The current one-leg reference supplied for this exhibit. The stopwatch asks how fast. The M5Stick asks what motion it recorded and which events might be steps. The illustration shows one possible carry position.</figcaption></figure>
+</div>
+<div class="sq-thesis" aria-label="Three distinct measurements">
+  <div><b>Distance and time</b><span>Course speed comes from the marks and the clock.</span></div>
+  <div><b>Six-axis motion</b><span>The IMU records acceleration and angular velocity.</span></div>
+  <div><b>Candidate events</b><span>Software proposes steps. A reference count checks them.</span></div>
+</div>
+
+<section class="sq-section" id="findings" aria-labelledby="finding-title">
+<p class="sq-kicker">NOVEMBER 2026 · ENGINEERING CHECKPOINTS</p>
+<h2 id="finding-title">What the latest tests showed</h2>
+<p>The hallway trials exposed a useful design distinction. <strong>A saved recording, a live plot, and a correct step count are three different successes.</strong> A plot can freeze while the board keeps recording. A waveform can look periodic while the detector misses events. The dashboard should make those differences visible.</p>
+<div class="sq-table" role="region" tabindex="0" aria-label="November engineering evidence"><table>
+<thead><tr><th scope="col">Checkpoint</th><th scope="col">What it supports</th><th scope="col">What it does not establish</th></tr></thead>
+<tbody>
+<tr><th scope="row">Nov 6 · Stage 1A</th><td>In one Stage 1A engineering record, <strong>1,624 IMU rows</strong> were saved at about <strong>50 Hz</strong> with no interval above 35 ms and no queue overrun, even while the main-loop button-poll delay exceeded 10 s.</td><td>Preserved sampling did not mean the screen or physical button response was timely. The exact blocked call was not established in that checkpoint.</td></tr>
+<tr><th scope="row">Nov 9 · Hallway observations</th><td>Manual timing and step counting clarified the comparisons the instrument needs to support. Button timing, event detection, and turning should be evaluated separately.</td><td>The manual observations were not paired with enough synchronized sensor evidence to establish device accuracy. The public exhibit does not include personal trial values.</td></tr>
+<tr><th scope="row">Nov 15 · r8 bench verification</th><td>The project report records <code>0.5.8-lan-resultant-r8</code> installed. An actual device saved a stationary two-segment trial and verified the raw CSV. Two read-only viewers also passed a 60 s streaming test without reported gaps or reconnects.</td><td>No physical A-button timing or real 11 m walking accuracy was established. Repeated timestamps are now reported separately from missing transport samples.</td></tr>
+</tbody></table></div>
+<p class="sq-note"><strong>Current direction.</strong> Make one timed, straight 11 m leg the default experiment. Keep multileg capture for exploratory work, with explicit leg boundaries and a separate reset period.</p>
+</section>
+
+<section class="sq-section" id="dashboard" aria-labelledby="dashboard-title">
+<p class="sq-kicker">THE INSTRUMENT IN USE</p>
+<h2 id="dashboard-title">Read the dashboard as evidence</h2>
+<p>The M5Stick S3 acquires and timestamps motion on the device. The LAN browser view is for arming, observing, and reviewing. The stored run is the evidence to check when streaming stutters. The captures below show what the controls and diagnostics look like, not results from validated walking trials.</p>
+<div class="sq-gallery">
+<figure class="sq-figure"><a href="media/live.webp"><img src="media/live.webp" width="1280" height="720" loading="lazy" decoding="async" alt="SQM+ LAN dashboard ready to arm, with separate columns for candidate steps, cadence, step length, speed and elapsed time."></a><figcaption>User-supplied interface reference. This earlier LAN v0.4 ready screen shows the separation between timing and candidate events. No walk has been recorded in this view.</figcaption></figure>
+<figure class="sq-figure"><a href="media/steps.webp"><img src="media/steps.webp" width="1422" height="620" loading="lazy" decoding="async" alt="Early Step Analysis panel showing event intervals, motion markers and a manual reference-count field."></a><figcaption>Archived Step Analysis view from a handheld simulation. Tall or short intervals are clues for investigation, not automatically missed steps or real footfalls.</figcaption></figure>
+<figure class="sq-figure"><a href="media/setup.webp"><img src="media/setup.webp" width="1422" height="620" loading="lazy" decoding="async" alt="Device Setup screen with course distance, sensor threshold, battery, and data-quality diagnostics."></a><figcaption>Archived Device &amp; Setup view with network identifiers already obscured. The point of this screen is to expose the instrument settings and the data-quality checks together.</figcaption></figure>
+<figure class="sq-figure"><a href="media/r8-bench.webp"><img src="media/r8-bench.webp" width="1440" height="300" loading="lazy" decoding="async" alt="r8 state banner reads DONE and two legs saved. Trial type is seated handheld."></a><figcaption>Nov 15 r8 physical bench capture, cropped to show its completion state. Two stationary segments were saved. This is an engineering test, not a completed hallway walk.</figcaption></figure>
+</div>
+<div class="sq-gallery">
+<figure class="sq-figure"><a href="media/display-states.webp"><img src="media/display-states.webp" width="1250" height="665" loading="lazy" decoding="async" alt="Three M5Stick S3 firmware preview screens show GO, WALK, and DONE."></a><figcaption>The r8 framebuffer previews for GO, WALK, and DONE. These are rendered state previews, not snapshots of three real trials. The network-address footer is omitted.</figcaption></figure>
+</div>
+<p>In the step view, a long inter-event interval could mean a missed step, a genuine pause, or a bad segment. A short one could mean a double count. Reconcile the proposed event markers with a reference observer rather than fixing the count by eye after the fact.</p>
+</section>
+
+<section class="sq-section" id="benchmark" aria-labelledby="benchmark-title">
+<p class="sq-kicker">PUBLIC REFERENCE DATA · NOT PERSONAL HALLWAY MEASUREMENTS</p>
+<h2 id="benchmark-title">The detector improved. The boundaries still matter.</h2>
+<p>The r3 engineering review replayed labeled handheld recordings from the public SIMUL dataset. The original trimmed evaluation covered <strong>12 held-out participants, 140 bouts and 11,921 reference steps</strong>. The review also checked the same bouts without trimming and a short-bout subset closer to the length of a hallway pass.</p>
+<div class="sq-table" role="region" tabindex="0" aria-label="Reference replay sensitivity to bout boundaries"><table>
+<thead><tr><th scope="col">R3 reference replay condition</th><th scope="col">Count error</th><th scope="col">What changed</th></tr></thead>
+<tbody>
+<tr><th scope="row">Trimmed windows</th><td><b>1.05%</b></td><td>0.75 s removed at each end</td></tr>
+<tr><th scope="row">Full natural boundaries</th><td><b>1.52%</b></td><td>The same 140 bouts, including starts and finishes</td></tr>
+<tr><th scope="row">Short full bouts</th><td><b>3.17%</b></td><td>31 bouts with 20–35 reference steps</td></tr>
+</tbody></table></div>
+<div class="sq-gallery">
+<figure class="sq-figure"><a href="media/reference-replay.webp"><img src="media/reference-replay.webp" width="1440" height="840" loading="lazy" decoding="async" alt="Handheld reference trace above two filtered signals with threshold lines and candidate markers."></a><figcaption>Archived SIMUL replay example, not a personal hallway trial. Gray lines are reference step-interval centers. Red points are detector events. Compare the gaps between detections before drawing conclusions from the count. Replay analysis by the SQM+ project using SIMUL reference data (CC BY-SA 4.0).</figcaption></figure>
+</div>
+<p class="sq-note">The error is the sum of absolute count differences by bout, divided by the reference total. The rows are related comparisons, not independent experiments. Counts do not prove foot-contact timing. When the detector was deliberately left active during standing, the r3 review reported about <strong>18 false events per minute</strong>. That’s a strong reason to mark the walking window rather than treat every motion peak as a step.</p>
+<p><a href="https://simpleloc.github.io/SIMUL-dataset/">SIMUL dataset and labeling methods</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">SIMUL data license (CC BY-SA 4.0)</a></p>
+</section>
+
+<section class="sq-section" id="protocol" aria-labelledby="protocol-title">
+<p class="sq-kicker">REPEATABLE BY DESIGN</p>
+<h2 id="protocol-title">Walk one leg. Know exactly what you timed.</h2>
+<figure class="sq-figure">
+<img src="media/hallway.svg" width="1280" height="610" loading="lazy" alt="One straight 11-meter leg with distinct start and finish marks, followed by an untimed reset zone.">
+<figcaption>Measure the straight leg. A turnaround is a separate event, not part of the result.</figcaption>
+</figure>
+<ol class="sq-steps">
+<li><b>Mark it.</b> Measure a straight 11.00 m course and designate the start and finish. Choose a standing or moving start and keep the same rule across trials. If you use a run-in, don’t count it as timed distance.</li>
+<li><b>Record it.</b> In the simplified workflow, arm the device, begin at GO using the selected start rule, and press A at the finish. Record the same leg with an independent stopwatch or synchronized reference. Use the same hold or mount and orientation each time. Do not pool handheld and torso-mounted trials as if they measured the same motion.</li>
+<li><b>Reset outside the leg.</b> Stop timing before turning. Exclude the countdown, turnaround, waiting, and save time. If you test multileg mode, store each leg’s actual distance and valid walking interval before totaling them.</li>
+<li><b>Repeat five times.</b> Keep each pass as its own record. Note missed marks, dropped samples, delayed presses, and changes in the carry position. Retain the raw IMU file, firmware ID, device start/end times, reference time and count, and candidate event timestamps.</li>
+</ol>
+<p><b>Keep the roles straight.</b> The device’s three accelerometer axes and three gyroscope axes offer different views of motion. The magnitude of acceleration combines three axes, but it does not automatically remove gravity, separate arm swing from a footfall, or prove that a candidate event is a step.</p>
+</section>
+
+<section class="sq-section" id="test" aria-labelledby="test-title">
+<p class="sq-kicker">ILLUSTRATIVE MODEL · NOT WALK DATA</p>
+<h2 id="test-title">Change the detector, not the walk</h2>
+<p>In this example, a fixed 11 m leg has a reference count of 20. Try reducing the candidate count while holding the elapsed time still. The detector’s cadence and average step length will change. The timed course speed will not.</p>
+<div class="sq-widget" data-sqm-widget>
+ <div class="sq-widget-inputs">
+  <label for="sq-time">Elapsed time <output id="sq-time-value" for="sq-time">14.0 s</output></label>
+  <input id="sq-time" type="range" min="8" max="26" step="0.5" value="14">
+  <label for="sq-steps">Detected candidates <output id="sq-step-value" for="sq-steps">20</output></label>
+  <input id="sq-steps" type="range" min="12" max="28" step="1" value="20">
+  <p>Fixed reference: 20 steps. Adjusting the candidate slider simulates misses or extra detections.</p>
+ </div>
+ <div class="sq-widget-outputs" aria-label="Illustrative calculations">
+   <div><b>Timed speed</b><output id="sq-speed">0.79 m/s</output><span>11 m ÷ elapsed seconds</span></div>
+   <div><b>Candidate cadence</b><output id="sq-cadence">85.7 per min</output><span>60 × candidates ÷ elapsed seconds</span></div>
+   <div><b>Candidate step length</b><output id="sq-length">0.55 m</output><span>11 m ÷ candidates</span></div>
+   <div><b>Count difference</b><output id="sq-error">0</output><span>Candidates minus reference count</span></div>
+ </div>
+</div>
+<p>Matching totals can still hide one miss and one extra detection. For detector validation, check <em>when</em> the proposed steps happened, not just how many the algorithm counted.</p>
+</section>
+
+<section class="sq-section" id="evidence" aria-labelledby="evidence-title">
+<p class="sq-kicker">WHAT WOULD CONVINCE US?</p>
+<h2 id="evidence-title">The five-pass acceptance test</h2>
+<div class="sq-thesis">
+  <div><b>1 · Check the clock</b><span>Compare device elapsed time with an independent reference on the same marked leg.</span></div>
+  <div><b>2 · Check the record</b><span>Confirm sample counts, time spacing, and file recovery, including during a deliberate browser disconnect.</span></div>
+  <div><b>3 · Check the events</b><span>Match candidates against a reference observer. Report misses, extras, and uncertainty by pass.</span></div>
+</div>
+<p>Report per-pass errors and repeatability before claiming validated cadence or step length. Keep Bob, Lurch, and Totter as exploratory motion descriptors. How much vertical, fore–aft, or side-to-side acceleration was recorded is an engineering question, not a diagnosis.</p>
+<p><a href="media/five-pass-run-sheet.csv" download>Download the blank five-pass run sheet</a> · <a href="../singing-rule/">See the Singing Rule signal experiment</a> · <a href="https://docs.m5stack.com/en/core/StickS3">M5Stick S3 hardware reference</a></p>
+</section>
+
+<footer>
+<nav aria-label="Project Atlas"><a href="../">Atlas home</a> <a href="../singing-rule/">Singing Rule</a> <a href="../sqm-plus/" aria-current="page">SQM+</a> <a href="../instruments/">Virtual instruments</a> <a href="../core-10/">CORE 10</a> <a href="../ideas/">Idea index</a> <a href="../inventory/">Project inventory</a> <a href="../repositories/">All repositories</a></nav>
+<p><a href="https://github.com/RandoSY/measured-human-performance">View the source on GitHub</a></p>
+</footer>
+</main></body>
+</html>

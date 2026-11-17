@@ -76,9 +76,9 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
     prefix = "../" if directory else ""
     current = {"": "Atlas home", "core-10": "CORE 10", "ideas": "Idea index",
                "inventory": "Project inventory", "repositories": "All repositories",
-               "instruments": "Virtual instruments", "singing-rule": "Singing Rule"}[directory]
+               "instruments": "Virtual instruments", "singing-rule": "Singing Rule", "sqm-plus": "SQM+"}[directory]
     nav = []
-    for name, dest in [("Atlas home", ""), ("Singing Rule", "singing-rule"), ("Virtual instruments", "instruments"), ("CORE 10", "core-10"), ("Idea index", "ideas"),
+    for name, dest in [("Atlas home", ""), ("Singing Rule", "singing-rule"), ("SQM+", "sqm-plus"), ("Virtual instruments", "instruments"), ("CORE 10", "core-10"), ("Idea index", "ideas"),
                        ("Project inventory", "inventory"), ("All repositories", "repositories")]:
         attr = ' aria-current="page"' if name == current else ''
         url = (prefix or "./") + ((dest + "/") if dest else "")
@@ -140,6 +140,15 @@ def home(n):
 </div>
 <a href="singing-rule/"><img src="singing-rule/media/bench.webp" width="1440" height="1084" alt="Randall Young's green ruler with a wireless motion sensor banded to its free end"></a>
 </section>
+<section class="lab-feature sq-feature" aria-labelledby="home-sqm">
+<div>
+<p class="lab-label">CURRENT EXPERIMENT · HUMAN MOVEMENT</p>
+<h2 id="home-sqm"><a href="sqm-plus/">SQM+ Hallway Observatory</a></h2>
+<p>Eleven meters and two questions. How fast was the walk? How well did the sensor isolate steps from other motion?</p>
+<p class="lab-feature-links"><a href="sqm-plus/#findings">See the latest tests</a><a href="sqm-plus/#benchmark">Inspect the detector</a><a href="sqm-plus/#protocol">Try the protocol</a></p>
+</div>
+<a href="sqm-plus/"><img src="sqm-plus/media/hallway.svg" width="1280" height="610" alt="Diagram showing one marked 11-meter hallway leg and an untimed turn"></a>
+</section>
 <section class="lab-feature" aria-labelledby="home-instruments">
 <div>
 <p class="lab-label">FEATURED EXHIBIT · SOFTWARE-DEFINED LABORATORY</p>
@@ -168,7 +177,7 @@ def home(n):
 </ul>
 </section>
 <section aria-labelledby="families"><h2 id="families">Explore the work</h2>{homes()}</section>
-""", extra='<link rel="stylesheet" href="assets/instruments.css">\n<link rel="stylesheet" href="assets/singing-rule.css">\n', header="HOW MUCH? ENOUGH?")
+""", extra='<link rel="stylesheet" href="assets/instruments.css">\n<link rel="stylesheet" href="assets/singing-rule.css">\n<link rel="stylesheet" href="assets/sqm-plus.css">\n', header="HOW MUCH? ENOUGH?")
 
 def core():
     page("core-10", "CORE 10", "A practical science and engineering curriculum that starts with something you can see, measure, and investigate.", f"""
@@ -297,6 +306,31 @@ def singing_rule():
          source=f"{ESTATE}/measured-world-lab/tree/main/archive/singing-rule")
 
 
+def sqm_plus():
+    catalog = json.loads((WEB / "sqm-plus-media.json").read_text(encoding="utf-8"))
+    source = (WEB / "sqm-plus.html").read_text(encoding="utf-8")
+
+    def figure(match):
+        key = match.group(1)
+        item = catalog[key]
+        asset = f"media/{key}.webp"
+        if not (OUT / "sqm-plus" / asset).is_file():
+            raise FileNotFoundError(asset)
+        sized = f'width="{int(item["width"])}" height="{int(item["height"])}"'
+        loading = 'fetchpriority="high"' if key == "one-walk" else 'loading="lazy" decoding="async"'
+        return (f'<figure class="sq-figure"><a href="{asset}">'
+                f'<img src="{asset}" {sized} {loading} alt="{esc(item["alt"])}"></a>'
+                f'<figcaption>{esc(item["caption"])}</figcaption></figure>')
+
+    assert set(re.findall(r"@@([a-z0-9-]+)@@", source)) == catalog.keys()
+    body = re.sub(r"@@([a-z0-9-]+)@@", figure, source)
+    page("sqm-plus", "SQM+ Hallway Observatory",
+         "A known distance, an independent clock, and a wearable under test.",
+         body, header="SOFTWARE-DEFINED WALKING LABORATORY · MEASUREMENT FIRST",
+         extra='<link rel="stylesheet" href="../assets/sqm-plus.css">\n<script src="../assets/sqm-plus.js" defer></script>\n',
+         source=f"{ESTATE}/measured-human-performance")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--atlas-source", type=Path, default=WEB.parent)
@@ -316,6 +350,7 @@ def main():
     core()
     instruments()
     singing_rule()
+    sqm_plus()
     repo_archive(manifest, args.atlas_source / "LEGACY_REPOSITORY_MAP.md")
     for name, title, summary, file, exclude in [
         ("ideas", "Idea index", "The durable ideas behind the work, from measurement and teaching to open instruments and publication.",
@@ -325,7 +360,7 @@ def main():
     ]:
         body = public_document(args.atlas_source / file, exclude, toc=True)
         page(name, title, summary, f'<article>{body}</article>', source=f"{ATLAS_MAIN}/{file}")
-    print(f"Built seven pages and indexed {len(manifest['repositories'])} public repositories.")
+    print(f"Built eight pages and indexed {len(manifest['repositories'])} public repositories.")
 
 if __name__ == "__main__":
     main()

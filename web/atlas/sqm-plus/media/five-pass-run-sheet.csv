@@ -1,0 +1,6 @@
+pass,distance_m,start_rule,carry_position,firmware_id,reference_elapsed_s,device_elapsed_s,reference_steps,candidate_steps,matched_events,misses,extras,valid_imu_samples,max_imu_gap_ms,ws_write_failures_this_pass,raw_file,notes
+1,11.00,,,,,,,,,,,,,,,
+2,11.00,,,,,,,,,,,,,,,
+3,11.00,,,,,,,,,,,,,,,
+4,11.00,,,,,,,,,,,,,,,
+5,11.00,,,,,,,,,,,,,,,
