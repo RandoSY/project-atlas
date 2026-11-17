@@ -74,15 +74,17 @@ def filter_manifest(rows, as_of):
 
 def page(directory, title, description, body, source=ATLAS, extra="", header="PROJECT ATLAS"):
     prefix = "../" if directory else ""
-    current = {"": "Atlas home", "core-10": "CORE 10", "ideas": "Idea index",
-               "inventory": "Project inventory", "repositories": "All repositories",
-               "instruments": "Virtual instruments", "singing-rule": "Singing Rule", "sqm-plus": "SQM+"}[directory]
+    destinations = (("Home", ""), ("Exhibits", "exhibits"), ("Ideas", "ideas"),
+                    ("Projects", "inventory"), ("Repositories", "repositories"))
+    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10"}
     nav = []
-    for name, dest in [("Atlas home", ""), ("Singing Rule", "singing-rule"), ("SQM+", "sqm-plus"), ("Virtual instruments", "instruments"), ("CORE 10", "core-10"), ("Idea index", "ideas"),
-                       ("Project inventory", "inventory"), ("All repositories", "repositories")]:
-        attr = ' aria-current="page"' if name == current else ''
+    for name, dest in destinations:
+        attr = ' aria-current="page"' if dest == directory else ''
+        if dest == "exhibits" and directory in exhibit_children:
+            attr = ' class="atlas-nav-section" aria-current="location"'
         url = (prefix or "./") + ((dest + "/") if dest else "")
         nav.append(f'<a href="{url}"{attr}>{name}</a>')
+    footer_home = link("Project Atlas home", "../") + " · " if directory else ""
     full = f"""<!doctype html>
 <html lang="en">
 <head>
@@ -92,15 +94,16 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
 <title>{esc(title)} · Randall Young</title>
 <link rel="stylesheet" href="{prefix}assets/calculus-theme.css">
 <link rel="stylesheet" href="{prefix}assets/atlas.css">
+<link rel="stylesheet" href="{prefix}assets/navigation.css">
 {extra}</head>
 <body><main>
+<nav class="atlas-nav" aria-label="Project Atlas">{' '.join(nav)}</nav>
 <p>RANDALL YOUNG · {esc(header)}</p>
 <h1>{esc(title)}</h1>
 <p>{esc(description)}</p>
 {body}
 <footer>
-<nav aria-label="Project Atlas">{' '.join(nav)}</nav>
-<p>{link('View the source on GitHub', source)}</p>
+<p>{footer_home}{link('View the source on GitHub', source)}</p>
 </footer>
 </main></body>
 </html>
@@ -112,7 +115,7 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
 def cover(filename, alt):
     return f'<img src="{filename}" width="1600" height="800" alt="{esc(alt)}">'
 
-def homes():
+def homes(prefix=""):
     sections = [
         ("CORE", ["core-10", "software-defined-laboratory", "nugget-physical-computing",
                   "measured-world-lab", "bargain-bin-robotics", "computing-observatories", "embedded-tools"]),
@@ -124,60 +127,76 @@ def homes():
         entries = []
         for slug in slugs:
             title, summary = FAMILIES[slug]
-            url = "core-10/" if slug == "core-10" else f"{ESTATE}/{slug}"
+            url = f"{prefix}core-10/" if slug == "core-10" else f"{ESTATE}/{slug}"
             entries.append(f"<li>{link(title, url)} · {esc(summary)}</li>")
         output.append(f"<h3>{heading}</h3><ul>{''.join(entries)}</ul>")
     return "\n".join(output)
 
 def home(n):
-    page("", "Project Atlas", "Randall Young’s public working archive of experiments, instruments, teaching materials, and the ideas that connect them.", f"""
-<section class="lab-feature sr-feature" aria-labelledby="home-singing">
+    page("", "Project Atlas", "Randall Young’s public working archive of experiments, instruments, and the ideas that connect them.", f"""
+<section class="atlas-feature" aria-labelledby="home-singing">
 <div>
-<p class="lab-label">FLAGSHIP ACTIVITY · EXPERIENCE BEFORE EQUATION</p>
-<h2 id="home-singing"><a href="singing-rule/">Singing Rule</a></h2>
-<p>Pluck a ruler at the edge of a table. Follow Randall’s original experiment from the bench photograph to a live Bluetooth trace, then to a model you can test yourself.</p>
-<p class="lab-feature-links"><a href="singing-rule/#evidence">See the measured run</a><a href="singing-rule/#model">Pluck the model</a><a href="singing-rule/#classroom">Teach it</a></p>
+<p class="atlas-kicker">Flagship activity · Experience before equation</p>
+<h2 id="home-singing"><a href="singing-rule/">The Singing Rule</a></h2>
+<p>Pluck a ruler at the edge of a table. Follow the original bench experiment from a Bluetooth trace to a model you can test yourself.</p>
+<p class="atlas-feature-links"><a href="singing-rule/#evidence">See the measured run</a><a href="singing-rule/#model">Pluck the model</a><a href="singing-rule/#classroom">Teach it</a></p>
 </div>
-<a href="singing-rule/"><img src="singing-rule/media/bench.webp" width="1440" height="1084" alt="Randall Young's green ruler with a wireless motion sensor banded to its free end"></a>
+<a href="singing-rule/"><img src="singing-rule/media/bench.webp" width="1440" height="1084" alt="A green ruler with a wireless motion sensor fastened near its free end"></a>
 </section>
-<section class="lab-feature sq-feature" aria-labelledby="home-sqm">
-<div>
-<p class="lab-label">CURRENT EXPERIMENT · HUMAN MOVEMENT</p>
-<h2 id="home-sqm"><a href="sqm-plus/">SQM+ Hallway Observatory</a></h2>
-<p>Eleven meters and two questions. How fast was the walk? How well did the sensor isolate steps from other motion?</p>
-<p class="lab-feature-links"><a href="sqm-plus/#findings">See the latest tests</a><a href="sqm-plus/#benchmark">Inspect the detector</a><a href="sqm-plus/#protocol">Try the protocol</a></p>
+<div class="atlas-mini-grid" aria-label="More featured exhibits">
+<a class="atlas-mini" href="sqm-plus/">
+<img src="sqm-plus/media/hallway.svg" width="1280" height="610" alt="">
+<div><b id="home-sqm">SQM+ Hallway Observatory</b><span>Eleven meters, a stopwatch, and a step detector under test.</span></div></a>
+<a class="atlas-mini" href="instruments/">
+<img src="instruments/screens/frequency-meter.webp" width="1240" height="945" alt="">
+<div><b id="home-instruments">Virtual Instruments</b><span>Five wireless builds and the dashboards that make them usable.</span></div></a>
 </div>
-<a href="sqm-plus/"><img src="sqm-plus/media/hallway.svg" width="1280" height="610" alt="Diagram showing one marked 11-meter hallway leg and an untimed turn"></a>
-</section>
-<section class="lab-feature" aria-labelledby="home-instruments">
-<div>
-<p class="lab-label">FEATURED EXHIBIT · SOFTWARE-DEFINED LABORATORY</p>
-<h2 id="home-instruments"><a href="instruments/">Virtual Instruments</a></h2>
-<p>Start with a sensor on the bench. End with a wireless instrument you can read, control, and understand. Explore the original dashboard gallery and five Pico W / ESP32 build guides.</p>
-<p class="lab-feature-links"><a href="instruments/#dvm">Voltmeter</a><a href="instruments/#frequency">Frequency meter</a><a href="instruments/#scale">Scale</a><a href="instruments/#tof">ToF ruler</a><a href="instruments/#thermometer">Thermometer</a></p>
-</div>
-<a href="instruments/#frequency"><img src="instruments/screens/frequency-meter.webp" width="1240" height="945" alt="Preview of the original Pico W BLE frequency-meter LCD and controls"></a>
-</section>
-{cover('assets/atlas-cover.svg', 'A compass connects a laboratory flask, an instrument trace, and a book.')}
-<section aria-labelledby="start">
-<h2 id="start">Start here</h2>
-<p><strong>How much? Enough?</strong> Measure what happened. Then decide whether it was enough for the purpose. Two places to see that kind of thinking at work:</p>
-<ul>
-<li><a href="core-10/">CORE 10 · One cup of water, two energy readings</a>. Compare the heat gained by the water with the electricity the appliance used.</li>
-<li>{link('Ten Problems That Teach Calculus', CALCULUS)}. Start with the cart that reverses direction. It teaches why distance traveled and net change are not the same thing.</li>
-</ul>
-</section>
-<section aria-labelledby="read">
+<p class="atlas-all"><a href="exhibits/">Browse all exhibits →</a></p>
+<section class="atlas-directory" aria-labelledby="read">
 <h2 id="read">Read the Atlas</h2>
-<p>This is an idea backup. The point is to leave enough of the reasoning, evidence, and working material for someone else to pick up the work.</p>
+<p><strong>How much? Enough?</strong> Measure what happened, then decide whether it was enough for the purpose.</p>
 <ul>
-<li><a href="ideas/">Idea index</a> · the principles and designs that recur across projects</li>
-<li><a href="inventory/">Project inventory</a> · the documented systems, their maturity, and their current homes</li>
-<li><a href="repositories/">All {n} public repositories</a> · searchable index including earlier versions and upstream forks</li>
+<li><a href="ideas/">Ideas</a> · the principles and designs that recur across the work</li>
+<li><a href="inventory/">Projects</a> · what was built, what is still under test, and where to find it</li>
+<li><a href="repositories/">Repositories</a> · search all {n} public repositories, including earlier versions and upstream forks</li>
 </ul>
 </section>
-<section aria-labelledby="families"><h2 id="families">Explore the work</h2>{homes()}</section>
-""", extra='<link rel="stylesheet" href="assets/instruments.css">\n<link rel="stylesheet" href="assets/singing-rule.css">\n<link rel="stylesheet" href="assets/sqm-plus.css">\n', header="HOW MUCH? ENOUGH?")
+""", header="HOW MUCH? ENOUGH?")
+
+
+def exhibits():
+    cards = [
+        ("Flagship activity", "../singing-rule/", "The Singing Rule",
+         "Pluck a ruler and follow the motion from the original bench photo to live traces, measured ringdown, and a model you can try.",
+         "../singing-rule/media/bench.webp", 1440, 1084),
+        ("Current experiment", "../sqm-plus/", "SQM+ Hallway Observatory",
+         "Run a marked 11-meter leg and see why a stopwatch and a wearable answer two different questions.",
+         "../sqm-plus/media/hallway.svg", 1280, 610),
+        ("Instrument workshop", "../instruments/", "Virtual Instruments",
+         "See original dashboards and build a wireless voltmeter, frequency meter, scale, ToF ruler, or thermometer.",
+         "../instruments/screens/frequency-meter.webp", 1240, 945),
+        ("Mathematics", CALCULUS, "Ten Problems That Teach Calculus",
+         "Start with the cart that reverses direction. Learn why total distance and net change are not the same thing.",
+         "/calculus/assets/calculus-tangent-cover.svg", 1600, 800),
+        ("Curriculum", "../core-10/", "CORE 10",
+         "Use an ordinary cup of water to distinguish the heat it gains from the electricity an appliance uses.",
+         "../assets/core10-cover.svg", 1600, 800),
+    ]
+    blocks = []
+    for label, url, title, description, image, width, height in cards:
+        blocks.append(f"""<article class="atlas-exhibit">
+<a class="atlas-exhibit-visual" href="{esc(url)}" aria-label="Open {esc(title)}">
+<img src="{esc(image)}" width="{width}" height="{height}" alt="" decoding="async"></a>
+<div class="atlas-exhibit-body">
+<p class="atlas-kicker">{esc(label)}</p>
+<h2>{link(title, url)}</h2>
+<p class="atlas-exhibit-summary">{esc(description)}</p>
+</div></article>""")
+    page("exhibits", "Exhibits", "Experiments you can try, instruments you can build, and models you can test.", f"""
+<div class="atlas-exhibits">{''.join(blocks)}</div>
+<p class="atlas-collection-note">Looking for work beyond this gallery? Browse the <a href="../inventory/">project inventory</a> or search the <a href="../repositories/">public repositories</a>.</p>
+""", header="EXPERIENCE BEFORE EQUATION")
+
 
 def core():
     page("core-10", "CORE 10", "A practical science and engineering curriculum that starts with something you can see, measure, and investigate.", f"""
@@ -347,6 +366,7 @@ def main():
         manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     MANIFEST.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     home(len(manifest["repositories"]))
+    exhibits()
     core()
     instruments()
     singing_rule()
@@ -359,8 +379,10 @@ def main():
          "CANONICAL_INVENTORY.md", ["Protected system"]),
     ]:
         body = public_document(args.atlas_source / file, exclude, toc=True)
-        page(name, title, summary, f'<article>{body}</article>', source=f"{ATLAS_MAIN}/{file}")
-    print(f"Built eight pages and indexed {len(manifest['repositories'])} public repositories.")
+        families = (f'<section class="atlas-family-list" aria-labelledby="families">'
+                    f'<h2 id="families">Project families</h2>{homes("../")}</section>') if name == "inventory" else ""
+        page(name, title, summary, f'<article>{body}</article>{families}', source=f"{ATLAS_MAIN}/{file}")
+    print(f"Built nine pages and indexed {len(manifest['repositories'])} public repositories.")
 
 if __name__ == "__main__":
     main()
