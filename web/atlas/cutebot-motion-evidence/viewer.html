@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cutebot Motion Evidence | ROBOT_EDU</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;color:#1c2c2a;background:#f4f4ec;line-height:1.5}
+*{box-sizing:border-box}body{margin:0}main{max-width:870px;margin:auto;padding:30px clamp(16px,4vw,36px) 45px}
+header{border-top:6px solid #156354;padding-top:14px}.eyebrow{font-weight:800;font-size:.76rem;letter-spacing:.15em;color:#156354}
+h1{font-size:clamp(2rem,7vw,3.3rem);line-height:1.07;margin:.3em 0}h2{margin:0 0 .55rem;font-size:1.28rem}
+p{max-width:67ch;margin:.4em 0 1em}.muted{color:#455855}.panel{padding:clamp(13px,4vw,24px);background:white;border-radius:14px;border:1px solid #d7e1d8;margin-top:16px}
+.controls{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:end}.controls label{display:block;font-weight:680}input,button,select{font:inherit;max-width:100%;color:inherit}input[type=file]{display:block;width:min(100%,340px);margin-top:5px}button,select{border:1px solid #79998c;border-radius:8px;padding:7px 10px;background:#fff}button{background:#156354;color:#fff;cursor:pointer}
+:focus-visible{outline:3px solid #a34b13;outline-offset:3px}.status{margin:.8em 0 0;white-space:pre-wrap}
+figure{margin:8px 0}svg{width:100%;height:auto;display:block;overflow:visible;touch-action:pan-y}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.86rem}.legend i{display:inline-block;width:.8em;height:.8em;margin-right:.3em;border:1px solid #a9b5ad;border-radius:2px}figcaption{margin-top:12px}.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin:12px 0}.stat{background:#edf5f0;padding:7px 10px;border-radius:8px}.stat strong{display:block;font-size:1.2rem}.stat span{font-size:.8rem}
+details summary{cursor:pointer;font-weight:720}footer{font-size:.8rem;margin-top:1.2em;color:#455855}
+</style>
+</head>
+<body>
+<main>
+<header>
+<div class="eyebrow">ROBOT_EDU / MOTION EVIDENCE</div>
+<h1>Did the robot do what you told it?</h1>
+<p class="muted">Compare what the controller commanded with what the Cutebot’s accelerometer recorded. Use the tape measurements to decide whether it moved a repeatable distance.</p>
+</header>
+<section class="panel" aria-labelledby="load-title">
+<h2 id="load-title">1. Open a trial log</h2>
+<div class="controls"><label for="csv">micro:bit CSV<input id="csv" type="file" accept=".csv,text/csv,text/plain"></label><button id="demo" type="button">Load synthetic demo</button></div>
+<p class="status muted" id="status" role="status">No data loaded. Files are processed locally.</p>
+</section>
+<section id="result" class="panel" hidden aria-labelledby="trace-title">
+<h2 id="trace-title">2. Inspect the motion trace</h2>
+<div class="controls"><label for="trial">Trial</label><select id="trial"></select></div>
+<div class="stats" id="stats"></div>
+<figure>
+<svg id="trace" viewBox="0 0 560 244" role="img" aria-labelledby="svg-title svg-desc"></svg>
+<figcaption><div class="legend"><span><i style="background:#edf0ed"></i>Rest</span><span><i style="background:#d4ede0"></i>Drive command active</span><span><i style="background:#f9ecd7"></i>After stop command</span></div><p class="muted" id="caption"></p></figcaption>
+</figure>
+<details><summary>What does the trace measure?</summary><p>For each sample, subtract the mean resting X, Y and Z values from the three readings, then take the length of the difference vector. The result is in milli-g. It can change because the robot accelerated, vibrated or tilted. It does not measure speed or distance, and a small signal does not prove the car was stationary.</p></details>
+</section>
+<footer>Cutebot Motion Evidence Lab · v0.1 · Independent classroom activity</footer>
+</main>
+<script>
+"use strict";
+const FIELDS=["trial","command","t_ms","phase","x_mg","y_mg","z_mg"];
+function parseTrials(source) {
+  const lines=source.replace(/^\uFEFF/,"").split(/\r\n|\n|\r/).filter(line=>line.trim());
+  let header=null, sep=",", current=null, partial=0, skipped=0;
+  const trials=[];
+  for (const line of lines) {
+    const split = d => line.split(d).map(s=>s.trim().replace(/^"|"$/g,""));
+    if(!header || /^\s*"?trial"?[,;\t]/i.test(line)){
+      const d=[",",";","\t"].find(d=>FIELDS.every(f=>split(d).includes(f)));
+      if(d){header=split(d);sep=d;continue;}
+    }
+    if(!header) continue;
+    const cells=split(sep);
+    const values=FIELDS.map(f=>cells[header.indexOf(f)]);
+    const [id,command,t,phase,x,y,z]=values.map(Number);
+    if(values.some(v=>v===undefined||v==="") || ![id,command,t,phase,x,y,z].every(Number.isFinite) || ![0,1,2,3].includes(phase) || t<0){
+      skipped++;if(current)current.valid=false;continue;
+    }
+    if(phase===0 && (!current || current.id!==id || t<=current.rows.at(-1).t)){
+      if(current)partial++;
+      current={id,command,rows:[],valid:true};
+    }
+    if(!current){skipped++;continue;}
+    const previous=current.rows.at(-1);
+    if(id!==current.id || command!==current.command || (previous && (t<=previous.t || phase<previous.phase))) current.valid=false;
+    if(phase===3){
+      const phases=current.rows.map(row=>row.phase);
+      if(current.valid && phases.filter(p=>p===0).length>=2 && phases.includes(1) && phases.includes(2)){
+        trials.push({...current,end:t});
+      }else partial++;
+      current=null;
+      continue;
+    }
+    current.rows.push({t,phase,x,y,z});
+  }
+  if(current)partial++;
+  if(!header)throw new Error("This file does not have the Cutebot Motion Evidence header. Export CSV from MY_DATA using this lab’s firmware.");
+  return {trials,partial,skipped};
+}
+function summarize(trial){
+  const rest=trial.rows.filter(p=>p.phase===0);
+  const mean=key=>rest.reduce((sum,p)=>sum+p[key],0)/rest.length;
+  const [x,y,z]=["x","y","z"].map(mean);
+  const points=trial.rows.map(p=>({...p,delta:Math.hypot(p.x-x,p.y-y,p.z-z)}));
+  const drive=points.find(p=>p.phase===1).t, stop=points.find(p=>p.phase===2).t;
+  return {points,drive,stop,duration:stop-drive,peak:Math.max(...points.map(p=>p.delta)),end:trial.end};
+}
+function demoCSV(){
+  const sets=[[25,81,73],[25,91,67],[25,70,79],[40,177,115],[40,162,111],[40,183,119]];
+  const result=[FIELDS.join(",")];
+  sets.forEach(([cmd,start,stop],j)=>{
+    for(let i=0;i<24;i++) {
+      const phase=i<6?0:i<18?1:2;
+      const noise=Math.round(9*Math.sin(i*2.9+j));
+      let a=noise;
+      if(i>=6 && i<=9) a+=Math.round(start*Math.exp(-(i-6)/1.4));
+      if(i>=18 && i<=21) a-=Math.round(stop*Math.exp(-(i-18)/1.3));
+      result.push([j+1,cmd,i*100,phase,22+noise,1012-noise,a].join(","));
+    }
+    result.push([j+1,cmd,2400,3,0,0,0].join(","));
+  });
+  return result.join("\n");
+}
+const $=id=>document.getElementById(id);
+let session={trials:[]}, sourceName="";
+function loadCSV(raw,name){
+  $("result").hidden=true;
+  try{
+    session=parseTrials(raw);sourceName=name;
+    const {trials,partial,skipped}=session;
+    $("status").textContent=name+" · "+trials.length+" completed "+(trials.length===1?"trial":"trials")+
+      (partial?" · "+partial+" incomplete/invalid omitted":"")+(skipped?" · "+skipped+" row(s) skipped":"")+
+      (trials.length?"":"\nFinish a trial, wait for the check mark, then export again.");
+    $("trial").replaceChildren(...trials.map((t,i)=>new Option("Run "+(i+1)+" · command "+t.command,i)));
+    if(trials.length){$("result").hidden=false;render(0);}
+  }catch(e){$("status").textContent=e.message;}
+}
+function render(i){
+  const t=session.trials[i];if(!t)return;
+  const {points,drive,stop,duration,peak,end}=summarize(t);
+  $("stats").replaceChildren(...[[t.command,"Motor command"],[(duration/1000).toFixed(2)+" s","Observed command interval"],[Math.round(peak)+" mg","Peak change from rest"]].map(([v,label])=>{
+    const item=document.createElement("div"), val=document.createElement("strong"), lab=document.createElement("span");
+    item.className="stat";val.textContent=v;lab.textContent=label;item.append(val,lab);return item;
+  }));
+  const svg=$("trace"), w=482,h=152,left=56,top=22,bottom=top+h;
+  const ymax=Math.max(50,Math.ceil(Math.max(...session.trials.map(run=>summarize(run).peak))/50)*50);
+  const X=x=>left+w*x/end, Y=y=>bottom-h*y/ymax;
+  const box=(x1,x2,fill)=>'<rect x="'+X(x1)+'" y="'+top+'" width="'+(X(x2)-X(x1))+'" height="'+h+'" fill="'+fill+'"/>';
+  const lines=Array.from({length:5},(_,j)=>{
+    const y=ymax*j/4;
+    return '<line x1="'+left+'" x2="'+(left+w)+'" y1="'+Y(y)+'" y2="'+Y(y)+'" stroke="#aebbb4" stroke-width=".7"/><text x="49" y="'+(Y(y)+4)+'" text-anchor="end">'+Number(y.toFixed(1))+'</text>';
+  }).join("");
+  const labels=Array.from({length:5},(_,j)=>{
+    const x=end*j/4;return '<text x="'+X(x)+'" y="195" text-anchor="middle">'+(x/1000).toFixed(1)+'</text>';
+  }).join("");
+  const path=points.map((p,j)=>(j?"L":"M")+X(p.t).toFixed(1)+","+Y(p.delta).toFixed(1)).join(" ");
+  const desc="Peak change "+Math.round(peak)+" milli-g. The motor command starts at "+(drive/1000).toFixed(2)+" seconds and ends at "+(stop/1000).toFixed(2)+" seconds.";
+  svg.innerHTML='<title id="svg-title">Change from resting acceleration over time</title><desc id="svg-desc">'+desc+'</desc>'+
+    '<g font-family="system-ui,sans-serif" font-size="13" fill="#314742"><text x="'+left+'" y="14">Change from rest (mg)</text>'+
+    box(0,drive,"#edf0ed")+box(drive,stop,"#d4ede0")+box(stop,end,"#f9ecd7")+lines+labels+
+    '<path d="'+path+'" fill="none" stroke="#146351" stroke-width="2.5" stroke-linejoin="round"/>'+
+    '<text x="297" y="220" text-anchor="middle">Time since baseline began (s)</text></g>';
+  $("caption").textContent=desc+(sourceName==="Synthetic demo"?" These are simulated readings, not evidence from an actual Cutebot.":"");
+}
+$("csv").addEventListener("change",async ev=>{
+  const f=ev.target.files[0];if(!f)return;
+  try{loadCSV(await f.text(),f.name);}catch(e){$("result").hidden=true;$("status").textContent="Could not open that file.";}
+});
+$("demo").addEventListener("click",()=>{$("csv").value="";loadCSV(demoCSV(),"Synthetic demo");});
+$("trial").addEventListener("change",ev=>render(Number(ev.target.value)));
+</script>
+</body>
+</html>

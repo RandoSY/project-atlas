@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 384" width="820" height="384" role="img" aria-labelledby="title desc">
+<title id="title">Timed-drive floor trial</title>
+<desc id="desc">Marks at the beginning and endpoint define the tape-measured forward displacement. The robot is drawn at the start with a second position after a small drift. The trace has separate rest, drive command, and coast phases. Illustration only, not a measured run.</desc>
+<defs><pattern id="grid" width="22" height="22" patternUnits="userSpaceOnUse"><path d="M0 0H22V22" fill="none" stroke="#375953" opacity=".35"/></pattern><marker id="arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L8 4 0 8Z" fill="#dfb87e"/></marker></defs>
+<rect width="820" height="384" rx="16" fill="#17332f"/>
+<g font-family="system-ui,sans-serif">
+<text x="32" y="40" font-size="20" font-weight="700" fill="#f7f3e8">01  /  THE FLOOR TRIAL</text>
+<text x="788" y="38" font-size="13" text-anchor="end" fill="#c8d8cc">ILLUSTRATION · NOT TO SCALE</text>
+<rect x="33" y="58" width="754" height="212" rx="8" fill="url(#grid)" stroke="#7c9c8e"/>
+<path d="M62 160H756" stroke="#88a99d" stroke-dasharray="7 6"/>
+<path d="M186 87V223M649 87V223" stroke="#dfb87e" stroke-width="2"/>
+<path d="M197 216H638" stroke="#dfb87e" stroke-width="2" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+<path d="M650 160V137" stroke="#f7f3e8" stroke-width="1.3" stroke-dasharray="4 3"/>
+<path d="M201 160C390 160 520 159 648 136" fill="none" stroke="#a5ccad" stroke-width="2.5" stroke-dasharray="8 7"/>
+<g transform="translate(140 160)"><rect x="-34" y="-25" width="50" height="12" rx="5" fill="#131e1b" stroke="#a5ccad"/><rect x="-34" y="13" width="50" height="12" rx="5" fill="#131e1b" stroke="#a5ccad"/><path d="M-34-15H19Q40-15 46 0Q40 15 19 15H-34Z" fill="#80ad93"/><rect x="-12" y="-9" width="26" height="18" rx="2" fill="#34584e"/><circle cx="29" cy="-6" r="3" fill="#dcead5"/><circle cx="29" cy="6" r="3" fill="#dcead5"/></g>
+<circle cx="649" cy="136" r="5.5" fill="#f7f3e8" stroke="#a5ccad" stroke-width="2"/>
+<g fill="#f7f3e8" font-size="16" font-weight="650"><text x="186" y="80" text-anchor="middle">Start mark</text><text x="649" y="80" text-anchor="middle">Final nose position</text><text x="663" y="150" font-size="13">Drift</text></g>
+<text x="417" y="247" text-anchor="middle" fill="#ffdfab" font-weight="700" font-size="16">Forward distance from tape</text>
+<g transform="translate(33 296)">
+<rect width="162" height="60" rx="7" fill="#3a514b"/><rect x="170" width="415" height="60" rx="7" fill="#315e50"/><rect x="593" width="161" height="60" rx="7" fill="#594832"/>
+<g fill="#ffffff" font-size="16" font-weight="650" text-anchor="middle"><text x="81" y="26">Rest</text><text x="378" y="26">Drive command active</text><text x="673" y="26">After stop</text></g>
+<g fill="#e4e9e1" font-size="13" text-anchor="middle"><text x="81" y="46">~0.6 s</text><text x="378" y="46">1.2 s nominal</text><text x="673" y="46">~0.6 s</text></g>
+</g></g></svg>

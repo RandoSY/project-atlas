@@ -1,6 +1,6 @@
 # Project Atlas on the web
 
-The seventeen generated static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. Water Clock, TeaTime, and Lazy LiDAR also include standalone interactive models.
+The eighteen generated static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. Water Clock, TeaTime, and Lazy LiDAR also include standalone interactive models.
 
 The Idea Index and Project Inventory are rendered from the canonical Markdown at the root of this repository. Their off-GitHub sections are deliberately omitted from the rendered site. The full repository browser uses a snapshot of GitHub's public listing, distinguishes forks, and adds historical project homes from the legacy map. Only the generated `web/atlas/` directory belongs in the Nginx web root.
 
@@ -130,3 +130,7 @@ Edit `lazy-lidar.html` and rebuild with `python3 web/build_atlas.py`. The exhibi
 The public `atlas/lazy-lidar/model.html` is adapted from `lazy_lidar_dashboard_exhibit_latest.html` and its June 12 v0.4-review release, retaining the room model, virtual scans, data table, CSV export/replay, and Fault Lab. Atlas removed Web Bluetooth and outbound hardware commands, clarified data labels, improved keyboard labels and focus indicators, moved the Kitchen starting pose outside the island, and fixed the virtual Auto Explore toggle being cleared at the start of each scan. The guide and executive summary describe the ultrasonic CuteBot design. No physical scan or apparatus photo paired with these screens was verified. The student challenge and bench extension are proposed activities.
 
 The public archive inventory and its September control date are unchanged.
+
+## Cutebot Motion Evidence Lab
+
+Edit `cutebot-motion-evidence.html` and rebuild Atlas. This classroom preview links to the pinned kit in Bargain Bin Robotics. Its media consists of an attributed ELECFREAKS product image (the supplied 499 px reference, optimized for web), an original floor-trial diagram, and a synthetic plot generated from the bundled motion viewer. The viewer is a standalone copy of the reviewed kit application. It processes CSV locally and does not control the robot. No physical trial data is represented.

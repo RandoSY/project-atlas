@@ -75,6 +75,7 @@ Maturity labels describe the strongest currently recorded state, not a promise t
 |---|---|---|---|
 | Bargain Bin Robotics | Implemented | P2 PACKAGE | `bargain-bin-robotics` |
 | Lazy LiDAR | Bench-tested | P2 PACKAGE | `bargain-bin-robotics` |
+| Cutebot Motion Evidence Lab | Compiled classroom preview; physical trials pending | P2 TEST | `bargain-bin-robotics` |
 | STC15W Low-Cost Rover / NIF Robot | Implemented | P2 FINISH | `bargain-bin-robotics` + `core-10` NIF |
 | Alvik -> RP2040 / XRP / Maker Pi Ports | Designed | P4 HOLD | `bargain-bin-robotics` lineage |
 

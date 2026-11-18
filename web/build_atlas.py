@@ -76,7 +76,7 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
     prefix = "../" if directory else ""
     destinations = (("Home", ""), ("Exhibits", "exhibits"), ("Ideas", "ideas"),
                     ("Projects", "inventory"), ("Repositories", "repositories"))
-    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10", "pop-can-calorimeter", "water-clock", "teatime", "sphericity-meter", "fair-fitness-testing", "lazy-lidar"}
+    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10", "pop-can-calorimeter", "water-clock", "teatime", "sphericity-meter", "fair-fitness-testing", "lazy-lidar", "cutebot-motion-evidence"}
     nav = []
     for name, dest in destinations:
         attr = ' aria-current="page"' if dest == directory else ''
@@ -271,6 +271,9 @@ def exhibits():
         ("Robotics · Interactive simulation", "../lazy-lidar/", "Lazy LiDAR",
          "Make a map from ranges and bearings. Then change the heading and see what a repeatable measurement still gets wrong.",
          "../lazy-lidar/media/cutebot-console.webp", 1680, 1142),
+        ("ROBOT_EDU · Classroom preview", "../cutebot-motion-evidence/", "Cutebot Motion Evidence Lab",
+         "Repeat a short drive command and use a tape measure and a motion trace to decide whether the car did what you asked.",
+         "../cutebot-motion-evidence/media/cutebot-card.webp", 900, 500),
         ("Mathematics", CALCULUS, "Ten Problems That Teach Calculus",
          "Start with the cart that reverses direction. Learn why total distance and net change are not the same thing.",
          "/calculus/assets/calculus-tangent-cover.svg", 1600, 800),
@@ -510,13 +513,19 @@ def next_edition_pages():
         ("lazy-lidar", "Lazy LiDAR",
          "Give an inexpensive range sensor time and a known viewpoint. Can it draw a useful map?",
          "BARGAIN BIN ROBOTICS · PATIENT MAPPING"),
+        ("cutebot-motion-evidence", "Cutebot Motion Evidence Lab",
+         "A repeatable floor trial that separates what a robot is told to do from what it actually does.",
+         "BARGAIN BIN ROBOTICS · ROBOT_EDU"),
     )
-    additions = {"fair-fitness-testing": ("fft-captures",), "lazy-lidar": ("lazy-lidar",)}
+    additions = {"fair-fitness-testing": ("fft-captures",), "lazy-lidar": ("lazy-lidar",),
+                 "cutebot-motion-evidence": ("cutebot-motion-evidence",)}
     for slug, title, description, header in specs:
         styles = ("work",) + additions.get(slug, ())
         extra = "".join(f'<link rel="stylesheet" href="../assets/{style}.css">\n' for style in styles)
         page(slug, title, description, (WEB / f"{slug}.html").read_text(encoding="utf-8"),
-             header=header, extra=extra)
+             header=header, extra=extra,
+             source=(f"{ESTATE}/bargain-bin-robotics/tree/6b07a83aee4bec98f0cd295cc5d18aad4b3315c3/exemplars/cutebot-motion-evidence"
+                     if slug == "cutebot-motion-evidence" else ATLAS))
 
 
 def main():
@@ -563,10 +572,15 @@ def main():
             if lidar_heading not in body:
                 raise ValueError("The Lazy LiDAR idea anchor changed. Update its exhibit cross-link.")
             body = body.replace(lidar_heading, lidar_heading + '\n<p><a href="../lazy-lidar/">Open the Lazy LiDAR exhibit and virtual robot lab</a>.</p>', 1)
+        if name == "inventory":
+            cutebot_cell = '<td>Cutebot Motion Evidence Lab</td>'
+            if body.count(cutebot_cell) != 1:
+                raise ValueError("The Cutebot inventory row changed. Update its exhibit cross-link.")
+            body = body.replace(cutebot_cell, '<td><a href="../cutebot-motion-evidence/">Cutebot Motion Evidence Lab</a></td>', 1)
         families = (f'<section class="atlas-family-list" aria-labelledby="families">'
                     f'<h2 id="families">Project families</h2>{homes("../")}</section>') if name == "inventory" else ""
         page(name, title, summary, f'<article>{body}</article>{families}', source=f"{ATLAS_MAIN}/{file}")
-    print(f"Built seventeen pages and indexed {len(manifest['repositories'])} public repositories.")
+    print(f"Built Atlas pages and indexed {len(manifest['repositories'])} public repositories.")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,65 @@
+<div class="cutebot-hero">
+  <div class="cutebot-intro">
+    <p class="atlas-kicker">ROBOT_EDU · CLASSROOM PREVIEW v0.1</p>
+    <h2>Did the robot do what you told it?</h2>
+    <p>Tell a small rover to drive for 1.2 seconds. Do it three times. If each run gets the same command, will the car stop in the same place?</p>
+    <p class="cutebot-actions">
+      <a class="work-button" href="viewer.html">Try the motion viewer</a>
+      <a href="https://github.com/RandoSY/bargain-bin-robotics/raw/6b07a83aee4bec98f0cd295cc5d18aad4b3315c3/exemplars/cutebot-motion-evidence/Cutebot_Motion_Evidence_v0.1.zip">Download the classroom kit</a>
+    </p>
+    <p class="cutebot-status">Firmware compiled · Physical Cutebot trials pending</p>
+  </div>
+  <figure class="cutebot-photo">
+    <a href="media/cutebot.webp"><img src="media/cutebot.webp" width="499" height="499" fetchpriority="high" alt="Original Smart Cutebot chassis with a vertical micro:bit, two rear wheels, battery pack and a front ultrasonic sensor"></a>
+    <figcaption>Original Smart Cutebot. <a href="https://shop.elecfreaks.com/products/elecfreaks-micro-bit-smart-cutebot-kit-without-micro-bit-board">ELECFREAKS product photo</a>, not a recorded bench setup.</figcaption>
+  </figure>
+</div>
+
+<nav class="work-jump" aria-label="On this page">
+  <a href="#trial">Run the trial</a><a href="#evidence">Read the evidence</a><a href="#teach">Teach it</a>
+</nav>
+
+<section class="work-section" aria-labelledby="trial">
+  <p class="atlas-kicker">01 · Capture</p>
+  <h2 id="trial">Same command. Same finish?</h2>
+  <div class="cutebot-media">
+    <figure class="work-figure">
+      <a href="media/floor-trial.svg"><img src="media/floor-trial.svg" width="820" height="384" loading="lazy" decoding="async" alt="Diagram showing a start mark, final nose position, forward distance and separate sideways drift, with rest, drive and after-stop phases"></a>
+      <figcaption>Proposed floor setup. Mark the same point on the nose at the start and finish. Measure forward distance and note sideways drift separately.</figcaption>
+    </figure>
+    <ol class="work-steps">
+      <li>Mark a start line. Choose a target distance and decide how close is good enough.</li>
+      <li>Keep the floor surface and start alignment the same. Alternate settings <strong>25</strong> and <strong>40</strong> for three scored runs each.</li>
+      <li>Measure each endpoint independently with tape. Compare the middle distance and the spread for each setting.</li>
+    </ol>
+  </div>
+</section>
+
+<section class="work-section" aria-labelledby="evidence">
+  <p class="atlas-kicker">02 · Analyze</p>
+  <h2 id="evidence">Three records, three different jobs</h2>
+  <div class="cutebot-media">
+    <figure class="work-figure">
+      <a href="viewer.html"><img src="media/viewer-synthetic.svg" width="820" height="415" loading="lazy" decoding="async" alt="Synthetic motion viewer demo showing a nominal 1.2-second motor command and changes in acceleration around the start and stop"></a>
+      <figcaption>Synthetic Run 4, rendered from the kit’s motion viewer. It demonstrates how to read the trace. It is not a physical Cutebot recording.</figcaption>
+    </figure>
+    <dl class="cutebot-records">
+      <div><dt>Controller command</dt><dd>What the firmware asked for. These settings aren’t calibrated speeds.</dd></div>
+      <div><dt>Accelerometer trace</dt><dd>When motion, tilt, or vibration changed relative to rest.</dd></div>
+      <div><dt>Measuring tape</dt><dd>How far the chassis actually displaced along the lane.</dd></div>
+    </dl>
+  </div>
+  <p class="work-note">The trace cannot tell you how far the car traveled. A quiet trace does not prove the car was stopped. Open the viewer and choose <strong>Load synthetic demo</strong> to see why the tape and motion trace answer different questions.</p>
+</section>
+
+<section class="work-section" aria-labelledby="teach">
+  <p class="atlas-kicker">03 · Publish</p>
+  <h2 id="teach">Give the next team a rule they can check</h2>
+  <p>Hand another team your target band, the tape readings, and a motion trace. Ask whether they would choose setting 25, setting 40, or neither. Have them try one new run and see whether your rule holds.</p>
+  <dl class="work-directory">
+    <div><dt>Classic Arduino</dt><dd>Build a stationary timing or ranging station and check it against the tape.</dd></div>
+    <div><dt>micro:bit V2 + Cutebot</dt><dd>Put the controller and motion logger on the rover. Use a battery-powered run and export the saved data later.</dd></div>
+    <div><dt>Android / iPhone</dt><dd>Open the viewer in a phone browser, load the exported CSV, and review another team’s evidence. No robot pairing or control is required.</dd></div>
+  </dl>
+  <p><a href="https://github.com/RandoSY/bargain-bin-robotics/tree/6b07a83aee4bec98f0cd295cc5d18aad4b3315c3/exemplars/cutebot-motion-evidence">See the source and hardware setup</a> · <a href="../lazy-lidar/">Next, make the rover map a room</a> · <a href="../sqm-plus/">See the parallel in SQM+</a></p>
+</section>

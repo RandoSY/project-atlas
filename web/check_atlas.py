@@ -9,12 +9,14 @@ ROOT = Path(__file__).resolve().parent / "atlas"
 EDITION_LINKS = {
     "": {"explore/"},
     "start-here": {"../explore/", "/atlas/sphericity-meter/", "/atlas/fair-fitness-testing/", "../lazy-lidar/"},
-    "exhibits": {"../sphericity-meter/", "../fair-fitness-testing/", "../lazy-lidar/"},
+    "exhibits": {"../sphericity-meter/", "../fair-fitness-testing/", "../lazy-lidar/", "../cutebot-motion-evidence/"},
+    "inventory": {"../cutebot-motion-evidence/"},
     "explore": {"../sphericity-meter/", "../fair-fitness-testing/", "../core-10/", "../sqm-plus/", "../lazy-lidar/"},
     "core-10": {"../sphericity-meter/"},
     "ideas": {"../fair-fitness-testing/", "../lazy-lidar/"},
     "sphericity-meter": {"Invent_a_Sphericity_Meter_Teachers_Guide.pdf", "../sqm-plus/"},
     "fair-fitness-testing": {"../ideas/#22-fair-fitness--dynametics", "../sqm-plus/"},
+    "cutebot-motion-evidence": {"viewer.html", "media/cutebot.webp", "media/floor-trial.svg", "media/viewer-synthetic.svg", "../lazy-lidar/", "../sqm-plus/"},
     "lazy-lidar": {"model.html", "media/virtual-lab.webp", "media/cutebot-console.webp", "../ideas/#19-lazy--patient-lidar"},
 }
 
