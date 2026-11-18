@@ -76,7 +76,7 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
     prefix = "../" if directory else ""
     destinations = (("Home", ""), ("Exhibits", "exhibits"), ("Ideas", "ideas"),
                     ("Projects", "inventory"), ("Repositories", "repositories"))
-    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10", "pop-can-calorimeter", "water-clock", "teatime", "sphericity-meter", "fair-fitness-testing"}
+    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10", "pop-can-calorimeter", "water-clock", "teatime", "sphericity-meter", "fair-fitness-testing", "lazy-lidar"}
     nav = []
     for name, dest in destinations:
         attr = ' aria-current="page"' if dest == directory else ''
@@ -226,7 +226,7 @@ def start_here():
 </section>
 <section aria-labelledby="sg-exhibits">
 <h2 id="sg-exhibits">Ten places to begin</h2>
-<p>Try the first move before reading everything.</p>
+<p>Try the first move before reading everything. For another no-hardware starting point, <a href="../lazy-lidar/">try mapping a room with Lazy LiDAR</a>.</p>
 <ul class="sg-exhibits">{''.join(exhibits)}</ul>
 </section>
 <section class="sg-method" aria-labelledby="sg-workflow">
@@ -268,6 +268,9 @@ def exhibits():
         ("Instrument workshop", "../instruments/", "Virtual Instruments",
          "See original dashboards and build a wireless voltmeter, frequency meter, scale, ToF ruler, or thermometer.",
          "../instruments/screens/frequency-meter.webp", 1240, 945),
+        ("Robotics · Interactive simulation", "../lazy-lidar/", "Lazy LiDAR",
+         "Make a map from ranges and bearings. Then change the heading and see what a repeatable measurement still gets wrong.",
+         "../lazy-lidar/media/cutebot-console.webp", 1680, 1142),
         ("Mathematics", CALCULUS, "Ten Problems That Teach Calculus",
          "Start with the cart that reverses direction. Learn why total distance and net change are not the same thing.",
          "/calculus/assets/calculus-tangent-cover.svg", 1600, 800),
@@ -504,9 +507,13 @@ def next_edition_pages():
         ("fair-fitness-testing", "Fair Fitness Testing",
          "A release preview about prescribing work, checking motion, and observing the heart-rate response.",
          "MEASURED HUMAN PERFORMANCE · RELEASE PREVIEW"),
+        ("lazy-lidar", "Lazy LiDAR",
+         "Give an inexpensive range sensor time and a known viewpoint. Can it draw a useful map?",
+         "BARGAIN BIN ROBOTICS · PATIENT MAPPING"),
     )
+    additions = {"fair-fitness-testing": ("fft-captures",), "lazy-lidar": ("lazy-lidar",)}
     for slug, title, description, header in specs:
-        styles = ("work", "fft-captures") if slug == "fair-fitness-testing" else ("work",)
+        styles = ("work",) + additions.get(slug, ())
         extra = "".join(f'<link rel="stylesheet" href="../assets/{style}.css">\n' for style in styles)
         page(slug, title, description, (WEB / f"{slug}.html").read_text(encoding="utf-8"),
              header=header, extra=extra)
@@ -552,10 +559,14 @@ def main():
                 body = body.replace(heading, heading + '\n<p><a href="../fair-fitness-testing/">Open the Fair Fitness Testing exhibit and release preview</a>.</p>', 1)
             else:
                 raise ValueError("The Fair Fitness idea anchor changed. Update its exhibit cross-link.")
+            lidar_heading = '<h2 id="19-lazy--patient-lidar">19. Lazy / Patient LiDAR</h2>'
+            if lidar_heading not in body:
+                raise ValueError("The Lazy LiDAR idea anchor changed. Update its exhibit cross-link.")
+            body = body.replace(lidar_heading, lidar_heading + '\n<p><a href="../lazy-lidar/">Open the Lazy LiDAR exhibit and virtual robot lab</a>.</p>', 1)
         families = (f'<section class="atlas-family-list" aria-labelledby="families">'
                     f'<h2 id="families">Project families</h2>{homes("../")}</section>') if name == "inventory" else ""
         page(name, title, summary, f'<article>{body}</article>{families}', source=f"{ATLAS_MAIN}/{file}")
-    print(f"Built sixteen pages and indexed {len(manifest['repositories'])} public repositories.")
+    print(f"Built seventeen pages and indexed {len(manifest['repositories'])} public repositories.")
 
 if __name__ == "__main__":
     main()

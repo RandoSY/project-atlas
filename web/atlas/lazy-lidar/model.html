@@ -1,0 +1,2018 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lazy LiDAR Virtual Robot Lab · Project Atlas</title>
+<!-- Public Atlas adaptation of Randall Young’s Lazy LiDAR Dashboard Exhibit v0.4-review (2026-06-12). -->
+<style>
+  :root{
+    --bg:#0e1218;
+    --panel:#171d26;
+    --panel2:#202837;
+    --ink:#eef3ff;
+    --muted:#9eacc3;
+    --accent:#61dafb;
+    --ok:#80e27e;
+    --warn:#ffd166;
+    --bad:#ff6b6b;
+    --grid:#314052;
+    --line:#88d8ff;
+    --hit:#f8f871;
+    --obs:#7a4655;
+    --robot:#b8f7ff;
+    --north:#ffb86b;
+    --btn:#253145;
+    --btn2:#34445f;
+    --shadow:rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:var(--bg);
+    color:var(--ink);
+    font:14px/1.35 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  }
+  body{
+    display:grid;
+    grid-template-rows:54px 1fr 28px;
+  }
+  header{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:8px 12px;
+    background:linear-gradient(90deg,#111827,#182334 55%,#111827);
+    border-bottom:1px solid #2d3a4c;
+    box-shadow:0 2px 12px var(--shadow);
+    min-width:0;
+  }
+  header h1{
+    font-size:18px;
+    margin:0;
+    white-space:nowrap;
+    letter-spacing:.2px;
+  }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    border:1px solid #3a4d68;
+    background:#141b25;
+    color:var(--muted);
+    border-radius:999px;
+    padding:5px 10px;
+    white-space:nowrap;
+  }
+  .lamp{
+    width:10px;height:10px;border-radius:50%;
+    background:var(--bad);
+    box-shadow:0 0 8px var(--bad);
+  }
+  .lamp.ok{background:var(--ok);box-shadow:0 0 8px var(--ok)}
+  .lamp.warn{background:var(--warn);box-shadow:0 0 8px var(--warn)}
+  .header-spacer{flex:1}
+  main{
+    display:grid;
+    grid-template-columns:330px 1fr;
+    min-height:0;
+  }
+  aside{
+    background:var(--panel);
+    border-right:1px solid #2d3a4c;
+    overflow:auto;
+    padding:10px;
+  }
+  .workspace{
+    display:grid;
+    grid-template-rows:44px 1fr;
+    min-width:0;
+    min-height:0;
+  }
+  nav{
+    display:flex;
+    gap:6px;
+    align-items:center;
+    padding:7px 10px;
+    background:#111821;
+    border-bottom:1px solid #2d3a4c;
+    min-width:0;
+    overflow-x:auto;
+  }
+  .tab{
+    border:1px solid #33465f;
+    background:var(--btn);
+    color:var(--ink);
+    border-radius:10px;
+    padding:8px 12px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .tab.active{
+    background:#1d3547;
+    border-color:#5aa3c7;
+    color:white;
+  }
+  .panel{
+    display:none;
+    min-height:0;
+    overflow:hidden;
+    padding:10px;
+  }
+  .panel.active{display:block}
+  #arenaPanel.active{
+    display:grid;
+    grid-template-columns:1fr 310px;
+    gap:10px;
+  }
+  .card{
+    background:var(--panel2);
+    border:1px solid #2e3c50;
+    border-radius:14px;
+    padding:10px;
+    margin-bottom:10px;
+    box-shadow:0 4px 14px var(--shadow);
+  }
+  .card h2,.card h3{
+    margin:0 0 8px 0;
+    font-size:14px;
+    letter-spacing:.2px;
+  }
+  .small{font-size:12px;color:var(--muted)}
+  .row{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    margin:6px 0;
+  }
+  .row.wrap{flex-wrap:wrap}
+  label{
+    color:var(--muted);
+    font-size:12px;
+    display:block;
+    margin-bottom:3px;
+  }
+  input,select,button,textarea{
+    font:inherit;
+  }
+  input,select,textarea{
+    width:100%;
+    background:#0f1520;
+    color:var(--ink);
+    border:1px solid #354760;
+    border-radius:9px;
+    padding:7px 8px;
+    outline:none;
+  }
+  input[type="checkbox"]{width:auto}
+  input[type="range"]{padding:0}
+  button{
+    border:1px solid #3b4f6c;
+    background:var(--btn);
+    color:var(--ink);
+    border-radius:10px;
+    padding:8px 10px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  button:hover{background:var(--btn2)}
+  button.primary{border-color:#5aa3c7;background:#1e4056}
+  button.danger{border-color:#7c3b45;background:#4a1e28}
+  button.good{border-color:#3e7249;background:#1f4428}
+  button:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+  }
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .grid3{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+  }
+  .canvasWrap{
+    position:relative;
+    min-height:0;
+    background:#080c11;
+    border:1px solid #2d3a4c;
+    border-radius:14px;
+    overflow:hidden;
+  }
+  canvas{
+    display:block;
+    width:100%;
+    height:100%;
+  }
+  .overlayBadge{
+    position:absolute;
+    left:10px;
+    top:10px;
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    pointer-events:none;
+  }
+  .legend{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:8px;
+  }
+  .swatch{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    color:var(--muted);
+    font-size:12px;
+  }
+  .box{
+    width:12px;height:12px;border-radius:3px;border:1px solid #ffffff33;
+  }
+  .sidePanel{
+    min-height:0;
+    overflow:auto;
+  }
+  .metric{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px;
+    border-bottom:1px solid #303e52;
+    padding:6px 0;
+  }
+  .metric:last-child{border-bottom:0}
+  .metric b{font-variant-numeric:tabular-nums}
+  .terminal,.notes{
+    height:100%;
+    overflow:auto;
+    background:#05070a;
+    color:#cdebd6;
+    border:1px solid #2d3a4c;
+    border-radius:12px;
+    padding:10px;
+    white-space:pre-wrap;
+    font:12px/1.35 ui-monospace,SFMono-Regular,Consolas,monospace;
+  }
+  .tableWrap{
+    height:100%;
+    overflow:auto;
+    border:1px solid #2d3a4c;
+    border-radius:12px;
+    background:#0a0f15;
+  }
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+  }
+  th,td{
+    padding:6px 7px;
+    border-bottom:1px solid #273445;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+  }
+  th{
+    position:sticky;
+    top:0;
+    z-index:1;
+    background:#142033;
+    color:#dbe9ff;
+  }
+  th:first-child,td:first-child{text-align:left}
+  footer{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:4px 10px;
+    color:var(--muted);
+    border-top:1px solid #2d3a4c;
+    background:#101720;
+    font-size:12px;
+    white-space:nowrap;
+    overflow:hidden;
+  }
+  .grow{flex:1}
+  .statusText{overflow:hidden;text-overflow:ellipsis}
+  .modeBtns button.active{
+    background:#355878;
+    border-color:#80c7ed;
+  }
+  #dashboardPanel.active{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:10px;
+  }
+  #dashboardPanel .card{
+    height:100%;
+    margin:0;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+  }
+  .bars{
+    display:grid;
+    gap:7px;
+  }
+  .bar{
+    height:18px;
+    background:#0e141d;
+    border:1px solid #354760;
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .bar span{
+    display:block;
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#396d83,#78d4ff);
+  }
+  #polarCanvas,#miniMapCanvas{
+    height:100%;
+    min-height:260px;
+    border:1px solid #2d3a4c;
+    border-radius:12px;
+    background:#080c11;
+  }
+  #dataPanel.active,#terminalPanel.active,#settingsPanel.active{
+    display:grid;
+    grid-template-rows:1fr;
+  }
+  #terminalPanel.active{
+    grid-template-columns:1fr 330px;
+    gap:10px;
+  }
+  .cmdBox{
+    display:grid;
+    grid-template-rows:auto 1fr auto;
+    min-height:0;
+  }
+  textarea{
+    min-height:120px;
+    resize:none;
+  }
+  @media (max-width:900px){
+    body{overflow:auto;height:auto}
+    main{grid-template-columns:1fr}
+    aside{max-height:none}
+    .workspace{min-height:760px}
+    #arenaPanel.active,#dashboardPanel.active,#terminalPanel.active{grid-template-columns:1fr}
+  }
+
+/* -------------------------------------------------------------------------
+   Scroll-safe layout patch
+   -------------------------------------------------------------------------
+   The original lab was designed as a fixed one-window appliance. That is good
+   for the arena, but it can trap overflow in browser tabs/panels. These rules
+   keep the lab layout while allowing the left control column and individual
+   tabs to scroll when their content is taller than the available window.
+------------------------------------------------------------------------- */
+html, body {
+  height: 100dvh;
+  max-height: 100dvh;
+}
+
+body {
+  min-height: 0;
+}
+
+main,
+.workspace,
+.panel,
+#arenaPanel.active,
+#dashboardPanel.active,
+#terminalPanel.active,
+#replayPanel.active,
+#settingsPanel.active {
+  min-height: 0;
+  min-width: 0;
+}
+
+main {
+  overflow: hidden;
+}
+
+aside {
+  min-height: 0;
+  max-height: calc(100dvh - 82px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.panel {
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+#arenaPanel.active {
+  overflow: hidden;
+}
+
+#dashboardPanel.active,
+#terminalPanel.active {
+  overflow: hidden;
+}
+
+#replayPanel.active,
+#settingsPanel.active,
+#dataPanel.active {
+  overflow: auto;
+}
+
+.canvasWrap {
+  min-height: 320px;
+}
+
+.sidePanel {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+#dashboardPanel .card,
+.cmdBox,
+.tableWrap,
+.terminal,
+.notes {
+  min-height: 0;
+}
+
+#replayPanel .card {
+  max-width: 900px;
+}
+
+@media (max-width:900px) {
+  html, body {
+    height: auto;
+    max-height: none;
+    overflow: auto;
+  }
+
+  body {
+    display: block;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-wrap: wrap;
+    height: auto;
+  }
+
+  main {
+    display: block;
+    overflow: visible;
+  }
+
+  aside {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .workspace {
+    display: block;
+    min-height: auto;
+  }
+
+  .panel {
+    overflow: visible;
+  }
+
+  #arenaPanel.active,
+  #dashboardPanel.active,
+  #terminalPanel.active,
+  #replayPanel.active,
+  #settingsPanel.active,
+  #dataPanel.active {
+    display: block;
+    overflow: visible;
+  }
+
+  .canvasWrap,
+  #polarCanvas,
+  #miniMapCanvas {
+    height: 420px;
+  }
+
+  .terminal,
+  .notes,
+  .tableWrap {
+    height: 420px;
+  }
+}
+
+
+header .atlas-return,.mobile-jump{color:#b6e9ef;font-weight:700;white-space:nowrap}
+header .sim-badge{background:#f6d889;color:#251b0b;font-weight:750}
+:focus-visible{outline:3px solid #f9db8e;outline-offset:2px}
+.mobile-jump{display:none}
+@media(max-width:900px){
+  header{flex-wrap:wrap}
+  .header-spacer{display:none}
+  header h1{white-space:normal}
+  .mobile-jump{display:inline-block;padding:.45rem .1rem;color:#b6e9ef}
+  #scan-controls,#lab-views{scroll-margin-top:120px}
+  .workspace>.mobile-jump{margin:.3rem .65rem}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Lazy LiDAR Virtual Robot Lab</h1>
+  <span class="pill sim-badge">Simulation · No hardware control</span>
+  <span class="pill"><span id="simLamp" class="lamp ok"></span><span id="simStatus">Virtual robot ready</span></span>
+  <div class="header-spacer"></div>
+  <a class="atlas-return" href="./">← Back to the exhibit</a>
+</header>
+
+<main>
+  <aside id="scan-controls">
+    <div class="card">
+      <h2>Run Control</h2>
+      <div class="row wrap">
+        <button class="primary" id="scan360Btn">Virtual 360° scan</button>
+        <button id="scanFrontBtn">Front sweep</button>
+        <button class="good" id="autoExploreBtn">Auto explore</button>
+        <button class="danger" id="stopBtn">Stop</button>
+      </div>
+      <div class="row wrap">
+        <button id="clearScanBtn">Clear scan</button>
+        <button id="exportCsvBtn">Export CSV</button>
+        <button id="copyLogBtn">Copy log</button>
+      </div>
+      <div class="small">Scans and exported CSV rows are simulated. Use <strong>Data</strong> for a text view of bearings and distances.</div>
+      <a class="mobile-jump" href="#lab-views">Jump to the map and data ↓</a>
+    </div>
+
+    <div class="card">
+      <h2>Room</h2>
+      <div class="grid2">
+        <div><label for="roomW">Width cm</label><input id="roomW" type="number" min="100" max="2000" value="600"></div>
+        <div><label for="roomH">Height cm</label><input id="roomH" type="number" min="100" max="2000" value="420"></div>
+      </div>
+      <div class="row wrap">
+        <button id="applyRoomBtn">Apply room</button>
+        <button id="presetClassBtn">Classroom</button>
+        <button id="presetKitchenBtn">Kitchen</button>
+        <button id="presetEmptyBtn">Empty</button>
+      </div>
+      <div class="row wrap">
+        <button id="saveScenarioBtn">Save scenario JSON</button>
+        <button id="loadScenarioBtn">Load scenario JSON</button>
+        <input type="file" id="scenarioFileInput" accept=".json,application/json" style="display:none">
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Edit Arena</h2>
+      <div class="row wrap modeBtns">
+        <button id="modeSelectBtn" class="active">Inspect</button>
+        <button id="modeRobotBtn">Place robot</button>
+        <button id="modeRectBtn">Draw obstacle</button>
+        <button id="modeEraseBtn">Erase</button>
+      </div>
+      <div class="small">
+        Draw rectangles by dragging. Place the robot by clicking. Erase obstacles by clicking them.
+      </div>
+      <div class="row wrap">
+        <button id="clearObsBtn">Clear obstacles</button>
+        <button id="centerRobotBtn">Center robot</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Robot Pose</h2>
+      <div class="grid3">
+        <div><label for="robotX">X cm</label><input id="robotX" type="number" value="300"></div>
+        <div><label for="robotY">Y cm</label><input id="robotY" type="number" value="210"></div>
+        <div><label for="robotHeading">Heading °</label><input id="robotHeading" type="number" value="0"></div>
+      </div>
+      <div class="row">
+        <button id="applyPoseBtn">Apply pose</button>
+        <button id="turnLeftBtn">−15°</button>
+        <button id="turnRightBtn">+15°</button>
+      </div>
+      <div class="small">Heading is compass-style: 0° = north, 90° = east.</div>
+    </div>
+
+    <div class="card">
+      <h2>Sensor Model</h2>
+      <div class="grid2">
+        <div><label for="maxRange">Max range cm</label><input id="maxRange" type="number" min="20" max="1200" value="450"></div>
+        <div><label for="stepDeg">Step degrees</label><input id="stepDeg" type="number" min="1" max="30" value="5"></div>
+        <div><label for="samples">Samples/reading</label><input id="samples" type="number" min="1" max="15" value="5"></div>
+        <div><label for="noiseCm">Noise ± cm</label><input id="noiseCm" type="number" min="0" max="60" value="2.5" step="0.5"></div>
+        <div><label for="scanDelay">Scan delay ms</label><input id="scanDelay" type="number" min="0" max="500" value="35"></div>
+        <div><label for="dropout">Wall echo loss %</label><input id="dropout" type="number" min="0" max="80" value="3"></div>
+      </div>
+      <div class="row">
+        <label class="row"><input id="showRays" type="checkbox" checked> show rays</label>
+        <label class="row"><input id="showGrid" type="checkbox" checked> show grid</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Fault Lab</h2>
+      <div class="small">
+        Inject realistic sensor and motion faults to study how they distort the map.
+        These affect virtual scans and movement, not the room geometry itself.
+      </div>
+      <div class="grid2" style="margin-top:8px">
+        <div><label for="faultAngleJitter">Angle jitter ±°</label><input id="faultAngleJitter" type="number" min="0" max="45" value="0" step="0.5"></div>
+        <div><label for="faultHeadingOffset">Heading offset °</label><input id="faultHeadingOffset" type="number" min="-180" max="180" value="0" step="1"></div>
+        <div><label for="faultHeadingDrift">Heading drift °/scan</label><input id="faultHeadingDrift" type="number" min="-10" max="10" value="0" step="0.1"></div>
+        <div><label for="faultWheelSlip">Wheel slip %</label><input id="faultWheelSlip" type="number" min="0" max="90" value="0" step="1"></div>
+        <div><label for="faultConeWidth">Sensor cone width °</label><input id="faultConeWidth" type="number" min="0" max="60" value="0" step="1"></div>
+      </div>
+      <div class="row wrap" style="margin-top:8px">
+        <button id="resetFaultsBtn">Reset faults</button>
+      </div>
+      <div class="small" style="margin-top:6px">
+        Angle jitter: random per-reading bearing error (simulates mounting wobble).<br>
+        Heading offset/drift: reported heading differs from true heading (simulates compass calibration error / gyro drift).<br>
+        Wheel slip: actual movement is less than commanded (simulates slipping wheels during auto-explore).<br>
+        Cone width: averages several rays across a beam width (simulates a wide ultrasonic cone).
+      </div>
+    </div>
+  </aside>
+
+  <section class="workspace" id="lab-views">
+    <a class="mobile-jump" href="#scan-controls">↑ Back to scan controls</a>
+    <nav aria-label="Lab views">
+      <button class="tab active" data-tab="arenaPanel" aria-controls="arenaPanel" aria-pressed="true">Arena</button>
+      <button class="tab" data-tab="dashboardPanel" aria-controls="dashboardPanel" aria-pressed="false">Dashboard</button>
+      <button class="tab" data-tab="dataPanel" aria-controls="dataPanel" aria-pressed="false">Data</button>
+      <button class="tab" data-tab="terminalPanel" aria-controls="terminalPanel" aria-pressed="false">Virtual Terminal</button>
+      <button class="tab" data-tab="replayPanel" aria-controls="replayPanel" aria-pressed="false">Replay</button>
+      <button class="tab" data-tab="settingsPanel" aria-controls="settingsPanel" aria-pressed="false">Protocol</button>
+    </nav>
+
+    <section id="arenaPanel" class="panel active">
+      <div class="canvasWrap">
+        <canvas id="arenaCanvas"></canvas>
+        <div class="overlayBadge">
+          <span class="pill">Grid world: cm units</span>
+          <span class="pill">N ↑</span>
+          <span class="pill" id="modeBadge">Mode: Inspect</span>
+        </div>
+      </div>
+      <div class="sidePanel">
+        <div class="card">
+          <h3>Live Readout</h3>
+          <div class="metric"><span>Robot X</span><b id="mRobotX">—</b></div>
+          <div class="metric"><span>Robot Y</span><b id="mRobotY">—</b></div>
+          <div class="metric"><span>Heading</span><b id="mHeading">—</b></div>
+          <div class="metric"><span>Last bearing</span><b id="mBearing">—</b></div>
+          <div class="metric"><span>Last distance</span><b id="mDist">—</b></div>
+          <div class="metric"><span>Quality</span><b id="mQuality">—</b></div>
+          <div class="metric"><span>Scan points</span><b id="mPoints">0</b></div>
+        </div>
+        <div class="card">
+          <h3>Obstacle List</h3>
+          <div id="obstacleList" class="small">No obstacles.</div>
+          <div class="legend">
+            <span class="swatch"><span class="box" style="background:var(--obs)"></span>obstacle</span>
+            <span class="swatch"><span class="box" style="background:var(--robot)"></span>robot</span>
+            <span class="swatch"><span class="box" style="background:var(--hit)"></span>scan hit</span>
+            <span class="swatch"><span class="box" style="background:var(--north)"></span>north</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Robot Behavior</h3>
+          <p class="small">
+            A scan rotates the sensor around the robot pose. Auto explore scans, chooses the clearest direction, turns there, moves cautiously, and scans again.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboardPanel" class="panel">
+      <div class="card">
+        <h3>Polar Sweep</h3>
+        <canvas id="polarCanvas"></canvas>
+      </div>
+      <div class="card">
+        <h3>Dashboard Metrics</h3>
+        <div class="bars">
+          <label>Range used</label><div class="bar"><span id="rangeBar"></span></div>
+          <label>Signal quality</label><div class="bar"><span id="qualityBar"></span></div>
+          <label>Map density</label><div class="bar"><span id="densityBar"></span></div>
+        </div>
+        <div style="height:10px"></div>
+        <div class="metric"><span>Transport</span><b id="mTransport">Virtual UART</b></div>
+        <div class="metric"><span>Last packet</span><b id="mPacketType">—</b></div>
+        <div class="metric"><span>Run number</span><b id="mRun">0</b></div>
+        <div class="metric"><span>Nearest obstacle</span><b id="mNearest">—</b></div>
+        <div class="metric"><span>Farthest clear path</span><b id="mFarthest">—</b></div>
+        <div style="height:12px"></div>
+        <h3>Mini Map</h3>
+        <canvas id="miniMapCanvas"></canvas>
+      </div>
+    </section>
+
+    <section id="dataPanel" class="panel">
+      <div class="tableWrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>source</th><th>rel °</th><th>bearing °</th><th>distance cm</th>
+              <th>x cm</th><th>y cm</th><th>samples</th><th>quality</th><th>t ms</th>
+            </tr>
+          </thead>
+          <tbody id="dataBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="terminalPanel" class="panel">
+      <div class="terminal" id="terminal"></div>
+      <div class="card cmdBox">
+        <div>
+          <h3>Send Command</h3>
+          <p class="small">Commands control only the virtual robot.</p>
+        </div>
+        <textarea id="cmdText">SCAN,360
+STATUS</textarea>
+        <div class="row wrap">
+          <button class="primary" id="sendCmdBtn">Send</button>
+          <button id="statusCmdBtn">STATUS</button>
+          <button id="clearLogBtn">Clear log</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="replayPanel" class="panel">
+      <div class="card">
+        <h3>Replay / CSV Import</h3>
+        <p class="small">
+          Load a previously exported scan CSV and play it back point-by-point.
+          Replayed points are drawn in a different color,
+          overlaid on the <em>current</em> room/obstacle layout -- useful for
+          checking whether a saved scan still matches the current arena, or for
+          comparing a faulted run against a clean one.
+        </p>
+        <div class="row wrap">
+          <button id="loadReplayBtn">Load CSV</button>
+          <input type="file" id="replayFileInput" accept=".csv,text/csv" style="display:none">
+          <span class="small" id="replayInfo">No replay loaded.</span>
+        </div>
+        <div class="row wrap">
+          <button id="replayPlayBtn" disabled>Play</button>
+          <button id="replayPauseBtn" disabled>Pause</button>
+          <button id="replayStepBtn" disabled>Step</button>
+          <button id="replayResetBtn" disabled>Reset</button>
+          <button id="replayClearBtn" disabled>Clear overlay</button>
+        </div>
+        <div class="row">
+          <div style="flex:1">
+            <label for="replaySpeed">Playback speed (points/sec)</label>
+            <input id="replaySpeed" type="range" min="1" max="60" value="20">
+          </div>
+          <b id="replaySpeedLabel">20/s</b>
+        </div>
+        <div class="row">
+          <div style="flex:1">
+            <label for="replayPos">Position</label>
+            <input id="replayPos" type="range" min="0" max="0" value="0">
+          </div>
+          <b id="replayPosLabel">0 / 0</b>
+        </div>
+        <div class="legend">
+          <span class="swatch"><span class="box" style="background:var(--hit)"></span>current simulated scan hit</span>
+          <span class="swatch"><span class="box" style="background:#8be9fd"></span>point from a local CSV</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="settingsPanel" class="panel">
+      <div class="notes">
+Lazy LiDAR / Patient LiDAR Protocol
+
+Release:
+  v0.4-review (2026-06-12)
+  Review-ready dashboard exhibit release.
+  Includes scroll-safe layout, Fault Lab, scenario JSON save/load,
+  Atlas edition: virtual UART and local CSV replay only.
+  No Bluetooth connection or robot control.
+
+Core scan lines:
+  SCAN_BEGIN,&lt;run&gt;,&lt;step_deg&gt;,&lt;samples&gt;
+  SCAN,&lt;relative_angle_deg&gt;,&lt;distance_cm&gt;,&lt;samples&gt;,&lt;quality_0_100&gt;,&lt;timestamp_ms&gt;
+  SCAN_DONE,&lt;run&gt;
+
+GSA-style semantic lines:
+  GSA,HELLO,device=LazyLiDAR,role=VirtualRobot
+  GSA,OBSERVE,heading=&lt;absolute_bearing_deg&gt;,distance_cm=&lt;distance&gt;,quality=&lt;q&gt;
+  GSA,SUMMARY,points=&lt;n&gt;,nearest_cm=&lt;d&gt;,farthest_bearing=&lt;bearing&gt;
+
+Design principle:
+  The public Atlas edition runs virtually and can replay a local CSV file. Replay does not establish the file’s provenance.
+      </div>
+    </section>
+  </section>
+</main>
+
+<footer>
+  <span class="statusText" id="footerStatus" role="status">Ready. Draw a room obstacle, place the robot, then run a scan.</span>
+  <span class="grow"></span>
+  <span>Atlas simulation · adapted from v0.4-review</span>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+
+  const $ = id => document.getElementById(id);
+  const els = {
+    arena: $("arenaCanvas"),
+    polar: $("polarCanvas"),
+    mini: $("miniMapCanvas"),
+    terminal: $("terminal"),
+    dataBody: $("dataBody"),
+    footer: $("footerStatus"),
+    simLamp: $("simLamp"),
+    simStatus: $("simStatus"),
+    modeBadge: $("modeBadge")
+  };
+
+  const ctx = els.arena.getContext("2d");
+  const pctx = els.polar.getContext("2d");
+  const mctx = els.mini.getContext("2d");
+
+  const state = {
+    room: { w: 600, h: 420 },
+    robot: { x: 300, y: 210, heading: 0 },
+    obstacles: [],
+    points: [],
+    lines: [],
+    run: 0,
+    mode: "select",
+    scanning: false,
+    autoExplore: false,
+    scanTimer: null,
+    scanAngles: [],
+    scanIndex: 0,
+    last: null,
+    showRays: true,
+    showGrid: true,
+    drag: null,
+    previewRect: null,
+    transport: "Virtual UART",
+    fault: {
+      angleJitter: 0,     // deg, random per-reading bearing jitter
+      headingOffset: 0,   // deg, fixed bias applied to reported heading only
+      headingDrift: 0,    // deg per scan, accumulates into reported heading
+      wheelSlip: 0,       // %, reduces actual movement vs commanded
+      coneWidth: 0        // deg, total cone angle averaged per reading (0 = single ray)
+    },
+    driftAccum: 0,
+    replay: { points: [], index: 0, playing: false, timer: null, speed: 20 },
+    replayPoints: []
+  };
+
+  function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+  function normDeg(d){ return ((d % 360) + 360) % 360; }
+  function degToRad(d){ return d * Math.PI / 180; }
+  function fmt(n, digits=1){ return Number.isFinite(n) ? n.toFixed(digits) : "—"; }
+  function nowMs(){ return Math.round(performance.now()); }
+
+  function compassVec(deg){
+    const r = degToRad(deg);
+    return { dx: Math.sin(r), dy: Math.cos(r) };
+  }
+
+  function resizeCanvas(canvas){
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    const w = Math.max(10, Math.floor(rect.width * dpr));
+    const h = Math.max(10, Math.floor(rect.height * dpr));
+    if(canvas.width !== w || canvas.height !== h){
+      canvas.width = w;
+      canvas.height = h;
+    }
+  }
+
+  function roomScale(canvas){
+    const pad = 26 * (window.devicePixelRatio || 1);
+    const sx = (canvas.width - 2*pad) / state.room.w;
+    const sy = (canvas.height - 2*pad) / state.room.h;
+    const s = Math.max(0.05, Math.min(sx, sy));
+    const ox = (canvas.width - state.room.w*s) / 2;
+    const oy = (canvas.height - state.room.h*s) / 2;
+    return { s, ox, oy };
+  }
+
+  function worldToCanvas(x,y,canvas=els.arena){
+    const {s,ox,oy} = roomScale(canvas);
+    return { x: ox + x*s, y: oy + (state.room.h - y)*s };
+  }
+
+  function canvasToWorld(px,py,canvas=els.arena){
+    const {s,ox,oy} = roomScale(canvas);
+    return { x: (px - ox)/s, y: state.room.h - (py - oy)/s };
+  }
+
+  function addLog(line){
+    state.lines.push(line);
+    if(state.lines.length > 900) state.lines.shift();
+    els.terminal.textContent = state.lines.join("\n");
+    els.terminal.scrollTop = els.terminal.scrollHeight;
+  }
+
+  function setFooter(text){ els.footer.textContent = text; }
+
+  function clearScan(){
+    state.points = [];
+    state.last = null;
+    updateTable();
+    drawAll();
+    updateMetrics();
+  }
+
+  function randomNoise(scale){
+    // Triangular-ish zero-centered noise: simple, cheap, good enough for a classroom sensor model.
+    return (Math.random() - Math.random()) * scale;
+  }
+
+  function pointInRect(x,y,r){
+    return x >= r.x && x <= r.x+r.w && y >= r.y && y <= r.y+r.h;
+  }
+
+  function obstacleAt(x,y){
+    for(let i=state.obstacles.length-1;i>=0;i--){
+      if(pointInRect(x,y,state.obstacles[i])) return i;
+    }
+    return -1;
+  }
+
+  function rectRayIntersection(px,py,dx,dy,r){
+    const eps = 1e-9;
+    let tx1 = (r.x - px) / (Math.abs(dx)<eps ? eps : dx);
+    let tx2 = (r.x + r.w - px) / (Math.abs(dx)<eps ? eps : dx);
+    let ty1 = (r.y - py) / (Math.abs(dy)<eps ? eps : dy);
+    let ty2 = (r.y + r.h - py) / (Math.abs(dy)<eps ? eps : dy);
+    if(tx1 > tx2) [tx1,tx2] = [tx2,tx1];
+    if(ty1 > ty2) [ty1,ty2] = [ty2,ty1];
+    const tmin = Math.max(tx1, ty1);
+    const tmax = Math.min(tx2, ty2);
+    if(tmax < 0 || tmin > tmax) return Infinity;
+    return tmin > 0 ? tmin : tmax > 0 ? tmax : Infinity;
+  }
+
+  function castRay(bearingDeg){
+    const {dx,dy} = compassVec(bearingDeg);
+    const px = state.robot.x, py = state.robot.y;
+    let best = Infinity;
+    let hitType = "none";
+
+    // Room boundaries.
+    const candidates = [];
+    if(Math.abs(dx) > 1e-9){
+      candidates.push((0 - px)/dx);
+      candidates.push((state.room.w - px)/dx);
+    }
+    if(Math.abs(dy) > 1e-9){
+      candidates.push((0 - py)/dy);
+      candidates.push((state.room.h - py)/dy);
+    }
+    for(const t of candidates){
+      if(t > 0 && t < best){
+        const hx = px + dx*t, hy = py + dy*t;
+        if(hx >= -0.01 && hx <= state.room.w+0.01 && hy >= -0.01 && hy <= state.room.h+0.01){
+          best = t;
+          hitType = "wall";
+        }
+      }
+    }
+
+    for(const r of state.obstacles){
+      const t = rectRayIntersection(px, py, dx, dy, r);
+      if(t > 0 && t < best){
+        best = t;
+        hitType = "obstacle";
+      }
+    }
+
+    const maxRange = Number($("maxRange").value);
+    const limited = Math.min(best, maxRange);
+    const dropoutChance = Number($("dropout").value) / 100;
+    const dropped = Math.random() < dropoutChance;
+    const rangeLimited = best > maxRange || !Number.isFinite(best) || dropped;
+
+    return {
+      rawDistance: best,
+      distance: rangeLimited ? maxRange : limited,
+      hitType: rangeLimited ? "no_echo" : hitType,
+      rangeLimited,
+      x: px + dx * limited,
+      y: py + dy * limited
+    };
+  }
+
+  function virtualReading(relDeg){
+    // True bearing: used for actual ray geometry against the real room.
+    const trueBearing = normDeg(state.robot.heading + relDeg);
+    const samples = clamp(parseInt($("samples").value || "5",10),1,15);
+    const noise = Number($("noiseCm").value || 0);
+    const maxRange = Number($("maxRange").value || 450);
+    const angleJitter = state.fault.angleJitter;
+    const coneWidth = state.fault.coneWidth;
+
+    // Sensor cone width: average the ray distance across several headings spanning
+    // the cone, simulating a wide ultrasonic beam that "sees" the nearest surface
+    // anywhere within the cone rather than along a single line.
+    let coneDistances = [];
+    if(coneWidth > 0){
+      const half = coneWidth / 2;
+      const coneSteps = 5;
+      for(let i=0;i<coneSteps;i++){
+        const off = -half + (coneWidth * i/(coneSteps-1));
+        coneDistances.push(castRay(normDeg(trueBearing + off)).distance);
+      }
+    }
+
+    const readings = [];
+    for(let i=0;i<samples;i++){
+      // Angle jitter: each individual sample is taken at a slightly different
+      // bearing, as if the sensor mount wobbles between pings.
+      const jitteredBearing = angleJitter > 0
+        ? normDeg(trueBearing + randomNoise(angleJitter))
+        : trueBearing;
+      const base = coneWidth > 0
+        ? Math.min(...coneDistances)
+        : castRay(jitteredBearing).distance;
+      readings.push(clamp(base + randomNoise(noise), 0, maxRange));
+    }
+    readings.sort((a,b)=>a-b);
+    const median = readings[Math.floor(readings.length/2)];
+    const dist = Math.round(median * 10) / 10;
+
+    // Re-cast along the true bearing for hit type / quality classification.
+    const hit = castRay(trueBearing);
+
+    let q = 100;
+    if(hit.hitType === "no_echo") q = 25;
+    else q -= Math.round((dist / maxRange) * 22);
+    q -= Math.round(noise * 1.5);
+    q -= Math.round(angleJitter * 0.8);
+    q -= Math.round(coneWidth * 0.4);
+    q = clamp(q, 0, 100);
+
+    // Reported bearing: what the robot *thinks* it's pointing at, including
+    // calibration offset and accumulated drift. This is what gets logged and
+    // plotted, so the map is distorted exactly as a real miscalibrated robot's
+    // map would be -- the room geometry itself (trueBearing/hit) is unaffected.
+    const reportedBearing = normDeg(reportedHeading() + relDeg);
+    const {dx,dy} = compassVec(reportedBearing);
+    return {
+      source: "virtual",
+      rel: normDeg(relDeg),
+      bearing: reportedBearing,
+      distance: dist,
+      x: clamp(state.robot.x + dx*dist, 0, state.room.w),
+      y: clamp(state.robot.y + dy*dist, 0, state.room.h),
+      samples,
+      quality: q,
+      t: nowMs(),
+      hitType: hit.hitType
+    };
+  }
+
+  function emitVirtualScanPoint(relDeg){
+    const r = virtualReading(relDeg);
+    const line = `SCAN,${fmt(r.rel,0)},${fmt(r.distance,1)},${r.samples},${fmt(r.quality,0)},${r.t}`;
+    addLog(line);
+    ingestScan(r, line);
+    addLog(`GSA,OBSERVE,heading=${fmt(r.bearing,1)},distance_cm=${fmt(r.distance,1)},quality=${fmt(r.quality,0)}`);
+  }
+
+  function ingestLine(line, source="virtual"){
+    const clean = line.trim();
+    if(!clean) return;
+    addLog(clean);
+
+    const parts = clean.split(",").map(s => s.trim());
+    if(parts[0] === "SCAN_BEGIN"){
+      $("mPacketType").textContent = "SCAN_BEGIN";
+      return;
+    }
+    if(parts[0] === "SCAN_DONE"){
+      $("mPacketType").textContent = "SCAN_DONE";
+      return;
+    }
+    if(parts[0] === "SCAN" && parts.length >= 6){
+      const rel = Number(parts[1]);
+      const dist = Number(parts[2]);
+      const samples = Number(parts[3]);
+      const quality = Number(parts[4]);
+      const t = Number(parts[5]);
+      const bearing = normDeg(state.robot.heading + rel);
+      const {dx,dy} = compassVec(bearing);
+      ingestScan({
+        source,
+        rel: normDeg(rel),
+        bearing,
+        distance: dist,
+        x: clamp(state.robot.x + dx*dist, 0, state.room.w),
+        y: clamp(state.robot.y + dy*dist, 0, state.room.h),
+        samples,
+        quality,
+        t
+      }, clean);
+      return;
+    }
+    if(parts[0] === "GSA"){
+      $("mPacketType").textContent = "GSA";
+      return;
+    }
+    $("mPacketType").textContent = parts[0] || "TEXT";
+  }
+
+  function ingestScan(p, rawLine){
+    state.points.push(p);
+    if(state.points.length > 4000) state.points.shift();
+    state.last = p;
+    $("mPacketType").textContent = "SCAN";
+    updateTable();
+    drawAll();
+    updateMetrics();
+  }
+
+  function buildAngles(kind){
+    const step = clamp(parseFloat($("stepDeg").value || "5"),1,30);
+    const angles = [];
+    if(kind === "front"){
+      for(let a=-90; a<=90+1e-9; a+=step) angles.push(a);
+    } else {
+      for(let a=0; a<360-1e-9; a+=step) angles.push(a);
+    }
+    return angles;
+  }
+
+  function startScan(kind="full", afterDone=null){
+    const continueExplore = Boolean(afterDone) && state.autoExplore;
+    stopScan(false);
+    state.autoExplore = continueExplore;
+    state.run += 1;
+    // Heading drift accumulates once per scan run, simulating gyro drift that
+    // grows over time/usage rather than within a single scan.
+    state.driftAccum = normDeg(state.driftAccum + state.fault.headingDrift);
+    if(state.driftAccum > 180) state.driftAccum -= 360;
+    state.scanning = true;
+    state.scanAngles = buildAngles(kind);
+    state.scanIndex = 0;
+    const step = Number($("stepDeg").value || 5);
+    const samples = Number($("samples").value || 5);
+    addLog(`SCAN_BEGIN,${state.run},${step},${samples}`);
+    addLog(`GSA,HELLO,device=LazyLiDAR,role=VirtualRobot,run=${state.run}`);
+    $("mRun").textContent = state.run;
+    const delay = clamp(Number($("scanDelay").value || 35),0,500);
+    els.simLamp.className = "lamp warn";
+    els.simStatus.textContent = "Virtual scan running";
+    setFooter("Virtual robot is scanning.");
+
+    const tick = () => {
+      if(!state.scanning) return;
+      if(state.scanIndex >= state.scanAngles.length){
+        addLog(`SCAN_DONE,${state.run}`);
+        summarizeRun();
+        state.scanning = false;
+        els.simLamp.className = "lamp ok";
+        els.simStatus.textContent = "Virtual robot ready";
+        setFooter("Scan complete.");
+        if(afterDone) afterDone();
+        return;
+      }
+      emitVirtualScanPoint(state.scanAngles[state.scanIndex]);
+      // Real robot rotates; simulator heading display follows the active bearing lightly.
+      state.scanIndex++;
+      state.scanTimer = setTimeout(tick, delay);
+    };
+    tick();
+  }
+
+  function stopScan(update=true){
+    if(state.scanTimer) clearTimeout(state.scanTimer);
+    state.scanTimer = null;
+    state.scanning = false;
+    state.autoExplore = false;
+    if(update){
+      els.simLamp.className = "lamp ok";
+      els.simStatus.textContent = "Virtual robot ready";
+      setFooter("Stopped.");
+    }
+  }
+
+  function summarizeRun(){
+    if(!state.points.length) return;
+    const latest = state.points.slice(-state.scanAngles.length || -72);
+    const valid = latest.filter(p => p.quality > 20);
+    const nearest = valid.reduce((a,p) => p.distance < a.distance ? p : a, {distance:Infinity});
+    const farthest = valid.reduce((a,p) => p.distance > a.distance ? p : a, {distance:-Infinity});
+    addLog(`GSA,SUMMARY,points=${latest.length},nearest_cm=${fmt(nearest.distance,1)},farthest_bearing=${fmt(farthest.bearing,1)}`);
+  }
+
+  function autoExploreStep(){
+    if(!state.autoExplore) return;
+    startScan("full", () => {
+      if(!state.autoExplore) return;
+      const recent = state.points.slice(-buildAngles("full").length);
+      // Only consider real echoes (not range-limited/no-echo hits) so the robot
+      // explores toward genuinely open space rather than toward distant walls
+      // that happened to exceed max range.
+      const candidates = recent.filter(p => p.hitType !== "no_echo" && p.quality > 20);
+      if(candidates.length){
+        const best = candidates.reduce((a,p) => (p.distance > a.distance) ? p : a, {distance:-1,bearing:state.robot.heading});
+        state.robot.heading = normDeg(best.bearing);
+        moveRobotForward(Math.min(70, Math.max(25, best.distance * 0.32)));
+        syncInputsFromState();
+        addLog(`GSA,ACTION,turn_to=${fmt(state.robot.heading,1)},move_cm=careful`);
+      }
+      state.scanTimer = setTimeout(autoExploreStep, 250);
+    });
+  }
+
+  function moveRobotForward(cm){
+    // Wheel slip: the robot commands `cm` of travel but actual displacement is
+    // reduced, simulating slipping wheels on a slick floor. The robot's internal
+    // odometry (not modeled here) would believe it moved the full `cm`.
+    const slip = state.fault.wheelSlip / 100;
+    const actualCm = cm * (1 - slip);
+    const {dx,dy} = compassVec(state.robot.heading);
+    const steps = Math.max(1, Math.ceil(actualCm / 5));
+    for(let i=0;i<steps;i++){
+      const nx = state.robot.x + dx * (actualCm/steps);
+      const ny = state.robot.y + dy * (actualCm/steps);
+      if(canPlaceRobot(nx, ny)){
+        state.robot.x = nx;
+        state.robot.y = ny;
+      } else {
+        addLog("GSA,ACTION,blocked=true");
+        break;
+      }
+    }
+    if(slip > 0){
+      addLog(`GSA,STATUS,wheel_slip_pct=${fmt(state.fault.wheelSlip,0)},commanded_cm=${fmt(cm,1)},actual_cm=${fmt(actualCm,1)}`);
+    }
+    drawAll();
+    updateMetrics();
+  }
+
+  function canPlaceRobot(x,y){
+    const margin = 16;
+    if(x < margin || y < margin || x > state.room.w-margin || y > state.room.h-margin) return false;
+    for(const r of state.obstacles){
+      if(x >= r.x-margin && x <= r.x+r.w+margin && y >= r.y-margin && y <= r.y+r.h+margin) return false;
+    }
+    return true;
+  }
+
+  function updateTable(){
+    const rows = state.points.slice(-600).reverse().map((p, idx) => {
+      const n = state.points.length - idx;
+      return `<tr>
+        <td>${n}</td><td>${p.source || "?"}</td><td>${fmt(p.rel,1)}</td><td>${fmt(p.bearing,1)}</td>
+        <td>${fmt(p.distance,1)}</td><td>${fmt(p.x,1)}</td><td>${fmt(p.y,1)}</td>
+        <td>${p.samples}</td><td>${fmt(p.quality,0)}</td><td>${p.t}</td>
+      </tr>`;
+    }).join("");
+    els.dataBody.innerHTML = rows;
+  }
+
+  function updateMetrics(){
+    $("mRobotX").textContent = fmt(state.robot.x,1) + " cm";
+    $("mRobotY").textContent = fmt(state.robot.y,1) + " cm";
+    $("mHeading").textContent = fmt(normDeg(state.robot.heading),1) + "°";
+    $("mPoints").textContent = state.points.length;
+    $("mTransport").textContent = state.transport;
+    if(state.last){
+      $("mBearing").textContent = fmt(state.last.bearing,1) + "°";
+      $("mDist").textContent = fmt(state.last.distance,1) + " cm";
+      $("mQuality").textContent = fmt(state.last.quality,0);
+      $("rangeBar").style.width = clamp(state.last.distance / Number($("maxRange").value) * 100, 0, 100) + "%";
+      $("qualityBar").style.width = clamp(state.last.quality, 0, 100) + "%";
+    } else {
+      $("mBearing").textContent = "—";
+      $("mDist").textContent = "—";
+      $("mQuality").textContent = "—";
+      $("rangeBar").style.width = "0%";
+      $("qualityBar").style.width = "0%";
+    }
+    const density = clamp(state.points.length / 360 * 100, 0, 100);
+    $("densityBar").style.width = density + "%";
+
+    const valid = state.points.slice(-360).filter(p => p.quality > 20);
+    if(valid.length){
+      const nearest = valid.reduce((a,p)=>p.distance<a.distance?p:a,{distance:Infinity});
+      const farthest = valid.reduce((a,p)=>p.distance>a.distance?p:a,{distance:-Infinity});
+      $("mNearest").textContent = fmt(nearest.distance,1) + " cm @ " + fmt(nearest.bearing,0) + "°";
+      $("mFarthest").textContent = fmt(farthest.distance,1) + " cm @ " + fmt(farthest.bearing,0) + "°";
+    } else {
+      $("mNearest").textContent = "—";
+      $("mFarthest").textContent = "—";
+    }
+
+    updateObstacleList();
+  }
+
+  function updateObstacleList(){
+    if(!state.obstacles.length){
+      $("obstacleList").textContent = "No obstacles.";
+      return;
+    }
+    $("obstacleList").innerHTML = state.obstacles.map((r,i) =>
+      `<div>#${i+1}: x=${fmt(r.x,0)}, y=${fmt(r.y,0)}, w=${fmt(r.w,0)}, h=${fmt(r.h,0)} cm</div>`
+    ).join("");
+  }
+
+  function drawAll(){
+    resizeCanvas(els.arena);
+    resizeCanvas(els.polar);
+    resizeCanvas(els.mini);
+    drawArena(ctx, els.arena, true);
+    drawPolar();
+    drawArena(mctx, els.mini, false);
+  }
+
+  function drawArena(c, canvas, labels){
+    c.clearRect(0,0,canvas.width,canvas.height);
+    const {s,ox,oy} = roomScale(canvas);
+    c.save();
+    c.fillStyle = "#081018";
+    c.fillRect(0,0,canvas.width,canvas.height);
+
+    // Room.
+    c.fillStyle = "#0d1620";
+    c.fillRect(ox, oy, state.room.w*s, state.room.h*s);
+    c.strokeStyle = "#8db1d4";
+    c.lineWidth = 2;
+    c.strokeRect(ox, oy, state.room.w*s, state.room.h*s);
+
+    // Grid.
+    if(state.showGrid){
+      const grid = 50;
+      c.strokeStyle = "rgba(100,140,170,.23)";
+      c.lineWidth = 1;
+      for(let x=0;x<=state.room.w;x+=grid){
+        const a=worldToCanvas(x,0,canvas), b=worldToCanvas(x,state.room.h,canvas);
+        c.beginPath(); c.moveTo(a.x,a.y); c.lineTo(b.x,b.y); c.stroke();
+      }
+      for(let y=0;y<=state.room.h;y+=grid){
+        const a=worldToCanvas(0,y,canvas), b=worldToCanvas(state.room.w,y,canvas);
+        c.beginPath(); c.moveTo(a.x,a.y); c.lineTo(b.x,b.y); c.stroke();
+      }
+    }
+
+    // Obstacles.
+    c.fillStyle = "#7a4655";
+    c.strokeStyle = "#d88a9f";
+    c.lineWidth = 1.5;
+    for(const r of state.obstacles){
+      const tl = worldToCanvas(r.x, r.y+r.h, canvas);
+      c.fillRect(tl.x, tl.y, r.w*s, r.h*s);
+      c.strokeRect(tl.x, tl.y, r.w*s, r.h*s);
+    }
+
+    // Preview obstacle.
+    if(state.previewRect){
+      const r = state.previewRect;
+      const tl = worldToCanvas(r.x, r.y+r.h, canvas);
+      c.fillStyle = "rgba(255,209,102,.18)";
+      c.strokeStyle = "#ffd166";
+      c.setLineDash([6,5]);
+      c.fillRect(tl.x, tl.y, r.w*s, r.h*s);
+      c.strokeRect(tl.x, tl.y, r.w*s, r.h*s);
+      c.setLineDash([]);
+    }
+
+    // Scan rays and points.
+    if(state.showRays){
+      c.strokeStyle = "rgba(117,218,255,.18)";
+      c.lineWidth = 1;
+      const rp = worldToCanvas(state.robot.x, state.robot.y, canvas);
+      for(const p of state.points.slice(-360)){
+        const hp = worldToCanvas(p.x,p.y,canvas);
+        c.beginPath(); c.moveTo(rp.x,rp.y); c.lineTo(hp.x,hp.y); c.stroke();
+      }
+    }
+
+    for(const p of state.points.slice(-1200)){
+      const hp = worldToCanvas(p.x,p.y,canvas);
+      c.fillStyle = p.quality < 35 ? "#ff6b6b" : "#f8f871";
+      c.beginPath();
+      c.arc(hp.x, hp.y, Math.max(1.6, 2.4*s), 0, Math.PI*2);
+      c.fill();
+    }
+
+    // Replayed (measured) points from a loaded CSV, drawn distinctly so they
+    // can be compared against the current room/obstacle "truth" layout.
+    if(state.replayPoints && state.replayPoints.length){
+      c.fillStyle = "#8be9fd";
+      for(const p of state.replayPoints.slice(-1200)){
+        const hp = worldToCanvas(p.x,p.y,canvas);
+        c.beginPath();
+        c.arc(hp.x, hp.y, Math.max(1.6, 2.2*s), 0, Math.PI*2);
+        c.fill();
+      }
+    }
+
+    // Robot.
+    const rp = worldToCanvas(state.robot.x, state.robot.y, canvas);
+    const robotR = Math.max(8, 16*s);
+    c.fillStyle = "#b8f7ff";
+    c.strokeStyle = "#ffffff";
+    c.lineWidth = 2;
+    c.beginPath();
+    c.arc(rp.x,rp.y,robotR,0,Math.PI*2);
+    c.fill(); c.stroke();
+
+    // Heading arrow.
+    const hv = compassVec(state.robot.heading);
+    c.strokeStyle = "#ffffff";
+    c.lineWidth = 3;
+    c.beginPath();
+    c.moveTo(rp.x,rp.y);
+    c.lineTo(rp.x + hv.dx*robotR*1.8, rp.y - hv.dy*robotR*1.8);
+    c.stroke();
+
+    // North arrow.
+    c.strokeStyle = "#ffb86b";
+    c.fillStyle = "#ffb86b";
+    c.lineWidth = 3;
+    c.beginPath();
+    c.moveTo(rp.x + robotR*2.1, rp.y + robotR*1.4);
+    c.lineTo(rp.x + robotR*2.1, rp.y - robotR*1.4);
+    c.stroke();
+    c.beginPath();
+    c.moveTo(rp.x + robotR*2.1, rp.y - robotR*1.7);
+    c.lineTo(rp.x + robotR*1.75, rp.y - robotR*1.15);
+    c.lineTo(rp.x + robotR*2.45, rp.y - robotR*1.15);
+    c.closePath(); c.fill();
+
+    if(labels){
+      c.fillStyle = "#dbe9ff";
+      c.font = `${12*(window.devicePixelRatio||1)}px system-ui`;
+      c.fillText(`N`, rp.x + robotR*2.45, rp.y - robotR*1.2);
+      c.fillText(`heading ${fmt(state.robot.heading,0)}°`, rp.x + robotR + 5, rp.y + robotR + 15);
+      c.fillStyle = "#9eacc3";
+      c.fillText(`${state.room.w} × ${state.room.h} cm`, ox + 8, oy + state.room.h*s - 8);
+    }
+
+    c.restore();
+  }
+
+  function drawPolar(){
+    const c = pctx, canvas = els.polar;
+    c.clearRect(0,0,canvas.width,canvas.height);
+    const w = canvas.width, h = canvas.height;
+    const cx = w/2, cy = h/2;
+    const rmax = Math.min(w,h)*0.42;
+    const maxRange = Number($("maxRange").value || 450);
+    c.fillStyle = "#080c11"; c.fillRect(0,0,w,h);
+    c.strokeStyle = "rgba(141,177,212,.35)";
+    c.lineWidth = 1;
+    for(let i=1;i<=4;i++){
+      c.beginPath(); c.arc(cx,cy,rmax*i/4,0,Math.PI*2); c.stroke();
+    }
+    for(let d=0; d<360; d+=30){
+      const v=compassVec(d);
+      c.beginPath(); c.moveTo(cx,cy); c.lineTo(cx+v.dx*rmax, cy-v.dy*rmax); c.stroke();
+    }
+    c.fillStyle = "#ffb86b";
+    c.font = `${12*(window.devicePixelRatio||1)}px system-ui`;
+    c.fillText("N", cx-4, cy-rmax-8);
+    c.fillText("E", cx+rmax+8, cy+4);
+    c.fillText("S", cx-4, cy+rmax+16);
+    c.fillText("W", cx-rmax-18, cy+4);
+
+    const recent = state.points.slice(-720);
+    c.strokeStyle = "#f8f871";
+    c.lineWidth = 2;
+    c.beginPath();
+    let started = false;
+    for(const p of recent){
+      const rr = clamp(p.distance / maxRange, 0, 1) * rmax;
+      const v = compassVec(p.bearing);
+      const x = cx + v.dx * rr;
+      const y = cy - v.dy * rr;
+      if(!started){ c.moveTo(x,y); started=true; }
+      else c.lineTo(x,y);
+    }
+    if(started) c.stroke();
+
+    for(const p of recent.slice(-220)){
+      const rr = clamp(p.distance / maxRange, 0, 1) * rmax;
+      const v = compassVec(p.bearing);
+      c.fillStyle = p.quality < 35 ? "#ff6b6b" : "#f8f871";
+      c.beginPath(); c.arc(cx+v.dx*rr, cy-v.dy*rr, 2.5*(window.devicePixelRatio||1),0,Math.PI*2); c.fill();
+    }
+
+    // robot heading
+    const hv=compassVec(state.robot.heading);
+    c.strokeStyle="#b8f7ff"; c.lineWidth=3;
+    c.beginPath(); c.moveTo(cx,cy); c.lineTo(cx+hv.dx*rmax*.92, cy-hv.dy*rmax*.92); c.stroke();
+  }
+
+  function setMode(mode){
+    state.mode = mode;
+    for(const btn of document.querySelectorAll(".modeBtns button")) btn.classList.remove("active");
+    const ids = {select:"modeSelectBtn", robot:"modeRobotBtn", rect:"modeRectBtn", erase:"modeEraseBtn"};
+    $(ids[mode]).classList.add("active");
+    const labels = {select:"Inspect", robot:"Place robot", rect:"Draw obstacle", erase:"Erase"};
+    els.modeBadge.textContent = "Mode: " + labels[mode];
+    setFooter("Mode: " + labels[mode]);
+  }
+
+  function syncFaultInputs(){
+    $("faultAngleJitter").value = state.fault.angleJitter;
+    $("faultHeadingOffset").value = state.fault.headingOffset;
+    $("faultHeadingDrift").value = state.fault.headingDrift;
+    $("faultWheelSlip").value = state.fault.wheelSlip;
+    $("faultConeWidth").value = state.fault.coneWidth;
+  }
+
+  function readFaultInputs(){
+    state.fault.angleJitter = clamp(Number($("faultAngleJitter").value)||0, 0, 45);
+    state.fault.headingOffset = clamp(Number($("faultHeadingOffset").value)||0, -180, 180);
+    state.fault.headingDrift = clamp(Number($("faultHeadingDrift").value)||0, -10, 10);
+    state.fault.wheelSlip = clamp(Number($("faultWheelSlip").value)||0, 0, 90);
+    state.fault.coneWidth = clamp(Number($("faultConeWidth").value)||0, 0, 60);
+  }
+
+  function resetFaults(){
+    state.fault = { angleJitter:0, headingOffset:0, headingDrift:0, wheelSlip:0, coneWidth:0 };
+    state.driftAccum = 0;
+    syncFaultInputs();
+    setFooter("Faults reset to zero.");
+  }
+
+  // The reported heading is what the robot "thinks" its heading is, including
+  // calibration offset and accumulated drift. The true heading (state.robot.heading)
+  // is used for actual geometry/ray casting, so faults distort the *map* without
+  // changing the *room*.
+  function reportedHeading(){
+    return normDeg(state.robot.heading + state.fault.headingOffset + state.driftAccum);
+  }
+
+  function syncInputsFromState(){
+    $("roomW").value = Math.round(state.room.w);
+    $("roomH").value = Math.round(state.room.h);
+    $("robotX").value = Math.round(state.robot.x);
+    $("robotY").value = Math.round(state.robot.y);
+    $("robotHeading").value = Math.round(normDeg(state.robot.heading));
+    drawAll();
+    updateMetrics();
+  }
+
+  function applyRoom(){
+    state.room.w = clamp(Number($("roomW").value || 600), 100, 2000);
+    state.room.h = clamp(Number($("roomH").value || 420), 100, 2000);
+    state.robot.x = clamp(state.robot.x, 20, state.room.w-20);
+    state.robot.y = clamp(state.robot.y, 20, state.room.h-20);
+    state.obstacles = state.obstacles.filter(r => r.x < state.room.w && r.y < state.room.h);
+    syncInputsFromState();
+  }
+
+  function applyPose(){
+    state.robot.x = clamp(Number($("robotX").value || state.robot.x), 0, state.room.w);
+    state.robot.y = clamp(Number($("robotY").value || state.robot.y), 0, state.room.h);
+    state.robot.heading = normDeg(Number($("robotHeading").value || state.robot.heading));
+    syncInputsFromState();
+  }
+
+  function presetClassroom(){
+    stopScan();
+    state.room = {w: 760, h: 520};
+    state.robot = {x: 380, y: 260, heading: 0};
+    state.obstacles = [
+      {x:80,y:80,w:120,h:70}, {x:270,y:80,w:120,h:70}, {x:460,y:80,w:120,h:70},
+      {x:80,y:240,w:120,h:70}, {x:270,y:240,w:120,h:70}, {x:460,y:240,w:120,h:70},
+      {x:620,y:360,w:70,h:110}
+    ];
+    clearScan();
+    syncInputsFromState();
+    setFooter("Loaded classroom preset.");
+  }
+
+  function presetKitchen(){
+    stopScan();
+    state.room = {w: 620, h: 430};
+    state.robot = {x: 200, y: 185, heading: 0};
+    state.obstacles = [
+      {x:0,y:330,w:210,h:100},      // counter
+      {x:410,y:330,w:210,h:100},    // counter
+      {x:0,y:0,w:150,h:90},         // appliance block
+      {x:500,y:0,w:120,h:160},      // refrigerator-ish block
+      {x:245,y:160,w:125,h:85}      // island
+    ];
+    clearScan();
+    syncInputsFromState();
+    setFooter("Loaded kitchen-lab obstacle preset.");
+  }
+
+  function presetEmpty(){
+    stopScan();
+    state.room = {w: 600, h: 420};
+    state.robot = {x: 300, y: 210, heading: 0};
+    state.obstacles = [];
+    clearScan();
+    syncInputsFromState();
+    setFooter("Loaded empty room.");
+  }
+
+  // --- Replay / CSV import -------------------------------------------------
+  // Parses the same CSV format produced by exportCSV:
+  // index,source,relative_deg,bearing_deg,distance_cm,x_cm,y_cm,samples,quality,t_ms
+  function loadReplayFile(file){
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const text = reader.result;
+        const lines = text.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+        if(!lines.length) throw new Error("empty file");
+        let start = 0;
+        // Skip header row if present (first field is non-numeric, e.g. "index").
+        if(lines[0].split(",")[0].toLowerCase() === "index") start = 1;
+        const points = [];
+        for(let i=start;i<lines.length;i++){
+          const c = lines[i].split(",");
+          if(c.length < 10) continue;
+          points.push({
+            source: c[1],
+            rel: Number(c[2]),
+            bearing: Number(c[3]),
+            distance: Number(c[4]),
+            x: Number(c[5]),
+            y: Number(c[6]),
+            samples: Number(c[7]),
+            quality: Number(c[8]),
+            t: Number(c[9])
+          });
+        }
+        if(!points.length) throw new Error("no valid scan rows found");
+        replayStop();
+        state.replay.points = points;
+        state.replay.index = 0;
+        state.replayPoints = []; // currently-displayed overlay points
+        $("replayInfo").textContent = `Loaded ${points.length} points from ${file.name}.`;
+        $("replayPos").max = points.length;
+        $("replayPos").value = 0;
+        updateReplayLabels();
+        for(const id of ["replayPlayBtn","replayPauseBtn","replayStepBtn","replayResetBtn","replayClearBtn"]){
+          $(id).disabled = false;
+        }
+        $("replayPauseBtn").disabled = true;
+        setFooter(`Replay CSV loaded: ${points.length} points.`);
+        drawAll();
+      }catch(e){
+        $("replayInfo").textContent = "Failed to load CSV: " + (e && e.message ? e.message : String(e));
+        setFooter("Replay CSV load failed.");
+      }
+    };
+    reader.onerror = () => { $("replayInfo").textContent = "Could not read file."; };
+    reader.readAsText(file);
+  }
+
+  function updateReplayLabels(){
+    const total = state.replay.points.length;
+    const idx = Math.min(state.replay.index, total);
+    $("replayPosLabel").textContent = `${idx} / ${total}`;
+    $("replayPos").value = idx;
+  }
+
+  function replayStep(){
+    const rp = state.replay;
+    if(rp.index >= rp.points.length){
+      replayPause();
+      return;
+    }
+    const p = rp.points[rp.index];
+    state.replayPoints.push(p);
+    if(state.replayPoints.length > 4000) state.replayPoints.shift();
+    rp.index++;
+    updateReplayLabels();
+    drawAll();
+    if(rp.index >= rp.points.length) replayPause();
+  }
+
+  function replayPlay(){
+    const rp = state.replay;
+    if(!rp.points.length || rp.playing) return;
+    rp.playing = true;
+    $("replayPlayBtn").disabled = true;
+    $("replayPauseBtn").disabled = false;
+    const intervalMs = Math.max(1000/60, 1000 / rp.speed);
+    rp.timer = setInterval(() => {
+      if(!rp.playing) return;
+      replayStep();
+      if(rp.index >= rp.points.length) replayPause();
+    }, intervalMs);
+  }
+
+  function replayPause(){
+    const rp = state.replay;
+    rp.playing = false;
+    if(rp.timer) clearInterval(rp.timer);
+    rp.timer = null;
+    if(state.replay.points.length){
+      $("replayPlayBtn").disabled = false;
+      $("replayPauseBtn").disabled = true;
+    }
+  }
+
+  function replayStop(){
+    const rp = state.replay;
+    rp.playing = false;
+    if(rp.timer) clearInterval(rp.timer);
+    rp.timer = null;
+  }
+
+  function replayReset(){
+    replayStop();
+    state.replay.index = 0;
+    state.replayPoints = [];
+    updateReplayLabels();
+    $("replayPlayBtn").disabled = state.replay.points.length === 0;
+    $("replayPauseBtn").disabled = true;
+    drawAll();
+  }
+
+  function replayClearOverlay(){
+    state.replayPoints = [];
+    drawAll();
+  }
+
+  function replaySeek(idx){
+    const rp = state.replay;
+    replayStop();
+    idx = clamp(Math.round(idx), 0, rp.points.length);
+    rp.index = idx;
+    state.replayPoints = rp.points.slice(0, idx);
+    updateReplayLabels();
+    $("replayPlayBtn").disabled = rp.points.length === 0;
+    $("replayPauseBtn").disabled = true;
+    drawAll();
+  }
+
+  function saveScenario(){
+    // A scenario is the editable arena setup: room size, robot pose, and obstacles.
+    // It does not include scan history (that's what CSV export / sessions are for).
+    const scenario = {
+      kind: "lazy-lidar-scenario",
+      version: 1,
+      room: state.room,
+      robot: state.robot,
+      obstacles: state.obstacles,
+      fault: state.fault
+    };
+    const blob = new Blob([JSON.stringify(scenario, null, 2)], {type:"application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `lazy-lidar-scenario-${new Date().toISOString().replace(/[:.]/g,"-")}.json`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    setFooter("Scenario saved as JSON.");
+  }
+
+  function loadScenarioFile(file){
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const data = JSON.parse(reader.result);
+        if(!data || typeof data !== "object") throw new Error("not an object");
+        stopScan();
+        if(data.room) state.room = {
+          w: clamp(Number(data.room.w)||600, 100, 2000),
+          h: clamp(Number(data.room.h)||420, 100, 2000)
+        };
+        if(data.robot) state.robot = {
+          x: Number(data.robot.x)||0,
+          y: Number(data.robot.y)||0,
+          heading: normDeg(Number(data.robot.heading)||0)
+        };
+        if(Array.isArray(data.obstacles)){
+          state.obstacles = data.obstacles
+            .filter(r => r && Number.isFinite(r.x) && Number.isFinite(r.y) && Number.isFinite(r.w) && Number.isFinite(r.h))
+            .map(r => ({x:r.x, y:r.y, w:r.w, h:r.h}));
+        }
+        if(data.fault){
+          state.fault = Object.assign({}, state.fault, data.fault);
+          syncFaultInputs();
+        }
+        applyRoom(); // re-clamps robot/obstacles to room bounds
+        clearScan();
+        syncInputsFromState();
+        setFooter("Scenario loaded from JSON.");
+        addLog("GSA,STATUS,scenario_loaded=true");
+      }catch(e){
+        setFooter("Failed to load scenario JSON: " + (e && e.message ? e.message : String(e)));
+        addLog("GSA,ERROR,scenario_load_failed");
+      }
+    };
+    reader.onerror = () => setFooter("Could not read scenario file.");
+    reader.readAsText(file);
+  }
+
+  function exportCSV(){
+    const header = "index,source,relative_deg,bearing_deg,distance_cm,x_cm,y_cm,samples,quality,t_ms\n";
+    const body = state.points.map((p,i)=>[
+      i+1,p.source,p.rel,p.bearing,p.distance,p.x,p.y,p.samples,p.quality,p.t
+    ].join(",")).join("\n");
+    const blob = new Blob([header+body+"\n"], {type:"text/csv"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `lazy-lidar-simulated-scan-${new Date().toISOString().replace(/[:.]/g,"-")}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  }
+
+  async function copyLog(){
+    const text = state.lines.join("\n");
+    try{
+      await navigator.clipboard.writeText(text);
+      setFooter("Log copied to clipboard.");
+    }catch(e){
+      setFooter("Clipboard copy failed; select terminal text manually.");
+    }
+  }
+
+  function sendCommand(text){
+    const lines = text.split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
+    for(const line of lines){
+      addLog("TX " + line);
+      handleSimCommand(line);
+    }
+  }
+
+  function handleSimCommand(line){
+    const p = line.split(",").map(s=>s.trim().toUpperCase());
+    if(p[0] === "STATUS"){
+      addLog(`GSA,STATUS,transport=VirtualUART,x=${fmt(state.robot.x,1)},y=${fmt(state.robot.y,1)},heading=${fmt(state.robot.heading,1)},points=${state.points.length}`);
+    } else if(p[0] === "SCAN"){
+      if(p[1] === "FRONT") startScan("front");
+      else startScan("full");
+    } else if(p[0] === "STOP"){
+      stopScan();
+      addLog("GSA,STATUS,stopped=true");
+    } else if(p[0] === "CLEAR"){
+      clearScan();
+      addLog("GSA,STATUS,cleared=true");
+    } else {
+      addLog("GSA,ERROR,unknown_command=" + line.replaceAll(",", ";"));
+    }
+  }
+
+  function pointerWorld(ev, canvas=els.arena){
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    return canvasToWorld((ev.clientX-rect.left)*dpr, (ev.clientY-rect.top)*dpr, canvas);
+  }
+
+  els.arena.addEventListener("mousedown", ev => {
+    const p = pointerWorld(ev);
+    if(p.x < 0 || p.y < 0 || p.x > state.room.w || p.y > state.room.h) return;
+    if(state.mode === "robot"){
+      state.robot.x = clamp(p.x,0,state.room.w);
+      state.robot.y = clamp(p.y,0,state.room.h);
+      syncInputsFromState();
+    } else if(state.mode === "rect"){
+      state.drag = {x0:p.x,y0:p.y};
+      state.previewRect = {x:p.x,y:p.y,w:0,h:0};
+    } else if(state.mode === "erase"){
+      const idx = obstacleAt(p.x,p.y);
+      if(idx >= 0){
+        state.obstacles.splice(idx,1);
+        drawAll(); updateMetrics();
+      }
+    }
+  });
+
+  window.addEventListener("mousemove", ev => {
+    if(!state.drag) return;
+    const p = pointerWorld(ev);
+    const x1 = clamp(p.x,0,state.room.w), y1 = clamp(p.y,0,state.room.h);
+    const x0 = state.drag.x0, y0 = state.drag.y0;
+    state.previewRect = {
+      x: Math.min(x0,x1), y: Math.min(y0,y1),
+      w: Math.abs(x1-x0), h: Math.abs(y1-y0)
+    };
+    drawAll();
+  });
+
+  window.addEventListener("mouseup", () => {
+    if(state.drag && state.previewRect){
+      const r = state.previewRect;
+      if(r.w > 8 && r.h > 8) state.obstacles.push(r);
+      state.drag = null;
+      state.previewRect = null;
+      drawAll(); updateMetrics();
+    }
+  });
+
+  function bindUI(){
+    document.querySelectorAll(".tab").forEach(btn=>{
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(b=>{ b.classList.remove("active"); b.setAttribute("aria-pressed", "false"); });
+        document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+        btn.classList.add("active");
+        btn.setAttribute("aria-pressed", "true");
+        $(btn.dataset.tab).classList.add("active");
+        setTimeout(drawAll, 30);
+      });
+    });
+
+    $("scan360Btn").onclick = () => startScan("full");
+    $("scanFrontBtn").onclick = () => startScan("front");
+    $("stopBtn").onclick = () => stopScan();
+    $("clearScanBtn").onclick = clearScan;
+    $("exportCsvBtn").onclick = exportCSV;
+    $("copyLogBtn").onclick = copyLog;
+    $("applyRoomBtn").onclick = applyRoom;
+    $("saveScenarioBtn").onclick = saveScenario;
+    $("loadScenarioBtn").onclick = () => $("scenarioFileInput").click();
+    $("scenarioFileInput").onchange = ev => {
+      const f = ev.target.files && ev.target.files[0];
+      if(f) loadScenarioFile(f);
+      ev.target.value = "";
+    };
+    $("presetClassBtn").onclick = presetClassroom;
+    $("presetKitchenBtn").onclick = presetKitchen;
+    $("presetEmptyBtn").onclick = presetEmpty;
+    $("clearObsBtn").onclick = () => { state.obstacles=[]; drawAll(); updateMetrics(); };
+    $("centerRobotBtn").onclick = () => { state.robot.x=state.room.w/2; state.robot.y=state.room.h/2; syncInputsFromState(); };
+    $("applyPoseBtn").onclick = applyPose;
+    $("turnLeftBtn").onclick = () => { state.robot.heading = normDeg(state.robot.heading - 15); syncInputsFromState(); };
+    $("turnRightBtn").onclick = () => { state.robot.heading = normDeg(state.robot.heading + 15); syncInputsFromState(); };
+
+    $("modeSelectBtn").onclick = () => setMode("select");
+    $("modeRobotBtn").onclick = () => setMode("robot");
+    $("modeRectBtn").onclick = () => setMode("rect");
+    $("modeEraseBtn").onclick = () => setMode("erase");
+
+    $("showRays").onchange = ev => { state.showRays = ev.target.checked; drawAll(); };
+    $("showGrid").onchange = ev => { state.showGrid = ev.target.checked; drawAll(); };
+
+    for(const id of ["faultAngleJitter","faultHeadingOffset","faultHeadingDrift","faultWheelSlip","faultConeWidth"]){
+      $(id).onchange = readFaultInputs;
+    }
+    $("resetFaultsBtn").onclick = resetFaults;
+
+    $("loadReplayBtn").onclick = () => $("replayFileInput").click();
+    $("replayFileInput").onchange = ev => {
+      const f = ev.target.files && ev.target.files[0];
+      if(f) loadReplayFile(f);
+      ev.target.value = "";
+    };
+    $("replayPlayBtn").onclick = replayPlay;
+    $("replayPauseBtn").onclick = replayPause;
+    $("replayStepBtn").onclick = () => { replayPause(); replayStep(); };
+    $("replayResetBtn").onclick = replayReset;
+    $("replayClearBtn").onclick = replayClearOverlay;
+    $("replaySpeed").oninput = ev => {
+      state.replay.speed = Number(ev.target.value);
+      $("replaySpeedLabel").textContent = state.replay.speed + "/s";
+      if(state.replay.playing){ replayPause(); replayPlay(); }
+    };
+    $("replayPos").oninput = ev => replaySeek(Number(ev.target.value));
+
+    $("sendCmdBtn").onclick = () => sendCommand($("cmdText").value);
+    $("statusCmdBtn").onclick = () => sendCommand("STATUS");
+    $("clearLogBtn").onclick = () => { state.lines=[]; els.terminal.textContent=""; };
+
+    $("autoExploreBtn").onclick = () => {
+      if(state.autoExplore){
+        stopScan();
+      } else {
+        state.autoExplore = true;
+        setFooter("Auto explore started.");
+        autoExploreStep();
+      }
+    };
+
+    window.addEventListener("resize", drawAll);
+  }
+
+  function boot(){
+    bindUI();
+    presetKitchen();
+    addLog("GSA,HELLO,device=LazyLiDAR,role=VirtualRobot");
+    addLog("GSA,STATUS,mode=virtual_appliance,ready=true");
+    syncInputsFromState();
+    syncFaultInputs();
+    setMode("select");
+    drawAll();
+    updateMetrics();
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>

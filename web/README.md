@@ -1,6 +1,6 @@
 # Project Atlas on the web
 
-The sixteen generated static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. Water Clock and TeaTime also include standalone interactive models.
+The seventeen generated static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. Water Clock, TeaTime, and Lazy LiDAR also include standalone interactive models.
 
 The Idea Index and Project Inventory are rendered from the canonical Markdown at the root of this repository. Their off-GitHub sections are deliberately omitted from the rendered site. The full repository browser uses a snapshot of GitHub's public listing, distinguishes forks, and adds historical project homes from the legacy map. Only the generated `web/atlas/` directory belongs in the Nginx web root.
 
@@ -107,7 +107,7 @@ Browse `http://127.0.0.1:8000/atlas/`. To include calculus in the local link che
 
 - **Sphericity.** Original *Invent a Sphericity Meter* (Randall Young, CORE 10, November 2026), 11 pages, preserved byte-for-byte. SHA-256 `1c057f669f1a450c54f88d97c625e3256abe663cbc7f5cae5909ba7fa2507b32`. The two WebP illustrations are extracted from pages 1 and 3 and were generated illustrations in the source. The proposed lesson, ideal benchmarks, and published evidence are labeled separately. The latter was checked against Domokos et al. (2014), File S1, sheet `exp_4LA`, rows 7 and 25. The guide provides the Lesh et al. attribution and the planned classroom pilot, not completed pilot results.
 - **Fair Fitness.** Android walkthrough source is the [dated Kotlin prototype record](https://github.com/RandoSY/measured-human-performance/blob/bc659faf867e4f95c93b6af44358dfdec8441d0b/fft/android-prototype/README_20260823.md). The micro:bit R2.1 record is a separate reference. The graphic is an exhibit schematic; the two prescription outputs are model examples, not test results. The November milestone is author-reported readiness to submit. An exact-title public Google Play listing and a recording of that submission build were not verified on 18 November 2026. No new participant data, hardware validation, or clinical claim is published.
-- **Overview.** CORE 10 and CORE 12 descriptions follow their public repository records, supplemented by Young’s curriculum framing for 3FE. No verified standalone resource for Learning Fields was recovered. Public ROBOT_EDU lineage is linked to the maintained robotics guide rather than the empty legacy repository. Lazy LiDAR is linked to the existing canonical design note; no finished exhibit is claimed. For LINC/PDP-12 history the exhibit links to museum records, while the modern LAB-12 interpretation is linked to the documented v1.2 source. Protected material stays out of the generated edition.
+- **Overview.** CORE 10 and CORE 12 descriptions follow their public repository records, supplemented by Young’s curriculum framing for 3FE. No verified standalone resource for Learning Fields was recovered. Public ROBOT_EDU lineage is linked to the maintained robotics guide rather than the empty legacy repository. At the time of that edition, Lazy LiDAR was linked to the existing canonical design note. See the exhibit update below. For LINC/PDP-12 history the exhibit links to museum records, while the modern LAB-12 interpretation is linked to the documented v1.2 source. Protected material stays out of the generated edition.
 
 ### Edition verification · 18 November 2026
 
@@ -119,3 +119,14 @@ Browse `http://127.0.0.1:8000/atlas/`. To include calculus in the local link che
 ### Android FFT prototype captures · 18 November 2026
 
 The two 720 × 1612 PNGs in `atlas/fair-fitness-testing/media/` are the RGB images embedded on page 2 of `August_23_2026_Dual_Instrument_Codebase_Review.pdf`, extracted without retouching or resizing. The 23 August captures show a completed, phone-motion trial and a separate foreground-exit stop. Page 7 of `FFT_Report_to_Dr_Richard_Lesh_2026-08-24.pdf` identifies the completed trial's Bluetooth HR source as a GATT simulator. Neither source establishes what the current submission build looks like. Only the two app captures are included, not the source reports. Edit `fair-fitness-testing.html`, rebuild with `python3 web/build_atlas.py`, and verify the two full-size links on the exhibit.
+
+## Lazy LiDAR · 18 November 2026
+
+Edit `lazy-lidar.html` and rebuild with `python3 web/build_atlas.py`. The exhibit uses two full-frame WebP copies from `Dashboard_Console_Screencaps_2026-08-22.zip`:
+
+- `lazy_lidar_dashboard_exhibit_latest.png` is the virtual lab idle at zero scan points.
+- `cutebot_patient_lidar_ble_dashboard_tabs.png` is the hardware-facing console showing a disconnected demo sweep, not a robot measurement.
+
+The public `atlas/lazy-lidar/model.html` is adapted from `lazy_lidar_dashboard_exhibit_latest.html` and its June 12 v0.4-review release, retaining the room model, virtual scans, data table, CSV export/replay, and Fault Lab. Atlas removed Web Bluetooth and outbound hardware commands, clarified data labels, improved keyboard labels and focus indicators, moved the Kitchen starting pose outside the island, and fixed the virtual Auto Explore toggle being cleared at the start of each scan. The guide and executive summary describe the ultrasonic CuteBot design. No physical scan or apparatus photo paired with these screens was verified. The student challenge and bench extension are proposed activities.
+
+The public archive inventory and its September control date are unchanged.

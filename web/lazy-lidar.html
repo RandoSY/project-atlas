@@ -1,0 +1,73 @@
+<p class="work-deck lidar-deck"><strong>Can a cheap range sensor map a corner if you give it enough good observations?</strong> A single echo tells you how far away something is. Add a bearing and a known starting position, and that echo becomes a point on a map. The trick is knowing which part of the map to trust.</p>
+
+<div class="lidar-open">
+  <div>
+    <p class="atlas-kicker">Try it · No robot required</p>
+    <h2>Scan a room twice. Change one thing.</h2>
+    <p>In the virtual lab, map the kitchen with a correctly aligned heading. Then introduce a heading error and see what happens to the same walls.</p>
+    <p><a class="work-button" href="model.html">Open the Virtual Robot Lab</a></p>
+    <p class="lidar-small">Browser simulation · No Bluetooth or robot control</p>
+  </div>
+  <a class="lidar-open-image" href="media/virtual-lab.webp"><img src="media/virtual-lab.webp" width="1680" height="1142" alt="Archived Virtual Robot Lab before a scan, with range controls beside a gridded kitchen and its obstacles"></a>
+</div>
+
+<nav class="work-jump" aria-label="On this page">
+  <a href="#try">Try it</a><a href="#evidence">Inspect the evidence</a><a href="#model">Test the explanation</a><a href="#teach">Teach it</a>
+</nav>
+
+<section class="work-section" aria-labelledby="try">
+  <p class="atlas-kicker">01 · Try it</p>
+  <h2 id="try">Can you tell a noisy wall from a crooked map?</h2>
+  <ol class="work-steps">
+    <li>Load <strong>Kitchen</strong>. In <strong>Sensor Model</strong>, set <strong>Noise ± cm</strong> and <strong>Wall echo loss %</strong> to zero. In <strong>Fault Lab</strong>, click <strong>Reset faults</strong>. Make a prediction about where the dots should land.</li>
+    <li>Run a <strong>Virtual 360° scan</strong>. On <strong>Arena</strong>, compare the scan points with the drawn walls and obstacles. On <strong>Data</strong> you can inspect the bearings and distances, or use <strong>Export CSV</strong> to save a copy.</li>
+    <li>Go back to <strong>Arena</strong>, click <strong>Clear scan</strong>, set <strong>Heading offset °</strong> to <strong>15</strong>, and scan again without moving the robot. Do the dots get fuzzier, or does the pattern shift together? Can you explain why?</li>
+    <li>For a second comparison, reset faults and restore some noise (try ±10 cm). Clear the scan between runs. Compare <strong>1</strong> sample per reading with <strong>7</strong>, keeping the geometry and other settings fixed. Repeat both runs before drawing a conclusion.</li>
+  </ol>
+  <p class="work-note"><strong>What you’re looking at.</strong> The drawn room is the simulator’s known geometry. The plotted points are estimates generated from simulated readings. The exported scan CSV from this lab contains simulated data, not measurements made by a robot.</p>
+</section>
+
+<section class="work-section" aria-labelledby="evidence">
+  <p class="atlas-kicker">02 · Inspect the evidence</p>
+  <h2 id="evidence">Two dashboards, two different jobs</h2>
+  <div class="work-grid lidar-captures">
+    <figure class="work-figure">
+      <a href="media/virtual-lab.webp"><img loading="lazy" decoding="async" src="media/virtual-lab.webp" width="1680" height="1142" alt="Virtual Robot Lab archived capture with zero scan points and Bluetooth disconnected"></a>
+      <figcaption><strong>Virtual Robot Lab · Archived setup.</strong> The room and robot pose are ready, with zero scan points. The browser lab above comes from this interface.</figcaption>
+    </figure>
+    <figure class="work-figure">
+      <a href="media/cutebot-console.webp"><img loading="lazy" decoding="async" src="media/cutebot-console.webp" width="1680" height="1142" alt="CuteBot BLE UART dashboard with a partial polar sweep, marked DEMO and Disconnected"></a>
+      <figcaption><strong>CuteBot BLE UART console · Archived demo.</strong> The polar view plots a partial sweep. The screen reads “DEMO” and “Disconnected.” It shows how the hardware-facing console presents a scan, not a recorded robot run.</figcaption>
+    </figure>
+  </div>
+  <p>These are original dashboard captures, not mockups. No bench photograph or physical scan paired with these captures was verified for this exhibit.</p>
+</section>
+
+<section class="work-section" aria-labelledby="model">
+  <p class="atlas-kicker">03 · Test the explanation</p>
+  <h2 id="model">The map depends on where you think you’re pointing</h2>
+  <dl class="work-directory">
+    <div><dt>Range</dt><dd>The physical design uses an ultrasonic echo, not a scanning laser. Range tells you how far away a reflecting surface appears to be, but not which surface made the echo.</dd></div>
+    <div><dt>Bearing and position</dt><dd>Use the measured range to place a dot along the reported bearing from a known position. If the heading is biased, even a perfectly repeatable range gets plotted in the wrong place.</dd></div>
+    <div><dt>Repeated readings</dt><dd>A median can reduce the effect of an odd reading. It cannot fix a misaligned heading, a wide acoustic beam, or a wrong starting position.</dd></div>
+    <div><dt>A second viewpoint</dt><dd>A corner hidden from one spot may be visible from another. Mark both starting positions in the same coordinate system before comparing scans. This is not simultaneous localization and mapping.</dd></div>
+  </dl>
+  <p>Randall Young’s <em>patient</em> approach makes the measurement process visible. Instead of asking only whether a map looks right, ask whether you know where each point came from and which observations another group could reproduce.</p>
+</section>
+
+<section class="work-section" aria-labelledby="teach">
+  <p class="atlas-kicker">04 · Teach it or build it</p>
+  <h2 id="teach">Give another team enough evidence to place the corner</h2>
+  <p><strong>Student challenge.</strong> Pick two marked positions in a known layout. Agree on a reference direction. Choose a rule for taking and rejecting readings. Hand a second team your sketch, ranges, and bearings without showing them your finished map. Can they place the same corner? Which observation would settle a disagreement?</p>
+  <p><strong>Bench extension · Proposed protocol.</strong> Start with the documented micro:bit v2, CuteBot, and directional ultrasonic ranger design. Keep the robot stationary at each marked pose while taking readings at known headings. Start with a flat target and compare with a tape measure. Record single and repeated ranges, heading, and any missing echo. Move to the second pose only after documenting the first. Compare the two outlines and keep poor readings in the record rather than silently deleting them.</p>
+  <p><strong>Teacher move.</strong> Give groups the same room geometry but different errors to diagnose. Ask them to name the evidence they’d need to distinguish a heading problem from a noisy sensor. This connects to <a href="../instruments/">Virtual Instruments</a>, where calibration and context make a reading meaningful, and to <a href="../singing-rule/">The Singing Rule</a>, where a simple object makes a model visibly testable.</p>
+</section>
+
+<section class="work-section" aria-labelledby="sources">
+  <h2 id="sources">Source trail</h2>
+  <ul>
+    <li><a href="../ideas/#19-lazy--patient-lidar">Atlas idea record</a> and <a href="https://github.com/RandoSY/bargain-bin-robotics/blob/main/IDEAS.md#lazy--patient-lidar">Bargain Bin Robotics design note</a>.</li>
+    <li><em>Lazy LiDAR Dashboard Exhibit</em> v0.4-review, 12 June 2026. The lab here is adapted from the recovered browser release with Bluetooth removed. The two screenshots come from the 22 August 2026 dashboard capture archive.</li>
+  </ul>
+  <p class="lidar-small">Exhibit evidence checked 18 November 2026. The simulation was exercised in the browser. The bench extension is a teaching proposal, not a validation claim.</p>
+</section>

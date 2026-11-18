@@ -1,0 +1,15 @@
+.lidar-deck{font-size:clamp(1.05rem,2.3vw,1.28rem)}
+.lidar-open{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:clamp(.9rem,3vw,1.65rem);align-items:center;padding:clamp(.95rem,3vw,1.45rem);border-radius:.7rem;background:#173837;color:#f1f7ec;border:1px solid #274e45}
+.lidar-open h2,.lidar-open .atlas-kicker{color:#e4efd7}
+.lidar-open h2{font-size:clamp(1.35rem,3.5vw,2rem);line-height:1.14;margin:.32rem 0 .6rem}
+.lidar-open p{margin:.5rem 0}
+.lidar-open a.work-button{color:#142f30;background:#d7ecd4;border-color:#d7ecd4;line-height:1.15}
+.lidar-open a.work-button:hover{background:#fff}
+.lidar-small{font-size:.88rem}
+.lidar-open-image{display:block}
+.lidar-open-image img{width:100%;height:auto;display:block;border-radius:.5rem;border:1px solid #6c8b89;box-sizing:border-box}
+.lidar-captures .work-figure{margin:0;min-width:0}
+.lidar-captures a{display:block}
+.lidar-captures img{border:1px solid #9fb5a9;box-sizing:border-box}
+.lidar-open a:focus-visible,.lidar-captures a:focus-visible{outline:3px solid #b7833a;outline-offset:4px}
+@media(max-width:710px){.lidar-open{grid-template-columns:1fr}.lidar-open-image{max-width:32rem}}
