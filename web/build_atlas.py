@@ -210,6 +210,10 @@ def start_here():
 <div class="sg-guide">
 <p class="sg-intro">{esc(data['intro'])}</p>
 <p><a class="sg-download" href="Project-Atlas-Start-Here.pdf" download>Download the two-page PDF</a> · <a href="../explore/">Explore the Work by interest</a></p>
+<section aria-labelledby="sg-entry">
+<h2 id="sg-entry">Choose your first stop</h2>
+<ol class="sg-routes">{''.join(routes)}</ol>
+</section>
 <aside id="make-it-your-own" class="sg-aside" aria-labelledby="sg-aside-title">
 <h2 id="sg-aside-title">{esc(software['title'])}</h2>
 <p>{esc(software['status'])}</p>
@@ -218,10 +222,6 @@ def start_here():
 <p class="sg-aside-link">{link(software['label'], software['url'])} ·
 {link(software['example']['label'], software['example']['url'])}</p>
 </aside>
-<section aria-labelledby="sg-entry">
-<h2 id="sg-entry">Choose your first stop</h2>
-<ol class="sg-routes">{''.join(routes)}</ol>
-</section>
 <section aria-labelledby="sg-nav">
 <h2 id="sg-nav">Find your way around Atlas</h2>
 <dl class="sg-nav-list">{''.join(places)}</dl>
