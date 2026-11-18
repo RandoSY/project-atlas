@@ -214,7 +214,9 @@ def start_here():
 <h2 id="sg-aside-title">{esc(software['title'])}</h2>
 <p>{esc(software['status'])}</p>
 <p>{esc(software['advice'])}</p>
-<p class="sg-aside-link">{link(software['label'], software['url'])}</p>
+<p>{esc(software['bench_check'])}</p>
+<p class="sg-aside-link">{link(software['label'], software['url'])} ·
+{link(software['example']['label'], software['example']['url'])}</p>
 </aside>
 <section aria-labelledby="sg-entry">
 <h2 id="sg-entry">Choose your first stop</h2>

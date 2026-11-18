@@ -126,7 +126,7 @@ bg(42,398,528,102,"cream","border",radius=7)
 bg(42,407,3,84,"gold",radius=0)
 t(54,408,software["title"],15,"Display")
 end=wrap(54,428,software["status"],504,8.9,11.4,max_lines=2)
-end=wrap(54,end+3,software["advice"],504,8.9,11.4,max_lines=2)
+end=wrap(54,end+3,software["print_advice"],504,8.9,11.4,max_lines=2)
 assert end <= 478
 a(54,480,software["label"],software["url"],8.5)
 t(43,515,"Find your way around Atlas",20,"Display")

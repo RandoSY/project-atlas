@@ -8,7 +8,7 @@ import argparse
 ROOT = Path(__file__).resolve().parent / "atlas"
 EDITION_LINKS = {
     "": {"explore/"},
-    "start-here": {"../explore/", "/atlas/sphericity-meter/", "/atlas/fair-fitness-testing/", "../lazy-lidar/"},
+    "start-here": {"../explore/", "/atlas/sphericity-meter/", "/atlas/fair-fitness-testing/", "../lazy-lidar/", "../cutebot-motion-evidence/#ai-assistance"},
     "exhibits": {"../sphericity-meter/", "../fair-fitness-testing/", "../lazy-lidar/", "../cutebot-motion-evidence/"},
     "inventory": {"../cutebot-motion-evidence/"},
     "explore": {"../sphericity-meter/", "../fair-fitness-testing/", "../core-10/", "../sqm-plus/", "../lazy-lidar/"},

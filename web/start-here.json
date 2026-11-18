@@ -6,7 +6,10 @@
   "software_aside": {
     "title": "Make it your own",
     "status": "A friendly heads-up. Some Atlas software is ready to run, some is a prototype, and some projects are still designs. Find the GitHub repo and start with its README.",
-    "advice": "Give your AI of choice the repo link, your hardware, and what you want to do. Ask it to adapt the code or build what’s missing, then test one small task on your setup.",
+    "advice": "You don’t have to start with a blank editor. Find the project’s GitHub repository, tell an AI coding assistant which board and sensor you have, and describe what you want the device to do. It can help you understand the existing code, adapt it to your setup, or work through a compiler error.",
+    "bench_check": "Then change one thing and try it. If you’re timing a robot, watch it move and measure where it stops. If you’re reading a sensor, compare its reading with something you can check independently. AI helps you get to that first experiment sooner. What you observe tells you what to change next.",
+    "print_advice": "Give an AI coding assistant the GitHub link, your board and sensor, and a small goal. Ask for one code change, then check what it actually does on your hardware.",
+    "example": {"label": "See where AI helped in the Cutebot lab", "url": "../cutebot-motion-evidence/#ai-assistance"},
     "label": "Find the project’s GitHub repo",
     "url": "/atlas/repositories/"
   },
