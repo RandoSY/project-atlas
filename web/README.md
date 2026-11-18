@@ -114,3 +114,8 @@ Browse `http://127.0.0.1:8000/atlas/`. To include calculus in the local link che
 - Both generators reproduced the checked-in preview files. The local link audit covered 16 generated pages and 360 unique-per-page local references under the Atlas and calculus preview root. The 21 HTTPS destinations linked by the three new pages resolved.
 - The HTTP preview was exercised at 320, 390, 768 and 1440 px, including keyboard navigation, the two exhibit reveals, and the Start Here and sphericity PDF checks.
 - The public archive baseline passed all 91 checks. The separate LAB-12 source check passed all 14 paths. Neither the inventory control date nor any baseline was refreshed.
+
+
+### Android FFT prototype captures · 18 November 2026
+
+The two 720 × 1612 PNGs in `atlas/fair-fitness-testing/media/` are the RGB images embedded on page 2 of `August_23_2026_Dual_Instrument_Codebase_Review.pdf`, extracted without retouching or resizing. The 23 August captures show a completed, phone-motion trial and a separate foreground-exit stop. Page 7 of `FFT_Report_to_Dr_Richard_Lesh_2026-08-24.pdf` identifies the completed trial's Bluetooth HR source as a GATT simulator. Neither source establishes what the current submission build looks like. Only the two app captures are included, not the source reports. Edit `fair-fitness-testing.html`, rebuild with `python3 web/build_atlas.py`, and verify the two full-size links on the exhibit.

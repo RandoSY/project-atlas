@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="../assets/atlas.css">
 <link rel="stylesheet" href="../assets/navigation.css">
 <link rel="stylesheet" href="../assets/work.css">
+<link rel="stylesheet" href="../assets/fft-captures.css">
 </head>
 <body><main>
 <nav class="atlas-nav" aria-label="Project Atlas"><a href="../">Home</a> <a href="../exhibits/" class="atlas-nav-section" aria-current="location">Exhibits</a> <a href="../ideas/">Ideas</a> <a href="../inventory/">Projects</a> <a href="../repositories/">Repositories</a></nav>
@@ -16,8 +17,31 @@
 <h1>Fair Fitness Testing</h1>
 <p>A release preview about prescribing work, checking motion, and observing the heart-rate response.</p>
 <p class="work-deck"><strong>Does asking two people to make the same movement mean asking them to do the same physical work?</strong> Take a step-up. At the same cadence and step height, raising more body mass takes more external work against gravity. Matching that estimate still does not make the effort feel the same for both people.</p>
-<nav class="work-jump" aria-label="Fair Fitness exhibit sections"><a href="#protocol">The three parts</a><a href="#example">Compare two prescriptions</a><a href="#evidence">App walkthrough</a><a href="#carry-forward">Teach it or carry it forward</a></nav>
-<figure class="work-figure"><img src="media/three-checks.svg" width="1200" height="630" alt="Three distinct jobs: prescribe target external output, check motion evidence, and observe the heart-rate response"><figcaption>Concept graphic, not a test record or a preview of an app screen.</figcaption></figure>
+<nav class="work-jump" aria-label="Fair Fitness exhibit sections"><a href="#android-captures">See the Android app</a><a href="#protocol">The three parts</a><a href="#example">Compare two prescriptions</a><a href="#evidence">App walkthrough</a><a href="#carry-forward">Teach it or carry it forward</a></nav>
+<section class="fft-captures" id="android-captures" aria-labelledby="fft-captures-title">
+<p class="atlas-kicker">From the archive · 23 August 2026</p>
+<h2 id="fft-captures-title">Two outcomes on the real Android app</h2>
+<p>One trial reached the finish. In a separate trial, leaving the app’s foreground ended the run. These are original phone captures from the August prototype. They do not represent a verified Google Play submission build.</p>
+<div class="fft-screen-grid">
+  <figure class="fft-screen">
+    <div class="fft-screen-head"><span class="fft-screen-label">01 · Run completed</span><h3>Test complete</h3></div>
+    <a class="fft-screen-photo" href="media/android-test-complete.png" aria-label="Open the full-size Android Test Complete screenshot">
+      <img src="media/android-test-complete.png" width="720" height="1612" decoding="async" alt="The native Android FFT Test Complete screen shows a 3-minute run, 87 beats per minute, 253 detected steps, and 96 percent compliance.">
+      <span>Open full-size capture</span>
+    </a>
+    <figcaption><p><strong>3:00 at 87 beats/min.</strong> The phone detected 253 steps against 263 expected cues. The app reported 96% compliance.</p><p class="fft-hr-label"><strong>Real phone motion · simulated Bluetooth heart rate.</strong> The displayed heart-rate values are not a participant’s physiological readings.</p></figcaption>
+  </figure>
+  <figure class="fft-screen fft-screen-stopped">
+    <div class="fft-screen-head"><span class="fft-screen-label">02 · Foreground exit</span><h3>Test stopped</h3></div>
+    <a class="fft-screen-photo" href="media/android-test-stopped.png" aria-label="Open the full-size Android Test Stopped screenshot">
+      <img src="media/android-test-stopped.png" width="720" height="1612" decoding="async" alt="The native Android FFT Test Stopped screen displays the reason: FFT left the foreground.">
+      <span>Open full-size capture</span>
+    </a>
+    <figcaption><p><strong>A separate interrupted trial.</strong> The app recorded a stop and displayed why: it had left the foreground.</p><p class="fft-hr-label"><strong>State-change evidence.</strong> This screen documents what the software did, not a heart-rate-triggered stop or a safety outcome.</p></figcaption>
+  </figure>
+</div>
+<p class="fft-capture-source">Captures preserved in the <cite>August 23, 2026 Dual Instrument Codebase Review</cite>, page 2. The simulated heart-rate channel is documented alongside the completion screen in the August 2026 <cite>Report to Dr. Richard Lesh</cite>, page 7.</p>
+</section>
 
 <section id="protocol" class="work-section" aria-labelledby="fft-protocol">
 <p class="atlas-kicker">01 · The step-test example</p><h2 id="fft-protocol">Prescribe, check, observe</h2>
@@ -26,6 +50,7 @@
 <li><strong>Check the motion.</strong> A phone can receive detected footfall events when the Android step detector is available and use acceleration as a separate motion check. Detected events are evidence, not proof of technique or the height of each ascent. The documented compliance calculation compares detected footfalls and cadence with the requested cue.</li>
 <li><strong>Observe heart-rate response.</strong> A connected sensor supplies heart-rate readings during the effort. Heart rate is a separate observation, not a measurement of external watts or a guarantee that the effort is safe.</li>
 </ol>
+<figure class="work-figure"><img src="media/three-checks.svg" width="1200" height="630" alt="Three distinct jobs: prescribe target external output, check motion evidence, and observe the heart-rate response"><figcaption>Concept graphic, not a test record or a preview of an app screen.</figcaption></figure>
 </section>
 
 <section id="example" class="work-section" aria-labelledby="fft-example">
@@ -40,7 +65,7 @@
 
 <section id="evidence" class="work-section" aria-labelledby="fft-evidence">
 <p class="atlas-kicker">03 · Documented prototype walkthrough</p><h2 id="fft-evidence">Follow one test through the Android prototype</h2>
-<p>This walkthrough is adapted from the <a href="https://github.com/RandoSY/measured-human-performance/blob/main/fft/android-prototype/README_20260823.md">23 August 2026 Android/Kotlin prototype notes</a>. It describes documented screens and software logic, not a reproduced participant run or an assertion about the submission build.</p>
+<p>This walkthrough is adapted from the <a href="https://github.com/RandoSY/measured-human-performance/blob/main/fft/android-prototype/README_20260823.md">23 August 2026 Android/Kotlin prototype notes</a>. It describes the operating sequence and software logic for the dated prototype. The <a href="#android-captures">archived captures above</a> document two observed outcomes, not a new validation or the behavior of a later build.</p>
 <ol class="work-steps">
 <li><strong>Setup.</strong> The operator enters body mass, step height, target external power, duration, and a heart-rate ceiling specified by the protocol. The app calculates the target cadence and corresponding four-beat cue.</li>
 <li><strong>Sensors and run.</strong> The operator selects a Bluetooth heart-rate sensor, checks for a live reading, and secures the phone before starting. During the test the app shows received heart rate and, on supported hardware, detected footfalls and observed cadence.</li>

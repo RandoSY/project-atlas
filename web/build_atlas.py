@@ -506,8 +506,10 @@ def next_edition_pages():
          "MEASURED HUMAN PERFORMANCE · RELEASE PREVIEW"),
     )
     for slug, title, description, header in specs:
+        styles = ("work", "fft-captures") if slug == "fair-fitness-testing" else ("work",)
+        extra = "".join(f'<link rel="stylesheet" href="../assets/{style}.css">\n' for style in styles)
         page(slug, title, description, (WEB / f"{slug}.html").read_text(encoding="utf-8"),
-             header=header, extra='<link rel="stylesheet" href="../assets/work.css">\n')
+             header=header, extra=extra)
 
 
 def main():
