@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="t d">
+<title id="t">Three distinct jobs in Fair Fitness Testing</title><desc id="d">Prescribe an effort, check motion evidence, and observe the heart-rate response. Concept graphic, not a test record.</desc>
+<rect width="1200" height="630" rx="22" fill="#113a3c"/>
+<g font-family="system-ui,sans-serif">
+<text x="64" y="78" fill="#a9ded0" font-size="25" font-weight="700" letter-spacing="4">FAIR FITNESS TESTING / CONCEPT</text>
+<text x="64" y="151" fill="#fff6df" font-family="Georgia,serif" font-size="49" font-weight="700">Same motion. Same work?</text>
+<g fill="#1a4a4b" stroke="#719e92" stroke-width="2"><rect x="64" y="208" width="340" height="300" rx="17"/><rect x="430" y="208" width="340" height="300" rx="17"/><rect x="796" y="208" width="340" height="300" rx="17"/></g>
+<g stroke="#f3d084" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path d="M119 366h64v-37h62v-37h90"/><path d="M291 264h44v-28m0 28-60 48"/>
+<path d="M480 337h42l20-41 28 71 31-92 26 62h85"/>
+<path d="M846 337h45l31-41 26 70 42-92 27 63h73"/>
+</g>
+<g fill="#fff6df" font-size="34" font-weight="700"><text x="96" y="427">01 · Prescribe</text><text x="462" y="427">02 · Check</text><text x="828" y="427">03 · Observe</text></g>
+<g fill="#b9e5da" font-size="23"><text x="96" y="467">Target external output</text><text x="462" y="467">Motion evidence</text><text x="828" y="467">Heart-rate response</text></g>
+<text x="64" y="570" fill="#c5e4db" font-size="22">Three different questions. Three different kinds of evidence.</text>
+</g>
+</svg>

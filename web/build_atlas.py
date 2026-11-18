@@ -76,13 +76,13 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
     prefix = "../" if directory else ""
     destinations = (("Home", ""), ("Exhibits", "exhibits"), ("Ideas", "ideas"),
                     ("Projects", "inventory"), ("Repositories", "repositories"))
-    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10", "pop-can-calorimeter", "water-clock", "teatime"}
+    exhibit_children = {"singing-rule", "sqm-plus", "instruments", "core-10", "pop-can-calorimeter", "water-clock", "teatime", "sphericity-meter", "fair-fitness-testing"}
     nav = []
     for name, dest in destinations:
         attr = ' aria-current="page"' if dest == directory else ''
         if dest == "exhibits" and directory in exhibit_children:
             attr = ' class="atlas-nav-section" aria-current="location"'
-        if not dest and directory == "start-here":
+        if not dest and directory in {"start-here", "explore"}:
             attr = ' class="atlas-nav-section" aria-current="location"'
         url = (prefix or "./") + ((dest + "/") if dest else "")
         nav.append(f'<a href="{url}"{attr}>{name}</a>')
@@ -145,6 +145,7 @@ def home(n):
 <div class="atlas-start-actions">
 <a class="atlas-start-primary" href="start-here/">Open the guide <span aria-hidden="true">→</span></a>
 <a href="start-here/Project-Atlas-Start-Here.pdf" download>Download PDF</a>
+<a href="explore/">Explore the Work</a>
 </div>
 </section>
 <section class="atlas-feature" aria-labelledby="home-singing">
@@ -208,7 +209,7 @@ def start_here():
     page("start-here", data["title"], data["subtitle"], f"""
 <div class="sg-guide">
 <p class="sg-intro">{esc(data['intro'])}</p>
-<p><a class="sg-download" href="Project-Atlas-Start-Here.pdf" download>Download the two-page PDF</a></p>
+<p><a class="sg-download" href="Project-Atlas-Start-Here.pdf" download>Download the two-page PDF</a> · <a href="../explore/">Explore the Work by interest</a></p>
 <aside id="make-it-your-own" class="sg-aside" aria-labelledby="sg-aside-title">
 <h2 id="sg-aside-title">{esc(software['title'])}</h2>
 <p>{esc(software['status'])}</p>
@@ -224,7 +225,7 @@ def start_here():
 <dl class="sg-nav-list">{''.join(places)}</dl>
 </section>
 <section aria-labelledby="sg-exhibits">
-<h2 id="sg-exhibits">Eight places to begin</h2>
+<h2 id="sg-exhibits">Ten places to begin</h2>
 <p>Try the first move before reading everything.</p>
 <ul class="sg-exhibits">{''.join(exhibits)}</ul>
 </section>
@@ -246,6 +247,12 @@ def exhibits():
         ("Flagship activity", "../singing-rule/", "The Singing Rule",
          "Pluck a ruler and follow the motion from the original bench photo to live traces, measured ringdown, and a model you can try.",
          "../singing-rule/media/bench.webp", 1440, 1084),
+        ("New exhibit · Classroom inquiry design", "../sphericity-meter/", "Invent a Sphericity Meter",
+         "Which rock is more nearly spherical? Invent a rule another team can repeat, then test what your rule misses.",
+         "../sphericity-meter/media/opening-rocks.webp", 1450, 551),
+        ("New exhibit · Release preview", "../fair-fitness-testing/", "Fair Fitness Testing",
+         "Compare two workload prescriptions and follow a documented Android prototype walkthrough.",
+         "../fair-fitness-testing/media/three-checks.svg", 1200, 630),
         ("Premier CORE 10 activity", "../pop-can-calorimeter/", "Pop-Can Calorimeter",
          "Follow a tea light from grams of fuel to joules in the water, compare heating rates, and account for where the rest of the energy went.",
          "../pop-can-calorimeter/media/picoscale.webp", 1440, 847),
@@ -293,6 +300,7 @@ def core():
 <h2 id="core-signature"><a href="../pop-can-calorimeter/">Pop-Can Calorimeter</a></h2>
 <p>One candle creates two records: the mass of fuel consumed and the heat gained by the water. This is where CORE 10 connects measurement, chemistry, watts, and evidence about where the energy went.</p>
 <p>For a companion lesson in rate and accumulation, visit <a href="../water-clock/">Galileo’s Water Clock</a>. In this experiment the mass goes up, and its slope can tell time.</p>
+<p><a href="../sphericity-meter/">Invent a Sphericity Meter</a> takes the same idea of learning through measurement outdoors. Start with a few rocks and ask what a repeatable rule for shape would have to notice.</p>
 <p>For a companion lesson in calibration, visit <a href="../teatime/">TeaTime</a>. A cup of tea, a light source, and a detector turn an unknown dilution into a test of Beer–Lambert’s law.</p>
 </section>
 <section aria-labelledby="start">
@@ -485,6 +493,23 @@ def teatime():
          extra='<link rel="stylesheet" href="../assets/teatime.css">\n')
 
 
+def next_edition_pages():
+    specs = (
+        ("explore", "Explore the Work",
+         "Three ways into Randall Young’s work, from classroom inquiry to instruments and human movement.",
+         "PROJECT ATLAS · CHOOSE A PATH"),
+        ("sphericity-meter", "Invent a Sphericity Meter",
+         "A CORE 10 investigation of shape, uniformity, and how to make a fair comparison.",
+         "CORE 10 · MODEL-ELICITING ACTIVITY"),
+        ("fair-fitness-testing", "Fair Fitness Testing",
+         "A release preview about prescribing work, checking motion, and observing the heart-rate response.",
+         "MEASURED HUMAN PERFORMANCE · RELEASE PREVIEW"),
+    )
+    for slug, title, description, header in specs:
+        page(slug, title, description, (WEB / f"{slug}.html").read_text(encoding="utf-8"),
+             header=header, extra='<link rel="stylesheet" href="../assets/work.css">\n')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--atlas-source", type=Path, default=WEB.parent)
@@ -510,6 +535,7 @@ def main():
     pop_can_calorimeter()
     water_clock()
     teatime()
+    next_edition_pages()
     repo_archive(manifest, args.atlas_source / "LEGACY_REPOSITORY_MAP.md")
     for name, title, summary, file, exclude in [
         ("ideas", "Idea index", "The durable ideas behind the work, from measurement and teaching to open instruments and publication.",
@@ -518,10 +544,16 @@ def main():
          "CANONICAL_INVENTORY.md", ["Protected system"]),
     ]:
         body = public_document(args.atlas_source / file, exclude, toc=True)
+        if name == "ideas":
+            heading = '<h2 id="22-fair-fitness--dynametics">22. Fair Fitness / DYNAMETICS</h2>'
+            if heading in body:
+                body = body.replace(heading, heading + '\n<p><a href="../fair-fitness-testing/">Open the Fair Fitness Testing exhibit and release preview</a>.</p>', 1)
+            else:
+                raise ValueError("The Fair Fitness idea anchor changed. Update its exhibit cross-link.")
         families = (f'<section class="atlas-family-list" aria-labelledby="families">'
                     f'<h2 id="families">Project families</h2>{homes("../")}</section>') if name == "inventory" else ""
         page(name, title, summary, f'<article>{body}</article>{families}', source=f"{ATLAS_MAIN}/{file}")
-    print(f"Built thirteen pages and indexed {len(manifest['repositories'])} public repositories.")
+    print(f"Built sixteen pages and indexed {len(manifest['repositories'])} public repositories.")
 
 if __name__ == "__main__":
     main()

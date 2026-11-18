@@ -1,0 +1,30 @@
+.work-jump{display:flex;flex-wrap:wrap;gap:.4rem .55rem;margin:1rem 0}
+.work-jump a,.work-button{display:inline-flex;align-items:center;min-height:2.75rem;box-sizing:border-box;padding:.4rem .64rem;border:1px solid #a6c3b7;border-radius:.44rem;background:#e6eee5;font-size:.92rem;font-weight:700}
+.work-jump a{margin:0}
+.work-button{background:#114f4b;color:#fff;border-color:#114f4b;margin-right:.45rem}
+.work-button:hover{color:#fff;background:#193e3c}
+.work-jump a:focus-visible,.work-button:focus-visible,.work-reveal summary:focus-visible{outline:3px solid #9a651b;outline-offset:3px}
+.work-section{border-top:1px solid #b9cac1;padding-top:1.05rem;margin-top:1.65rem}
+.work-section h2{font-size:clamp(1.55rem,4vw,2.1rem);line-height:1.16;margin:.2rem 0 .6rem}
+.work-deck{font-size:1.08rem;line-height:1.48;max-width:72ch}
+.work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.75rem;margin:1rem 0}
+.work-card{padding:.8rem .88rem;background:#edf0e7;border:1px solid #b9ccc0;border-radius:.55rem}
+.work-card h3,.work-card p{margin:.3rem 0}
+.work-card .atlas-kicker{font-size:.7rem}
+.work-directory{margin:.65rem 0}
+.work-directory>div{display:grid;grid-template-columns:minmax(8.5rem,.3fr) minmax(0,1fr);gap:.28rem .85rem;padding:.6rem .72rem;border-radius:.35rem}
+.work-directory>div:nth-child(odd){background:#e9efe4}
+.work-directory dt{font-weight:720}
+.work-directory dd{margin:0}
+.work-steps{padding-left:1.25rem}
+.work-steps li{padding-left:.15rem;margin:.54rem 0}
+.work-note,.work-reveal{padding:.8rem .9rem;background:#f1e8d5;border:1px solid #cbbd9d;border-radius:.48rem}
+.work-note{border-left:.28rem solid #9c6c28}
+.work-reveal summary{cursor:pointer;font-weight:720;min-height:2.1rem}
+.work-figure{margin:1rem 0}
+.work-figure img{display:block;width:100%;height:auto;border-radius:.58rem}
+.work-figure figcaption{margin:.35rem 0;font-size:.86rem;color:#385650}
+.work-table{width:100%;border-collapse:collapse;line-height:1.35;font-size:.91rem;overflow-wrap:anywhere}
+.work-table caption{text-align:left;font-weight:700;margin:.4rem 0}
+.work-table th,.work-table td{padding:.48rem .33rem;border-bottom:1px solid #b7c8bd;text-align:left;vertical-align:top}
+@media(max-width:650px){.work-grid,.work-directory>div{grid-template-columns:1fr}.work-table{font-size:.84rem}}

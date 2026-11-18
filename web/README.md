@@ -1,6 +1,6 @@
 # Project Atlas on the web
 
-The thirteen generated static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. Water Clock and TeaTime also include standalone interactive models.
+The sixteen generated static pages under `web/atlas/` are ready to serve at `/atlas/`. They reuse the live calculus page's stylesheet. Water Clock and TeaTime also include standalone interactive models.
 
 The Idea Index and Project Inventory are rendered from the canonical Markdown at the root of this repository. Their off-GitHub sections are deliberately omitted from the rendered site. The full repository browser uses a snapshot of GitHub's public listing, distinguishes forks, and adds historical project homes from the legacy map. Only the generated `web/atlas/` directory belongs in the Nginx web root.
 
@@ -84,3 +84,33 @@ Author the exhibit text in `water-clock.html` and rebuild the site. The public a
 ## TeaTime
 
 Edit `teatime.html` and rebuild the static site. The VEML7700 PDFs are web-optimized copies of the original Science of Tea Time operator and teacher guides. The optical path is a new schematic, not a bench photograph. The recovered `teatime_beer_lambert_modeling_dashboard.html` runs as a simulation on Atlas with its serial-connect controls disabled and a local return link. The dashboard image was captured from a generated model run. No physical readings are represented as recovered, and the guide’s standalone serial firmware is a separate build path.
+
+
+## Explore the Work edition · 18 November 2026
+
+This edition adds `explore/`, `sphericity-meter/`, and `fair-fitness-testing/`. Their authoring files are `explore.html`, `sphericity-meter.html`, and `fair-fitness-testing.html`. They share `atlas/assets/work.css`. The existing five navigation links, Singing Rule feature, legacy project inventory and its 15 September control date, and separate calculus site are unchanged.
+
+Rebuild and check before review:
+
+```sh
+python3 web/build_atlas.py
+python3 web/build_start_here_pdf.py
+python3 web/check_atlas.py
+python3 tools/check_public_archive_baseline.py
+python3 tools/check_lab12_source.py
+python3 -m http.server 8000 --directory web
+```
+
+Browse `http://127.0.0.1:8000/atlas/`. To include calculus in the local link checks, use a separate preview document root containing the existing calculus copy alongside a copy or symlink of the generated Atlas directory. Run `python3 web/check_atlas.py --site-root PATH` against that root. Deploy only the reviewed `web/atlas/` subtree through the existing staging procedure. Do not replace the production calculus directory.
+
+### Source and status notes
+
+- **Sphericity.** Original *Invent a Sphericity Meter* (Randall Young, CORE 10, November 2026), 11 pages, preserved byte-for-byte. SHA-256 `1c057f669f1a450c54f88d97c625e3256abe663cbc7f5cae5909ba7fa2507b32`. The two WebP illustrations are extracted from pages 1 and 3 and were generated illustrations in the source. The proposed lesson, ideal benchmarks, and published evidence are labeled separately. The latter was checked against Domokos et al. (2014), File S1, sheet `exp_4LA`, rows 7 and 25. The guide provides the Lesh et al. attribution and the planned classroom pilot, not completed pilot results.
+- **Fair Fitness.** Android walkthrough source is the [dated Kotlin prototype record](https://github.com/RandoSY/measured-human-performance/blob/bc659faf867e4f95c93b6af44358dfdec8441d0b/fft/android-prototype/README_20260823.md). The micro:bit R2.1 record is a separate reference. The graphic is an exhibit schematic; the two prescription outputs are model examples, not test results. The November milestone is author-reported readiness to submit. An exact-title public Google Play listing and a recording of that submission build were not verified on 18 November 2026. No new participant data, hardware validation, or clinical claim is published.
+- **Overview.** CORE 10 and CORE 12 descriptions follow their public repository records, supplemented by Young’s curriculum framing for 3FE. No verified standalone resource for Learning Fields was recovered. Public ROBOT_EDU lineage is linked to the maintained robotics guide rather than the empty legacy repository. Lazy LiDAR is linked to the existing canonical design note; no finished exhibit is claimed. For LINC/PDP-12 history the exhibit links to museum records, while the modern LAB-12 interpretation is linked to the documented v1.2 source. Protected material stays out of the generated edition.
+
+### Edition verification · 18 November 2026
+
+- Both generators reproduced the checked-in preview files. The local link audit covered 16 generated pages and 360 unique-per-page local references under the Atlas and calculus preview root. The 21 HTTPS destinations linked by the three new pages resolved.
+- The HTTP preview was exercised at 320, 390, 768 and 1440 px, including keyboard navigation, the two exhibit reveals, and the Start Here and sphericity PDF checks.
+- The public archive baseline passed all 91 checks. The separate LAB-12 source check passed all 14 paths. Neither the inventory control date nor any baseline was refreshed.

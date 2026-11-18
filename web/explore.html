@@ -1,0 +1,53 @@
+<nav class="work-jump" aria-label="Explore by interest">
+<a href="#teach">Teach and investigate</a>
+<a href="#build">Build and understand instruments</a>
+<a href="#movement">Measure movement and support independence</a>
+</nav>
+
+<section id="teach" class="work-section" aria-labelledby="teach-title">
+<p class="atlas-kicker">01 · Curriculum</p>
+<h2 id="teach-title">Teach and investigate</h2>
+<p class="work-deck">How do you take an ordinary object and turn it into a question students can investigate for themselves?</p>
+<div class="work-grid">
+<article class="work-card"><p class="atlas-kicker">Curriculum hub</p><h3><a href="../core-10/">CORE 10</a></h3><p>Randall Young pairs low-cost tools with real questions. Students meet the phenomenon first, then bring in a measurement, equation, or instrument when it helps.</p></article>
+<article class="work-card"><p class="atlas-kicker">New exhibit · Proposed classroom activity</p><h3><a href="../sphericity-meter/">Invent a Sphericity Meter</a></h3><p>Give teams a few rocks and a question they can disagree on. The work is to invent a rule, test it, and hand it off to another team, not to guess the teacher’s formula.</p></article>
+</div>
+<h3>Three branches of CORE 10</h3>
+<dl class="work-directory">
+<div><dt><a href="https://github.com/RandoSY/core-10/blob/main/kitchen-inquiry-lab/Kitchen_Inquiry_Lab_Canonical_Map.md">Kitchen Inquiry Lab</a></dt><dd>How much of the energy you paid for made it into the cup? Household heating becomes an experiment in energy accounting.</dd></div>
+<div><dt><a href="https://github.com/RandoSY/core-10/tree/main/one-cup-chemistry/experiments">One Cup Chemistry</a></dt><dd>What can you learn from one vessel? Young uses a compact toolkit to compare solutions, cooling, conductivity, and more.</dd></div>
+<div><dt><a href="https://github.com/RandoSY/core-10/blob/main/nothing-is-free/NOTHING_IS_FREE_Canonical_Map.md">Personal Energy Laboratory · NOTHING IS FREE</a></dt><dd>What does it cost to do useful work? Follow the energy through batteries, motors, robots, or appliances.</dd></div>
+</dl>
+<p><strong>Related curriculum records.</strong> Learning Fields is a related curriculum strand for which this edition has no verified standalone public resource. In 3FE, Young connects operational measurement, mass and energy conservation, heat flow, and robotics. <a href="https://github.com/RandoSY/core-10/blob/main/history/Full_Measure_Core_Twelve_Public_Idea_Spine.md">CORE 12 / Full Measure</a> is an archived twelve-activity design centered on transfer to unfamiliar problems. The <a href="https://github.com/RandoSY/core-10/blob/main/architecture/Curricular_Threads_Architecture_v1.0.md">Curricular Threads architecture</a> documents how teaching ideas, instruments, and applications fit together. These are related designs, not stages of a single timeline.</p>
+</section>
+
+<section id="build" class="work-section" aria-labelledby="build-title">
+<p class="atlas-kicker">02 · Measurement tools and machines</p>
+<h2 id="build-title">Build and understand instruments</h2>
+<p class="work-deck">What makes a reading trustworthy when you can change almost everything that carries it?</p>
+<div class="work-grid">
+<article class="work-card"><p class="atlas-kicker">Existing exhibits</p><h3><a href="../instruments/">Virtual Instruments</a></h3><p>Start with a useful reading. Compare five low-cost instruments and their dashboards, from a voltmeter and frequency meter to an electronic scale, distance meter, and thermometer.</p></article>
+<article class="work-card"><p class="atlas-kicker">Architecture · Reference implementation</p><h3><a href="https://github.com/RandoSY/software-defined-laboratory">Software-Defined Laboratory</a></h3><p>An eScale reading should still mean the same calibrated mass in the same units if the controller, transport, or client changes. SDL separates what the device measures from how data travel and how a browser, logger, or AI client uses them. Changing a sensor may require new calibration; changing a display should not redefine the reading.</p></article>
+</div>
+<h3>A pathway through physical computing</h3>
+<ol class="work-steps">
+<li><strong>Arduino Revolution.</strong> Get a sensor working in a familiar environment, then follow the signal from the pin to the display. The <a href="https://github.com/RandoSY/software-defined-laboratory/tree/main/endpoints/uno_ds18b20">Uno temperature reference</a> is a small starting point.</li>
+<li><strong>Wireless Wonders.</strong> Keep the reading meaningful as you remove the cable. The <a href="https://github.com/RandoSY/nugget-physical-computing">Nugget learning ladder</a> and <a href="../instruments/">wireless instrument examples</a> show ways into Pico W, ESP32, and BLE work.</li>
+<li><strong>LINC.</strong> Ask which jobs belong next to the sensor and which belong on the experiment computer. The <a href="https://www.thehenryford.org/collections/explore/artifact/495429">original LINC</a> let researchers program a laboratory computer and see results locally. The later <a href="https://www.ricomputermuseum.org/collections-gallery/equipment/dec-pdp-12">PDP-12</a> offered distinct LINC and PDP-8/I instruction modes. Young’s <a href="https://github.com/RandoSY/software-defined-laboratory/tree/main/platforms/lab12-pdp12-linc/v1.2">LAB-12 cooling-lab interpretation</a> assigns acquisition to the MSP430G2553 and experiment control to the RP2040 Pico W. It borrows the laboratory workflow, not the instruction sets. The existing source package documents its hardware-verification limits.</li>
+</ol>
+<div class="work-grid">
+<article class="work-card"><p class="atlas-kicker">Existing robotics resources · Mapping exhibit proposed</p><h3><a href="https://github.com/RandoSY/bargain-bin-robotics">Bargain Bin Robotics</a> and <a href="https://github.com/RandoSY/bargain-bin-robotics/blob/main/docs/archive/Bargain_Bin_Robotics_User_Guide_v0.2.0.md">ROBOT_EDU resources</a></h3><p>Use a robot to measure geometry, heading, and distance as well as to move. <a href="https://github.com/RandoSY/bargain-bin-robotics/blob/main/IDEAS.md#lazy--patient-lidar">Lazy / Patient LiDAR</a> asks whether repeated readings from several known viewpoints can produce a useful map with a cheap range sensor. The design record is available now; a standalone Atlas exhibit is proposed.</p></article>
+<article class="work-card"><p class="atlas-kicker">Existing code and archives</p><h3><a href="https://github.com/RandoSY/computing-observatories">Computing Observatories</a></h3><p>What is the computer actually doing? Young uses Forth, visible processors, and simulators to let learners inspect execution rather than take the result on faith.</p></article>
+</div>
+</section>
+
+<section id="movement" class="work-section" aria-labelledby="movement-title">
+<p class="atlas-kicker">03 · Measured human performance</p>
+<h2 id="movement-title">Measure movement and support independence</h2>
+<p class="work-deck">A movement trace answers different questions depending on what you asked the person to do.</p>
+<div class="work-grid">
+<article class="work-card"><p class="atlas-kicker">Existing exhibit · Experimental step detection</p><h3><a href="../sqm-plus/">SQM+ Hallway Observatory</a></h3><p><strong>How did I walk over a known course?</strong> Start with the marked distance and elapsed time. Use motion traces to investigate cadence and changes in gait, and check candidate steps against an independent count.</p></article>
+<article class="work-card"><p class="atlas-kicker">New exhibit · Release preview</p><h3><a href="../fair-fitness-testing/">Fair Fitness Testing</a></h3><p><strong>Can I prescribe an effort and tell whether it was performed?</strong> Set a target physical output, use motion as evidence of participation, and observe the heart-rate response separately.</p></article>
+</div>
+<p><a href="https://github.com/RandoSY/measured-human-performance">See source and lineage in Measured Human Performance</a>.</p>
+</section>

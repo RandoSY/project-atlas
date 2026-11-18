@@ -145,21 +145,22 @@ foot(1)
 pdf.showPage()
 
 # 2 / Match the question to the resource
-header("Exhibit map","Eight places to begin","Each card opens the exhibit. Try its first action before reading everything.")
+header("Exhibit map","Ten places to begin","Each card opens the exhibit. Try its first action before reading everything.")
 for i,row in enumerate(data["exhibits"]):
     x=42+(i%2)*270
-    y=161+(i//2)*135
-    bg(x,y,258,125,"cream" if i in (0,1,6,7) else "wash","border")
-    kicker(x+13,y+10,row["topic"])
-    ty=wrap(x+13,y+24,row["title"],232,16.5,16.8,"Display",max_lines=2)
-    sy=wrap(x+13,ty+4,row["text"],230,8.9,10.4,ink="muted",max_lines=3)
-    note_end=wrap(x+13,sy+3,row["start"],231,8.8,10.2,"Strong",max_lines=2)
-    assert note_end <= y+110
-    a(x+13,y+111,"Open exhibit",row["url"],8.3)
+    y=150+(i//2)*110
+    bg(x,y,258,104,"cream" if i in (0,1,8,9) else "wash","border")
+    kicker(x+13,y+8,row["topic"])
+    ty=wrap(x+13,y+21,row["title"],232,14.7,14.7,"Display",max_lines=2)
+    sy=wrap(x+13,ty+3,row["text"],230,8.7,10.1,ink="muted",max_lines=3)
+    note_end=wrap(x+13,sy+2,row["start"],231,8.6,9.6,"Strong",max_lines=2)
+    assert note_end <= y+92, row["title"]
+    a(x+13,y+91,"Open exhibit",row["url"],8.3)
 home="/atlas/"
 kicker(43,701,"Read the evidence")
 wrap(43,714,"A measured run, a simulation, and a working dashboard are different kinds of evidence.",415,8.5,10,ink="muted",max_lines=1)
 a(43,729,"Open Project Atlas",home,8.3)
+a(155,729,"Explore the Work","/atlas/explore/",8.3)
 q=QrCodeWidget(urljoin(data["origin"],home),barLevel="M",barBorder=4)
 bounds=q.getBounds()
 ww,hh=bounds[2]-bounds[0],bounds[3]-bounds[1]

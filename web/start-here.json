@@ -98,6 +98,20 @@
       "text":"Calibrate light transmission with tea dilutions, then use it to estimate the strength of an unknown.",
       "start":"Compare a water blank and a diluted tea sample.",
       "url":"/atlas/teatime/"
+    },
+    {
+      "title":"Invent a Sphericity Meter",
+      "topic":"Shape and variation",
+      "text":"Invent and test a rule for how nearly spherical a rock is.",
+      "start":"Propose what your rule should notice; hand it to another group.",
+      "url":"/atlas/sphericity-meter/"
+    },
+    {
+      "title":"Fair Fitness Testing",
+      "topic":"Effort and evidence",
+      "text":"Specify an effort and distinguish motion evidence from heart-rate response.",
+      "start":"Predict which of two modeled step prescriptions needs a faster pace.",
+      "url":"/atlas/fair-fitness-testing/"
     }
   ],
   "evidence": "A measured run, a simulated example, and a working dashboard are different kinds of evidence. Read the captions and validation notes before you draw a conclusion. A good first experiment is one you can explain and repeat."

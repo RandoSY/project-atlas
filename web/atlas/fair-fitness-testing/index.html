@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A release preview about prescribing work, checking motion, and observing the heart-rate response.">
+<title>Fair Fitness Testing · Randall Young</title>
+<link rel="stylesheet" href="../assets/calculus-theme.css">
+<link rel="stylesheet" href="../assets/atlas.css">
+<link rel="stylesheet" href="../assets/navigation.css">
+<link rel="stylesheet" href="../assets/work.css">
+</head>
+<body><main>
+<nav class="atlas-nav" aria-label="Project Atlas"><a href="../">Home</a> <a href="../exhibits/" class="atlas-nav-section" aria-current="location">Exhibits</a> <a href="../ideas/">Ideas</a> <a href="../inventory/">Projects</a> <a href="../repositories/">Repositories</a></nav>
+<p>RANDALL YOUNG · MEASURED HUMAN PERFORMANCE · RELEASE PREVIEW</p>
+<h1>Fair Fitness Testing</h1>
+<p>A release preview about prescribing work, checking motion, and observing the heart-rate response.</p>
+<p class="work-deck"><strong>Does asking two people to make the same movement mean asking them to do the same physical work?</strong> Take a step-up. At the same cadence and step height, raising more body mass takes more external work against gravity. Matching that estimate still does not make the effort feel the same for both people.</p>
+<nav class="work-jump" aria-label="Fair Fitness exhibit sections"><a href="#protocol">The three parts</a><a href="#example">Compare two prescriptions</a><a href="#evidence">App walkthrough</a><a href="#carry-forward">Teach it or carry it forward</a></nav>
+<figure class="work-figure"><img src="media/three-checks.svg" width="1200" height="630" alt="Three distinct jobs: prescribe target external output, check motion evidence, and observe the heart-rate response"><figcaption>Concept graphic, not a test record or a preview of an app screen.</figcaption></figure>
+
+<section id="protocol" class="work-section" aria-labelledby="fft-protocol">
+<p class="atlas-kicker">01 · The step-test example</p><h2 id="fft-protocol">Prescribe, check, observe</h2>
+<ol class="work-steps">
+<li><strong>Prescribe a target.</strong> Define step rise, duration, the ascent event, and the beat pattern. The documented Android step protocol uses four beats per cycle: up, up, down, down. Body mass, step rise, and target watts determine the requested cadence.</li>
+<li><strong>Check the motion.</strong> A phone can receive detected footfall events when the Android step detector is available and use acceleration as a separate motion check. Detected events are evidence, not proof of technique or the height of each ascent. The documented compliance calculation compares detected footfalls and cadence with the requested cue.</li>
+<li><strong>Observe heart-rate response.</strong> A connected sensor supplies heart-rate readings during the effort. Heart rate is a separate observation, not a measurement of external watts or a guarantee that the effort is safe.</li>
+</ol>
+</section>
+
+<section id="example" class="work-section" aria-labelledby="fft-example">
+<p class="atlas-kicker">02 · Try the reasoning on paper</p><h2 id="fft-example">Change the mass, keep the modeled output</h2>
+<p>Before looking, predict who needs more ascents per minute to reach the same target if the step rise stays fixed.</p>
+<details class="work-reveal"><summary>Reveal the illustrative comparison</summary>
+<p><strong>Illustrative model output only. No sensors, participant data, or exercise prescription.</strong> Both examples use a model step rise of 0.15 m and a target of 30 W. With one ascent per cycle, modeled power <em>P</em> = <em>mghf</em>, with <em>f</em> in ascents per second.</p>
+<table class="work-table"><caption>Model estimates before any app limits or rounding</caption><thead><tr><th scope="col">Illustrative mass</th><th scope="col">Ascents/min</th><th scope="col">Four-beat cue, beats/min</th></tr></thead><tbody><tr><th scope="row">60 kg</th><td>20.4</td><td>81.5</td></tr><tr><th scope="row">90 kg</th><td>13.6</td><td>54.4</td></tr></tbody></table>
+<p>This simple model counts positive gravitational work during ascent. It does not account for descent work, internal limb motion, or metabolic cost. Ask what evidence you would need to tell whether either person actually followed the cue.</p>
+</details>
+</section>
+
+<section id="evidence" class="work-section" aria-labelledby="fft-evidence">
+<p class="atlas-kicker">03 · Documented prototype walkthrough</p><h2 id="fft-evidence">Follow one test through the Android prototype</h2>
+<p>This walkthrough is adapted from the <a href="https://github.com/RandoSY/measured-human-performance/blob/main/fft/android-prototype/README_20260823.md">23 August 2026 Android/Kotlin prototype notes</a>. It describes documented screens and software logic, not a reproduced participant run or an assertion about the submission build.</p>
+<ol class="work-steps">
+<li><strong>Setup.</strong> The operator enters body mass, step height, target external power, duration, and a heart-rate ceiling specified by the protocol. The app calculates the target cadence and corresponding four-beat cue.</li>
+<li><strong>Sensors and run.</strong> The operator selects a Bluetooth heart-rate sensor, checks for a live reading, and secures the phone before starting. During the test the app shows received heart rate and, on supported hardware, detected footfalls and observed cadence.</li>
+<li><strong>Stop and interpret.</strong> In this documented version, a heart-rate reading at or above the entered ceiling, a sensor disconnect, or eight seconds without an update stops the software cues, timing, and recording and shows the reason. Manual stop is also available. It cannot physically stop a person. The notes do not establish a completion decision for missing motion in the current release candidate.</li>
+</ol>
+<dl class="work-directory">
+<div><dt>Measured signals</dt><dd>Phone acceleration and heart-rate sensor readings received by the app.</dd></div>
+<div><dt>Derived values</dt><dd>Target and estimated motion cadence, the simple work model, and footfall detections. Neither calculated watts nor compliance is a direct sensor reading.</dd></div>
+<div><dt>Software decisions</dt><dd>Compliance scoring and stop rules are interpretations of inputs and configured thresholds. They are not clinical judgments.</dd></div>
+</dl>
+<p class="work-note"><strong>Release preview · checked <time datetime="2026-11-18">18 November 2026</time>.</strong> Randall Young reported the Android app ready to submit to Google Play. No matching public listing or current submission-build recording was verified. This exhibit does not establish clinical validation or treat heart-rate monitoring as a guarantee of safety.</p>
+</section>
+
+<section id="carry-forward" class="work-section" aria-labelledby="fft-carry">
+<p class="atlas-kicker">04 · Teach it or carry it forward</p><h2 id="fft-carry">Change the question, change the evidence</h2>
+<p>Compare the two example prescriptions before touching hardware. Ask students which facts they would need to verify an effort, and what heart rate can tell them that cadence cannot. Agree on a protocol, how observations are to be checked, and how individual records will be kept private before any real session.</p>
+<p><a href="../sqm-plus/">SQM+ asks how a person walked over a known course</a>, starting from distance and time and testing what the motion trace adds. Fair Fitness Testing asks how a person responds to a prescribed effort and whether motion evidence supports that it was done. Fair Fitness Scout is a related branch for hallway mobility tests, not the Android step-test walkthrough shown here.</p>
+<p><a href="https://github.com/RandoSY/measured-human-performance">Measured Human Performance source and lineage</a> · <a href="https://github.com/RandoSY/measured-human-performance/tree/main/fft/reference-r2.1">Separate micro:bit FFT+ reference packet</a> · <a href="../ideas/#22-fair-fitness--dynametics">Fair Fitness idea record</a></p>
+</section>
+
+<footer>
+<p><a href="../">Project Atlas home</a> · <a href="https://github.com/RandoSY/project-atlas">View the source on GitHub</a></p>
+</footer>
+</main></body>
+</html>
