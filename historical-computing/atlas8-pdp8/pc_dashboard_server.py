@@ -19,6 +19,7 @@ from pathlib import Path
 from urllib.request import urlopen
 
 from dashboard_bridge import Bridge, PROTOCOL
+from lab_device import SimTransport
 
 BASE = Path(__file__).resolve().parent
 WEB = BASE / 'dashboard'
@@ -32,7 +33,7 @@ FALLBACK_PORTS = 20       # If 8878 is occupied, find another free ATLAS-8 port.
 
 class DesktopTransport:
     def __init__(self, fields):
-        self.bridge = Bridge(fields=fields)
+        self.bridge = Bridge(fields=fields, lab_transport=SimTransport())
         self.lock = threading.Lock()
 
     def request(self, msg):

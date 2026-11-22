@@ -101,3 +101,7 @@ The default tab is now a functional PDP-8/I front panel. For a faithful first pr
 ## v0.6: Virtual paper-tape reader
 
 Open **Programs -> Paper tape**, enter RIM, mount TEST TAPE or a raw eight-channel frame image, choose **10 cps / 300 cps / TURBO**, and press **START AT 7756**. Keep the tape pane visible to see progress and effective speed. **PAUSE/PLAY** hold/resume a pending reader request. The original RIM loader waits at end-of-media; press **STOP** and EXAMINE `0200`. Detailed walk-through: [PAPER_TAPE_LAB.md](PAPER_TAPE_LAB.md). These controls do not use the host to decode tape words into memory.
+
+## v0.7 laboratory interface experiment
+
+Open **Programs → Laboratory I/O**. Select **LOAD NATIVE ADC PROGRAM**, then **RUN LOADED PROGRAM**. In SIMULATE the guest executes IOT 6541 (LABGO), 6542 (LABRDY), and 6544 (LABGET) and stores a synthetic value of 512 at core address 0210. This is a fixed test fixture, *not a physical voltage*. Select **LOAD NATIVE TIMER PROGRAM** to receive the synthetic 1000-tick period in SIMULATE. The front panel and memory examiner can inspect these native words. To make a physical measurement, install the independent G2553 firmware, connect UART+READY and a protected sensor, and choose LIVE PICO. [Wiring, limits, and protocol](LAB_IO_V070.md). Do not assume real hardware has passed acceptance testing.

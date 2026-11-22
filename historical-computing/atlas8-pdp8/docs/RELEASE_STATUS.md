@@ -1,3 +1,15 @@
+# ATLAS-8 0.7.0 — Intelligent Laboratory I/O ENGINEERING PREVIEW (2026-11-22)
+
+- Added distinct PDP-8 device-54 laboratory IOT family with 12-bit AC reads and an autonomous READY handshake.
+- Added MicroPython `lab_protocol.py`, `lab_device.py`, and `lab_uart.py` for 38,400 baud binary UART, CRC-16, sequence matching, timeout/error state, GP2 READY.
+- Added independent MSP430G2553 C reference firmware, portable C frame parser and TI-style educational macros.
+- Added Programs → Laboratory I/O within the existing five-tab dashboard (not an extra top-level tab). SIM mode labeled synthetic; LIVE mode does not fabricate readings.
+- Passed 65 CPython tests, portable C protocol host tests and browser lab smoke at 1440×900 and 1280×720 (no page scrolling).
+- Pico installer updated to include three additional MicroPython dependencies and preserve correct `main_dashboard.py`→`main.py` startup.
+- **Still unverified**: real Pico connection, MCU cross-compilation and flash, electrical ADC and timer measurements, signal safety, and original FOCAL software. This is not a validated laboratory instrument.
+
+---
+
 
 ## v0.6.0 - Clocked virtual paper tape
 

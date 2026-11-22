@@ -116,6 +116,7 @@
             <button class="subtab" data-program-view="loader">Octal loader</button>
             <button class="subtab" data-program-view="memory">Core memory</button>
             <button class="subtab" data-program-view="tape">Paper tape</button>
+            <button class="subtab" data-program-view="lab">Laboratory I/O</button>
           </div>
           <div class="program-view" data-view="demos">
             <div class="view-header"><strong>REAL PDP-8 INSTRUCTIONS</strong><span>Load machine-language examples; use RUN on the Front Panel tab.</span></div>
@@ -165,6 +166,16 @@
                 <p class="tape-caption">The guest executes the original RIM IOTs for every byte, even at TURBO speed. At end-of-tape the loader waits; STOP to examine memory.</p>
               </section>
             </div>
+          </div>
+          <div class="program-view hidden" data-view="lab">
+            <div class="view-header"><strong>INTELLIGENT LABORATORY INTERFACE · DEVICE 54</strong><span>· New ATLAS instructions, not original DEC opcodes</span></div>
+            <div class="program-grid">
+              <button class="demo-card" id="btnLabDemo"><strong>LOAD NATIVE ADC PROGRAM</strong><span>PDP-8 instruction loop: LABGO · LABRDY · LABGET. Stores raw ADC count at 0210.</span></button>
+              <button class="demo-card" id="btnLabTimerDemo"><strong>LOAD NATIVE TIMER PROGRAM</strong><span>PDP-8 IOT starts an MSP430 capture on P2.1. Sim uses a labeled 1,000-tick fixture.</span></button>
+            </div>
+            <div class="field-row"><button class="action-primary" id="btnLabRun">RUN LOADED PROGRAM</button><button class="action-outline" id="btnLabStatus">REFRESH DEVICE STATUS</button></div>
+            <div class="workspace-note" id="labReadout" role="status">Checking laboratory controller. SIMULATE uses fixed educational data; LIVE PICO requires a wired MSP430G2553.</div>
+            <div class="workspace-note">Pico UART0 GP0/GP1 at 38400 baud; GP2 reads MSP430 READY. A0 is MSP430 P1.0 and Timer_A capture is P2.1. Do not connect signals beyond 3.3V.</div>
           </div>
           <div class="program-view hidden" data-view="memory">
             <div class="view-header"><strong>CORE MEMORY EXAMINER</strong><span>Browse memory by page, without a scrollbar.</span></div>

@@ -18,7 +18,7 @@
 5. The installer backs up any existing Pico files to `pico-backups/YYYYMMDD-HHMMSS` on your PC, uploads the dependencies first, **copies `main_dashboard.py` as `main.py` last**, and reads every copied file back to verify its SHA-256. It then requests a Pico reset.
 6. Close the installer or any serial tools. Start `START_DASHBOARD_WINDOWS.bat` on your PC. Open the URL printed by that server (normally `http://127.0.0.1:8878/`). Select **LIVE PICO** and enter the Pico's COM port. The PC retains the browser UI; the Pico runs the PDP-8 engine.
 
-The files uploaded by the dashboard installer are: `pdp8.py`, `programs.py`, `tape.py`, `monitor.py`, `dashboard_bridge.py`, and `main.py` (sourced from `main_dashboard.py`). The last two support different user interfaces; providing the inactive monitor module does not make it auto-run.
+The files uploaded by the dashboard installer are: `pdp8.py`, `programs.py`, `tape.py`, `monitor.py`, `bootstrap.py`, `lab_protocol.py`, `lab_device.py`, `lab_uart.py`, `dashboard_bridge.py`, and `main.py` (sourced from `main_dashboard.py`). The last two support different user interfaces; providing the inactive monitor module does not make it auto-run.
 
 **Do not copy** `dashboard/`, `pc_dashboard_server.py`, PDF manuals, or `tests/` to the Pico. Those stay on the dedicated PC.
 
@@ -31,6 +31,10 @@ py -3 -m mpremote fs cp pdp8.py :pdp8.py
 py -3 -m mpremote fs cp programs.py :programs.py
 py -3 -m mpremote fs cp tape.py :tape.py
 py -3 -m mpremote fs cp monitor.py :monitor.py
+py -3 -m mpremote fs cp bootstrap.py :bootstrap.py
+py -3 -m mpremote fs cp lab_protocol.py :lab_protocol.py
+py -3 -m mpremote fs cp lab_device.py :lab_device.py
+py -3 -m mpremote fs cp lab_uart.py :lab_uart.py
 py -3 -m mpremote fs cp dashboard_bridge.py :dashboard_bridge.py
 py -3 -m mpremote fs cp main_dashboard.py :main.py
 py -3 -m mpremote reset
@@ -64,3 +68,7 @@ This differs only in which file becomes Pico's `main.py`: the repository's `main
 ## v0.6.0 required file update
 
 The **`bootstrap.py`** module is now mandatory because `dashboard_bridge.py` imports the native RIM-loader definitions. `INSTALL_PICO_WINDOWS.bat` / `INSTALL_PICO.ps1` include it in the backup/upload/checksum sequence. A Pico with new `dashboard_bridge.py` but missing `bootstrap.py` will fail to start. `main_dashboard.py` must still be copied **as `main.py` last** in Chrome dashboard mode. See [Paper Tape Lab](PAPER_TAPE_LAB.md).
+
+## v0.7.0 laboratory controller support
+
+For Chrome mode, the installer now copies `lab_protocol.py`, `lab_device.py`, `lab_uart.py` before copying `main_dashboard.py` to Pico `main.py`. These are distinct from the **MSP430 C source**, which must be compiled and flashed separately using TI CCS/debugger. GP0/GP1 are Pico UART0 TX/RX, GP2 reads the MSP430 READY signal. Check the [wiring and safety guide](../msp430-lab/README.md) before physical connection. A missing MSP430 never becomes a synthetic ADC on Pico; the browser reports it as offline or times out.

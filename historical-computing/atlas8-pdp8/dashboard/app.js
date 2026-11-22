@@ -193,6 +193,11 @@
       // Do not overwrite the speed currently being selected while an API call is pending.
       if(document.activeElement!==$('tapeSpeed')) $('tapeSpeed').value=t.speed;
     }
+    if($('labReadout') && s.lab) {
+      const lab=s.lab;
+      const value=lab.mode==='timer'?`${lab.value} ticks`:lab.value + ' ADC counts';
+      $('labReadout').textContent=`${lab.kind.toUpperCase()} · ${lab.online?'ONLINE':'OFFLINE'} · ${lab.busy?'BUSY':lab.ready?'READY':'IDLE'} · ${value}${lab.error?' · ERROR: '+lab.error:''}`;
+    }
     $('instructionHint').textContent=`PC ${oct(s.pc)}`;
     if (ui.list.length) markActiveLine(s.pc);
   }
@@ -232,7 +237,7 @@
       return names[code]+indirect+zero+' '+(word&0o177).toString(8).padStart(3,'0');
     }
     if(code===6) {
-      const dict={0o6011:'RSF',0o6012:'RRB',0o6014:'RFC',0o6016:'RRB RFC',0o6031:'KSF',0o6032:'KCC',0o6034:'KRS',0o6036:'KRB',0o6041:'TSF',0o6046:'TLS',0o6044:'TPC',0o6001:'ION',0o6002:'IOF'};
+      const dict={0o6011:'RSF',0o6012:'RRB',0o6014:'RFC',0o6016:'RRB RFC',0o6031:'KSF',0o6032:'KCC',0o6034:'KRS',0o6036:'KRB',0o6041:'TSF',0o6046:'TLS',0o6044:'TPC',0o6540:'LABCLR',0o6541:'LABGO',0o6542:'LABRDY',0o6543:'LABTIM',0o6544:'LABGET',0o6545:'LABSTS',0o6546:'LABHI',0o6547:'LABTOP',0o6001:'ION',0o6002:'IOF'};
       return dict[word]||'IOT '+oct(word);
     }
     const known={0o7000:'NOP',0o7200:'CLA',0o7300:'CLA CLL',0o7402:'HLT',0o7404:'OSR',0o7040:'CMA',0o7001:'IAC',0o7440:'SZA',0o7510:'SPA',0o7450:'SNA'};
@@ -471,6 +476,10 @@
     for(const card of document.querySelectorAll('[data-demo]'))card.addEventListener('click',()=>runDemo(card.dataset.demo));
     wire('btnMemoryRead','click',inspectMemory);
     wire('btnLoadWords','click',loadWords);
+    wire('btnLabDemo','click',async()=>{const r=await command('lab_demo',{mode:'adc'});if(r)toast('ADC program loaded at 0200. Press RUN LOADED PROGRAM.');});
+    wire('btnLabTimerDemo','click',async()=>{const r=await command('lab_demo',{mode:'timer'});if(r)toast('Timer program loaded at 0200. Press RUN LOADED PROGRAM.');});
+    wire('btnLabRun','click',async()=>{ui.stopped=false;const r=await command('start',{address:0o200});if(r&&r.state.running)tickLoop();});
+    wire('btnLabStatus','click',()=>command('lab_status'));
     wire('btnRimInstall','click',()=>tapeAction('rim_install'));
     wire('btnTapeDemo','click',()=>tapeAction('rim_fixture'));
     wire('btnTapeRewind','click',()=>tapeAction('tape_rewind'));

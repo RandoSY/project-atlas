@@ -1,4 +1,4 @@
-# ATLAS-8 v0.5 compatibility and verification matrix
+# ATLAS-8 v0.7 compatibility and verification matrix
 
 ## Terminology
 
@@ -42,3 +42,7 @@ Known issue: `dashboard_bridge.py` uses standard REPL stdin/stdout as USB CDC tr
 ## v0.6.0 clocked paper tape
 
 Device-01 high-speed reader IOTs (`RSF/RRB/RFC`) and the 17-word native RIM loader are exercised with a synthetic tape fixture. Reader wall-clock modes: **ASR-33 RATE = 10 cps**, **HIGH-SPEED = 300 cps**, **TURBO = no artificial delay**. The ASR-33 selection is timing only; the separate low-speed reader hardware/device is **not** emulated. Files up to 32 KiB can be transferred as raw eight-channel frames, with transport PLAY/PAUSE/REWIND and observed-rate telemetry. **Physical Pico operation, arbitrary archival RIM/BIN images and native FOCAL-69 remain unverified.**
+
+## v0.7 laboratory I/O preview
+
+ATLAS-specific device code 54 (octal) implements LABCLR, LABGO, LABRDY, LABTIM, LABGET, LABSTS, LABHI, LABTOP. Native PDP-8 test programs run using simulated, labeled values in CPython. The MicroPython UART driver and MSP430G2553 ADC10/Timer_A firmware source are provided, but **the target firmware has not been cross-compiled, flashed, or tested on real hardware**. A portable C protocol module passes GCC host tests; a mock-register build only syntax-checks MCU firmware and cannot substitute for an MSP430-target build. Physical serial handshakes, ADC accuracy, capture overflow boundary behavior, and disconnect recovery require bench acceptance. The device words are new ATLAS instructions, not historical DEC assignments. See [LAB_IO_V070.md](LAB_IO_V070.md).

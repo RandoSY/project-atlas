@@ -16,8 +16,9 @@ import sys
 from pdp8 import PDP8, PDP8Error, WORD
 from programs import load_demo, PROGRAMS, load_calculator, CALC_RESULT, CALC_A, CALC_B
 from bootstrap import install_rim, RIM_HIGH_SPEED, RIM_ORIGIN, rim_tape
+from lab_device import LabPeripheral, SimTransport
 
-VERSION = '0.6.0-tape-speeds'
+VERSION = '0.7.0-lab-preview'
 PROTOCOL = 'ATLAS-PDP8/1'
 
 
@@ -29,8 +30,10 @@ def _number(value, label='number', maximum=None):
 
 
 class Bridge:
-    def __init__(self, fields=1):
-        self.cpu = PDP8(fields=fields, output=self.tty_char)
+    def __init__(self, fields=1, lab_transport=None):
+        # Desktop explicitly uses a labeled simulation; Pico passes hardware UART.
+        self.lab = LabPeripheral(lab_transport)
+        self.cpu = PDP8(fields=fields, output=self.tty_char, lab=self.lab)
         self.tty_pending = bytearray()
         self.cursor = 0
         self.mb = 0
@@ -57,6 +60,7 @@ class Bridge:
             'halted': cpu.halted, 'running': self.running and not cpu.halted,
             'reason': cpu.reason, 'instructions': cpu.instructions,
             'tape': cpu.reader_status(),
+            'lab': self.lab.state(),
             'fields': cpu.fields, 'tty_kbd_ready': cpu.kbd_flag,
             'tty_print_ready': cpu.tty_flag, 'ion': cpu.ion,
             'breakpoints': [[f, a] for f, a in sorted(cpu.breakpoints)],
@@ -99,9 +103,38 @@ class Bridge:
             data['protocol'] = PROTOCOL
             data['version'] = VERSION
             data['model'] = 'PDP-8 MicroPython alpha'
-            data['features'] = ['cpu', 'tty', 'memory', 'octal-load', 'demos', 'breakpoints', 'calculator', 'pdp8i-panel', 'high-speed-paper-tape', 'native-rim-loader', 'reader-speed', 'reader-transport']
+            data['features'] = ['cpu', 'tty', 'memory', 'octal-load', 'demos', 'breakpoints', 'calculator', 'pdp8i-panel', 'high-speed-paper-tape', 'native-rim-loader', 'reader-speed', 'reader-transport', 'lab-device-54', 'lab-adc10', 'lab-timer-capture']
             if op == 'hello':
                 data['warning'] = 'Original FOCAL/OS8 unverified; high-speed reader works with RIM, no disk or LINC mode.'
+        elif op == 'lab_identify':
+            self.lab._send(1, b'', 'identify')
+        elif op == 'lab_status':
+            self.lab.service()
+            data['lab'] = self.lab.state()
+        elif op == 'lab_timer_start':
+            if self.running:
+                raise ValueError('STOP before starting a panel measurement')
+            data['accepted'] = self.lab.start(mode='timer')
+        elif op == 'lab_demo':
+            if self.running:
+                raise ValueError('STOP before loading laboratory demo')
+            self.lab.clear()
+            # Real PDP-8 IOT program, channel A0 => AC=0 before LABGO.
+            mode = args.get('mode', 'adc')
+            if mode not in ('adc', 'timer'):
+                raise ValueError('lab demo mode must be adc or timer')
+            words = [0o7200, 0o6541 if mode == 'adc' else 0o6543, 0o6542, 0o5202,
+                     0o7200, 0o6544, 0o3210, 0o7402, 0]
+            cpu.load_words(0o200, words)
+            cpu.pc = 0o200
+            cpu.ac = cpu.l = 0
+            cpu.halted = False
+            cpu.reason = ''
+            self.calc_operation = None
+            self.cursor = 0o200
+            self.running = False
+            data['listing'] = [[0o200+i, word] for i, word in enumerate(words)]
+            data['result_address'] = 0o210
         elif op == 'tape_begin':
             if self.running:
                 raise ValueError('STOP before mounting paper tape')
@@ -377,6 +410,7 @@ class Bridge:
             args = message.get('args', {})
             if not isinstance(args, dict):
                 raise ValueError('args must be object')
+            self.lab.service()  # Also service hardware while the guest is STOPPED.
             data = self._dispatch(op, args)
             response = {'id': ident, 'ok': True, 'state': self.state(), 'data': data}
         except Exception as exc:
@@ -389,8 +423,18 @@ class Bridge:
         return response
 
 
-def serve(fields=1):
-    bridge = Bridge(fields=fields)
+def serve(fields=1, lab_mode='off'):
+    transport = None
+    if lab_mode == 'uart':
+        try:
+            from lab_uart import PicoLabTransport
+            transport = PicoLabTransport()
+        except Exception as exc:
+            # Keep PDP-8/Teletype/paper-tape working with MSP430 unplugged.
+            sys.stderr.write('ATLAS LAB offline: %s\n' % exc)
+    elif lab_mode == 'simulate':
+        transport = SimTransport()
+    bridge = Bridge(fields=fields, lab_transport=transport)
     # USB CDC is the MicroPython REPL UART. While this program is active it is
     # a dedicated JSON-line protocol. Ctrl-C interrupts to return to REPL.
     while True:

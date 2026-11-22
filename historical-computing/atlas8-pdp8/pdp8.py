@@ -47,10 +47,11 @@ class UnsupportedEAE(PDP8Error):
 
 
 class PDP8:
-    def __init__(self, fields=1, output=None, strict=True):
+    def __init__(self, fields=1, output=None, strict=True, lab=None):
         if fields < 1 or fields > 8:
             raise ValueError('fields must be from 1 to 8')
         self.fields = fields
+        self.lab = lab  # Optional ATLAS device 54; absent on unextended PDP-8.
         # Build in small chunks to avoid a giant temporary Python list on Pico.
         self.memory = array('H', [0] * 512)
         for _ in range(fields * (FIELD_SIZE // 512) - 1):
@@ -108,6 +109,9 @@ class PDP8:
         self.reason = ''
         self.breakpoints = set()
         self.last_iot = 0
+        if self.lab is not None and getattr(self, "_initialized", False):
+            self.lab.clear()
+        self._initialized = True
 
     def _addr(self, field, offset):
         if field < 0 or field >= self.fields:
@@ -219,6 +223,8 @@ class PDP8:
             self.kbd_flag = True
 
     def _tick(self):
+        if self.lab is not None:
+            self.lab.service()
         if self.ptr_pending and not self.ptr_paused and self.ptr_due_us is not None:
             now = _now_us()
             if _elapsed_us(now, self.ptr_due_us) >= 0:
@@ -345,6 +351,14 @@ class PDP8:
 
     def _iot(self, ir):
         self.last_iot = ir
+        if 0o6540 <= ir <= 0o6547:
+            if self.lab is None:
+                raise UnsupportedIOT('ATLAS laboratory controller absent: %04o' % ir)
+            try:
+                self.lab.iot(ir, self)
+            except ValueError as exc:
+                raise UnsupportedIOT(str(exc))
+            return
         if 0o6000 <= ir <= 0o6007:
             pulse = ir & 7
             if pulse == 0:  # SKON, skip if interrupts enabled, then disable

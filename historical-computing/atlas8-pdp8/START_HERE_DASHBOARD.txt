@@ -35,3 +35,10 @@ PICO INSTALLATION — IMPORTANT (v0.5.2):
   NEVER copy repository main.py for Chrome mode: that is the text monitor.
   It is CORRECT for the Pico to contain main.py, but it must be the right one.
   See docs\PICO_DEPLOYMENT.md for the exact file list and recovery steps.
+
+ATLAS-8 v0.7 LAB EXPERIMENT (engineering preview):
+Programs -> Laboratory I/O -> Load Native ADC Program -> Run Loaded Program.
+In SIMULATE, address 0210 contains a fixed synthetic ADC value (512).
+In LIVE PICO, flash MSP430 firmware from msp430-lab separately and connect UART/READY.
+The Pico installer installs three additional Python files: lab_protocol.py,
+lab_device.py and lab_uart.py. Read docs/LAB_IO_V070.md for safety and status.
