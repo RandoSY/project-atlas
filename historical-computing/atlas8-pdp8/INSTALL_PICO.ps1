@@ -65,7 +65,7 @@ function File-SHA256([string]$Path) {
     return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash
 }
 
-$runtimeFiles = @('pdp8.py','programs.py','tape.py','monitor.py','dashboard_bridge.py')
+$runtimeFiles = @('pdp8.py','programs.py','tape.py','monitor.py','bootstrap.py','dashboard_bridge.py')
 $entrySource = if ($Mode -eq 'Dashboard') { 'main_dashboard.py' } else { 'main.py' }
 $remoteFiles = @($runtimeFiles) + @('main.py')
 foreach ($name in @($runtimeFiles) + @($entrySource)) {

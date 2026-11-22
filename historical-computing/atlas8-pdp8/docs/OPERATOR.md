@@ -97,3 +97,7 @@ When an IOT is unsupported, the CPU halts with an explicit message identifying i
 ## PDP-8/I panel programming (v0.5.3)
 
 The default tab is now a functional PDP-8/I front panel. For a faithful first program, see [FRONT_PANEL_LESSON.md](FRONT_PANEL_LESSON.md): STOP, LOAD ADD `0000`, DEP `7301`, `7001`, `7430`, `7402`, `5001`, LOAD ADD `0000`, START. To inspect memory, LOAD ADD `0000` and EXAM five times; the memory buffer and address lamps advance. START begins a fresh computation with AC/L cleared. CONT resumes without clearing AC/L. Latched SING INST causes START/CONT to execute one complete PDP-8 machine instruction. SING STEP is disabled because machine-cycle stepping is not implemented. The no-scroll front panel is designed for your dedicated PC.
+
+## v0.6: Virtual paper-tape reader
+
+Open **Programs -> Paper tape**, enter RIM, mount TEST TAPE or a raw eight-channel frame image, choose **10 cps / 300 cps / TURBO**, and press **START AT 7756**. Keep the tape pane visible to see progress and effective speed. **PAUSE/PLAY** hold/resume a pending reader request. The original RIM loader waits at end-of-media; press **STOP** and EXAMINE `0200`. Detailed walk-through: [PAPER_TAPE_LAB.md](PAPER_TAPE_LAB.md). These controls do not use the host to decode tape words into memory.

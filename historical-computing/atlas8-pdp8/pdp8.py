@@ -4,10 +4,30 @@ Original implementation, no third-party runtime dependencies. All instruction
 words and register values use DEC octal conventions in the documentation.
 
 Supported: 4K-32K 12-bit core, six MRI, autoindex, group-1/group-2 OPR,
-PDP-8/E MQ basics, TTY IOT, memory extension, basic interrupts.
+PDP-8/E MQ basics, TTY IOT, PR8/I high-speed paper tape IOT, memory extension, basic interrupts.
 Not supported: EAE, user-mode protection, disk, DECtape, calibrated time.
 """
 from array import array
+
+# Use a microsecond monotonic clock in both CPython and MicroPython.
+# MicroPython ticks wrap; ticks_diff handles that without time.time().
+try:
+    import utime as _time
+    def _now_us():
+        return _time.ticks_us()
+    def _elapsed_us(now, deadline):
+        return _time.ticks_diff(now, deadline)
+except ImportError:
+    import time as _time
+    def _now_us():
+        return _time.monotonic_ns() // 1000
+    def _elapsed_us(now, deadline):
+        return now - deadline
+
+# Nominal reader mechanical inter-frame periods. Turbo has no wall-clock
+# restriction but still needs the PDP-8 IOT handshake for *every* frame.
+READER_PERIOD_US = {'asr33': 100000, 'high': 3334, 'turbo': 0}
+READER_RATE_CPS = {'asr33': 10, 'high': 300, 'turbo': None}
 
 WORD = 0o7777
 FIELD_SIZE = 0o10000
@@ -61,6 +81,25 @@ class PDP8:
         self.tty_flag = False  # Reset state, per original terminal practice.
         self.tty_busy = 0
         self.tty_output = bytearray()
+        # High-speed paper tape reader, device 01; punch, device 02.
+        # The tape is mounted as raw 8-bit hole-pattern frames, never
+        # automatically interpreted as 12-bit PDP-8 instructions.
+        self.ptr_data = bytearray()
+        self.ptr_pos = 0
+        self.ptr_buf = 0
+        self.ptr_flag = False
+        self.ptr_busy = 0  # Legacy status field; latency now clock-based.
+        self.ptr_speed = 'asr33'
+        self.ptr_paused = False
+        self.ptr_pending = False
+        self.ptr_due_us = None
+        self.ptr_delivered = 0
+        self.ptr_rate_count = 0
+        self.ptr_first_delivery_us = None
+        self.ptr_last_delivery_us = None
+        self.ptp_data = bytearray()
+        self.ptp_flag = True
+        self.ptp_busy = 0
         self.switches = 0
         self.halted = False
         self.instructions = 0
@@ -88,6 +127,84 @@ class PDP8:
             loc = (loc + 1) & WORD
         return loc
 
+    def mount_reader(self, data):
+        """Mount raw eight-track paper-tape frames (up to 32768 bytes)."""
+        if len(data) > 32768:
+            raise ValueError('tape too large for the MicroPython memory budget')
+        self.ptr_data = bytearray(data)
+        self.rewind_reader()
+
+    def rewind_reader(self):
+        self.ptr_pos = 0
+        self.ptr_buf = 0
+        self.ptr_flag = False
+        self.ptr_busy = 0
+        self.ptr_pending = False
+        self.ptr_due_us = None
+        self.ptr_delivered = 0
+        self.ptr_rate_count = 0
+        self.ptr_first_delivery_us = None
+        self.ptr_last_delivery_us = None
+
+    def _reader_reset_rate(self):
+        # Rate applies to the *current mode/continuous play segment*, not a
+        # historical average that still includes a previous speed or pause.
+        self.ptr_rate_count = 0
+        self.ptr_first_delivery_us = None
+        self.ptr_last_delivery_us = None
+
+    def reader_speed(self, speed):
+        """Set transport speed without unloading or skipping frames."""
+        if speed not in READER_PERIOD_US:
+            raise ValueError('speed must be asr33, high, or turbo')
+        if speed != self.ptr_speed:
+            self._reader_reset_rate()
+        self.ptr_speed = speed
+        if self.ptr_pending and not self.ptr_paused:
+            self._reader_schedule()
+
+    def reader_pause(self, paused):
+        """Pause/resume transport, preserving pending IOT and buffered byte."""
+        was_paused = self.ptr_paused
+        self.ptr_paused = bool(paused)
+        if self.ptr_paused:
+            self.ptr_due_us = None
+        elif was_paused:
+            self._reader_reset_rate()
+            if self.ptr_pending:
+                self._reader_schedule()
+
+    def _reader_schedule(self):
+        now = _now_us()
+        period = READER_PERIOD_US[self.ptr_speed]
+        self.ptr_due_us = now + period if period else now
+
+    def _ptr_fetch(self):
+        # RFC is issued by the *emulated PDP-8 instruction*. A new frame
+        # becomes ready only when both transport and mechanical timer permit.
+        self.ptr_flag = False
+        self.ptr_pending = self.ptr_pos < len(self.ptr_data)
+        self.ptr_due_us = None
+        if self.ptr_pending and not self.ptr_paused:
+            self._reader_schedule()
+
+    def reader_status(self):
+        effective = 0
+        if self.ptr_rate_count > 1 and self.ptr_first_delivery_us is not None:
+            elapsed = _elapsed_us(self.ptr_last_delivery_us, self.ptr_first_delivery_us)
+            if elapsed > 0:
+                effective = round((self.ptr_rate_count - 1) * 1000000 / elapsed, 1)
+        return {
+            'size': len(self.ptr_data), 'position': self.ptr_pos,
+            'ready': self.ptr_flag, 'pending': self.ptr_pending,
+            'paused': self.ptr_paused, 'speed': self.ptr_speed,
+            'nominal_cps': READER_RATE_CPS[self.ptr_speed],
+            'effective_cps': effective, 'delivered': self.ptr_delivered,
+            'eof': bool(self.ptr_data) and self.ptr_pos >= len(self.ptr_data)
+                   and not self.ptr_flag and not self.ptr_pending,
+            'punch_bytes': len(self.ptp_data),
+        }
+
     def feed_keyboard(self, data):
         if isinstance(data, str):
             data = data.encode('ascii', 'replace')
@@ -102,6 +219,23 @@ class PDP8:
             self.kbd_flag = True
 
     def _tick(self):
+        if self.ptr_pending and not self.ptr_paused and self.ptr_due_us is not None:
+            now = _now_us()
+            if _elapsed_us(now, self.ptr_due_us) >= 0:
+                self.ptr_buf = self.ptr_data[self.ptr_pos]
+                self.ptr_pos += 1
+                self.ptr_flag = True
+                self.ptr_pending = False
+                self.ptr_due_us = None
+                self.ptr_delivered += 1
+                self.ptr_rate_count += 1
+                if self.ptr_first_delivery_us is None:
+                    self.ptr_first_delivery_us = now
+                self.ptr_last_delivery_us = now
+        if self.ptp_busy:
+            self.ptp_busy -= 1
+            if self.ptp_busy == 0:
+                self.ptp_flag = True
         if self.tty_busy > 0:
             self.tty_busy -= 1
             if self.tty_busy == 0:
@@ -261,6 +395,38 @@ class PDP8:
                     raise UnsupportedIOT('memory IOT %04o not implemented' % ir)
             elif self.strict:
                 raise UnsupportedIOT('memory IOT %04o not implemented' % ir)
+            return
+        if 0o6010 <= ir <= 0o6017:  # PR8/I high-speed reader
+            pulse = ir & 7
+            if pulse == 1:  # RSF
+                if self.ptr_flag:
+                    self.pc = (self.pc + 1) & WORD
+            elif pulse == 2:  # RRB, OR byte into AC and clear flag
+                self.ac |= self.ptr_buf
+                self.ptr_flag = False
+            elif pulse == 4:  # RFC, start next frame
+                self._ptr_fetch()
+            elif pulse == 6:  # RRB RFC, atomic read-and-advance
+                self.ac |= self.ptr_buf
+                self._ptr_fetch()
+            else:
+                raise UnsupportedIOT('unsupported paper reader IOT %04o' % ir)
+            return
+        if 0o6020 <= ir <= 0o6027:  # High-speed punch
+            pulse = ir & 7
+            if pulse == 1:  # PSF
+                if self.ptp_flag:
+                    self.pc = (self.pc + 1) & WORD
+            elif pulse == 2:  # PCF
+                self.ptp_flag = False
+            elif pulse in (4, 6):  # PPC / PLS
+                if len(self.ptp_data) >= 32768:
+                    raise PDP8Error('paper punch output buffer full')
+                self.ptp_data.append(self.ac & 0xff)
+                self.ptp_flag = False
+                self.ptp_busy = 2
+            else:
+                raise UnsupportedIOT('unsupported paper punch IOT %04o' % ir)
             return
         if 0o6030 <= ir <= 0o6037:  # Console keyboard
             pulse = ir & 7

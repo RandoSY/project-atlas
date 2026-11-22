@@ -60,3 +60,7 @@ This differs only in which file becomes Pico's `main.py`: the repository's `main
 - If you get the **Active Independence dashboard** instead of ATLAS-8, you are using the wrong **PC HTTP port**, a separate issue from the Pico `main.py`. ATLAS-8 normally uses 8878, never 8765.
 
 **Validation status:** this deployment script has been reviewed and exercised via local static/dry-run checks; a real Pico hardware installation and original FOCAL/OS/8 compatibility remain unverified.
+
+## v0.6.0 required file update
+
+The **`bootstrap.py`** module is now mandatory because `dashboard_bridge.py` imports the native RIM-loader definitions. `INSTALL_PICO_WINDOWS.bat` / `INSTALL_PICO.ps1` include it in the backup/upload/checksum sequence. A Pico with new `dashboard_bridge.py` but missing `bootstrap.py` will fail to start. `main_dashboard.py` must still be copied **as `main.py` last** in Chrome dashboard mode. See [Paper Tape Lab](PAPER_TAPE_LAB.md).

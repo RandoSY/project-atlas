@@ -38,3 +38,7 @@ This is a testable **educational PDP-8 core and browser operator console**. No c
 8. Disconnect/reconnect USB; verify safe error handling and recovery. Record firmware version, Pico model and USB port.
 
 Known issue: `dashboard_bridge.py` uses standard REPL stdin/stdout as USB CDC transport. Firmware-specific REPL input behavior may interfere with JSON-line handling and will require bench validation. Some boards may benefit from a dedicated `USBDevice` CDC interface or a framed transport in a later release.
+
+## v0.6.0 clocked paper tape
+
+Device-01 high-speed reader IOTs (`RSF/RRB/RFC`) and the 17-word native RIM loader are exercised with a synthetic tape fixture. Reader wall-clock modes: **ASR-33 RATE = 10 cps**, **HIGH-SPEED = 300 cps**, **TURBO = no artificial delay**. The ASR-33 selection is timing only; the separate low-speed reader hardware/device is **not** emulated. Files up to 32 KiB can be transferred as raw eight-channel frames, with transport PLAY/PAUSE/REWIND and observed-rate telemetry. **Physical Pico operation, arbitrary archival RIM/BIN images and native FOCAL-69 remain unverified.**

@@ -115,6 +115,7 @@
             <button class="subtab selected" data-program-view="demos">Native demonstrations</button>
             <button class="subtab" data-program-view="loader">Octal loader</button>
             <button class="subtab" data-program-view="memory">Core memory</button>
+            <button class="subtab" data-program-view="tape">Paper tape</button>
           </div>
           <div class="program-view" data-view="demos">
             <div class="view-header"><strong>REAL PDP-8 INSTRUCTIONS</strong><span>Load machine-language examples; use RUN on the Front Panel tab.</span></div>
@@ -131,6 +132,39 @@
             <label class="textarea-label">MACHINE WORDS<textarea id="loadWords" rows="6" spellcheck="false">7300 1250 1251 3252 1252 7402</textarea></label>
             <div class="calc-actions"><button class="action-primary" id="btnLoadWords">LOAD INTO CORE</button><button class="action-outline" id="btnSetPc">SET START ADDRESS</button></div>
             <div class="workspace-note">PDP-8 addresses and words use octal 0000–7777. Use the Front Panel to single-step.</div>
+          </div>
+          <div class="program-view hidden" data-view="tape">
+            <div class="view-header"><strong>HIGH-SPEED PAPER-TAPE READER · DEVICE 01</strong><span>Original DEC RIM boot instructions; CPU executes every IOT</span></div>
+            <div class="tape-grid">
+              <section class="tape-module">
+                <h3>1 · Install authentic RIM loader</h3>
+                <p>Deposits the documented 17 PDP-8 words into 7756–7776. Or toggle the same words manually using the Front Panel.</p>
+                <button class="action-primary" id="btnRimInstall">ENTER RIM LOADER</button>
+                <p class="tape-caption">This step represents console switch entry. The paper tape itself is never decoded by JavaScript.</p>
+              </section>
+              <section class="tape-module">
+                <h3>2 · Mount a paper tape</h3>
+                <input id="tapeFile" type="file" accept=".bin,.rim,.pt,.tape,application/octet-stream" aria-label="Select original eight-channel paper tape binary">
+                <div class="tape-buttons"><button class="action-primary" id="btnTapeMount">MOUNT FILE</button><button class="action-outline" id="btnTapeDemo">USE TEST TAPE</button><button class="action-outline" id="btnTapeRewind">REWIND</button></div>
+                <label class="tape-speed-label" for="tapeSpeed">TAPE SPEED
+                  <select id="tapeSpeed" aria-label="Virtual paper tape speed">
+                    <option value="asr33">ASR-33 RATE · 10 cps</option>
+                    <option value="high">HIGH-SPEED · 300 cps</option>
+                    <option value="turbo">TURBO · uncapped</option>
+                  </select>
+                </label>
+                <div class="tape-buttons"><button class="action-outline" id="btnTapePlay">PLAY READER</button><button class="action-outline" id="btnTapePause">PAUSE READER</button></div>
+                <p class="tape-caption">10 cps simulates ASR-33 timing on device 01; this is not an ASR-33 reader-device implementation. Raw 8-bit frames; maximum 32 KiB.</p>
+              </section>
+              <section class="tape-module tape-module-status">
+                <h3>3 · Operate the real loader</h3>
+                <p>STOP → ENTER RIM → mount tape → start at <strong>7756</strong>. The reader fetches actual frames through <code>6014</code>, <code>6011</code> and <code>6016</code>.</p>
+                <div class="tape-buttons"><button class="action-primary" id="btnTapeStart">START AT 7756</button><button class="action-outline" id="btnTapeStop">STOP</button></div>
+                <output id="tapeReadout" aria-live="polite">Tape not mounted</output>
+                <progress id="tapeProgress" max="1" value="0" aria-label="Paper tape position"></progress>
+                <p class="tape-caption">The guest executes the original RIM IOTs for every byte, even at TURBO speed. At end-of-tape the loader waits; STOP to examine memory.</p>
+              </section>
+            </div>
           </div>
           <div class="program-view hidden" data-view="memory">
             <div class="view-header"><strong>CORE MEMORY EXAMINER</strong><span>Browse memory by page, without a scrollbar.</span></div>
@@ -153,7 +187,7 @@
             <article class="guide-card"><span class="guide-index">01</span><h3>Start with a calculator</h3><p>Enter two values, load PDP-8 machine code, and step through each real instruction. Watch AC, LINK and PC change.</p></article>
             <article class="guide-card"><span class="guide-index">02</span><h3>Program the PDP-8/I panel</h3><p>STOP; switch 0000 and LOAD ADD; deposit 7301 7001 7430 7402 5001; reload 0000 and START. Use SING INST + CONT to single-instruction step.</p></article>
             <article class="guide-card"><span class="guide-index">03</span><h3>Load native code</h3><p>Use built-in examples or directly enter octal words. The calculator is generated as PDP-8 instructions—not evaluated in JavaScript.</p></article>
-            <article class="guide-card"><span class="guide-index">04</span><h3>Understand the limits</h3><p>Educational PDP-8 CPU and TTY prototype. OS/8, original FOCAL, disk IOT, EAE, PDP-12/LINC mode and MSP430 I/O still need validation.</p></article>
+            <article class="guide-card"><span class="guide-index">04</span><h3>Understand the limits</h3><p>Educational PDP-8 CPU with high-speed paper tape. Original FOCAL, OS/8, disk IOT, EAE, PDP-12/LINC mode and MSP430 I/O still need validation.</p></article>
           </div>
           <div class="guide-footer">ENGINE: Select SIMULATE or LIVE PICO in the top bar; enter the USB port for Live mode. Targets do not share memory. All machine words use octal. Historical educational reconstruction.</div>
         </div>

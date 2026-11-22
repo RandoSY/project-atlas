@@ -15,8 +15,9 @@ import sys
 
 from pdp8 import PDP8, PDP8Error, WORD
 from programs import load_demo, PROGRAMS, load_calculator, CALC_RESULT, CALC_A, CALC_B
+from bootstrap import install_rim, RIM_HIGH_SPEED, RIM_ORIGIN, rim_tape
 
-VERSION = '0.5.3-panel'
+VERSION = '0.6.0-tape-speeds'
 PROTOCOL = 'ATLAS-PDP8/1'
 
 
@@ -36,6 +37,8 @@ class Bridge:
         self.panel_field = 0
         self.running = False
         self.calc_operation = None
+        self.tape_upload = None
+        self.tape_expected = 0
 
     def tty_char(self, code):
         # CR, LF and printable bytes retain their original values. JSON encoder
@@ -53,6 +56,7 @@ class Bridge:
             'panel_field': self.panel_field, 'panel_next_addr': self.cursor,
             'halted': cpu.halted, 'running': self.running and not cpu.halted,
             'reason': cpu.reason, 'instructions': cpu.instructions,
+            'tape': cpu.reader_status(),
             'fields': cpu.fields, 'tty_kbd_ready': cpu.kbd_flag,
             'tty_print_ready': cpu.tty_flag, 'ion': cpu.ion,
             'breakpoints': [[f, a] for f, a in sorted(cpu.breakpoints)],
@@ -95,9 +99,77 @@ class Bridge:
             data['protocol'] = PROTOCOL
             data['version'] = VERSION
             data['model'] = 'PDP-8 MicroPython alpha'
-            data['features'] = ['cpu', 'tty', 'memory', 'octal-load', 'demos', 'breakpoints', 'calculator', 'pdp8i-panel']
+            data['features'] = ['cpu', 'tty', 'memory', 'octal-load', 'demos', 'breakpoints', 'calculator', 'pdp8i-panel', 'high-speed-paper-tape', 'native-rim-loader', 'reader-speed', 'reader-transport']
             if op == 'hello':
-                data['warning'] = 'Not OS/8 or FOCAL validated; TTY only; no disk or LINC mode.'
+                data['warning'] = 'Original FOCAL/OS8 unverified; high-speed reader works with RIM, no disk or LINC mode.'
+        elif op == 'tape_begin':
+            if self.running:
+                raise ValueError('STOP before mounting paper tape')
+            size = _number(args.get('size'), 'tape size', 32768)
+            if size < 1:
+                raise ValueError('tape must not be empty')
+            self.tape_expected = size
+            self.tape_upload = bytearray()
+            data['accepted'] = size
+        elif op == 'tape_chunk':
+            if self.tape_upload is None:
+                raise ValueError('begin tape transfer first')
+            chunk = args.get('bytes')
+            if not isinstance(chunk, list) or not 1 <= len(chunk) <= 192:
+                raise ValueError('tape chunk must have 1..192 bytes')
+            if any(type(item) is not int or item < 0 or item > 255 for item in chunk):
+                raise ValueError('tape bytes must be integers 0..255')
+            if len(self.tape_upload) + len(chunk) > self.tape_expected:
+                raise ValueError('tape transfer exceeds declared size')
+            self.tape_upload.extend(chunk)
+            data['received'] = len(self.tape_upload)
+        elif op == 'tape_end':
+            if self.tape_upload is None or len(self.tape_upload) != self.tape_expected:
+                raise ValueError('incomplete paper tape transfer')
+            cpu.mount_reader(self.tape_upload)
+            self.tape_upload = None
+            self.tape_expected = 0
+            data['mounted'] = len(cpu.ptr_data)
+        elif op == 'tape_speed':
+            speed = args.get('speed')
+            cpu.reader_speed(speed)
+            data['speed'] = speed
+        elif op == 'tape_transport':
+            action = args.get('action')
+            if action not in ('play', 'pause'):
+                raise ValueError('tape transport must be play or pause')
+            cpu.reader_pause(action == 'pause')
+            data['transport'] = action
+        elif op == 'tape_rewind':
+            if self.running:
+                raise ValueError('STOP before rewinding tape')
+            cpu.rewind_reader()
+        elif op == 'tape_unmount':
+            if self.running:
+                raise ValueError('STOP before removing tape')
+            cpu.mount_reader(b'')
+        elif op == 'tape_status':
+            data['tape'] = self.state()['tape']
+        elif op == 'rim_install':
+            if self.running:
+                raise ValueError('STOP before entering RIM loader')
+            data['deposited'] = install_rim(cpu)
+            data['origin'] = RIM_ORIGIN
+            data['listing'] = [[RIM_ORIGIN+i, w] for i,w in enumerate(RIM_HIGH_SPEED)]
+            self.cursor = RIM_ORIGIN
+            self.panel_field = 0
+            self.calc_operation = None
+            self.running = False
+        elif op == 'rim_fixture':
+            if self.running:
+                raise ValueError('STOP before mounting tape')
+            # Original machine words on a synthetic tape. RIM must execute to
+            # transfer them into core; this command never writes those words.
+            example = [(0o0200, 0o7301), (0o0201, 0o7001),
+                       (0o0202, 0o7001), (0o0203, 0o7402)]
+            cpu.mount_reader(rim_tape(example))
+            data['mounted'] = len(cpu.ptr_data)
+            data['expected_memory'] = [[address,word] for address,word in example]
         elif op == 'calculator':
             operation = args.get('operation', 'add')
             a = _number(args.get('a'), 'calculator A', WORD)

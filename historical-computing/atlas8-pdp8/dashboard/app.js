@@ -183,6 +183,16 @@
       $('calcResult').textContent='—';$('calcResultDetail').textContent='Load a program to begin.';
       $('calcLink').textContent=String(s.l);
     }
+    if ($('tapeReadout') && s.tape){
+      const t=s.tape;
+      const rate=t.nominal_cps===null?'TURBO':`${t.nominal_cps} cps`;
+      const condition=t.paused?'PAUSED':t.ready?'FRAME READY':t.eof?'END OF TAPE':t.pending?'FEEDING':'STANDBY';
+      $('tapeReadout').textContent=t.size?`READER ${t.position}/${t.size} frames · ${rate} · observed ${t.effective_cps || 0} cps · ${condition} · PUNCH ${t.punch_bytes}`:'Tape not mounted';
+      $('tapeProgress').max=Math.max(1,t.size);
+      $('tapeProgress').value=t.position;
+      // Do not overwrite the speed currently being selected while an API call is pending.
+      if(document.activeElement!==$('tapeSpeed')) $('tapeSpeed').value=t.speed;
+    }
     $('instructionHint').textContent=`PC ${oct(s.pc)}`;
     if (ui.list.length) markActiveLine(s.pc);
   }
@@ -222,7 +232,7 @@
       return names[code]+indirect+zero+' '+(word&0o177).toString(8).padStart(3,'0');
     }
     if(code===6) {
-      const dict={0o6031:'KSF',0o6032:'KCC',0o6034:'KRS',0o6036:'KRB',0o6041:'TSF',0o6046:'TLS',0o6044:'TPC',0o6001:'ION',0o6002:'IOF'};
+      const dict={0o6011:'RSF',0o6012:'RRB',0o6014:'RFC',0o6016:'RRB RFC',0o6031:'KSF',0o6032:'KCC',0o6034:'KRS',0o6036:'KRB',0o6041:'TSF',0o6046:'TLS',0o6044:'TPC',0o6001:'ION',0o6002:'IOF'};
       return dict[word]||'IOT '+oct(word);
     }
     const known={0o7000:'NOP',0o7200:'CLA',0o7300:'CLA CLL',0o7402:'HLT',0o7404:'OSR',0o7040:'CMA',0o7001:'IAC',0o7440:'SZA',0o7510:'SPA',0o7450:'SNA'};
@@ -391,6 +401,40 @@
     if(response){ui.loaded=false;ui.list=[];drawListing();toast(response.data.description);}
   }
 
+  async function tapeAction(op,args={}) {
+    ui.stopped=true;
+    const r=await command(op,args);
+    if(r)toast(`${op.replaceAll('_',' ')} completed.`);
+    return r;
+  }
+
+  async function mountTape() {
+    const file=$('tapeFile').files[0];
+    if(!file){toast('Select a raw paper tape file.',true);return;}
+    if(file.size<1||file.size>32768){toast('Tape must contain 1–32768 bytes.',true);return;}
+    if(ui.busy){return;}
+    ui.busy=true;ui.stopped=true;
+    try {
+      const bytes=new Uint8Array(await file.arrayBuffer());
+      await api('tape_begin',{size:bytes.length});
+      for(let i=0;i<bytes.length;i+=192){
+        await api('tape_chunk',{bytes:Array.from(bytes.subarray(i,i+192))});
+        $('tapeReadout').textContent=`UPLOADING ${Math.min(i+192,bytes.length)}/${bytes.length} frames`;
+      }
+      await api('tape_end');
+      toast(`Mounted ${file.name}, ${bytes.length} tape frames.`);
+    } catch(e) {toast(`Tape upload failed: ${e.message}`,true);}
+    finally {ui.busy=false;}
+  }
+
+  async function tapeStart() {
+    ui.stopped=true;
+    const set=await command('switches',{value:0o7756});
+    if(!set)return;
+    const started=await command('panel_start',{single_instruction:false});
+    if(started){ui.stopped=false;toast('RIM is reading raw tape frames. STOP at end of tape.');tickLoop();}
+  }
+
   async function boot() {
     buildPanel();
     for(const tab of document.querySelectorAll('.tab'))tab.addEventListener('click',()=>showTab(tab.dataset.tab));
@@ -427,6 +471,26 @@
     for(const card of document.querySelectorAll('[data-demo]'))card.addEventListener('click',()=>runDemo(card.dataset.demo));
     wire('btnMemoryRead','click',inspectMemory);
     wire('btnLoadWords','click',loadWords);
+    wire('btnRimInstall','click',()=>tapeAction('rim_install'));
+    wire('btnTapeDemo','click',()=>tapeAction('rim_fixture'));
+    wire('btnTapeRewind','click',()=>tapeAction('tape_rewind'));
+    wire('btnTapeMount','click',mountTape);
+    wire('btnTapeStart','click',tapeStart);
+    wire('btnTapeStop','click',stop);
+    wire('tapeSpeed','change',async e=>{
+      const value=e.target.value;
+      const reply=await command('tape_speed',{speed:value});
+      if(reply)toast(`Reader timing: ${value==='asr33'?'10 cps':value==='high'?'300 cps':'TURBO'}.`);
+    });
+    wire('btnTapePlay','click',async()=>{
+      const reply=await command('tape_transport',{action:'play'});
+      if(reply)toast('Paper tape transport PLAY.');
+    });
+    wire('btnTapePause','click',async()=>{
+      const reply=await command('tape_transport',{action:'pause'});
+      if(reply)toast('Paper tape transport PAUSED.');
+    });
+
     wire('btnSetPc','click',async()=>{
       try {const address=parseOct('loadOrigin');const r=await command('pc',{address});if(r)toast(`PC set to ${oct(address)}.`);}
       catch(error){toast(error.message,true);}

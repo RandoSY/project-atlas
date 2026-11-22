@@ -21,7 +21,7 @@ from reportlab.lib.colors import HexColor
 from xml.sax.saxutils import escape
 
 ROOT=Path(__file__).resolve().parent
-DEST=ROOT/'ATLAS8_Operators_and_Programmers_Manual_v0.5.3.pdf'
+DEST=ROOT/'ATLAS8_Operators_and_Programmers_Manual_v0.6.0.pdf'
 IMG=ROOT/'assets'/'ATLAS8_historical_panel.png'
 IMGT=ROOT/'assets'/'ATLAS8_dashboard_terminal.png'
 IMGM=ROOT/'assets'/'ATLAS8_dashboard_mobile.png'
@@ -75,7 +75,7 @@ class ManualDoc(BaseDocTemplate):
             canv.drawRightString(PAGE_W-MARGIN_X,PAGE_H-12,'OPERATOR + PROGRAMMER MANUAL')
         canv.setStrokeColor(LT);canv.line(MARGIN_X,43,PAGE_W-MARGIN_X,43)
         canv.setFillColor(GRAY);canv.setFont('AtlasSans',7.8)
-        canv.drawString(MARGIN_X,30,'0.5.3-alpha  |  22 November 2026  |  Educational PDP-8 reconstruction')
+        canv.drawString(MARGIN_X,30,'0.6.0-alpha  |  22 November 2026  |  Educational PDP-8 reconstruction')
         canv.drawRightString(PAGE_W-MARGIN_X,30,str(page))
         canv.restoreState()
     def afterFlowable(self, flowable):
@@ -137,14 +137,14 @@ P('PDP-8 Emulator + Programmable Calculator','cover_title')
 P('Operator’s Guide and Programmer’s Reference<br/>For the dedicated Chrome PC and RP2040 MicroPython implementation','cover_sub')
 NOTE('One console. Two execution targets.', 'SIMULATE runs the <b>same Python PDP-8 core</b> under CPython on the PC. LIVE PICO uses that core under MicroPython on the RP2040, reached through USB serial. Chrome renders the front panel; it is not a separate PDP-8 CPU implementation.')
 IMAGE(IMG,width=430)
-P('<b>Release 0.5.3-alpha</b>  |  22 November 2026<br/>Prepared for Project Atlas / Software-Defined Laboratory','tiny')
+P('<b>Release 0.6.0-alpha</b>  |  22 November 2026<br/>Prepared for Project Atlas / Software-Defined Laboratory','tiny')
 PAGE()
 
 P('READ THIS FIRST','cover_kicker')
 H1('What this release actually does')
 P('ATLAS-8 is a <b>working educational PDP-8 core and browser dashboard</b>. Students load native 12-bit machine words, single-step them, inspect octal registers, and see Teletype output. The front-panel switch lesson is the first lesson because its arithmetic is performed by PDP-8 instructions, not by a JavaScript expression evaluator.')
 TB(['Verified today','Not yet verified'],[
- ('44 CPython unit/integration tests pass','Operation on the physical RP2040'),
+ ('52 CPython unit/integration tests pass','Operation on the physical RP2040'),
  ('Calculator: 7+6 = 13 and 7×6 = 42','Booting original OS/8 or FOCAL'),
  ('Teletype outputs HELLO PDP-8','Original DEC hardware timing or all device IOTs'),
  ('Browser smoke: no page scrolling at tested sizes','All screen sizes; live serial USB interface'),
@@ -202,7 +202,7 @@ H1('3 / Installation: PC simulator')
 H2('Step 1 — Unpack and test')
 P('Unzip the ATLAS-8 source bundle on the dedicated PC. Open a terminal or PowerShell in the project folder containing <font face="AtlasMono">pc_dashboard_server.py</font>. Python 3.9+ is recommended. Run the desktop test suite first:')
 CODE('''python -m unittest discover -s tests -v''')
-P('At this release, the expected result is <b>44 tests passing</b>. This confirms local instruction behavior and the host-mode tests, not physical Pico operation.')
+P('At this release, the expected result is <b>52 tests passing</b>. This confirms local instruction behavior and the host-mode tests, not physical Pico operation.')
 H2('Step 2 — Launch the dashboard')
 CODE('''python pc_dashboard_server.py --mode sim --open''')
 P('If the browser does not open, use the exact URL printed by the server (normally <font face="AtlasMono">http://127.0.0.1:8878/</font>). Port 8765 belongs to Active Independence, not ATLAS-8. If 8878 is busy, ATLAS-8 chooses a free port between 8879 and 8898. Browser launch requires a successful ATLAS-8 identity check. The host is accessible from the dedicated PC only.')
@@ -437,7 +437,7 @@ P('First close the PC dashboard host and reconnect with a serial REPL. Send Ctrl
 H1('14 / Validation and operator acceptance tests')
 H2('Automated tests')
 CODE('''python -m unittest discover -s tests -v
-# Expected in v0.5.3: 44 tests, all OK
+# Expected in v0.6.0: 52 tests, all OK
 
 python tests/browser_smoke.py
 # Expected: no page overflow, no JS exceptions;
@@ -454,7 +454,7 @@ for st in [
  'Disconnect USB during operation; confirm visible error and recoverability.',
  'Repeat after a full power cycle; record any required Pico-specific changes.'
 ]:B(st)
-NOTE('Release gate','The 30 desktop tests and browser smoke tests have passed, but physical acceptance tests are <b>still open</b>. Do not label this build as validated live hardware or native OS/8 compatible until those separate milestones are met.')
+NOTE('Release gate','The 52 CPython tests and browser smoke tests have passed, but physical acceptance tests are <b>still open</b>. Do not label this build as validated live hardware or native OS/8 compatible until those separate milestones are met.')
 
 H1('15 / Classroom laboratory sequence')
 TB(['Activity','Learner evidence'],[
@@ -477,6 +477,28 @@ B('<b>Laboratory hardware:</b> Attach MSP430 analog and digital I/O to LINC func
 B('<b>SDL:</b> Derive portable SAMPLE, PLOT, CONTROL, TRIGGER and RECORD operations from functioning historical reference behavior.')
 B('<b>Portability:</b> Connect Arduino UNO, micro:bit V2, M5Stack ESP32-S3, and finally low-cost smartphones as user interfaces and portable labs.')
 P('The sequence preserves the central Project Atlas idea: begin at the historical problem, reconstruct the operating principle, then extend it to accessible contemporary tools.')
+
+H1('17 / Clocked virtual paper-tape reader - v0.6.0')
+P('The Programs / Paper tape screen now operates an emulated DEC high-speed reader (device 01). The guest PDP-8 executes its original <b>RFC, RSF and RRB</b> IOT instructions to request and collect eight-channel tape frames. No dashboard code secretly decodes and deposits the program into memory.')
+TB(['Speed selector','Mechanism period','Instruction behavior'],[
+ ('ASR-33 RATE: 10 cps','100 ms / frame','Device 01 IOTs; only ASR-33 timing is simulated'),
+ ('HIGH SPEED: 300 cps','3.334 ms / frame','Same reader IOT handshake, faster transport'),
+ ('TURBO: uncapped','No programmed delay','Every frame still requires a guest reader request')],widths=[148,108,CONTENT_W-256])
+NOTE('Important historical limitation','The <b>ASR-33 RATE</b> selector models the ten-character-per-second mechanical rate on the <b>device 01</b> reader. It does <b>not</b> implement the ASR-33 low-speed reader electronics or separate device protocol. The PDP-8 CPU is instruction-driven, not transistor- or cycle-accurate.')
+H2('Operate the genuine RIM paper-tape bootstrap')
+for step in [
+ 'Select Programs, then Paper tape. In step 1, press ENTER RIM LOADER; this deposits the documented 17-word loader at octal 7756-7776. For full historical switch operation, manually enter these words on the Front Panel instead.',
+ 'Mount USE TEST TAPE (a synthetic 64-frame RIM file with a four-word sample program) or select a user-provided raw eight-channel paper-tape image up to 32768 bytes.',
+ 'Choose ASR-33 RATE (10 cps) for a classroom demonstration, HIGH-SPEED (300 cps) for historical fast-reader operation, or TURBO for the shortest practical load.',
+ 'Press START AT 7756; the original CPU executes RIM instructions 6014/6011/6016 to receive one frame at a time. Watch the tape frame count and progress bar.',
+ 'Use PAUSE READER to suspend frame delivery while preserving a pending read, and PLAY READER to resume; a paused guest normally waits in the reader flag loop.',
+ 'At end-of-tape, the original loader typically waits for another frame. Press STOP before rewind or examining memory. Examine address 0200: 7301 7001 7001 7402. Start at 0200 to execute this fixture, ending with AC=0003 and HLT.'
+]:B(step)
+H2('Nominal speed versus observed speed')
+P('The displayed nominal speed is the upper bound set by the virtual mechanism. The observed cps is measured from actual frame delivery timestamps within the current play/speed segment. Browser request batching, USB communication and host processing can make the measured rate lower. The measured counter resets when the reader speed changes or a paused transport resumes.')
+H2('Live Pico installation and compatibility')
+P('Install <b>pdp8.py, programs.py, tape.py, monitor.py, bootstrap.py, dashboard_bridge.py</b> and then install <b>main_dashboard.py as Pico main.py last</b>. The Windows Pico installation script has been updated to include and verify bootstrap.py. Desktop scripts and dashboard HTML remain on the Windows PC. Physical Pico, archived RIM/BIN files and native FOCAL-69/OS8 execution remain unvalidated; this release has deterministic clock and browser tests, not laboratory hardware acceptance.')
+P('Detailed lab instructions: docs/PAPER_TAPE_LAB.md. Original paper-tape media is not redistributed. The bundled fixture is an original synthetic sample with real PDP-8 words.')
 
 H1('Appendix A / Quick-reference card')
 TB(['Task','Where','Action'],[
@@ -502,6 +524,7 @@ TB(['File','Role'],[
  ('pdp8.py','MicroPython/CPython PDP-8 CPU, memory and I/O core'),
  ('programs.py','Native demos and calculator word-code generators'),
  ('dashboard_bridge.py','JSON-line / JSON-object bridge to the CPU'),
+ ('bootstrap.py','Authentic PDP-8 RIM loader and test-tape frame fixture'),
  ('main_dashboard.py','Dashboard mode source: install on Pico as main.py'),
  ('main.py, monitor.py, tape.py','Standalone text monitor main.py; monitor and tape helpers'),
  ('pc_dashboard_server.py','Dedicated PC HTTP server and SIM/LIVE transport selector'),
@@ -514,7 +537,7 @@ H2('Reference material')
 P('For historical instruction semantics, consult Digital Equipment Corporation PDP-8/PDP-8/E programming handbooks and field-maintenance documentation; Doug Jones’s University of Iowa PDP-8 FAQ; and the open-source SIMH PDP-8 simulator. These references are useful for comparing obscure instruction combinations and IOT behavior. They do not independently validate the present build.')
 P('Source pointers: <font face="AtlasMono">github.com/simh/simh</font> and <font face="AtlasMono">homepage.cs.uiowa.edu/~jones/pdp8/</font>. Historical binary media may impose their own licensing and provenance requirements. This bundle includes <b>original educational demos</b>, not a packaged DEC OS/8 or FOCAL distribution.')
 H2('Version declaration')
-P('This manual describes the source tree in ATLAS-8 v0.5.3-alpha as inspected and tested on 22 November 2026. If dashboard behavior changes, regenerate the manual and rerun all verification. The operator should prioritize the executable source and automated tests when a disagreement is found.')
+P('This manual describes the source tree in ATLAS-8 v0.6.0-alpha as inspected and tested on 22 November 2026. If dashboard behavior changes, regenerate the manual and rerun all verification. The operator should prioritize the executable source and automated tests when a disagreement is found.')
 NOTE('The point of the project','Students are not merely operating an old-style computer. They are discovering how an instruction, register, measured signal and human question connect—and how those same ideas later reappear in LINC, the Arduino Revolution and the smartphone laboratory.')
 
 # doc render

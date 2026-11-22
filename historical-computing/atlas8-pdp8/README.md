@@ -1,3 +1,5 @@
+> **ATLAS-8 v0.6.0 - CLOCKED VIRTUAL PAPER TAPE:** The Programs -> Paper tape screen now offers **ASR-33 RATE (10 cps)**, **HIGH-SPEED (300 cps)**, and **TURBO**, plus **PLAY/PAUSE/REWIND**, effective-rate readout, tape progress and a native PDP-8 RIM loader demo. At every speed, the *emulated PDP-8* executes reader IOTs to consume each frame. [Step-by-step tape lab](docs/PAPER_TAPE_LAB.md). **ASR-33 RATE models only timing**, not the ASR-33's separate low-speed reader device. Physical Pico and FOCAL-69 remain unverified.
+
 > **ATLAS-8 v0.5.3 Front Panel:** Launch the Windows dashboard and begin on the functional PDP-8/I front panel: switch register, LOAD ADD, DEP, EXAM, START, CONT, STOP, and SING INST. [Follow the historical five-word programming lesson](docs/FRONT_PANEL_LESSON.md). The [Pikuma PDP-8 tutorial](https://pikuma.com/blog/pdp-8-minicomputer) explains the computer architecture behind the switches. This is a functional panel reconstruction, not a cycle-accurate hardware model.
 
 ![ATLAS-8 historical front-panel mark](assets/atlas8-brand.svg)
@@ -6,11 +8,11 @@
 
 # ATLAS-8 — PDP-8 Dashboard and MicroPython Emulator
 
-**Project Atlas | Historical Computing | v0.5.3 educational alpha — historically operated PDP-8/I front panel**
+**Project Atlas | Historical Computing | v0.6.0 educational alpha — historically operated PDP-8/I front panel**
 
 A working, inspectable PDP-8 educational emulator. Run it directly on a dedicated PC with a professional, five-tab Chrome dashboard, or select a Raspberry Pi Pico running the **same Python CPU core** under MicroPython. The computer being emulated is a DEC PDP-8-style 12-bit machine; the Raspberry Pi Pico is its modern physical host.
 
-> **Compatibility warning:** 44 CPython software tests pass, and calculator/Teletype browser exercises were smoke-tested. Physical RP2040 USB serial, native FOCAL and OS/8 execution have **not yet been demonstrated**. This is a development/teaching release, not a certified complete PDP-8 implementation.
+> **Compatibility warning:** 52 CPython software tests pass, and calculator/Teletype browser exercises were smoke-tested. Physical RP2040 USB serial, native FOCAL and OS/8 execution have **not yet been demonstrated**. This is a development/teaching release, not a certified complete PDP-8 implementation.
 
 ## Quick start — no hardware required
 
@@ -37,8 +39,8 @@ The header switches between **SIMULATE** (CPU executes in Python on your PC) and
 | Pico boot | [`main_dashboard.py`](main_dashboard.py) | Copy to Pico as `main.py` for live dashboard mode |
 | Native programs | [`programs.py`](programs.py) | PDP-8 machine-code examples and arithmetic |
 | Loader and monitor | [`tape.py`](tape.py), [`monitor.py`](monitor.py) | RIM/BIN experiments and octal operator shell |
-| Test suite | [`tests/`](tests/) | 44 CPU, historical panel, loader, host and deployment tests; browser smoke tests |
-| PDF manual | [`ATLAS8_Operators_and_Programmers_Manual_v0.5.3.pdf`](ATLAS8_Operators_and_Programmers_Manual_v0.5.3.pdf) | Operator, programmer, installation and troubleshooting guide |
+| Test suite | [`tests/`](tests/) | 52 CPU, historical panel, loader, reader-clock, host and deployment tests; browser smoke tests |
+| PDF manual | [`ATLAS8_Operators_and_Programmers_Manual_v0.6.0.pdf`](ATLAS8_Operators_and_Programmers_Manual_v0.6.0.pdf) | Operator, programmer, installation and troubleshooting guide |
 | Documentation | [`docs/`](docs/) | Protocol, installation, operator procedures, compatibility and release status |
 
 ## Pico LIVE mode — IMPORTANT: choose the correct `main.py`
@@ -55,11 +57,17 @@ The header switches between **SIMULATE** (CPU executes in Python on your PC) and
 ### Manual installation (alternative)
 
 1. Install a board-matched MicroPython UF2 on the Raspberry Pi Pico.
-2. Copy the runtime modules `pdp8.py`, `programs.py`, `tape.py`, `monitor.py`, and `dashboard_bridge.py`, then copy **`main_dashboard.py` renamed as `main.py`** to the Pico filesystem. The installer automates this sequence. Do not copy `main.py` from the stand-alone monitor for dashboard operation.
+2. Copy the runtime modules `pdp8.py`, `programs.py`, `tape.py`, `monitor.py`, `bootstrap.py`, and `dashboard_bridge.py`, then copy **`main_dashboard.py` renamed as `main.py`** to the Pico filesystem. The installer automates this sequence. Do not copy `main.py` from the stand-alone monitor for dashboard operation.
 3. Close Thonny/mpremote serial REPLs, attach the Pico via USB, select **LIVE PICO** in the dashboard header, enter the port (e.g. `COM7`) and connect.
 4. On the PC, install `pyserial` with `python -m pip install pyserial` if it is not already installed.
 
 See [dashboard communication protocol](docs/DASHBOARD_PROTOCOL.md), [installation](docs/INSTALL.md), [operator walkthrough](docs/OPERATOR.md), and [limitations](docs/COMPATIBILITY.md).
+
+## Virtual paper tape (v0.6.0)
+
+![ATLAS-8 virtual paper-tape reader dashboard](assets/ATLAS8_v060_tape_1280x720.png)
+
+Select **Programs -> Paper tape** for an authentic PDP-8 instruction-driven RIM reader with three clocked transport modes. The browser shows tape progress, flags, nominal/observed rates and play/pause/rewind. The tape is delivered as raw frames via emulated device-01 IOTs, not host memory injection. [Paper tape lab](docs/PAPER_TAPE_LAB.md). The Pico installer includes the new required `bootstrap.py` dependency.
 
 ## Tests
 
@@ -67,7 +75,7 @@ See [dashboard communication protocol](docs/DASHBOARD_PROTOCOL.md), [installatio
 python -m unittest discover -s tests -v
 ```
 
-The original v0.5 suite had 26 checks; v0.5.1 added port-conflict checks, v0.5.2 added installation/documentation consistency checks, and v0.5.3 adds PDP-8/I operator-panel execution tests (44 total). Physical Pico acceptance is still pending. The optional `tests/browser_smoke.py` requires an appropriate browser automation setup and is not included in that unittest count. No physical Pico test result is claimed.
+The original v0.5 suite had 26 checks; v0.5.1 added port-conflict checks, v0.5.2 added installation/documentation consistency checks, and v0.5.3 added PDP-8/I panel tests; v0.6.0 adds eight reader timing/transport tests (52 total). Physical Pico acceptance is still pending. The optional `tests/browser_smoke.py` requires an appropriate browser automation setup and is not included in that unittest count. No physical Pico test result is claimed.
 
 ## Architecture
 
@@ -94,7 +102,7 @@ ATLAS-8 begins with genuine front-panel machine-code entry and moves to a progra
 
 **Experience before equation. Need before technology. History before abstraction.**
 
-[Project Atlas root](https://github.com/RandoSY/project-atlas) · [Release status](docs/RELEASE_STATUS.md) · [Manual PDF](ATLAS8_Operators_and_Programmers_Manual_v0.5.3.pdf)
+[Project Atlas root](https://github.com/RandoSY/project-atlas) · [Release status](docs/RELEASE_STATUS.md) · [Manual PDF](ATLAS8_Operators_and_Programmers_Manual_v0.6.0.pdf)
 
 ## License
 

@@ -121,3 +121,7 @@ Press Ctrl-C. If the monitor restarts after a reset, remove its autorun file: `m
 ## Uninstall
 
 Remove `main.py` or delete the transferred `.py` modules from the Pico flash; the regular MicroPython firmware remains intact.
+
+## v0.6.0 tape reader installation
+
+The Pico now **requires `bootstrap.py`** in addition to `pdp8.py`, `programs.py`, `tape.py`, `monitor.py` and `dashboard_bridge.py`; the PowerShell Pico installer copies it automatically. As always, install repository `main_dashboard.py` as **Pico `main.py` last** for Chrome, not the standalone monitor entry. Read [PAPER_TAPE_LAB.md](PAPER_TAPE_LAB.md) for ASR-33-rate (10 cps), high-speed (300 cps) and TURBO operation.

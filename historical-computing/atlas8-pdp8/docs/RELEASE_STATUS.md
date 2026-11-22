@@ -1,3 +1,13 @@
+
+## v0.6.0 - Clocked virtual paper tape
+
+- Three rate modes (10, 300, unrestricted), clocked byte delivery through emulated device-01 reader IOTs.
+- Pause/resume and rewind without skipped frames; pending read preserved. Tape state reports nominal and measured effective rate.
+- Synthetic RIM tape fixture loaded by native 17-word DEC loader. Browser keeps the tape screen visible while reading and shows position/progress.
+- Corrected earlier undefined browser `poll()` call when starting the tape.
+- Windows Pico installer now includes mandatory `bootstrap.py`.
+- **52 CPython tests pass**, including eight new reader-clock and native-loader tests. Physical Pico untested; FOCAL/OS8 not validated.
+
 # ATLAS-8 0.5.3 historical panel release
 
 - Functional PDP-8/I-inspired browser front panel, default dashboard view; original calculator remains a separate tab.

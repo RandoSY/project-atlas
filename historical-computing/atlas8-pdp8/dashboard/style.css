@@ -144,3 +144,20 @@ footer{padding:5px 0;flex:0 0 auto}
 .historic-footer span:first-child{overflow:hidden;text-overflow:ellipsis;flex:1}
 @media(max-width:1200px){.historic-header{gap:8px}.historic-provenance{display:none}.historic-upper{grid-template-columns:14% minmax(0,1fr) 21%;gap:6px;padding:7px}.rim-plaque{padding:5px}.rim-plaque small{display:none}.historic-lower{grid-template-columns:74px 62px 62px minmax(185px,1fr) minmax(325px,1.5fr);gap:3px;padding:5px}.historical-control-row{gap:2px}.historical-key{font-size:8px!important}}
 @media(max-height:700px){.historic-console{grid-template-rows:44px minmax(0,1fr) 110px 45px 22px}.rim-plaque{gap:2px}.rim-words{gap:1px}.historic-upper{padding:5px}.historic-lower{padding:3px}.historical-lesson button{padding:5px}.historic-registers .register-row{padding:0}.historic-header{padding:3px 9px}}
+
+/* v0.6 — browser paper tape reader stays inside one no-scroll Programs subview. */
+.tape-grid{display:grid;grid-template-columns:1fr 1fr 1.15fr;gap:12px;height:calc(100% - 43px);min-height:0;padding:7px}
+.tape-module{display:flex;flex-direction:column;gap:10px;min-width:0;min-height:0;padding:14px;border:1px solid #c4d4d9;border-radius:10px;background:#eef4f3;color:#183441}
+.tape-module h3{font:800 clamp(11px,1.2vw,16px) var(--mono);margin:0}
+.tape-module p{font-size:clamp(10px,.95vw,13px);line-height:1.4;margin:0}
+.tape-module input[type=file]{display:block;width:100%;max-width:100%;font-size:11px}
+.tape-module .tape-caption{margin-top:auto;color:#576c75;font-size:10px}
+.tape-buttons{display:flex;flex-wrap:wrap;gap:6px}
+.tape-buttons button{font-size:10px;padding:8px}
+#tapeReadout{display:block;min-height:32px;padding:8px;border:1px solid #9ab6bc;border-radius:5px;background:#122c34;color:#a3e4d4;font:11px var(--mono)}
+@media(max-width:900px){.tape-grid{grid-template-columns:1fr 1fr;gap:7px}.tape-module{padding:8px;gap:5px}.tape-module:last-child{grid-column:1/-1}.tape-module p{font-size:10px}.tape-module .tape-caption{display:none}}
+
+.tape-speed-label{display:flex;flex-direction:column;gap:4px;font:700 11px var(--mono);color:#294e5c}
+.tape-speed-label select{max-width:100%;padding:8px;background:#fff;color:#173643;border:1px solid #aabfc6;border-radius:5px;font:700 11px var(--mono)}
+#tapeProgress{height:12px;width:100%;accent-color:#146f7a}
+@media(max-height:740px){.tape-module{padding:9px;gap:6px}.tape-buttons button{padding:6px}.tape-speed-label select{padding:5px}}

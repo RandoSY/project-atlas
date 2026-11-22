@@ -93,3 +93,7 @@ All commands go to the same emulator core in SIMULATE or LIVE PICO; the host own
 | `panel_continue` | `single_instruction: bool` | CONT: resume from current PC with AC and LINK unchanged |
 
 `state.panel_next_addr` is the next address for DEP/EXAM; `state.ma` is its mirror in this educational reconstruction. `state.mb` is the last examined/deposited word. `SING STEP` is intentionally disabled; PDP-8/I microcycles are not emulated. See [the operator programming lesson](FRONT_PANEL_LESSON.md) for the historical procedure.
+
+## v0.6.0 paper reader protocol
+
+The same commands work on CPython SIM and MicroPython LIVE PICO (six runtime modules, **including `bootstrap.py`**). Set speed via `tape_speed {"speed":"asr33"|"high"|"turbo"}` and transport via `tape_transport {"action":"play"|"pause"}`. `tape_rewind` and `tape_unmount` require CPU STOP. Mount arbitrary raw frames: `tape_begin {"size":N}`, repeated `tape_chunk {"bytes":[0..255]}` chunks of at most 192 bytes, `tape_end {}`. `rim_fixture {}` mounts a generated 64-frame tutorial tape; `rim_install {}` deposits the historical loader at octal `7756` but **does not load the guest program**. `state.tape` returns `position`, `size`, `delivered`, `speed`, `nominal_cps` (null for TURBO), `effective_cps`, `ready`, `pending`, `paused`, `eof`, and `punch_bytes`. **ASR-33 RATE** is a timing preset on the device-01 reader, not a claim of implementing separate ASR-33 IOTs.
