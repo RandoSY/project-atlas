@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 300" role="img" aria-labelledby="title desc">
+<title id="title">ATLAS-8 PDP-8 Dashboard and Emulator</title>
+<desc id="desc">Vintage computing insignia: navy, amber toggle lamps and green oscilloscope trace.</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07131d"/><stop offset="1" stop-color="#14394c"/></linearGradient></defs>
+<rect width="1200" height="300" rx="20" fill="url(#bg)"/>
+<path d="M53 37L24 128h26l29-91zm48 0L72 128h26l29-91z" fill="#7c9faf"/><path d="M135 37l-29 91h26l29-91z" fill="#ee9427"/>
+<text x="205" y="119" font-family="Arial,DejaVu Sans,sans-serif" font-weight="800" font-size="100" letter-spacing="4" fill="#f9f2e4">ATLAS-8</text>
+<path d="M208 144h580" stroke="#ee9427" stroke-width="7"/>
+<text x="207" y="207" font-family="Arial,DejaVu Sans,sans-serif" font-size="43" fill="#a7c3d0">PDP-8 DASHBOARD &amp; EMULATOR</text>
+<g transform="translate(792,39)"><rect width="365" height="221" rx="18" fill="#091d1e" stroke="#9cabb0" stroke-width="7"/><rect x="16" y="16" width="333" height="145" rx="10" fill="#071b18" stroke="#536e71" stroke-width="2"/><path d="M24 89h20l18-19 21 48 23-79 18 50h40l20-32 28 54 22-22h96" stroke="#77f5a8" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><g fill="#f2a038"><circle cx="30" cy="188" r="8"/><circle cx="65" cy="188" r="8"/><circle cx="100" cy="188" r="8"/><circle cx="135" cy="188" r="8"/><circle cx="170" cy="188" r="8"/><circle cx="205" cy="188" r="8"/><circle cx="240" cy="188" r="8"/><circle cx="275" cy="188" r="8"/><circle cx="310" cy="188" r="8"/></g></g>
+</svg>
