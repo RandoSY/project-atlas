@@ -1,0 +1,25 @@
+ATLAS-8 PDP-8 DASHBOARD - RELEASE 0.5 ALPHA
+=========================================
+
+WINDOWS - easiest way to try it:
+  1. Extract this entire ZIP into a folder on your PC.
+  2. Have Python 3 installed.
+  3. Double-click START_DASHBOARD_WINDOWS.bat.
+  4. In Chrome, open http://127.0.0.1:8765/ if it does not open automatically.
+
+LINUX/macOS:
+  In the extracted folder, run:
+     python3 pc_dashboard_server.py --mode sim --open
+  Then visit http://127.0.0.1:8765/ on that PC.
+
+Start with the CALCULATOR tab: try 7 + 6, select LOAD NATIVE PROGRAM,
+then STEP ONE INSTRUCTION or RUN TO HLT.
+
+Five no-scroll tabs: CALCULATOR, FRONT PANEL, PROGRAMS, TELETYPE, GUIDE.
+Use the fixed header selector to choose SIMULATE or LIVE PICO.
+SIMULATE requires no physical Pico. LIVE PICO requires MicroPython firmware,
+files described in README.md, and the pyserial Python package on PC.
+
+Do not open dashboard/index.html directly: it requires the local Python server.
+The dashboard has not been publicly hosted; 127.0.0.1 is local to your own PC.
+See ATLAS8_Operators_and_Programmers_Manual_v0.5.pdf for details.
