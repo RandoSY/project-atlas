@@ -5,12 +5,12 @@ WINDOWS - easiest way to try it:
   1. Extract this entire ZIP into a folder on your PC.
   2. Have Python 3 installed.
   3. Double-click START_DASHBOARD_WINDOWS.bat.
-  4. In Chrome, open http://127.0.0.1:8765/ if it does not open automatically.
+  4. Use the exact URL printed in the server window if the browser does not open automatically (normally http://127.0.0.1:8878/).
 
 LINUX/macOS:
   In the extracted folder, run:
      python3 pc_dashboard_server.py --mode sim --open
-  Then visit http://127.0.0.1:8765/ on that PC.
+  Then visit the exact URL printed in the server window (normally http://127.0.0.1:8878/).
 
 Start with the CALCULATOR tab: try 7 + 6, select LOAD NATIVE PROGRAM,
 then STEP ONE INSTRUCTION or RUN TO HLT.
@@ -22,4 +22,9 @@ files described in README.md, and the pyserial Python package on PC.
 
 Do not open dashboard/index.html directly: it requires the local Python server.
 The dashboard has not been publicly hosted; 127.0.0.1 is local to your own PC.
-See ATLAS8_Operators_and_Programmers_Manual_v0.5.pdf for details.
+See ATLAS8_Operators_and_Programmers_Manual_v0.5.1.pdf for details.
+
+PORT CONFLICT FIX v0.5.1:
+  Port 8765 belongs to another Atlas app. ATLAS-8 starts on 8878 by default.
+  If 8878 is busy, the launcher selects a free port and prints the real URL.
+  The browser opens only after validating the ATLAS-8 server identity.

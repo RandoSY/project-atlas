@@ -21,7 +21,7 @@ from reportlab.lib.colors import HexColor
 from xml.sax.saxutils import escape
 
 ROOT=Path(__file__).resolve().parent
-DEST=ROOT/'ATLAS8_Operators_and_Programmers_Manual_v0.5.pdf'
+DEST=ROOT/'ATLAS8_Operators_and_Programmers_Manual_v0.5.1.pdf'
 IMG=ROOT/'assets'/'ATLAS8_dashboard_desktop.png'
 IMGT=ROOT/'assets'/'ATLAS8_dashboard_terminal.png'
 IMGM=ROOT/'assets'/'ATLAS8_dashboard_mobile.png'
@@ -75,7 +75,7 @@ class ManualDoc(BaseDocTemplate):
             canv.drawRightString(PAGE_W-MARGIN_X,PAGE_H-12,'OPERATOR + PROGRAMMER MANUAL')
         canv.setStrokeColor(LT);canv.line(MARGIN_X,43,PAGE_W-MARGIN_X,43)
         canv.setFillColor(GRAY);canv.setFont('AtlasSans',7.8)
-        canv.drawString(MARGIN_X,30,'0.5.0-alpha  |  22 November 2026  |  Educational PDP-8 reconstruction')
+        canv.drawString(MARGIN_X,30,'0.5.1-alpha  |  22 November 2026  |  Educational PDP-8 reconstruction')
         canv.drawRightString(PAGE_W-MARGIN_X,30,str(page))
         canv.restoreState()
     def afterFlowable(self, flowable):
@@ -137,7 +137,7 @@ P('PDP-8 Emulator + Programmable Calculator','cover_title')
 P('Operator’s Guide and Programmer’s Reference<br/>For the dedicated Chrome PC and RP2040 MicroPython implementation','cover_sub')
 NOTE('One console. Two execution targets.', 'SIMULATE runs the <b>same Python PDP-8 core</b> under CPython on the PC. LIVE PICO uses that core under MicroPython on the RP2040, reached through USB serial. Chrome renders the front panel; it is not a separate PDP-8 CPU implementation.')
 IMAGE(IMG,width=430)
-P('<b>Release 0.5.0-alpha</b>  |  22 November 2026<br/>Prepared for Project Atlas / Software-Defined Laboratory','tiny')
+P('<b>Release 0.5.1-alpha</b>  |  22 November 2026<br/>Prepared for Project Atlas / Software-Defined Laboratory','tiny')
 PAGE()
 
 P('READ THIS FIRST','cover_kicker')
@@ -188,7 +188,7 @@ TB(['Layer','Runs on','Responsibility'],[
  ('LIVE target','Pico (MicroPython)','Same PDP-8 core; USB CDC JSON lines to PC host'),
  ('Future lab I/O','MSP430G2553','Analog and digital experimental interfaces; not in this release')],widths=[113,128,CONTENT_W-241])
 H2('Communication contracts')
-P('Browser-to-host uses HTTP to <font face="AtlasMono">127.0.0.1:8765</font>. Host-to-Pico uses newline-delimited JSON over USB serial. A request has a numeric ID and an operation. The reply echoes the ID and includes CPU state, optional data and optional Teletype output. Processing is bounded: the browser issues repeated small <font face="AtlasMono">tick</font> requests instead of trapping the computer in a giant run loop.')
+P('Browser-to-host uses HTTP to <font face="AtlasMono">127.0.0.1:8878</font>. Host-to-Pico uses newline-delimited JSON over USB serial. A request has a numeric ID and an operation. The reply echoes the ID and includes CPU state, optional data and optional Teletype output. Processing is bounded: the browser issues repeated small <font face="AtlasMono">tick</font> requests instead of trapping the computer in a giant run loop.')
 CODE('''Chrome  (five fixed-height tabs)
    |  HTTP JSON /api/command
 Dedicated PC host (127.0.0.1)
@@ -205,7 +205,7 @@ CODE('''python -m unittest discover -s tests -v''')
 P('At this release, the expected result is <b>26 tests passing</b>. This confirms local instruction behavior and the host-mode tests, not physical Pico operation.')
 H2('Step 2 — Launch the dashboard')
 CODE('''python pc_dashboard_server.py --mode sim --open''')
-P('If your browser does not open, navigate to <font face="AtlasMono">http://127.0.0.1:8765/</font>. The host binds to the loopback address only, so it is accessible from the dedicated PC, not a public website.')
+P('If the browser does not open, use the exact URL printed by the server (normally <font face="AtlasMono">http://127.0.0.1:8878/</font>). Port 8765 belongs to Active Independence, not ATLAS-8. If 8878 is busy, ATLAS-8 chooses a free port between 8879 and 8898. Browser launch requires a successful ATLAS-8 identity check. The host is accessible from the dedicated PC only.')
 H2('Step 3 — First exercise')
 B('The initial tab is <b>Calculator</b>. Enter A=7, operation=Add, B=6.')
 B('Choose <b>LOAD NATIVE PROGRAM</b>. The instruction listing should appear.')
@@ -398,7 +398,7 @@ P('A direct unlimited run could prevent the host from honoring STOP while the gu
 
 H1('13 / Troubleshooting and recovery')
 TB(['Symptom','Likely cause and action'],[
- ('Browser does not load','Check Python server window; open http://127.0.0.1:8765; verify port is free.'),
+ ('Browser does not load','Check the host window for the actual URL; the default is 8878, but an occupied port triggers a fallback. Do not use 8765.'),
  ('Page appears disconnected','Restart host; inspect server output; verify /api/info responds.'),
  ('LIVE PICO fails','Port name incorrect, board not flashed, or serial port owned by Thonny/mpremote. SIM remains available.'),
  ('MicroPython ImportError','Copy all dashboard runtime modules; copy main_dashboard.py as main.py last.'),
@@ -414,7 +414,7 @@ P('First close the PC dashboard host and reconnect with a serial REPL. Send Ctrl
 H1('14 / Validation and operator acceptance tests')
 H2('Automated tests')
 CODE('''python -m unittest discover -s tests -v
-# Expected in v0.5: 26 tests, all OK
+# Expected in v0.5.1: 30 tests, all OK
 
 python tests/browser_smoke.py
 # Expected: no page overflow, no JS exceptions;
@@ -431,7 +431,7 @@ for st in [
  'Disconnect USB during operation; confirm visible error and recoverability.',
  'Repeat after a full power cycle; record any required Pico-specific changes.'
 ]:B(st)
-NOTE('Release gate','The 26 desktop tests and browser smoke tests have passed, but physical acceptance tests are <b>still open</b>. Do not label this build as validated live hardware or native OS/8 compatible until those separate milestones are met.')
+NOTE('Release gate','The 30 desktop tests and browser smoke tests have passed, but physical acceptance tests are <b>still open</b>. Do not label this build as validated live hardware or native OS/8 compatible until those separate milestones are met.')
 
 H1('15 / Classroom laboratory sequence')
 TB(['Activity','Learner evidence'],[
@@ -490,7 +490,7 @@ H2('Reference material')
 P('For historical instruction semantics, consult Digital Equipment Corporation PDP-8/PDP-8/E programming handbooks and field-maintenance documentation; Doug Jones’s University of Iowa PDP-8 FAQ; and the open-source SIMH PDP-8 simulator. These references are useful for comparing obscure instruction combinations and IOT behavior. They do not independently validate the present build.')
 P('Source pointers: <font face="AtlasMono">github.com/simh/simh</font> and <font face="AtlasMono">homepage.cs.uiowa.edu/~jones/pdp8/</font>. Historical binary media may impose their own licensing and provenance requirements. This bundle includes <b>original educational demos</b>, not a packaged DEC OS/8 or FOCAL distribution.')
 H2('Version declaration')
-P('This manual describes the source tree in ATLAS-8 v0.5.0-alpha as inspected and tested on 22 November 2026. If dashboard behavior changes, regenerate the manual and rerun all verification. The operator should prioritize the executable source and automated tests when a disagreement is found.')
+P('This manual describes the source tree in ATLAS-8 v0.5.1-alpha as inspected and tested on 22 November 2026. If dashboard behavior changes, regenerate the manual and rerun all verification. The operator should prioritize the executable source and automated tests when a disagreement is found.')
 NOTE('The point of the project','Students are not merely operating an old-style computer. They are discovering how an instruction, register, measured signal and human question connect—and how those same ideas later reappear in LINC, the Arduino Revolution and the smartphone laboratory.')
 
 # doc render

@@ -2,7 +2,7 @@
 
 # ATLAS-8 — PDP-8 Dashboard and MicroPython Emulator
 
-**Project Atlas | Historical Computing | v0.5 educational alpha**
+**Project Atlas | Historical Computing | v0.5.1 educational alpha — localhost port fix**
 
 A working, inspectable PDP-8 educational emulator. Run it directly on a dedicated PC with a professional, five-tab Chrome dashboard, or select a Raspberry Pi Pico running the **same Python CPU core** under MicroPython. The computer being emulated is a DEC PDP-8-style 12-bit machine; the Raspberry Pi Pico is its modern physical host.
 
@@ -13,7 +13,7 @@ A working, inspectable PDP-8 educational emulator. Run it directly on a dedicate
 1. Clone or download this repository and open `historical-computing/atlas8-pdp8/`.
 2. Install Python 3.
 3. On Windows, run `START_DASHBOARD_WINDOWS.bat`. On macOS or Linux, run `python3 pc_dashboard_server.py --mode sim --open`.
-4. If Chrome does not open automatically, visit **http://127.0.0.1:8765/**.
+4. If the browser does not open automatically, use the **exact URL printed in the server window** (normally **http://127.0.0.1:8878/**). Port 8765 is used by other Atlas tools. If 8878 is occupied, ATLAS-8 selects another available port automatically.
 5. Begin in **Calculator**, run 7+6, 7−6, or 7×6, then single-step PDP-8 instructions while watching the accumulator (AC), link (L), and program counter (PC).
 
 ### Five tabs — no page scrolling
@@ -34,7 +34,7 @@ The header switches between **SIMULATE** (CPU executes in Python on your PC) and
 | Native programs | [`programs.py`](programs.py) | PDP-8 machine-code examples and arithmetic |
 | Loader and monitor | [`tape.py`](tape.py), [`monitor.py`](monitor.py) | RIM/BIN experiments and octal operator shell |
 | Test suite | [`tests/`](tests/) | 26 CPU, loader and dashboard-host tests; optional browser smoke |
-| PDF manual | [`ATLAS8_Operators_and_Programmers_Manual_v0.5.pdf`](ATLAS8_Operators_and_Programmers_Manual_v0.5.pdf) | Operator, programmer, installation and troubleshooting guide |
+| PDF manual | [`ATLAS8_Operators_and_Programmers_Manual_v0.5.1.pdf`](ATLAS8_Operators_and_Programmers_Manual_v0.5.1.pdf) | Operator, programmer, installation and troubleshooting guide |
 | Documentation | [`docs/`](docs/) | Protocol, installation, operator procedures, compatibility and release status |
 
 ## Pico LIVE mode
@@ -52,7 +52,7 @@ See [dashboard communication protocol](docs/DASHBOARD_PROTOCOL.md), [installatio
 python -m unittest discover -s tests -v
 ```
 
-The suite has 26 passing checks in the original v0.5 desktop environment. The optional `tests/browser_smoke.py` requires an appropriate browser automation setup and is not included in that unittest count. No physical Pico test result is claimed.
+The original v0.5 suite had 26 passing checks; v0.5.1 adds port-conflict and startup-identity regression tests. The optional `tests/browser_smoke.py` requires an appropriate browser automation setup and is not included in that unittest count. No physical Pico test result is claimed.
 
 ## Architecture
 
@@ -79,7 +79,7 @@ ATLAS-8 begins with a programmable calculator and leads to actual PDP-8 machine 
 
 **Experience before equation. Need before technology. History before abstraction.**
 
-[Project Atlas root](https://github.com/RandoSY/project-atlas) · [Release status](docs/RELEASE_STATUS.md) · [Manual PDF](ATLAS8_Operators_and_Programmers_Manual_v0.5.pdf)
+[Project Atlas root](https://github.com/RandoSY/project-atlas) · [Release status](docs/RELEASE_STATUS.md) · [Manual PDF](ATLAS8_Operators_and_Programmers_Manual_v0.5.1.pdf)
 
 ## License
 

@@ -20,11 +20,11 @@ python pc_dashboard_server.py --mode serial --port COM7 --open
 python pc_dashboard_server.py --mode serial --port /dev/ttyACM0 --open
 ```
 
-Without `--open`, navigate to `http://127.0.0.1:8765/` in Chrome. The topbar has `ENGINE: SIMULATE / LIVE PICO` and a Connect button. Selecting LIVE PICO requires a serial port name. Failed serial acquisition retains the previously active engine. Switching to either engine starts a *new, independent machine state*; programs are not transferred between engines. Do not have Thonny, mpremote, and the PC host open the same USB serial port concurrently.
+Without `--open`, navigate to the **actual URL printed by the server** (normally `http://127.0.0.1:8878/`) in Chrome. ATLAS-8 never defaults to port 8765, which is used by other Project Atlas applications. If the default port is occupied, the server chooses the next free port from 8879–8898. An explicit `--http-port NUMBER` is strict and fails clearly if occupied. When launching a browser, the host first verifies `/api/info` reports `app_id: ATLAS8-PDP8`; a foreign application is never opened as ATLAS-8. The topbar has `ENGINE: SIMULATE / LIVE PICO` and a Connect button. Selecting LIVE PICO requires a serial port name. Failed serial acquisition retains the previously active engine. Switching to either engine starts a *new, independent machine state*; programs are not transferred between engines. Do not have Thonny, mpremote, and the PC host open the same USB serial port concurrently.
 
 ## HTTP endpoints
 
-- `GET /api/info` returns current mode, port, protocol and host identity.
+- `GET /api/info` returns current mode, port, protocol and `app_id: ATLAS8-PDP8` host identity.
 - `POST /api/mode` JSON: `{"mode":"sim"}` or `{"mode":"serial","port":"COM7"}`. The connection is established before the previous backend is retired. Switching mode deliberately resets the session state.
 - `POST /api/command` sends `{"id":1,"op":"hello","args":{}}` and receives an object with corresponding `id`, `ok`, `state`, optional `data`, optional `tty`, or `error`.
 
@@ -58,8 +58,8 @@ Important parameters:
 After starting a PC simulation server:
 
 ```bash
-curl -s http://127.0.0.1:8765/api/info
-curl -s -X POST http://127.0.0.1:8765/api/command \
+curl -s http://127.0.0.1:8878/api/info
+curl -s -X POST http://127.0.0.1:8878/api/command \
   -H 'Content-Type: application/json' \
   -d '{"id":1,"op":"hello","args":{}}'
 ```
@@ -67,7 +67,7 @@ curl -s -X POST http://127.0.0.1:8765/api/command \
 To switch modes:
 
 ```bash
-curl -s -X POST http://127.0.0.1:8765/api/mode \
+curl -s -X POST http://127.0.0.1:8878/api/mode \
   -H 'Content-Type: application/json' \
   -d '{"mode":"sim"}'
 ```

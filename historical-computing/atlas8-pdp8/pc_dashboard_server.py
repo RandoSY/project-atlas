@@ -8,6 +8,7 @@ Only binds to 127.0.0.1; no remote access, code execution, or file upload.
 Serial mode needs `pip install pyserial`; simulation needs only Python.
 """
 import argparse
+import errno
 import json
 import mimetypes
 import os
@@ -15,6 +16,7 @@ import threading
 import time
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+from urllib.request import urlopen
 
 from dashboard_bridge import Bridge, PROTOCOL
 
@@ -23,6 +25,9 @@ WEB = BASE / 'dashboard'
 ALLOWED = {'/': 'index.html', '/index.html': 'index.html',
            '/app.js': 'app.js', '/style.css': 'style.css'}
 MAX_REQUEST = 8192
+APP_ID = 'ATLAS8-PDP8'
+DEFAULT_HTTP_PORT = 8878   # Dedicated ATLAS-8 port; 8765 belongs to other Atlas tools.
+FALLBACK_PORTS = 20       # If 8878 is occupied, find another free ATLAS-8 port.
 
 
 class DesktopTransport:
@@ -98,7 +103,7 @@ class SwitchableTransport:
     def info(self):
         with self.lock:
             return {'mode': self.mode, 'protocol': PROTOCOL,
-                    'port': self.port, 'host': 'dedicated PC',
+                    'port': self.port, 'host': 'dedicated PC', 'app_id': APP_ID,
                     'available_modes': ['sim', 'serial'],
                     'note': 'Targets have independent machine state; changing modes resets the selected session.'}
 
@@ -142,6 +147,7 @@ def make_handler(transport, mode=None):
         def _write(self, status, body, mimetype='application/json; charset=utf-8'):
             self.send_response(status)
             self.send_header('Content-Type', mimetype)
+            self.send_header('X-Atlas8-Application', APP_ID)
             self.send_header('Cache-Control', 'no-store')
             self.send_header('X-Content-Type-Options', 'nosniff')
             self.send_header('X-Frame-Options', 'DENY')
@@ -195,34 +201,93 @@ def make_handler(transport, mode=None):
     return Handler
 
 
+def bind_dashboard_server(transport, port=None, fallback_ports=FALLBACK_PORTS, allow_fallback=False):
+    """Bind ATLAS-8 safely: a conflicting service is NEVER opened as our UI.
+
+    An explicit port is strict; the default has a small fallback range.
+    Passing port=0 requests an OS-assigned port, useful for tests.
+    """
+    chosen = DEFAULT_HTTP_PORT if port is None else port
+    if not 0 <= chosen <= 65535:
+        raise ValueError('HTTP port must be 0..65535')
+    strict = port is not None and not allow_fallback
+    ports = [chosen] if strict else list(range(chosen, min(65536, chosen + fallback_ports + 1)))
+    for candidate in ports:
+        try:
+            return ThreadingHTTPServer(('127.0.0.1', candidate), make_handler(transport))
+        except OSError as exc:
+            if exc.errno not in (errno.EADDRINUSE, 10048):
+                raise
+            if strict or candidate == ports[-1]:
+                raise RuntimeError(
+                    'ATLAS-8 HTTP port %s is already being used by another application. '
+                    'Close that application or use --http-port with a free port.' % candidate
+                ) from exc
+    raise RuntimeError('No free localhost port available for ATLAS-8')
+
+
+def verify_atlas8_server(url):
+    """Require an ATLAS-8 identity response before launching a browser."""
+    with urlopen(url + 'api/info', timeout=3) as reply:
+        data = json.load(reply)
+    if data.get('app_id') != APP_ID or data.get('protocol') != PROTOCOL:
+        raise RuntimeError('The URL does not identify an ATLAS-8 server; browser not opened')
+    return data
+
+
+def open_dashboard_browser(url):
+    import webbrowser
+    # Prefer Chrome for the classroom dashboard, but keep Firefox usable.
+    try:
+        webbrowser.get('chrome').open(url)
+    except webbrowser.Error:
+        webbrowser.open(url)
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description='Project Atlas PDP-8 dashboard for dedicated PC')
     ap.add_argument('--mode', choices=('sim', 'serial'), default='sim')
     ap.add_argument('--port', help='USB serial port, e.g. COM7 or /dev/ttyACM0')
     ap.add_argument('--baud', type=int, default=115200)
     ap.add_argument('--fields', type=int, default=1, choices=range(1, 9))
-    ap.add_argument('--http-port', type=int, default=8765)
+    ap.add_argument('--http-port', type=int, default=None, help='Override default port 8878 (disables automatic fallback)')
     ap.add_argument('--open', action='store_true', help='Open default browser after starting')
     opts = ap.parse_args(argv)
     if opts.mode == 'serial' and not opts.port:
         ap.error('--port is required for serial mode')
     transport = SwitchableTransport(opts.fields, mode=opts.mode, port=opts.port, baud=opts.baud)
-    server = ThreadingHTTPServer(('127.0.0.1', opts.http_port), make_handler(transport))
-    url = 'http://127.0.0.1:%d/' % opts.http_port
-    print('Project Atlas PDP-8 | mode: %s | %s' % (opts.mode.upper(), url), flush=True)
-    if opts.mode == 'sim':
-        print('SIMULATOR MODE — PC executes the same Python CPU; switch targets in dashboard.', flush=True)
-    else:
-        print('LIVE PICO — port %s. Do not use Thonny/mpremote on the same port.' % opts.port, flush=True)
-    if opts.open:
-        import webbrowser
-        webbrowser.open(url)
+    server = None
+    runner = None
     try:
-        server.serve_forever(poll_interval=0.2)
+        server = bind_dashboard_server(transport, port=opts.http_port)
+        url = 'http://127.0.0.1:%d/' % server.server_port
+        if opts.http_port is None and server.server_port != DEFAULT_HTTP_PORT:
+            print('Port %d is busy; ATLAS-8 selected port %d instead.' %
+                  (DEFAULT_HTTP_PORT, server.server_port), flush=True)
+        print('Project Atlas PDP-8 | mode: %s | %s' % (opts.mode.upper(), url), flush=True)
+        if opts.mode == 'sim':
+            print('SIMULATOR MODE — PC executes the same Python CPU; switch targets in dashboard.', flush=True)
+        else:
+            print('LIVE PICO — port %s. Do not use Thonny/mpremote on the same port.' % opts.port, flush=True)
+        if opts.open:
+            # Start serving before checking identity. Never open a stale URL or
+            # another application merely because its localhost port is in use.
+            runner = threading.Thread(target=server.serve_forever,
+                                      kwargs={'poll_interval': 0.2}, daemon=True)
+            runner.start()
+            verify_atlas8_server(url)
+            open_dashboard_browser(url)
+            runner.join()
+        else:
+            server.serve_forever(poll_interval=0.2)
     except KeyboardInterrupt:
         pass
     finally:
-        server.server_close()
+        if server is not None:
+            if runner is not None and runner.is_alive():
+                server.shutdown()
+                runner.join(timeout=3)
+            server.server_close()
         transport.close()
 
 
