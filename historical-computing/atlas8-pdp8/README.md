@@ -8,7 +8,7 @@ ATLAS-8 reconstructs a 12-bit Digital Equipment Corporation PDP-8 as an educatio
 
 ## Start here
 
-1. Obtain the **ATLAS8 v0.5 software bundle** (the source release is being staged into this directory).
+1. For the **complete tabbed dashboard**, use the ATLAS-8 v0.5 ZIP bundle provided in the originating ChatGPT conversation; not every runtime file has been committed to GitHub yet.
 2. Install Python 3 on a Windows PC.
 3. Run `START_DASHBOARD_WINDOWS.bat` and open `http://127.0.0.1:8765/` in Chrome.
 4. Select **SIMULATE** for PC-hosted exercises or **LIVE PICO** when an RP2040 is connected through USB serial.
@@ -56,6 +56,16 @@ The programmable calculator runs authentic PDP-8 instruction sequences, includin
 
 Start with the PDP-8 as a programmable calculator; progress to machine language, the front panel, Teletype, historically native programs, and instrument I/O. ATLAS-8 is the historical-computing entry point for the broader SDL curriculum.
 
-**Source status:** README and branding published first. Additional v0.5 source files and manual are being uploaded as separate repository assets; consult the directory listing before following the start procedure.
+## Standalone calculator exercise (already in this repository)
+
+With Python 3 and no hardware required:
+
+```bash
+python examples/quickstart.py
+```
+
+The example exercises machine-language addition, subtraction and repeated-addition multiplication and prints PDP-8 register state. Source: [pdp8.py](pdp8.py) · [programs.py](programs.py).
+
+**Publication status:** The GitHub directory is a **partial staging checkout**, not yet a complete installable release. The verified full dashboard and PDF manual remain available as downloadable artifacts in the originating ChatGPT conversation. See [release status](docs/RELEASE_STATUS.md).
 
 See the umbrella repository: https://github.com/RandoSY/project-atlas
