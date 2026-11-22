@@ -1,3 +1,5 @@
+> **Mode selection:** This page documents the **standalone serial `pdp8>` monitor**. For the Chrome dashboard and LIVE PICO, install **`main_dashboard.py` onto the Pico as `main.py`**, not the repository `main.py`. Use `INSTALL_PICO_WINDOWS.bat` (default Dashboard) and read [PICO_DEPLOYMENT.md](PICO_DEPLOYMENT.md). The two modes cannot share the same `main.py` at boot.
+
 # PDP-8 operator guide
 
 ## Conventions

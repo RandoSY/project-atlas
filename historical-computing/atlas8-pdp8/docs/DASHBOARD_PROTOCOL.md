@@ -11,6 +11,10 @@ Both targets run the **same Python PDP-8 CPU source**. Chrome never executes the
 
 The server binds only to `127.0.0.1` and serves the known static dashboard files. No framework, internet access, scripting endpoint, or file uploads are needed. Use current local host security practices; this is still development software.
 
+## Pico startup — required for this protocol
+
+On the Pico, MicroPython runs `main.py` at boot. For Chrome LIVE PICO, the **source is `main_dashboard.py`, copied to Pico as `:main.py`**. The repo's own `main.py` boots a *different*, text-only monitor, so **do not install that one for the dashboard**. The recommended Windows installer `INSTALL_PICO_WINDOWS.bat` selects the correct entry point. [Full guide](PICO_DEPLOYMENT.md).
+
 ## Starting the server
 
 ```bash

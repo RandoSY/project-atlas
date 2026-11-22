@@ -2,11 +2,11 @@
 
 # ATLAS-8 — PDP-8 Dashboard and MicroPython Emulator
 
-**Project Atlas | Historical Computing | v0.5.1 educational alpha — localhost port fix**
+**Project Atlas | Historical Computing | v0.5.2 educational alpha — Pico installer + startup clarification**
 
 A working, inspectable PDP-8 educational emulator. Run it directly on a dedicated PC with a professional, five-tab Chrome dashboard, or select a Raspberry Pi Pico running the **same Python CPU core** under MicroPython. The computer being emulated is a DEC PDP-8-style 12-bit machine; the Raspberry Pi Pico is its modern physical host.
 
-> **Compatibility warning:** 26 PC automated tests pass, and calculator/Teletype browser exercises were smoke-tested. Physical RP2040 USB serial, native FOCAL and OS/8 execution have **not yet been demonstrated**. This is a development/teaching release, not a certified complete PDP-8 implementation.
+> **Compatibility warning:** 35 PC software tests pass, and calculator/Teletype browser exercises were smoke-tested. Physical RP2040 USB serial, native FOCAL and OS/8 execution have **not yet been demonstrated**. This is a development/teaching release, not a certified complete PDP-8 implementation.
 
 ## Quick start — no hardware required
 
@@ -33,14 +33,25 @@ The header switches between **SIMULATE** (CPU executes in Python on your PC) and
 | Pico boot | [`main_dashboard.py`](main_dashboard.py) | Copy to Pico as `main.py` for live dashboard mode |
 | Native programs | [`programs.py`](programs.py) | PDP-8 machine-code examples and arithmetic |
 | Loader and monitor | [`tape.py`](tape.py), [`monitor.py`](monitor.py) | RIM/BIN experiments and octal operator shell |
-| Test suite | [`tests/`](tests/) | 26 CPU, loader and dashboard-host tests; optional browser smoke |
-| PDF manual | [`ATLAS8_Operators_and_Programmers_Manual_v0.5.1.pdf`](ATLAS8_Operators_and_Programmers_Manual_v0.5.1.pdf) | Operator, programmer, installation and troubleshooting guide |
+| Test suite | [`tests/`](tests/) | 35 CPU, loader, host and deployment tests; optional browser smoke |
+| PDF manual | [`ATLAS8_Operators_and_Programmers_Manual_v0.5.2.pdf`](ATLAS8_Operators_and_Programmers_Manual_v0.5.2.pdf) | Operator, programmer, installation and troubleshooting guide |
 | Documentation | [`docs/`](docs/) | Protocol, installation, operator procedures, compatibility and release status |
 
-## Pico LIVE mode
+## Pico LIVE mode — IMPORTANT: choose the correct `main.py`
+
+| Your interface | Repository source | Destination on Pico | Autostarts |
+|---|---|---|---|
+| **Chrome LIVE PICO (default)** | **`main_dashboard.py`** | **`:main.py`** | Dashboard JSON USB bridge |
+| Standalone serial monitor | `main.py` | `:main.py` | Interactive `pdp8>` prompt |
+
+**Do not copy the repository's `main.py` for Chrome mode; do not leave the Pico without a `main.py`.** The Pico must boot the dashboard version, installed under the filename **`main.py`**. The two source files are alternatives, not simultaneously installed entry points.
+
+**Windows: run `INSTALL_PICO_WINDOWS.bat`** to install Dashboard mode by default, with file backups and byte-for-byte readback verification. Use `INSTALL_PICO_WINDOWS.bat -Mode Monitor` for the standalone monitor. [Full deployment and recovery guide](docs/PICO_DEPLOYMENT.md).
+
+### Manual installation (alternative)
 
 1. Install a board-matched MicroPython UF2 on the Raspberry Pi Pico.
-2. Copy `pdp8.py`, `programs.py`, `dashboard_bridge.py` and **`main_dashboard.py` renamed as `main.py`** to the Pico filesystem. Do not copy `main.py` from the stand-alone monitor for dashboard operation.
+2. Copy the runtime modules `pdp8.py`, `programs.py`, `tape.py`, `monitor.py`, and `dashboard_bridge.py`, then copy **`main_dashboard.py` renamed as `main.py`** to the Pico filesystem. The installer automates this sequence. Do not copy `main.py` from the stand-alone monitor for dashboard operation.
 3. Close Thonny/mpremote serial REPLs, attach the Pico via USB, select **LIVE PICO** in the dashboard header, enter the port (e.g. `COM7`) and connect.
 4. On the PC, install `pyserial` with `python -m pip install pyserial` if it is not already installed.
 
@@ -52,7 +63,7 @@ See [dashboard communication protocol](docs/DASHBOARD_PROTOCOL.md), [installatio
 python -m unittest discover -s tests -v
 ```
 
-The original v0.5 suite had 26 passing checks; v0.5.1 adds port-conflict and startup-identity regression tests. The optional `tests/browser_smoke.py` requires an appropriate browser automation setup and is not included in that unittest count. No physical Pico test result is claimed.
+The original v0.5 suite had 26 checks; v0.5.1 added port-conflict checks, and v0.5.2 adds installation/documentation consistency checks. Physical Pico acceptance is still pending. The optional `tests/browser_smoke.py` requires an appropriate browser automation setup and is not included in that unittest count. No physical Pico test result is claimed.
 
 ## Architecture
 
@@ -79,7 +90,7 @@ ATLAS-8 begins with a programmable calculator and leads to actual PDP-8 machine 
 
 **Experience before equation. Need before technology. History before abstraction.**
 
-[Project Atlas root](https://github.com/RandoSY/project-atlas) · [Release status](docs/RELEASE_STATUS.md) · [Manual PDF](ATLAS8_Operators_and_Programmers_Manual_v0.5.1.pdf)
+[Project Atlas root](https://github.com/RandoSY/project-atlas) · [Release status](docs/RELEASE_STATUS.md) · [Manual PDF](ATLAS8_Operators_and_Programmers_Manual_v0.5.2.pdf)
 
 ## License
 

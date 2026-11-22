@@ -1,4 +1,4 @@
-# ATLAS-8 v0.5.1 — Release status
+# ATLAS-8 v0.5.2 — Release status
 
 **Checkpoint:** 2026-11-22
 
@@ -22,9 +22,19 @@ This directory contains the complete v0.5 educational PDP-8 emulator source, tab
 
 The PDF in the root folder documents the observed release; the machine compatibility claims above are intentionally limited.
 
-## v0.5.1 localhost port collision fix
+## v0.5.2 localhost port collision fix
 
 - ATLAS-8 defaults to dedicated port **8878**, not 8765 (Active Independence).
 - When the default port is occupied, automatic fallback selects 8879–8898.
 - The browser is opened only after validating the ATLAS-8 identity endpoint.
 - An explicit `--http-port` remains strict and fails instead of opening a foreign application.
+
+## v0.5.2 Pico installer and two-mode clarification
+
+- The full CPython suite now passes **35 tests**, including 5 installation/documentation consistency checks.
+
+- `INSTALL_PICO_WINDOWS.bat` + `INSTALL_PICO.ps1` deploy dashboard mode by default and support optional monitor mode.
+- Pico existing files are backed up to PC before upload; upload integrity is checked by readback SHA-256; entry `main.py` is copied last.
+- `main_dashboard.py` is the dashboard source that is **renamed to `main.py` on Pico**. Repository `main.py` is **only for standalone text monitor**. The earlier INSTALL guide referred to standalone installation and is corrected.
+- `docs/PICO_DEPLOYMENT.md`, `docs/INSTALL.md`, `docs/OPERATOR.md`, README and the manual now state the distinction prominently.
+- Script execution on actual RP2040 remains unverified. This update should not be interpreted as successful hardware deployment.

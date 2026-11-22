@@ -21,7 +21,7 @@ from reportlab.lib.colors import HexColor
 from xml.sax.saxutils import escape
 
 ROOT=Path(__file__).resolve().parent
-DEST=ROOT/'ATLAS8_Operators_and_Programmers_Manual_v0.5.1.pdf'
+DEST=ROOT/'ATLAS8_Operators_and_Programmers_Manual_v0.5.2.pdf'
 IMG=ROOT/'assets'/'ATLAS8_dashboard_desktop.png'
 IMGT=ROOT/'assets'/'ATLAS8_dashboard_terminal.png'
 IMGM=ROOT/'assets'/'ATLAS8_dashboard_mobile.png'
@@ -75,7 +75,7 @@ class ManualDoc(BaseDocTemplate):
             canv.drawRightString(PAGE_W-MARGIN_X,PAGE_H-12,'OPERATOR + PROGRAMMER MANUAL')
         canv.setStrokeColor(LT);canv.line(MARGIN_X,43,PAGE_W-MARGIN_X,43)
         canv.setFillColor(GRAY);canv.setFont('AtlasSans',7.8)
-        canv.drawString(MARGIN_X,30,'0.5.1-alpha  |  22 November 2026  |  Educational PDP-8 reconstruction')
+        canv.drawString(MARGIN_X,30,'0.5.2-alpha  |  22 November 2026  |  Educational PDP-8 reconstruction')
         canv.drawRightString(PAGE_W-MARGIN_X,30,str(page))
         canv.restoreState()
     def afterFlowable(self, flowable):
@@ -137,7 +137,7 @@ P('PDP-8 Emulator + Programmable Calculator','cover_title')
 P('Operator’s Guide and Programmer’s Reference<br/>For the dedicated Chrome PC and RP2040 MicroPython implementation','cover_sub')
 NOTE('One console. Two execution targets.', 'SIMULATE runs the <b>same Python PDP-8 core</b> under CPython on the PC. LIVE PICO uses that core under MicroPython on the RP2040, reached through USB serial. Chrome renders the front panel; it is not a separate PDP-8 CPU implementation.')
 IMAGE(IMG,width=430)
-P('<b>Release 0.5.1-alpha</b>  |  22 November 2026<br/>Prepared for Project Atlas / Software-Defined Laboratory','tiny')
+P('<b>Release 0.5.2-alpha</b>  |  22 November 2026<br/>Prepared for Project Atlas / Software-Defined Laboratory','tiny')
 PAGE()
 
 P('READ THIS FIRST','cover_kicker')
@@ -220,15 +220,27 @@ B('Confirm whether the board is Pico, Pico W or another RP2040 model; use firmwa
 B('Hold BOOTSEL while connecting the Pico with a USB <b>data</b> cable.')
 B('Copy the matching firmware UF2 from <font face="AtlasMono">micropython.org/download/</font> onto the detected RPI-RP2 drive.')
 B('Wait for restart, then check the MicroPython REPL in Thonny or with <font face="AtlasMono">mpremote repl</font>. Close the REPL before using LIVE PICO.')
-H2('Install the dashboard firmware')
-P('Do <b>not</b> install the command-line-monitor <font face="AtlasMono">main.py</font> for dashboard operation. The Pico must start the JSON-line dashboard bridge. Upload these files, with the replacement main file last:')
-CODE('''python -m pip install --upgrade mpremote pyserial
-mpremote fs cp pdp8.py :pdp8.py
-mpremote fs cp programs.py :programs.py
-mpremote fs cp dashboard_bridge.py :dashboard_bridge.py
-mpremote fs cp main_dashboard.py :main.py
-mpremote reset''')
-P('The last command copies <font face="AtlasMono">main_dashboard.py</font> onto the Pico under the filename <font face="AtlasMono">main.py</font>. It launches the line-oriented dashboard protocol after boot. This path has <b>not yet been tested on a physical Pico</b>; the serial REPL may behave differently across firmware builds.')
+H2('Choose the correct Pico main.py — two mutually exclusive modes')
+P('<b>MicroPython always runs Pico:/main.py when it boots.</b> The ATLAS-8 repository has two possible SOURCE files. For the Chrome LIVE PICO dashboard you must <b>copy main_dashboard.py to Pico as main.py</b>; it starts the USB JSON-lines service. The repository file named main.py instead starts a standalone text monitor with a pdp8&gt; prompt. <b>Do not install the repository main.py for Chrome mode; do not omit main.py on the Pico.</b>')
+TB(['Operation','Source in checkout','Destination on Pico'],[
+ ('Chrome LIVE PICO','<b>main_dashboard.py</b> — JSON bridge','<b>:main.py</b>'),
+ ('Standalone text monitor','main.py — pdp8&gt; prompt',':main.py')],widths=[132,205,CONTENT_W-337])
+H2('Recommended: automated Windows Pico installer')
+P('On the dedicated Windows PC, install Python 3 and mpremote, close Thonny and any serial REPL, and run <b>INSTALL_PICO_WINDOWS.bat</b>. Dashboard is the default mode. It backs up existing Pico files, uploads supporting modules, installs the correct main.py last, then verifies every file by copying it back and comparing SHA-256. Select a particular Pico with <font face="AtlasMono">INSTALL_PICO_WINDOWS.bat -Port COM7</font>. For the optional text monitor use <font face="AtlasMono">-Mode Monitor</font>.')
+CODE('''py -3 -m pip install mpremote pyserial
+INSTALL_PICO_WINDOWS.bat -Port COM7
+# Optional: standalone monitor instead of Chrome
+INSTALL_PICO_WINDOWS.bat -Mode Monitor -Port COM7''')
+H2('Manual dashboard installation (no backup or verification)')
+P('If you must install without the script, copy these files in order. The last line is the critical mapping: dashboard source becomes Pico main.py.')
+CODE('''py -3 -m mpremote fs cp pdp8.py :pdp8.py
+py -3 -m mpremote fs cp programs.py :programs.py
+py -3 -m mpremote fs cp tape.py :tape.py
+py -3 -m mpremote fs cp monitor.py :monitor.py
+py -3 -m mpremote fs cp dashboard_bridge.py :dashboard_bridge.py
+py -3 -m mpremote fs cp main_dashboard.py :main.py
+py -3 -m mpremote reset''')
+P('Pico files and PC files are different. The <b>dashboard/</b> browser folder, <b>pc_dashboard_server.py</b>, tests and manual remain on your PC; do not upload them to RP2040. See docs/PICO_DEPLOYMENT.md for full recovery instructions. <b>Hardware installation is not yet validated on a physical Pico.</b>')
 H2('Connect from the dedicated PC')
 B('Start the local server with <font face="AtlasMono">python pc_dashboard_server.py --mode sim --open</font>.')
 B('In the top bar, choose <b>LIVE PICO</b>, enter its serial port (for example COM7 or /dev/ttyACM0) and press <b>CONNECT</b>.')
@@ -479,18 +491,19 @@ TB(['File','Role'],[
  ('pdp8.py','MicroPython/CPython PDP-8 CPU, memory and I/O core'),
  ('programs.py','Native demos and calculator word-code generators'),
  ('dashboard_bridge.py','JSON-line / JSON-object bridge to the CPU'),
- ('main_dashboard.py','Pico dashboard entry point; copy to main.py'),
- ('main.py, monitor.py, tape.py','Alternative command-line monitor and tape/snapshot utilities'),
+ ('main_dashboard.py','Dashboard mode source: install on Pico as main.py'),
+ ('main.py, monitor.py, tape.py','Standalone text monitor main.py; monitor and tape helpers'),
  ('pc_dashboard_server.py','Dedicated PC HTTP server and SIM/LIVE transport selector'),
  ('dashboard/index.html','Single fixed-height five-tab interface'),
  ('dashboard/style.css, app.js','Presentation and browser protocol client'),
  ('tests/','CPython CPU, host, and browser smoke tests'),
- ('docs/','INSTALL, OPERATOR, COMPATIBILITY, DASHBOARD_PROTOCOL')],widths=[184,CONTENT_W-184])
+ ('INSTALL_PICO.ps1 / .bat','Windows Pico deploy, backup, readback verification'),
+ ('docs/','PICO_DEPLOYMENT, INSTALL, OPERATOR, PROTOCOL')],widths=[184,CONTENT_W-184])
 H2('Reference material')
 P('For historical instruction semantics, consult Digital Equipment Corporation PDP-8/PDP-8/E programming handbooks and field-maintenance documentation; Doug Jones’s University of Iowa PDP-8 FAQ; and the open-source SIMH PDP-8 simulator. These references are useful for comparing obscure instruction combinations and IOT behavior. They do not independently validate the present build.')
 P('Source pointers: <font face="AtlasMono">github.com/simh/simh</font> and <font face="AtlasMono">homepage.cs.uiowa.edu/~jones/pdp8/</font>. Historical binary media may impose their own licensing and provenance requirements. This bundle includes <b>original educational demos</b>, not a packaged DEC OS/8 or FOCAL distribution.')
 H2('Version declaration')
-P('This manual describes the source tree in ATLAS-8 v0.5.1-alpha as inspected and tested on 22 November 2026. If dashboard behavior changes, regenerate the manual and rerun all verification. The operator should prioritize the executable source and automated tests when a disagreement is found.')
+P('This manual describes the source tree in ATLAS-8 v0.5.2-alpha as inspected and tested on 22 November 2026. If dashboard behavior changes, regenerate the manual and rerun all verification. The operator should prioritize the executable source and automated tests when a disagreement is found.')
 NOTE('The point of the project','Students are not merely operating an old-style computer. They are discovering how an instruction, register, measured signal and human question connect—and how those same ideas later reappear in LINC, the Arduino Revolution and the smartphone laboratory.')
 
 # doc render

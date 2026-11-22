@@ -1,5 +1,17 @@
 # Installation and recovery — operator checklist
 
+> **IMPORTANT — two different Pico `main.py` sources:** This guide previously described the **standalone monitor** installation only. For **Chrome LIVE PICO** the Pico must run the JSON dashboard bridge instead. Read [PICO_DEPLOYMENT.md](PICO_DEPLOYMENT.md) before copying anything.
+>
+> | Intended operation | Repository file | Pico boot filename | Interface |
+> |---|---|---|---|
+> | **Chrome LIVE PICO (recommended)** | **`main_dashboard.py`** | **`main.py`** | JSON-lines over USB for PC dashboard |
+> | Standalone text monitor | `main.py` | `main.py` | Human-readable `pdp8>` serial terminal |
+>
+**Do not copy the repository's `main.py` for dashboard mode. Do not omit Pico `main.py` either.** Instead, **copy `main_dashboard.py` and rename it to `main.py` on the Pico.** The installer does this automatically. These are mutually exclusive startup modes, not two files that coexist on Pico as `main.py`.
+
+**Recommended Windows installation:** Run `INSTALL_PICO_WINDOWS.bat` from the project root. It defaults to Dashboard mode, backs up existing Pico files, uploads the six required files, verifies each transfer byte-for-byte, and resets the Pico. For explicit port selection: `powershell -ExecutionPolicy Bypass -File .\INSTALL_PICO.ps1 -Port COM7`. See [PICO_DEPLOYMENT.md](PICO_DEPLOYMENT.md).
+
+
 ## Hardware
 
 - Raspberry Pi Pico (RP2040), Pico W or compatible board capable of running MicroPython.
@@ -16,23 +28,36 @@
 5. Install `mpremote` with `python -m pip install mpremote`.
 6. Verify the serial REPL with `mpremote repl`; press `Ctrl-B` if needed to display the ordinary REPL banner.
 
-## Copy files to the Pico
+## Copy files to the Pico — choose one startup mode
 
-From the unzipped project directory, run:
+### A. Chrome LIVE PICO (recommended)
 
-```bash
-mpremote fs cp pdp8.py :pdp8.py
-mpremote fs cp tape.py :tape.py
-mpremote fs cp programs.py :programs.py
-mpremote fs cp monitor.py :monitor.py
-mpremote fs cp main.py :main.py
+Do **not** copy the repository `main.py` to the Pico. Copy **`main_dashboard.py` as `main.py`**. It launches the USB JSON bridge; the PC remains responsible for the tabbed browser interface.
+
+With one connected Pico, the explicit commands are:
+
+```text
+py -3 -m pip install mpremote pyserial
+py -3 -m mpremote fs cp pdp8.py :pdp8.py
+py -3 -m mpremote fs cp programs.py :programs.py
+py -3 -m mpremote fs cp tape.py :tape.py
+py -3 -m mpremote fs cp monitor.py :monitor.py
+py -3 -m mpremote fs cp dashboard_bridge.py :dashboard_bridge.py
+py -3 -m mpremote fs cp main_dashboard.py :main.py
+py -3 -m mpremote reset
 ```
 
-Only the five root-level `.py` files belong on Pico for basic operation. `docs` and `tests` stay on the PC. Copy `main.py` last because it autoruns a command loop when the board resets.
+The PowerShell installer is safer because it backs up old files and verifies the copies; use it unless you have a specific reason to copy manually.
 
-## First boot
+### B. Standalone text monitor (optional)
 
-Open a serial terminal or use `mpremote repl`, restart the board, then:
+Only in this mode, copy repository `main.py` as `:main.py`, which starts `monitor.main` and prints `pdp8>`. Use `INSTALL_PICO_WINDOWS.bat -Mode Monitor` to install this variant. **This is not compatible with the Chrome LIVE PICO protocol.** It remains available for instruction and serial-terminal demonstrations.
+
+### First boot
+
+After installing Dashboard mode, close any serial tools and open `START_DASHBOARD_WINDOWS.bat` on the PC. Use the exact URL printed (normally port 8878), select LIVE PICO, and connect to the Pico COM port. No `pdp8>` text prompt should appear in dashboard mode. The dashboard sends JSON requests.
+
+After installing Monitor mode, enter the serial terminal and run:
 
 ```text
 SDL Atlas PDP-8 / MicroPython RP2040 | Type help
@@ -42,11 +67,11 @@ HELLO PDP-8
 pdp8> regs
 ```
 
-Expected program halts at a `HLT` instruction. See OPERATOR.md for an annotated transcript.
+**Do not attempt to open both programs on the serial port at once.**
 
 ## Optional 32K memory
 
-Edit `main.py` before copying:
+For standalone Monitor mode, edit repository `main.py` before copying:
 
 ```python
 from monitor import main
@@ -91,7 +116,7 @@ pdp8> run 20000
 
 ## Recovery to MicroPython REPL
 
-Press Ctrl-C. If the monitor restarts after a reset, remove its autorun file: `mpremote fs rm :main.py` after interrupting it. Alternatively use BOOTSEL to reflash firmware; **do not** reflash unless simpler recovery has failed.
+Press Ctrl-C. If the monitor restarts after a reset, remove its autorun file: `mpremote fs rm :main.py` after interrupting it. Then reinstall the correct boot mode with `INSTALL_PICO_WINDOWS.bat`. Alternatively use BOOTSEL to reflash firmware; **do not** reflash unless simpler recovery has failed.
 
 ## Uninstall
 

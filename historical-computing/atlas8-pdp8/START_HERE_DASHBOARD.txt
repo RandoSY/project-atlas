@@ -28,3 +28,10 @@ PORT CONFLICT FIX v0.5.1:
   Port 8765 belongs to another Atlas app. ATLAS-8 starts on 8878 by default.
   If 8878 is busy, the launcher selects a free port and prints the real URL.
   The browser opens only after validating the ATLAS-8 server identity.
+
+PICO INSTALLATION — IMPORTANT (v0.5.2):
+  For Chrome LIVE PICO mode, double-click INSTALL_PICO_WINDOWS.bat.
+  The installer copies main_dashboard.py to Pico under the name main.py.
+  NEVER copy repository main.py for Chrome mode: that is the text monitor.
+  It is CORRECT for the Pico to contain main.py, but it must be the right one.
+  See docs\PICO_DEPLOYMENT.md for the exact file list and recovery steps.
