@@ -77,3 +77,19 @@ curl -s -X POST http://127.0.0.1:8878/api/mode \
 ```
 
 Do not attempt a network connection directly to the Pico; this release communicates over USB CDC through the dedicated PC host.
+
+
+## v0.5.3 PDP-8/I operator panel commands
+
+All commands go to the same emulator core in SIMULATE or LIVE PICO; the host owns only transport and drawing.
+
+| Operation | Arguments | Action |
+|---|---|---|
+| `panel_fields` | `ifield`, `dfield` | Set three-bit field selectors (rejects unavailable fields and changes while RUN) |
+| `panel_addr` | `address`, optional `ifield`, `dfield` | LOAD ADD: select console address and fields without clearing accumulator or LINK |
+| `deposit` | `panel:true`, optional `address`, `field`, `value` | DEP: deposit word, advance address counter and PC |
+| `examine` | `panel:true`, optional `address`, `field`, `count:1` | EXAM: read memory into MB, advance address counter and PC |
+| `panel_start` | `single_instruction: bool` | START: load PC from 12-bit switch register, clear AC and LINK, begin/run one native instruction |
+| `panel_continue` | `single_instruction: bool` | CONT: resume from current PC with AC and LINK unchanged |
+
+`state.panel_next_addr` is the next address for DEP/EXAM; `state.ma` is its mirror in this educational reconstruction. `state.mb` is the last examined/deposited word. `SING STEP` is intentionally disabled; PDP-8/I microcycles are not emulated. See [the operator programming lesson](FRONT_PANEL_LESSON.md) for the historical procedure.

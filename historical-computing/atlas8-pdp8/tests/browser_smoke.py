@@ -37,6 +37,7 @@ with sync_playwright() as p:
     assert not page.evaluate('document.documentElement.scrollHeight > window.innerHeight')
     print('BADGE:',page.locator('#connectionBadge').inner_text())
     page.screenshot(path='/mnt/data/ATLAS8_dashboard_desktop.png',full_page=True)
+    page.locator('[data-tab="calculator"]').click()
     page.locator('#btnCalcLoad').click()
     page.locator('#btnCalcFinish').click()
     page.wait_for_timeout(400)
@@ -52,8 +53,10 @@ with sync_playwright() as p:
     page.locator('[data-tab="programs"]').click()
     page.locator('[data-demo="hello"]').click()
     page.locator('[data-tab="panel"]').click()
-    page.locator('[data-panel-section="control"]').click()
-    page.locator('#btnRun').click()
+
+    # Native demo uses the regular CPU run operation from the calculator UI.
+    page.locator('[data-tab="calculator"]').click()
+    page.locator('#btnCalcFinish').click()
     page.wait_for_timeout(400)
     page.locator('[data-tab="terminal"]').click()
     print('TTY:',page.locator('#ttyScreen').inner_text()[-120:])

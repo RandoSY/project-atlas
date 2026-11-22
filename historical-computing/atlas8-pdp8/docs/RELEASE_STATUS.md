@@ -1,3 +1,13 @@
+# ATLAS-8 0.5.3 historical panel release
+
+- Functional PDP-8/I-inspired browser front panel, default dashboard view; original calculator remains a separate tab.
+- Real backend command behavior for LOAD ADD, incremental DEP/EXAM, START versus CONT, and single instruction stepping.
+- Five-word switch-programming demonstration from video and new `FRONT_PANEL_LESSON.md`.
+- Pikuma architecture article, Hackaday demonstration, PDP8Online and DEC manual cited as explanatory sources.
+- No page-level scroll at tested desktop viewports.
+- 44 CPython tests validate native PDP-8 program execution, LINK rollover, panel state, and host behavior; independent headless-Chromium smoke tests validate the calculator, Teletype, historical panel and desktop no-scroll layout in SIM mode.
+- Pico USB remains not hardware-validated; original FOCAL/OS8 and machine-cycle timing not validated.
+
 # ATLAS-8 v0.5.2 — Release status
 
 **Checkpoint:** 2026-11-22

@@ -12,3 +12,7 @@ Thumbs.db
 *.core
 *.core.json
 *.log
+
+# Local browser regression screenshots
+assets/ATLAS8_panel_smoke_*.png
+assets/ATLAS8_panel_programming_smoke.png

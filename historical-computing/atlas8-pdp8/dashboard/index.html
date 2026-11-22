@@ -29,13 +29,13 @@
       </div>
       <section class="workbench">
         <div class="tab-strip" role="tablist" aria-label="Select one dashboard screen">
-          <button class="tab active" role="tab" aria-selected="true" data-tab="calculator" aria-controls="calculatorTab"><span class="tab-number">01</span><span>Calculator</span></button>
-          <button class="tab" role="tab" aria-selected="false" data-tab="panel" aria-controls="panelTab"><span class="tab-number">02</span><span>Front Panel</span></button>
+          <button class="tab active" role="tab" aria-selected="true" data-tab="panel" aria-controls="panelTab"><span class="tab-number">01</span><span>Front Panel</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="calculator" aria-controls="calculatorTab"><span class="tab-number">02</span><span>Calculator</span></button>
           <button class="tab" role="tab" aria-selected="false" data-tab="programs" aria-controls="programsTab"><span class="tab-number">03</span><span>Programs</span></button>
           <button class="tab" role="tab" aria-selected="false" data-tab="terminal" aria-controls="terminalTab"><span class="tab-number">04</span><span>Teletype</span></button>
           <button class="tab" role="tab" aria-selected="false" data-tab="guide" aria-controls="guideTab"><span class="tab-number">05</span><span>Guide</span></button>
         </div>
-        <div class="tab-body" id="calculatorTab" data-panel="calculator" role="tabpanel">
+        <div class="tab-body hidden" id="calculatorTab" data-panel="calculator" role="tabpanel">
           <div class="calculator-layout">
             <div class="lesson-column">
               <div class="lesson-kicker"><span class="chapter">LESSON 01</span> THE PROGRAMMABLE CALCULATOR</div>
@@ -58,45 +58,57 @@
             </div>
           </div>
         </div>
-        <div class="tab-body hidden" id="panelTab" data-panel="panel" data-section="lamps" role="tabpanel">
-          <div class="panel-pages" role="group" aria-label="Front-panel section">
-            <button type="button" data-panel-section="lamps" class="selected">Registers &amp; lamps</button>
-            <button type="button" data-panel-section="switches">12-bit switches</button>
-            <button type="button" data-panel-section="control">Operator controls</button>
-          </div>
-          <section class="machine" aria-label="PDP-8 front panel">
-                  <div class="machine-head"><div><span class="machine-small">DIGITAL EQUIPMENT CORPORATION · INTERPRETIVE PANEL</span><h2>PDP–8 <span>CONTROL CONSOLE</span></h2></div><span class="machine-serial">ATLAS 8 / EDUCATIONAL RECONSTRUCTION</span></div>
-                  <div class="panel-bay">
-                    <div class="main-panel">
-                      <div class="register-head"><span>REGISTER DISPLAY</span><span>12-BIT WORDS · HIGH BIT AT LEFT</span></div>
-                      <div class="registers" id="registers"></div>
-                      <div class="switch-assembly">
-                        <div class="switch-head"><div><span>SWITCH REGISTER</span><small>Toggle an individual bit to compose an octal value</small></div><div class="octal-dial" id="switchReadout">0000 <small>OCT</small></div></div>
-                        <div id="switches" class="switch-row" role="group" aria-label="12 bit switch register"></div>
-                        <div class="switch-octal-labels"><span>BIT 11–9</span><span>BIT 8–6</span><span>BIT 5–3</span><span>BIT 2–0</span></div>
-                      </div>
-                    </div>
-                    <div class="operator-bay">
-                      <div class="operator-header"><span>OPERATOR STATION</span><span id="cpuRunStatus" class="run-state halted">HALTED</span></div>
-                      <div class="cpu-metrics">
-                        <div><small>PC</small><b id="statPc">0000</b></div><div><small>AC</small><b id="statAc">0000</b></div><div><small>LINK</small><b id="statLink">0</b></div><div><small>IF / DF</small><b id="statFields">0 / 0</b></div>
-                      </div>
-                      <div class="mini-flags"><span id="flagKbd">KBD</span><span id="flagTty">TTY</span><span id="flagIon">INT</span><span id="flagBreak">BRK</span></div>
-                      <div class="button-bank">
-                        <button class="machine-button" id="btnLoadAddress" title="Load current switch register into program counter">LOAD ADDRESS</button>
-                        <button class="machine-button" id="btnExamine" title="Examine word at current memory cursor">EXAMINE</button>
-                        <button class="machine-button" id="btnDeposit" title="Store switch register at memory cursor">DEPOSIT</button>
-                        <button class="machine-button" id="btnStep" title="Execute one instruction">SINGLE STEP</button>
-                        <button class="machine-button start" id="btnRun" title="Continue execution in bounded batches"><span class="triangle">▶</span> RUN</button>
-                        <button class="machine-button stop" id="btnStop" title="Stop execution"><span>■</span> STOP</button>
-                        <button class="machine-button secondary" id="btnReset" title="Reset registers; memory is retained">RESET CPU</button>
-                        <button class="machine-button secondary" id="btnClear" title="Clear registers and all memory">CLEAR MEMORY</button>
-                      </div>
-                      <div class="panel-help"><span id="panelMessage">Ready for a native PDP-8 program.</span><small id="instructionCounter">0 EXECUTED</small></div>
-                    </div>
-                  </div>
-                  <div class="machine-footer"><span><b class="screw"></b> INTERPRETIVE RECONSTRUCTION · NOT AN ORIGINAL DEC PANEL</span><span class="machine-pips">● ● ● ● ● ● ● ●</span></div>
-                </section>
+        <div class="tab-body" id="panelTab" data-panel="panel" role="tabpanel">
+          <section class="historic-console" aria-label="PDP-8/I historical switch and lamp panel">
+            <div class="historic-header">
+              <span class="historical-digital">digital</span><strong>PDP-8/I</strong>
+              <span class="historic-provenance">ATLAS-8 · INTERACTIVE PDP-8/I RECONSTRUCTION · 1968 PANEL LAYOUT</span>
+              <span id="cpuRunStatus" class="run-state halted">HALTED</span>
+            </div>
+            <div class="historic-upper">
+              <div class="rim-plaque">
+                <b>OCTAL PROGRAM · HACKADAY DEMONSTRATION</b>
+                <div class="rim-words"><span>0000&nbsp; 7301</span><span>0001&nbsp; 7001</span><span>0002&nbsp; 7430</span><span>0003&nbsp; 7402</span><span>0004&nbsp; 5001</span></div>
+                <small>Toggle each word into memory, then START at 0000.</small>
+              </div>
+              <div class="historic-registers">
+                <div class="register-head"><span>REGISTER INDICATORS</span><span>LIGHT = BINARY ONE</span></div>
+                <div class="historic-fields"><span>DATA FIELD <b id="statDf">0</b></span><span>INSTRUCTION FIELD <b id="statIf">0</b></span><span>SWITCH REGISTER <b id="switchReadout">0000</b></span></div>
+                <div id="registers" class="registers"></div>
+              </div>
+              <div class="historical-flags">
+                <b>PROCESSOR STATUS</b>
+                <div class="instruction-flags" id="opcodeLamps"><span>AND</span><span>TAD</span><span>ISZ</span><span>DCA</span><span>JMS</span><span>JMP</span><span>IOT</span><span>OPR</span></div>
+                <div class="mini-flags"><span id="flagKbd">KBD</span><span id="flagTty">TTY</span><span id="flagIon">ION</span><span id="flagBreak">BRK</span></div>
+                <div class="historical-stats"><span>PC <b id="statPc">0000</b></span><span>AC <b id="statAc">0000</b></span><span>L <b id="statLink">0</b></span><span>IF/DF <b id="statFields">0 / 0</b></span></div>
+              </div>
+            </div>
+            <div class="historic-lower">
+              <div class="historic-keys"><div class="power-dot"><span class="power-led"></span> POWER ON</div><button id="panelLock" type="button" aria-pressed="false">PANEL UNLOCKED</button></div>
+              <div class="hardware-bank"><div class="bank-label">DATA FIELD <small>3 BIT</small></div><div id="dataFieldSwitches" class="field-switch-row" role="group" aria-label="Data field toggle switches"></div></div>
+              <div class="hardware-bank"><div class="bank-label">INSTR FIELD <small>3 BIT</small></div><div id="instructionFieldSwitches" class="field-switch-row" role="group" aria-label="Instruction field toggle switches"></div></div>
+              <div class="hardware-bank primary-bank"><div class="bank-label">SWITCH REGISTER <small>12 BIT · OCTAL</small></div><div id="switches" class="switch-row" role="group" aria-label="Twelve PDP-8 address and data toggle switches"></div></div>
+              <div class="historic-operator"><div class="bank-label">PANEL KEYS <small>MOMENTARY</small></div><div class="historical-control-row">
+                <button id="btnRun" type="button" class="historical-key special" title="START from loaded PC, clearing AC and LINK">START</button>
+                <button id="btnLoadAddress" type="button" class="historical-key" title="LOAD ADD: copy switch register to address counter">LOAD<br>ADD</button>
+                <button id="btnDeposit" type="button" class="historical-key" title="DEP: store switches at current address, then advance">DEP ↑</button>
+                <button id="btnExamine" type="button" class="historical-key" title="EXAM: read current memory address, then advance">EXAM ↓</button>
+                <button id="btnContinue" type="button" class="historical-key" title="CONT: resume without clearing AC or LINK">CONT</button>
+                <button id="btnStop" type="button" class="historical-key warning" title="STOP the processor">STOP</button>
+                <button id="btnSingleCycle" type="button" class="historical-key" disabled title="Machine-cycle stepping is not emulated; instruction stepping is supported">SING<br>STEP</button>
+                <button id="btnSingleInstruction" type="button" class="historical-key latch" aria-pressed="false" title="Latch to execute one PDP-8 instruction per START or CONT press">SING<br>INST</button>
+              </div></div>
+            </div>
+            <div class="historical-lesson">
+              <div class="lesson-current"><b>VIDEO LESSON · TOGGLE IN FIVE WORDS</b><span id="lessonTarget">Step 1: switch register 0000, then LOAD ADD.</span><span id="lessonProgress">0/8 actions</span></div>
+              <button id="btnPanelPreset" type="button" title="Set the switches for the current lesson; you must still press the panel key">SET SWITCHES FOR THIS STEP</button>
+              <button id="btnPanelGuideReset" type="button" title="Restart the lesson prompts (does not erase memory)">RESTART PROMPTS</button>
+              <button id="btnStep" type="button" title="Modern one-instruction step convenience; same emulated CPU">STEP 1</button>
+              <button id="btnReset" type="button" title="Reset processor without erasing memory">RESET CPU</button>
+              <button id="btnClear" type="button" title="Clear all emulated memory after confirmation">CLEAR CORE</button>
+            </div>
+            <div class="historic-footer"><span id="panelMessage" role="status">Use STOP, LOAD ADD, DEP, EXAM and START as on the original PDP-8/I.</span><span id="instructionCounter">0 EXECUTED</span><span>Panel switches are live; this is not a decorative image.</span></div>
+          </section>
         </div>
         <div class="tab-body hidden" id="programsTab" data-panel="programs" role="tabpanel">
           <div class="subtabs" role="group" aria-label="Programs screen">
@@ -139,7 +151,7 @@
         <div class="tab-body hidden" id="guideTab" data-panel="guide" role="tabpanel">
           <div class="guide-grid">
             <article class="guide-card"><span class="guide-index">01</span><h3>Start with a calculator</h3><p>Enter two values, load PDP-8 machine code, and step through each real instruction. Watch AC, LINK and PC change.</p></article>
-            <article class="guide-card"><span class="guide-index">02</span><h3>Work the front panel</h3><p>Toggle the 12-bit switch register. Load an address, examine or deposit a word, single-step, run, stop or reset.</p></article>
+            <article class="guide-card"><span class="guide-index">02</span><h3>Program the PDP-8/I panel</h3><p>STOP; switch 0000 and LOAD ADD; deposit 7301 7001 7430 7402 5001; reload 0000 and START. Use SING INST + CONT to single-instruction step.</p></article>
             <article class="guide-card"><span class="guide-index">03</span><h3>Load native code</h3><p>Use built-in examples or directly enter octal words. The calculator is generated as PDP-8 instructions—not evaluated in JavaScript.</p></article>
             <article class="guide-card"><span class="guide-index">04</span><h3>Understand the limits</h3><p>Educational PDP-8 CPU and TTY prototype. OS/8, original FOCAL, disk IOT, EAE, PDP-12/LINC mode and MSP430 I/O still need validation.</p></article>
           </div>

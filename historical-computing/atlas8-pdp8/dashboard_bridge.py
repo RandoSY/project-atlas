@@ -16,7 +16,7 @@ import sys
 from pdp8 import PDP8, PDP8Error, WORD
 from programs import load_demo, PROGRAMS, load_calculator, CALC_RESULT, CALC_A, CALC_B
 
-VERSION = '0.3.0-alpha'
+VERSION = '0.5.3-panel'
 PROTOCOL = 'ATLAS-PDP8/1'
 
 
@@ -50,7 +50,7 @@ class Bridge:
             'ir': cpu.last_ir, 'last_pc': cpu.last_pc,
             'ifield': cpu.ifield, 'dfield': cpu.dfield, 'ibuffer': cpu.ibuffer,
             'switches': cpu.switches, 'ma': self.cursor, 'mb': self.mb,
-            'panel_field': self.panel_field,
+            'panel_field': self.panel_field, 'panel_next_addr': self.cursor,
             'halted': cpu.halted, 'running': self.running and not cpu.halted,
             'reason': cpu.reason, 'instructions': cpu.instructions,
             'fields': cpu.fields, 'tty_kbd_ready': cpu.kbd_flag,
@@ -95,7 +95,7 @@ class Bridge:
             data['protocol'] = PROTOCOL
             data['version'] = VERSION
             data['model'] = 'PDP-8 MicroPython alpha'
-            data['features'] = ['cpu', 'tty', 'memory', 'octal-load', 'demos', 'breakpoints', 'calculator']
+            data['features'] = ['cpu', 'tty', 'memory', 'octal-load', 'demos', 'breakpoints', 'calculator', 'pdp8i-panel']
             if op == 'hello':
                 data['warning'] = 'Not OS/8 or FOCAL validated; TTY only; no disk or LINC mode.'
         elif op == 'calculator':
@@ -132,19 +132,35 @@ class Bridge:
             self.tty_pending = bytearray()
         elif op == 'switches':
             cpu.switches = _number(args.get('value'), 'switch value', WORD)
-        elif op == 'panel_addr':
-            address = _number(args.get('address'), 'address', WORD)
-            field = _number(args.get('field', cpu.ifield), 'field', cpu.fields - 1)
-            self.cursor = address
-            self.panel_field = field
-            cpu.pc = address
-            cpu.ifield = field
-            cpu.ibuffer = field
+        elif op == 'panel_fields':
+            # These correspond to the separate 3-bit field-selector switches.
+            ifield = _number(args.get('ifield', cpu.ifield), 'instruction field', cpu.fields - 1)
+            dfield = _number(args.get('dfield', cpu.dfield), 'data field', cpu.fields - 1)
+            if self.running:
+                raise ValueError('STOP before operating front-panel field switches')
+            cpu.ifield = cpu.ibuffer = ifield
+            cpu.dfield = dfield
             cpu.cif_pending = False
-            cpu.halted = False
-            cpu.reason = ''
+            self.panel_field = ifield
+        elif op == 'panel_addr':
+            # PDP-8/I LOAD ADD: load the address register and set the field
+            # switches; no accumulator or link clearing takes place.
+            if self.running:
+                raise ValueError('STOP before LOAD ADD')
+            address = _number(args.get('address'), 'address', WORD)
+            ifield = _number(args.get('ifield', args.get('field', cpu.ifield)), 'instruction field', cpu.fields - 1)
+            dfield = _number(args.get('dfield', cpu.dfield), 'data field', cpu.fields - 1)
+            self.cursor = address
+            self.panel_field = ifield
+            cpu.pc = address
+            cpu.ifield = ifield
+            cpu.dfield = dfield
+            cpu.ibuffer = ifield
+            cpu.cif_pending = False
+            self.mb = cpu.peek(address, ifield)
+            cpu.halted = True
+            cpu.reason = 'LOAD ADD'
             self.running = False
-            self.mb = cpu.peek(address, field)
         elif op == 'pc':
             cpu.pc = _number(args.get('address'), 'PC', WORD)
             cpu.halted = False
@@ -161,6 +177,8 @@ class Bridge:
             else:
                 raise ValueError('field must be if or df')
         elif op == 'examine':
+            if args.get('panel', False) is True and self.running:
+                raise ValueError('STOP before front-panel EXAM')
             address = _number(args.get('address', self.cursor), 'address', WORD)
             field = _number(args.get('field', self.panel_field), 'field', cpu.fields - 1)
             count = _number(args.get('count', 1), 'count', 128)
@@ -172,7 +190,11 @@ class Bridge:
             self.cursor = (address + count) & WORD
             self.panel_field = field
             self.mb = data['words'][-1]
+            if args.get('panel', False) is True:
+                cpu.pc = self.cursor  # PDP-8/I address lamps advance after EXAM
         elif op == 'deposit':
+            if args.get('panel', False) is True and self.running:
+                raise ValueError('STOP before front-panel DEP')
             address = _number(args.get('address', self.cursor), 'address', WORD)
             field = _number(args.get('field', self.panel_field), 'field', cpu.fields - 1)
             value = _number(args.get('value', cpu.switches), 'word', WORD)
@@ -180,6 +202,8 @@ class Bridge:
             self.cursor = (address + 1) & WORD
             self.panel_field = field
             self.mb = value
+            if args.get('panel', False) is True:
+                cpu.pc = self.cursor  # next address after each toggle-in
             data['address'] = address
             data['field'] = field
             data['value'] = value
@@ -218,6 +242,32 @@ class Bridge:
             cpu.reason = '' if cpu.reason != 'BREAKPOINT' else 'BREAKPOINT'
             self.running = False
             data['executed'], data['trace'] = self._execute_steps(count, True)
+        elif op in ('panel_start', 'panel_continue'):
+            # START is a fresh console start at the address in the switches:
+            # clear AC and LINK, preserve manually deposited core memory.
+            # CONT resumes from the halted PC without clearing computation.
+            single = args.get('single_instruction', False)
+            if type(single) is not bool:
+                raise ValueError('single_instruction must be boolean')
+            if self.running:
+                raise ValueError('STOP before starting from the front panel')
+            if op == 'panel_start':
+                cpu.pc = cpu.switches
+                cpu.ac = 0
+                cpu.l = 0
+                self.cursor = cpu.pc
+                cpu.ifield = cpu.ibuffer
+            cpu.halted = False
+            if cpu.reason != 'BREAKPOINT':
+                cpu.reason = ''
+            self.calc_operation = None
+            self.running = True
+            if single:
+                data['executed'], data['trace'] = self._execute_steps(1, True)
+                self.running = False
+                if not cpu.halted:
+                    cpu.halted = True
+                    cpu.reason = 'SINGLE INSTRUCTION'
         elif op in ('start', 'resume'):
             if 'address' in args:
                 cpu.pc = _number(args['address'], 'start address', WORD)

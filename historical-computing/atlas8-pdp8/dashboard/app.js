@@ -13,8 +13,10 @@
     base: 'dec', list: [], activeAddr: null, recentAddr: null,
     memoryAddress: 0o200, memoryField: 0, polling: false,
     stopped: false, pendingSwitch: false, toastTimer: null, ttyText: '', tracePage: 0,
+    singleInstruction: false, panelLocked: false, lessonStep: 0,
   };
-  const names = [['PC', 'pc'], ['AC', 'ac'], ['MQ', 'mq'], ['IR', 'ir'], ['MA', 'ma'], ['MB', 'mb']];
+  const names = [['PC', 'pc'], ['AC', 'ac'], ['L', 'l'], ['MA', 'ma'], ['MB', 'mb'], ['IR', 'ir']];
+  const lessonWords=[0o7301,0o7001,0o7430,0o7402,0o5001];
 
   function toast(message, bad=false) {
     const el = $('toast');
@@ -65,9 +67,9 @@
     row.dataset.field = property;
     const title = document.createElement('span'); title.className = 'register-name'; title.textContent = name;
     const lamps = document.createElement('div'); lamps.className = 'register-lights';
-    for (let group=0; group<4; group++) {
+    for (let group=0; group<(property==='l'?1:4); group++) {
       const block=document.createElement('div'); block.className='lamp-group';
-      for (let bit=11-group*3;bit>=9-group*3;bit--) {
+      for (let bit=(property==='l'?0:11-group*3);bit>=(property==='l'?0:9-group*3);bit--) {
         const lamp=document.createElement('span');lamp.className='lamp';lamp.dataset.bit=String(bit);
         lamp.setAttribute('aria-hidden','true');
         block.appendChild(lamp);
@@ -78,26 +80,56 @@
     row.append(title,lamps,value);
     $('registers').appendChild(row);
   }
+  function makeToggle(bit,kind) {
+    const btn=document.createElement('button');btn.type='button';btn.className='switch-key';
+    btn.dataset.bit=String(bit);btn.dataset.kind=kind;
+    btn.setAttribute('aria-label',`${kind==='word'?'Switch register':kind==='df'?'Data field':'Instruction field'} bit ${bit}`);
+    btn.setAttribute('aria-pressed','false');
+    const label=document.createElement('span');label.className='bit-label';label.textContent=String(bit).padStart(2,'0');
+    const housing=document.createElement('span');housing.className='toggle-housing';
+    const handle=document.createElement('span');handle.className='toggle-handle';
+    housing.appendChild(handle);btn.append(label,housing);
+    btn.addEventListener('click',async()=>{
+      if(!ui.state||ui.busy||ui.panelLocked)return;
+      if(kind==='word'){
+        const value=ui.state.switches^(1<<bit);
+        const response=await command('switches',{value});
+        if(!response)toast('Switch operation failed.',true);
+      } else {
+        const ifield=kind==='if'?(ui.state.ifield^(1<<bit)):ui.state.ifield;
+        const dfield=kind==='df'?(ui.state.dfield^(1<<bit)):ui.state.dfield;
+        await command('panel_fields',{ifield,dfield});
+      }
+    });
+    return btn;
+  }
   function buildPanel() {
-    names.forEach(([name,field]) => makeLampLine(name,field));
-    for (let bit=11;bit>=0;bit--) {
-      const button=document.createElement('button');
-      button.type='button';button.className='switch-key';button.dataset.bit=String(bit);
-      button.setAttribute('aria-label',`Switch bit ${bit}`);button.setAttribute('aria-pressed','false');
-      const label=document.createElement('span');label.className='bit-label';label.textContent=String(bit).padStart(2,'0');
-      const housing=document.createElement('span');housing.className='toggle-housing';
-      const handle=document.createElement('span');handle.className='toggle-handle';
-      housing.append(handle);button.append(label,housing);
-      button.addEventListener('click',async () => {
-        if (!ui.state || ui.busy) return;
-        const current=ui.state.switches ^ (1<<bit);
-        ui.state.switches=current;
-        renderSwitches();
-        const response=await command('switches',{value:current});
-        if (!response) renderSwitches();
-      });
-      $('switches').appendChild(button);
+    names.forEach(([name,field])=>makeLampLine(name,field));
+    for(let bit=11;bit>=0;bit--)$('switches').appendChild(makeToggle(bit,'word'));
+    for(let bit=2;bit>=0;bit--){
+      $('dataFieldSwitches').appendChild(makeToggle(bit,'df'));
+      $('instructionFieldSwitches').appendChild(makeToggle(bit,'if'));
     }
+  }
+  function updateLesson() {
+    const steps=[
+      ['Set address 0000, then press LOAD ADD.',0],
+      ...lessonWords.map((word,index)=>[`Set ${oct(word)} for address ${oct(index)}, then press DEP.`,word]),
+      ['Set 0000 and LOAD ADD to return to program start.',0],
+      ['Press START to execute the toggled-in program.',0]
+    ];
+    const index=Math.min(ui.lessonStep,steps.length);
+    $('lessonTarget').textContent=index>=steps.length?'Program running or complete. EXAM or SING INST to explore.':`Step ${index+1}: ${steps[index][0]}`;
+    $('lessonProgress').textContent=`${index}/${steps.length} actions`;
+    $('btnPanelPreset').disabled=index>=steps.length;
+  }
+  function lessonPanelAction(name,address,value) {
+    const n=ui.lessonStep;
+    if(n===0&&name==='load'&&address===0)ui.lessonStep++;
+    else if(n>=1&&n<=5&&name==='deposit'&&address===n-1&&value===lessonWords[n-1])ui.lessonStep++;
+    else if(n===6&&name==='load'&&address===0)ui.lessonStep++;
+    else if(n===7&&name==='start')ui.lessonStep++;
+    updateLesson();
   }
 
   function renderSwitches() {
@@ -107,12 +139,14 @@
     $('switchReadout').append(document.createTextNode(oct(value)+' '));
     const note=document.createElement('small');note.textContent='OCT';$('switchReadout').append(note);
     for (const btn of $('switches').children) btn.setAttribute('aria-pressed',Boolean(value & (1<<Number(btn.dataset.bit))).toString());
+    for(const btn of $('dataFieldSwitches').children){btn.setAttribute('aria-pressed',Boolean(ui.state.dfield&(1<<Number(btn.dataset.bit))).toString());btn.disabled=ui.state.fields===1;}
+    for(const btn of $('instructionFieldSwitches').children){btn.setAttribute('aria-pressed',Boolean(ui.state.ifield&(1<<Number(btn.dataset.bit))).toString());btn.disabled=ui.state.fields===1;}
   }
 
   function updateRegister(property,value) {
     const row=$('registers').querySelector(`.register-row[data-field="${property}"]`);
     if (!row) return;
-    row.querySelector('.reg-value').textContent=oct(value);
+    row.querySelector('.reg-value').textContent=property==='l'?String(value):oct(value);
     for (const lamp of row.querySelectorAll('.lamp')) lamp.classList.toggle('on',Boolean(value & (1<<Number(lamp.dataset.bit))));
   }
 
@@ -122,6 +156,8 @@
     for (const [,field] of names) updateRegister(field,s[field]);
     $('statPc').textContent=oct(s.pc);$('statAc').textContent=oct(s.ac);
     $('statLink').textContent=String(s.l);$('statFields').textContent=`${s.ifield} / ${s.dfield}`;
+    $('statDf').textContent=String(s.dfield);$('statIf').textContent=String(s.ifield);
+    for(const [i,el] of [...$('opcodeLamps').children].entries())el.classList.toggle('on',s.instructions>0 && (s.ir>>>9)===i);
     $('instructionCounter').textContent=`${s.instructions.toLocaleString()} EXECUTED`;
     $('flagKbd').classList.toggle('active',s.tty_kbd_ready);
     $('flagTty').classList.toggle('active',s.tty_print_ready);
@@ -130,6 +166,8 @@
     const running=s.running&&!s.halted;
     $('cpuRunStatus').textContent=running?'RUNNING':(s.reason==='BREAKPOINT'?'BREAKPOINT':'HALTED');
     $('cpuRunStatus').classList.toggle('running',running);
+    $('btnSingleInstruction').setAttribute('aria-pressed',String(ui.singleInstruction));
+    $('panelLock').setAttribute('aria-pressed',String(ui.panelLocked));
     $('panelMessage').textContent=s.reason || (running?'Executing bounded instruction batches.':'Machine ready.');
     renderSwitches();
     if (s.calculator && ui.loaded) {
@@ -282,6 +320,16 @@
       }
     }finally{ui.polling=false;}
   }
+  async function historicalStart(fresh) {
+    if(ui.panelLocked)return toast('Panel locked; unlock before operating.',true);
+    if(ui.busy)return;
+    ui.stopped=true;
+    const response=await command(fresh?'panel_start':'panel_continue',{'single_instruction':ui.singleInstruction});
+    if(!response)return;
+    if(fresh)lessonPanelAction('start');
+    if(response.state.running){ui.stopped=false;tickLoop();}
+    else if(ui.singleInstruction)toast(`${fresh?'START':'CONT'}: executed one native instruction, PC ${oct(response.state.pc)}.`);
+  }
   async function halt() {
     ui.stopped=true;
     // If a tick is currently in flight, wait for it to complete before STOP.
@@ -291,15 +339,15 @@
 
   async function examinePanel() {
     const s=ui.state;if(!s)return;
-    const at=s.ma;
-    const result=await command('examine',{address:at,field:s.panel_field,count:1});
-    if(result)toast(`${s.panel_field}:${oct(at)} = ${oct(result.data.words[0])}`);
+    const at=s.panel_next_addr;
+    const result=await command('examine',{address:at,field:s.panel_field,count:1,panel:true});
+    if(result)toast(`${s.panel_field}:${oct(at)} = ${oct(result.data.words[0])}; next ${oct((at+1)&mask)}`);
   }
   async function depositPanel() {
     const s=ui.state;if(!s)return;
-    const at=s.ma;
-    const result=await command('deposit',{address:at,field:s.panel_field,value:s.switches});
-    if(result)toast(`Deposited ${oct(s.switches)} at ${s.panel_field}:${oct(at)}.`);
+    const at=s.panel_next_addr;
+    const result=await command('deposit',{address:at,field:s.panel_field,value:s.switches,panel:true});
+    if(result){toast(`Deposited ${oct(s.switches)} at ${s.panel_field}:${oct(at)}; next ${oct((at+1)&mask)}`);lessonPanelAction('deposit',at,s.switches);}
   }
   async function reset(clear=false) {
     if(clear&&!confirm('Erase all emulated memory and reset the CPU?'))return;
@@ -346,10 +394,7 @@
   async function boot() {
     buildPanel();
     for(const tab of document.querySelectorAll('.tab'))tab.addEventListener('click',()=>showTab(tab.dataset.tab));
-    for(const btn of document.querySelectorAll('[data-panel-section]'))btn.addEventListener('click',()=>{
-      $('panelTab').dataset.section=btn.dataset.panelSection;
-      for(const peer of document.querySelectorAll('[data-panel-section]'))peer.classList.toggle('selected',peer===btn);
-    });
+    updateLesson();
     for(const btn of document.querySelectorAll('[data-program-view]'))btn.addEventListener('click',()=>{
       for(const peer of document.querySelectorAll('[data-program-view]'))peer.classList.toggle('selected',peer===btn);
       for(const view of document.querySelectorAll('.program-view'))view.classList.toggle('hidden',view.dataset.view!==btn.dataset.programView);
@@ -361,18 +406,24 @@
     wire('btnCalcStep','click',step);
     wire('btnCalcFinish','click',start);
     wire('btnStep','click',step);
-    wire('btnRun','click',start);
+    wire('btnRun','click',()=>historicalStart(true));
+    wire('btnContinue','click',()=>historicalStart(false));
+    wire('btnSingleInstruction','click',()=>{ui.singleInstruction=!ui.singleInstruction;$('btnSingleInstruction').setAttribute('aria-pressed',String(ui.singleInstruction));toast(ui.singleInstruction?'SING INST ON: START/CONT executes one instruction.':'SING INST OFF: continuous RUN.');});
+    wire('panelLock','click',()=>{ui.panelLocked=!ui.panelLocked;$('panelLock').setAttribute('aria-pressed',String(ui.panelLocked));$('panelLock').textContent=ui.panelLocked?'PANEL LOCKED':'PANEL UNLOCKED';});
+    wire('btnPanelPreset','click',async()=>{const words=[0,...lessonWords,0,0];const n=words[ui.lessonStep];if(n===undefined)return;const r=await command('switches',{value:n});if(r)toast('Switch register set to '+oct(n)+'. Press the actual panel key to proceed.');});
+    wire('btnPanelGuideReset','click',()=>{ui.lessonStep=0;updateLesson();toast('Lesson prompts restarted; emulated memory unchanged.');});
     wire('btnStop','click',halt);
     wire('btnReset','click',()=>reset(false));
     wire('btnClear','click',()=>reset(true));
     wire('btnLoadAddress','click',async()=>{
       if(!ui.state)return;
       const address=ui.state.switches;
-      const res=await command('panel_addr',{address,field:ui.state.panel_field});
-      if(res)toast(`PC loaded from switches: ${oct(address)}.`);
+      if(ui.panelLocked)return toast('Panel locked; unlock before operating.',true);
+      const res=await command('panel_addr',{address,ifield:ui.state.ifield,dfield:ui.state.dfield});
+      if(res){toast(`LOAD ADD: address ${oct(address)}.`);lessonPanelAction('load',address);}
     });
-    wire('btnExamine','click',examinePanel);
-    wire('btnDeposit','click',depositPanel);
+    wire('btnExamine','click',()=>{if(!ui.panelLocked)examinePanel();else toast('Panel is locked',true);});
+    wire('btnDeposit','click',()=>{if(!ui.panelLocked)depositPanel();else toast('Panel is locked',true);});
     for(const card of document.querySelectorAll('[data-demo]'))card.addEventListener('click',()=>runDemo(card.dataset.demo));
     wire('btnMemoryRead','click',inspectMemory);
     wire('btnLoadWords','click',loadWords);
@@ -422,7 +473,7 @@
         const response=await fetch('/api/mode',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode,port})});
         const body=await response.json();
         if(!response.ok||!body.ok)throw new Error(body.error||'Could not connect engine');
-        ui.state=null;ui.loaded=false;ui.list=[];ui.tracePage=0;ui.ttyText='';ui.calculating=false;ui.stopped=false;
+        ui.state=null;ui.loaded=false;ui.list=[];ui.tracePage=0;ui.ttyText='';ui.calculating=false;ui.stopped=false;ui.lessonStep=0;updateLesson();
         $('ttyScreen').textContent='';
         $('programListing').textContent='';
         updateTarget(body);

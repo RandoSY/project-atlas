@@ -92,3 +92,8 @@ Original binary/word images are placed in the emulated core without translation.
 ## Inspecting a failed software load
 
 When an IOT is unsupported, the CPU halts with an explicit message identifying its octal opcode and device number. Write down `PC`, `IR`, `AC`, `IF`, `DF`, and the loaded tape. Compare that instruction with a period DEC reference manual and SIMH before making changes. Avoid silently ignoring instructions because this makes programs appear to run when they do not.
+
+
+## PDP-8/I panel programming (v0.5.3)
+
+The default tab is now a functional PDP-8/I front panel. For a faithful first program, see [FRONT_PANEL_LESSON.md](FRONT_PANEL_LESSON.md): STOP, LOAD ADD `0000`, DEP `7301`, `7001`, `7430`, `7402`, `5001`, LOAD ADD `0000`, START. To inspect memory, LOAD ADD `0000` and EXAM five times; the memory buffer and address lamps advance. START begins a fresh computation with AC/L cleared. CONT resumes without clearing AC/L. Latched SING INST causes START/CONT to execute one complete PDP-8 machine instruction. SING STEP is disabled because machine-cycle stepping is not implemented. The no-scroll front panel is designed for your dedicated PC.

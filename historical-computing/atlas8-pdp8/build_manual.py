@@ -21,8 +21,8 @@ from reportlab.lib.colors import HexColor
 from xml.sax.saxutils import escape
 
 ROOT=Path(__file__).resolve().parent
-DEST=ROOT/'ATLAS8_Operators_and_Programmers_Manual_v0.5.2.pdf'
-IMG=ROOT/'assets'/'ATLAS8_dashboard_desktop.png'
+DEST=ROOT/'ATLAS8_Operators_and_Programmers_Manual_v0.5.3.pdf'
+IMG=ROOT/'assets'/'ATLAS8_historical_panel.png'
 IMGT=ROOT/'assets'/'ATLAS8_dashboard_terminal.png'
 IMGM=ROOT/'assets'/'ATLAS8_dashboard_mobile.png'
 FONTS='/usr/share/fonts/truetype/dejavu'
@@ -75,7 +75,7 @@ class ManualDoc(BaseDocTemplate):
             canv.drawRightString(PAGE_W-MARGIN_X,PAGE_H-12,'OPERATOR + PROGRAMMER MANUAL')
         canv.setStrokeColor(LT);canv.line(MARGIN_X,43,PAGE_W-MARGIN_X,43)
         canv.setFillColor(GRAY);canv.setFont('AtlasSans',7.8)
-        canv.drawString(MARGIN_X,30,'0.5.2-alpha  |  22 November 2026  |  Educational PDP-8 reconstruction')
+        canv.drawString(MARGIN_X,30,'0.5.3-alpha  |  22 November 2026  |  Educational PDP-8 reconstruction')
         canv.drawRightString(PAGE_W-MARGIN_X,30,str(page))
         canv.restoreState()
     def afterFlowable(self, flowable):
@@ -137,14 +137,14 @@ P('PDP-8 Emulator + Programmable Calculator','cover_title')
 P('Operator’s Guide and Programmer’s Reference<br/>For the dedicated Chrome PC and RP2040 MicroPython implementation','cover_sub')
 NOTE('One console. Two execution targets.', 'SIMULATE runs the <b>same Python PDP-8 core</b> under CPython on the PC. LIVE PICO uses that core under MicroPython on the RP2040, reached through USB serial. Chrome renders the front panel; it is not a separate PDP-8 CPU implementation.')
 IMAGE(IMG,width=430)
-P('<b>Release 0.5.2-alpha</b>  |  22 November 2026<br/>Prepared for Project Atlas / Software-Defined Laboratory','tiny')
+P('<b>Release 0.5.3-alpha</b>  |  22 November 2026<br/>Prepared for Project Atlas / Software-Defined Laboratory','tiny')
 PAGE()
 
 P('READ THIS FIRST','cover_kicker')
 H1('What this release actually does')
-P('ATLAS-8 is a <b>working educational PDP-8 core and browser dashboard</b>. Students load native 12-bit machine words, single-step them, inspect octal registers, and see Teletype output. The programmable calculator is the first lesson because its arithmetic is performed by PDP-8 instructions, not by a JavaScript expression evaluator.')
+P('ATLAS-8 is a <b>working educational PDP-8 core and browser dashboard</b>. Students load native 12-bit machine words, single-step them, inspect octal registers, and see Teletype output. The front-panel switch lesson is the first lesson because its arithmetic is performed by PDP-8 instructions, not by a JavaScript expression evaluator.')
 TB(['Verified today','Not yet verified'],[
- ('26 CPython unit/integration tests pass','Operation on the physical RP2040'),
+ ('44 CPython unit/integration tests pass','Operation on the physical RP2040'),
  ('Calculator: 7+6 = 13 and 7×6 = 42','Booting original OS/8 or FOCAL'),
  ('Teletype outputs HELLO PDP-8','Original DEC hardware timing or all device IOTs'),
  ('Browser smoke: no page scrolling at tested sizes','All screen sizes; live serial USB interface'),
@@ -202,12 +202,12 @@ H1('3 / Installation: PC simulator')
 H2('Step 1 — Unpack and test')
 P('Unzip the ATLAS-8 source bundle on the dedicated PC. Open a terminal or PowerShell in the project folder containing <font face="AtlasMono">pc_dashboard_server.py</font>. Python 3.9+ is recommended. Run the desktop test suite first:')
 CODE('''python -m unittest discover -s tests -v''')
-P('At this release, the expected result is <b>26 tests passing</b>. This confirms local instruction behavior and the host-mode tests, not physical Pico operation.')
+P('At this release, the expected result is <b>44 tests passing</b>. This confirms local instruction behavior and the host-mode tests, not physical Pico operation.')
 H2('Step 2 — Launch the dashboard')
 CODE('''python pc_dashboard_server.py --mode sim --open''')
 P('If the browser does not open, use the exact URL printed by the server (normally <font face="AtlasMono">http://127.0.0.1:8878/</font>). Port 8765 belongs to Active Independence, not ATLAS-8. If 8878 is busy, ATLAS-8 chooses a free port between 8879 and 8898. Browser launch requires a successful ATLAS-8 identity check. The host is accessible from the dedicated PC only.')
 H2('Step 3 — First exercise')
-B('The initial tab is <b>Calculator</b>. Enter A=7, operation=Add, B=6.')
+B('The initial tab is <b>Front Panel</b>. For the calculator, select the <b>Calculator</b> tab and enter A=7, operation=Add, B=6.')
 B('Choose <b>LOAD NATIVE PROGRAM</b>. The instruction listing should appear.')
 B('Choose <b>STEP ONE INSTRUCTION</b> to watch registers change; use <b>RUN TO HLT</b> to finish.')
 B('Verify decimal 13 and octal 0015. Try 7 × 6 and verify 42 / 0052 octal.')
@@ -251,7 +251,7 @@ NOTE('If the Pico fails to connect','A failed connection should not discard the 
 H1('5 / A tour of the no-scroll dashboard')
 TB(['Tab','Primary purpose','Operator exercise'],[
  ('01 · Calculator','Run a program that implements arithmetic','Load 7+6; step the AC and PC; compare octal/decimal'),
- ('02 · Front Panel','Read register lamps, set switches, manipulate PC and memory','Deposit an instruction and execute it'),
+ ('01 · Front Panel','Toggle native machine code into core, inspect lamps and run','Use LOAD ADD, DEP, EXAM, START, CONT'),
  ('03 · Programs','Select demos or load native octal words','Load ADD, COUNT, HELLO or SWITCH ADDER'),
  ('04 · Teletype','Observe guest TTY IOT output; queue keyboard input','Run HELLO PDP-8; inspect character stream'),
  ('05 · Guide','In-dashboard memory aid','Follow the four introductory activities')],widths=[114,165,CONTENT_W-279])
@@ -281,7 +281,7 @@ H2('Subtraction and multiplication')
 P('Subtraction uses two’s-complement negation: complement the subtrahend and increment it, then add the minuend. Multiplication has no single general-purpose multiply instruction in the base PDP-8; the lesson performs repeated addition with an <font face="AtlasMono">ISZ</font> loop counter. The dashboard caps the multiplier B at 256 for responsiveness and instructional clarity. Both cases wrap modulo 4096.')
 NOTE('Instructional observation','Ask students: “What is an instruction?” “Where is the answer during execution?” “Why does the accumulator become zero after DCA?” “What would happen if the machine had only eight bits?”')
 
-H1('7 / Front-panel operator procedures')
+H1('7 / PDP-8/I front-panel operator procedures')
 H2('Registers and indicators')
 TB(['Label','Meaning'],[
  ('PC','Program counter: address of the next instruction in the current instruction field.'),
@@ -292,16 +292,27 @@ TB(['Label','Meaning'],[
  ('MA / MB','Dashboard memory address cursor and last displayed memory buffer value; interpretive controls.'),
  ('IF / DF','Instruction/data field selectors, for optional memory extension.'),
  ('SR','12-bit console switch register, exposed to guest code with OSR.')],widths=[94,CONTENT_W-94])
-H2('Manual deposit-and-execute exercise')
-P('The following program clears AC, increments it, and halts. All words are octal. Perform the steps in Front Panel/Operator Controls or enter the words on Programs/Octal Loader.')
-CODE('''0200  7200  CLA
-0201  7001  IAC
-0202  7402  HLT''')
-B('Clear memory (confirmation required), then set switch register to <font face="AtlasMono">0200</font> and choose <b>LOAD ADDRESS</b>.')
-B('Set SR=<font face="AtlasMono">7200</font>, DEPOSIT; then SR=<font face="AtlasMono">7001</font>, DEPOSIT; then SR=<font face="AtlasMono">7402</font>, DEPOSIT.')
-B('Set SR=<font face="AtlasMono">0200</font> and LOAD ADDRESS again; single-step three instructions.')
-B('Confirm AC=<font face="AtlasMono">0001</font> and PC=<font face="AtlasMono">0203</font>. The CPU should report a halt.')
-P('The front panel is a functional <b>educational interpretation</b>, not a claim to duplicate every switch and mechanical function on the 1965 PDP-8, later PDP-8/E or PDP-12 front panel.')
+H2('Historically faithful five-word program')
+P('The first exercise reproduces the 1968-style PDP-8/I switch-programming sequence demonstrated in the Hackaday video. The panel is an interactive reconstruction, not a photographic overlay. The words below execute on the MicroPython/CPython PDP-8 CPU, never in JavaScript.')
+TB(['Address (octal)','Word (octal)','Purpose'],[
+ ('0000','7301','CLA CLL IAC: clear AC and LINK, then AC = 1'),
+ ('0001','7001','IAC: increment AC'),
+ ('0002','7430','SZL: skip next while LINK is zero'),
+ ('0003','7402','HLT'),
+ ('0004','5001','JMP 0001: repeat')], widths=[114,106,CONTENT_W-220])
+H2('Operating the actual switches')
+B('Press STOP. Set the twelve address/data toggle switches to 0000; press LOAD ADD to set address 0000.')
+B('Set the switches to 7301 and operate DEP (up on the original PDP-8/I). The memory buffer shows 7301 and the address advances to 0001.')
+B('Repeat with 7001, 7430, 7402 and 5001; after each DEP the address advances automatically.')
+B('Set switches to 0000 and LOAD ADD again. EXAM five times to read the words in the Memory Buffer. Reload address 0000 afterward.')
+B('With switches at 0000, press START. The program increments AC repeatedly, toggling LINK when AC wraps from 7777 to 0000. Then HLT stops execution.')
+B('To understand individual instructions, enable SING INST, LOAD ADD 0000, press START once and CONT repeatedly. START clears AC and LINK, CONT does not.')
+P('<b>Expected result:</b> AC 0000, LINK 1, PC 0004 and a normal HLT after 12,286 instructions. The STEP 1 convenience button is a modern diagnostic, whereas SING INST is the panel-style mechanism for one-instruction stepping.')
+NOTE('Model accuracy and omissions','This is modeled specifically on the <b>PDP-8/I</b>. SING STEP is disabled: individual fetch/defer/execute microcycles are <b>not</b> simulated. On the single-memory-field configuration, IF/DF field switches are disabled rather than silently affecting uninstalled memory. Hardware lamp decay and exact timing are not modeled.')
+P('The panel includes a <b>SET SWITCHES FOR THIS STEP</b> instructional aid. It sets only the twelve switches; the learner must still actuate the historical key to deposit each word. A virtual panel lock prevents accidental control changes.')
+H2('Historical context and references')
+P('For background, read Pikuma, <i>From Front Panel to Program: Thinking Like a PDP-8</i> (2026), especially its sections on AC/LINK, eight opcode groups, front-panel loading, punched paper tape and PAL assembly. For the illustrated procedure, use Hackaday, <i>Getting Started With Blinking Lights On Old Iron</i> (2017). Model-specific controls are also documented at PDP8Online in its PDP-8/I front-panel description and the DEC 1970 Small Computer Handbook.')
+CODE('Pikuma: https://pikuma.com/blog/pdp-8-minicomputer\nVideo:  https://www.youtube.com/watch?v=yUZrn7qTGcs\nGuide:  docs/FRONT_PANEL_LESSON.md')
 H2('RESET versus CLEAR')
 P('<b>RESET CPU</b> clears registers and flags while retaining emulated memory. <b>CLEAR MEMORY</b> clears both registers and all installed memory fields. Switching engines also starts a new session; there is no automatic memory migration.')
 
@@ -370,7 +381,7 @@ P('Machine code is shown in octal for human readers. Under the JSON protocol the
 H1('11 / Teletype and paper-tape handling')
 H2('Teletype walkthrough')
 B('Open Programs and choose HELLO PDP-8.')
-B('Return to Front Panel / Operator Controls, press RUN and allow the machine to halt.')
+B('Use Calculator / RUN TO HLT to execute the loaded demonstration, then view output in Teletype.')
 B('Open Teletype and verify the phrase <font face="AtlasMono">HELLO PDP-8</font>.')
 B('Try sending a short string from the Teletype keyboard. It enters the simulated keyboard queue; it appears only if guest code reads it.')
 P('The TTY screen uses a bounded character buffer. Long output may cause older characters to leave the displayed window. It is not archival storage.')
@@ -426,7 +437,7 @@ P('First close the PC dashboard host and reconnect with a serial REPL. Send Ctrl
 H1('14 / Validation and operator acceptance tests')
 H2('Automated tests')
 CODE('''python -m unittest discover -s tests -v
-# Expected in v0.5.1: 30 tests, all OK
+# Expected in v0.5.3: 44 tests, all OK
 
 python tests/browser_smoke.py
 # Expected: no page overflow, no JS exceptions;
@@ -503,7 +514,7 @@ H2('Reference material')
 P('For historical instruction semantics, consult Digital Equipment Corporation PDP-8/PDP-8/E programming handbooks and field-maintenance documentation; Doug Jones’s University of Iowa PDP-8 FAQ; and the open-source SIMH PDP-8 simulator. These references are useful for comparing obscure instruction combinations and IOT behavior. They do not independently validate the present build.')
 P('Source pointers: <font face="AtlasMono">github.com/simh/simh</font> and <font face="AtlasMono">homepage.cs.uiowa.edu/~jones/pdp8/</font>. Historical binary media may impose their own licensing and provenance requirements. This bundle includes <b>original educational demos</b>, not a packaged DEC OS/8 or FOCAL distribution.')
 H2('Version declaration')
-P('This manual describes the source tree in ATLAS-8 v0.5.2-alpha as inspected and tested on 22 November 2026. If dashboard behavior changes, regenerate the manual and rerun all verification. The operator should prioritize the executable source and automated tests when a disagreement is found.')
+P('This manual describes the source tree in ATLAS-8 v0.5.3-alpha as inspected and tested on 22 November 2026. If dashboard behavior changes, regenerate the manual and rerun all verification. The operator should prioritize the executable source and automated tests when a disagreement is found.')
 NOTE('The point of the project','Students are not merely operating an old-style computer. They are discovering how an instruction, register, measured signal and human question connect—and how those same ideas later reappear in LINC, the Arduino Revolution and the smartphone laboratory.')
 
 # doc render
