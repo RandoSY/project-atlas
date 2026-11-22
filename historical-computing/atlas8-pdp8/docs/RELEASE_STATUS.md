@@ -1,28 +1,23 @@
-# ATLAS-8 v0.5 — GitHub staging status
+# ATLAS-8 v0.5 — Release status
 
 **Checkpoint:** 2026-11-22
 
-This directory is a dedicated home for the ATLAS-8 PDP-8 MicroPython project.
+This directory contains the complete v0.5 educational PDP-8 emulator source, tabbed browser dashboard, two transport implementations, tests, Windows launcher, and operator/programmer manual.
 
-## Available now
-- Branded README and SVG logo
-- `pdp8.py`: authentic 12-bit PDP-8 style CPU emulator core
-- `programs.py`: real PDP-8 machine-word calculator / Teletype exercises
-- `examples/quickstart.py`: standalone arithmetic demonstration
-- Windows launcher and start-here notes
+## Verified
+- `python -m unittest discover -s tests -v`: **26 tests passing** on CPython.
+- Prior browser smoke tests exercised calculator 7+6, 7×6, Teletype `HELLO PDP-8`, and a desktop no-scroll layout.
+- The dedicated PC may run simulation mode without a Pico.
 
-Run from the repository directory (Python 3): `python examples/quickstart.py`.
-On the Pico, `pdp8.py`, `programs.py` and this example must be copied to the MicroPython filesystem.
+## Not yet verified
+- Physical RP2040 MicroPython serial operation and long-duration reliability.
+- Historical software compatibility (FOCAL-69, OS/8, DEC tape images).
+- PDP-12 LINC mode, AGC, MSP430 scientific I/O.
 
-## Not yet in this GitHub directory
+## How to run
+- Windows: double click `START_DASHBOARD_WINDOWS.bat`.
+- Other systems: `python pc_dashboard_server.py --mode sim --open`.
+- Browser: `http://127.0.0.1:8765/` with Python 3.
+- Before Pico use, follow `docs/DASHBOARD_PROTOCOL.md` for exact firmware file list.
 
-The **full** v0.5 dashboard release bundle, PC bridge, host server, test suite, operator's manual PDF, and additional modules have been produced as ChatGPT downloadable artifacts, but have not all been transferred to GitHub. Do not expect the Windows launcher to work with this partial directory checkout.
-
-## Validation boundaries
-
-- 26 desktop CPU/host automated tests passed on the complete local package.
-- Browser smoke testing of the complete local dashboard covered arithmetic, Teletype and a desktop no-scroll layout.
-- The GitHub directory itself has not been independently smoke-tested as an installable release.
-- Physical RP2040 hardware and unmodified native OS/8 or FOCAL binaries remain unverified.
-
-**Next publication milestone:** transfer the remaining original release source files and PDF, verify checksums against the local v0.5 bundle, and run a clean-clone dashboard smoke test.
+The PDF in the root folder documents the observed release; the machine compatibility claims above are intentionally limited.

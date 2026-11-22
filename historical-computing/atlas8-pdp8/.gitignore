@@ -1,0 +1,14 @@
+# Python / test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+# Editor / platform files
+.vscode/
+.DS_Store
+Thumbs.db
+# Emulated core snapshots and local test output
+*.core
+*.core.json
+*.log

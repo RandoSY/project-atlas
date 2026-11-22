@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#091b2a">
+  <title>ATLAS-8 · PDP-8 Laboratory Console</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-mark"><span class="brand-glyph">8</span></div>
+      <div class="brand-copy"><span class="eyebrow">PROJECT ATLAS · HISTORICAL COMPUTING</span><strong>ATLAS<span class="dash">—</span>8</strong></div>
+      <span class="topbar-rule"></span>
+      <div class="edition"><span>LABORATORY COMPUTER</span><b>PDP-8 / 12-BIT</b></div>
+      <div class="target-switch" role="group" aria-label="Execution engine">
+        <label for="executionMode">ENGINE</label><select id="executionMode" aria-label="Choose execution target"><option value="sim">SIMULATE</option><option value="serial">LIVE PICO</option></select>
+        <input id="serialPort" aria-label="Pico USB serial port" placeholder="COM7 / ttyACM0" title="USB serial port (needed only for Live Pico)" autocomplete="off" spellcheck="false">
+        <button id="btnConnectTarget" class="target-connect" type="button">CONNECT</button>
+      </div>
+      <div class="connection-group"><span id="connectionBadge" class="connect-badge connecting"><span class="indicator"></span> Connecting</span><span id="modeBadge" class="mode-badge">LOCAL</span></div>
+    </header>
+    <main id="dashboardMain">
+      <div class="intro-row">
+        <div><div class="section-kicker"><span class="line"></span> INTERACTIVE CONTROL CONSOLE / REV 0.5 ALPHA</div><h1>The programmable laboratory computer.</h1><p>A native 12-bit PDP-8, from calculator to computer. Select a screen—no scrolling.</p></div>
+        <div class="right-intro"><span class="time-label">RADIX</span><strong>OCTAL <span>↔</span> DECIMAL</strong><small>4096 words per memory field</small></div>
+      </div>
+      <section class="workbench">
+        <div class="tab-strip" role="tablist" aria-label="Select one dashboard screen">
+          <button class="tab active" role="tab" aria-selected="true" data-tab="calculator" aria-controls="calculatorTab"><span class="tab-number">01</span><span>Calculator</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="panel" aria-controls="panelTab"><span class="tab-number">02</span><span>Front Panel</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="programs" aria-controls="programsTab"><span class="tab-number">03</span><span>Programs</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="terminal" aria-controls="terminalTab"><span class="tab-number">04</span><span>Teletype</span></button>
+          <button class="tab" role="tab" aria-selected="false" data-tab="guide" aria-controls="guideTab"><span class="tab-number">05</span><span>Guide</span></button>
+        </div>
+        <div class="tab-body" id="calculatorTab" data-panel="calculator" role="tabpanel">
+          <div class="calculator-layout">
+            <div class="lesson-column">
+              <div class="lesson-kicker"><span class="chapter">LESSON 01</span> THE PROGRAMMABLE CALCULATOR</div>
+              <h2>Before the app, <em>there was the accumulator.</em></h2>
+              <p class="lesson-lead">Give the machine two values. It will solve the problem by fetching actual PDP-8 instruction words from memory—not by using your PC's calculator.</p>
+              <div class="four-steps"><div><span>01</span> ENTER VALUES</div><div><span>02</span> LOAD PROGRAM</div><div><span>03</span> STEP THE CPU</div><div><span>04</span> EXPLAIN RESULT</div></div>
+              <div class="calculator-box">
+                <div class="calc-header"><span>DESK CALCULATOR / 12-BIT ARITHMETIC</span><div class="radix-toggle" role="group" aria-label="Number base"><button class="active" id="baseDecimal">DEC</button><button id="baseOctal">OCT</button></div></div>
+                <div class="calc-entry"><label>NUMBER A<input id="calcA" inputmode="numeric" value="7" aria-label="First operand"></label><label>OPERATION<select id="calcOperation" aria-label="Arithmetic operation"><option value="add">+ Add</option><option value="subtract">− Subtract</option><option value="multiply">× Multiply (repeated ADD)</option></select></label><label>NUMBER B<input id="calcB" inputmode="numeric" value="6" aria-label="Second operand"></label></div>
+                <div class="calc-actions"><button class="action-primary" id="btnCalcLoad">LOAD NATIVE PROGRAM</button><button class="action-outline" id="btnCalcStep">STEP ONE INSTRUCTION</button><button class="action-outline" id="btnCalcFinish">RUN TO HLT</button></div>
+                <div class="result-row"><div><span>ACCUMULATOR / RESULT</span><strong id="calcResult">—</strong><small id="calcResultDetail">Load a program to begin.</small></div><div><span>LINK BIT</span><strong id="calcLink">0</strong><small>Carry history, not a decimal overflow flag</small></div></div>
+                <div id="calcExplanation" class="lesson-note"><b>Why this matters</b><p>The PDP-8 has no general-purpose arithmetic-expression instruction. A small sequence of machine instructions does the work.</p></div>
+              </div>
+            </div>
+            <div class="execution-column">
+              <div class="card-heading"><span>INSTRUCTION TRACE</span><span class="muted">OCTAL ADDRESS / WORD</span></div>
+              <div id="programListing" class="code-list" aria-label="PDP-8 native instruction listing"><div class="placeholder">Load the calculator program to inspect its machine instructions.</div></div>
+              <div class="trace-controls"><button id="btnTracePrev">PREVIOUS</button><span id="tracePageInfo">INSTRUCTIONS</span><button id="btnTraceNext">NEXT</button></div><div class="execution-bottom"><span>FETCH → DECODE → EXECUTE</span><span id="instructionHint">PC 0000</span></div>
+              <div class="callout"><span class="callout-glyph">i</span><div><strong>Historic behavior, modern visibility</strong><p>AC holds the 12-bit arithmetic result. LINK records carries. The front-panel lamps expose what a modern calculator hides.</p></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-body hidden" id="panelTab" data-panel="panel" data-section="lamps" role="tabpanel">
+          <div class="panel-pages" role="group" aria-label="Front-panel section">
+            <button type="button" data-panel-section="lamps" class="selected">Registers &amp; lamps</button>
+            <button type="button" data-panel-section="switches">12-bit switches</button>
+            <button type="button" data-panel-section="control">Operator controls</button>
+          </div>
+          <section class="machine" aria-label="PDP-8 front panel">
+                  <div class="machine-head"><div><span class="machine-small">DIGITAL EQUIPMENT CORPORATION · INTERPRETIVE PANEL</span><h2>PDP–8 <span>CONTROL CONSOLE</span></h2></div><span class="machine-serial">ATLAS 8 / EDUCATIONAL RECONSTRUCTION</span></div>
+                  <div class="panel-bay">
+                    <div class="main-panel">
+                      <div class="register-head"><span>REGISTER DISPLAY</span><span>12-BIT WORDS · HIGH BIT AT LEFT</span></div>
+                      <div class="registers" id="registers"></div>
+                      <div class="switch-assembly">
+                        <div class="switch-head"><div><span>SWITCH REGISTER</span><small>Toggle an individual bit to compose an octal value</small></div><div class="octal-dial" id="switchReadout">0000 <small>OCT</small></div></div>
+                        <div id="switches" class="switch-row" role="group" aria-label="12 bit switch register"></div>
+                        <div class="switch-octal-labels"><span>BIT 11–9</span><span>BIT 8–6</span><span>BIT 5–3</span><span>BIT 2–0</span></div>
+                      </div>
+                    </div>
+                    <div class="operator-bay">
+                      <div class="operator-header"><span>OPERATOR STATION</span><span id="cpuRunStatus" class="run-state halted">HALTED</span></div>
+                      <div class="cpu-metrics">
+                        <div><small>PC</small><b id="statPc">0000</b></div><div><small>AC</small><b id="statAc">0000</b></div><div><small>LINK</small><b id="statLink">0</b></div><div><small>IF / DF</small><b id="statFields">0 / 0</b></div>
+                      </div>
+                      <div class="mini-flags"><span id="flagKbd">KBD</span><span id="flagTty">TTY</span><span id="flagIon">INT</span><span id="flagBreak">BRK</span></div>
+                      <div class="button-bank">
+                        <button class="machine-button" id="btnLoadAddress" title="Load current switch register into program counter">LOAD ADDRESS</button>
+                        <button class="machine-button" id="btnExamine" title="Examine word at current memory cursor">EXAMINE</button>
+                        <button class="machine-button" id="btnDeposit" title="Store switch register at memory cursor">DEPOSIT</button>
+                        <button class="machine-button" id="btnStep" title="Execute one instruction">SINGLE STEP</button>
+                        <button class="machine-button start" id="btnRun" title="Continue execution in bounded batches"><span class="triangle">▶</span> RUN</button>
+                        <button class="machine-button stop" id="btnStop" title="Stop execution"><span>■</span> STOP</button>
+                        <button class="machine-button secondary" id="btnReset" title="Reset registers; memory is retained">RESET CPU</button>
+                        <button class="machine-button secondary" id="btnClear" title="Clear registers and all memory">CLEAR MEMORY</button>
+                      </div>
+                      <div class="panel-help"><span id="panelMessage">Ready for a native PDP-8 program.</span><small id="instructionCounter">0 EXECUTED</small></div>
+                    </div>
+                  </div>
+                  <div class="machine-footer"><span><b class="screw"></b> INTERPRETIVE RECONSTRUCTION · NOT AN ORIGINAL DEC PANEL</span><span class="machine-pips">● ● ● ● ● ● ● ●</span></div>
+                </section>
+        </div>
+        <div class="tab-body hidden" id="programsTab" data-panel="programs" role="tabpanel">
+          <div class="subtabs" role="group" aria-label="Programs screen">
+            <button class="subtab selected" data-program-view="demos">Native demonstrations</button>
+            <button class="subtab" data-program-view="loader">Octal loader</button>
+            <button class="subtab" data-program-view="memory">Core memory</button>
+          </div>
+          <div class="program-view" data-view="demos">
+            <div class="view-header"><strong>REAL PDP-8 INSTRUCTIONS</strong><span>Load machine-language examples; use RUN on the Front Panel tab.</span></div>
+            <div class="program-grid">
+              <button class="demo-card" data-demo="hello"><strong>HELLO PDP-8</strong><span>Write characters through Teletype IOT instructions.</span></button>
+              <button class="demo-card" data-demo="add"><strong>ADD TWO CONSTANTS</strong><span>Clear accumulator; TAD and HLT.</span></button>
+              <button class="demo-card" data-demo="count"><strong>COUNT TO ZERO</strong><span>Use ISZ and JMP in a real CPU loop.</span></button>
+              <button class="demo-card" data-demo="switchadd"><strong>SWITCH ADDER</strong><span>Read physical-style switch register via OSR.</span></button>
+            </div>
+          </div>
+          <div class="program-view hidden" data-view="loader">
+            <div class="view-header"><strong>DIRECT OCTAL LOADING</strong><span>These are original-format machine words—not compiled host code.</span></div>
+            <div class="field-row"><label>ORIGIN (OCT)<input id="loadOrigin" value="0200" spellcheck="false"></label><label>FIELD<input id="loadField" value="0" spellcheck="false"></label></div>
+            <label class="textarea-label">MACHINE WORDS<textarea id="loadWords" rows="6" spellcheck="false">7300 1250 1251 3252 1252 7402</textarea></label>
+            <div class="calc-actions"><button class="action-primary" id="btnLoadWords">LOAD INTO CORE</button><button class="action-outline" id="btnSetPc">SET START ADDRESS</button></div>
+            <div class="workspace-note">PDP-8 addresses and words use octal 0000–7777. Use the Front Panel to single-step.</div>
+          </div>
+          <div class="program-view hidden" data-view="memory">
+            <div class="view-header"><strong>CORE MEMORY EXAMINER</strong><span>Browse memory by page, without a scrollbar.</span></div>
+            <div class="field-row"><label>OCTAL ADDRESS<input id="memoryAddr" value="0200" spellcheck="false"></label><label>FIELD<input id="memoryField" value="0" spellcheck="false"></label><button id="btnMemoryRead" class="action-outline">EXAMINE</button></div>
+            <pre id="memoryDump" class="memory-dump">Select EXAMINE to inspect core memory.</pre>
+            <div class="pager"><button id="btnMemoryPrev" class="action-outline">◀ PREVIOUS</button><span id="memoryPageInfo">16 WORD WINDOW</span><button id="btnMemoryNext" class="action-outline">NEXT ▶</button></div>
+          </div>
+        </div>
+        <div class="tab-body hidden" id="terminalTab" data-panel="terminal" role="tabpanel">
+          <div class="tty-card">
+            <div class="view-header"><strong>ASR-33 TELETYPE · CHARACTER STREAM</strong><span>Original machine code writes through PDP-8 IOTs.</span></div>
+            <pre id="ttyScreen" class="tty-screen" aria-live="polite" aria-label="Teletype output">ATLAS-8 TELETYPE READY
+</pre>
+            <div class="pager tty-pager"><button id="btnTtyOlder" class="action-outline">◀ EARLIER</button><span id="ttyPageInfo">LIVE OUTPUT</span><button id="btnTtyNewer" class="action-outline">LATER ▶</button></div>
+            <div class="tty-input"><input id="ttyEntry" placeholder="Type ASCII for the PDP-8 keyboard" aria-label="Keyboard input"><button class="action-primary" id="btnTtySend">SEND</button><button class="action-outline" id="btnTtyClear">CLEAR</button></div>
+          </div>
+        </div>
+        <div class="tab-body hidden" id="guideTab" data-panel="guide" role="tabpanel">
+          <div class="guide-grid">
+            <article class="guide-card"><span class="guide-index">01</span><h3>Start with a calculator</h3><p>Enter two values, load PDP-8 machine code, and step through each real instruction. Watch AC, LINK and PC change.</p></article>
+            <article class="guide-card"><span class="guide-index">02</span><h3>Work the front panel</h3><p>Toggle the 12-bit switch register. Load an address, examine or deposit a word, single-step, run, stop or reset.</p></article>
+            <article class="guide-card"><span class="guide-index">03</span><h3>Load native code</h3><p>Use built-in examples or directly enter octal words. The calculator is generated as PDP-8 instructions—not evaluated in JavaScript.</p></article>
+            <article class="guide-card"><span class="guide-index">04</span><h3>Understand the limits</h3><p>Educational PDP-8 CPU and TTY prototype. OS/8, original FOCAL, disk IOT, EAE, PDP-12/LINC mode and MSP430 I/O still need validation.</p></article>
+          </div>
+          <div class="guide-footer">ENGINE: Select SIMULATE or LIVE PICO in the top bar; enter the USB port for Live mode. Targets do not share memory. All machine words use octal. Historical educational reconstruction.</div>
+        </div>
+      </section>
+      <footer><span>PROJECT ATLAS · FROM LINC TO SMARTPHONE</span><span>AUTHENTIC MACHINE INSTRUCTIONS · MODERN INTERFACE</span></footer>
+    </main>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

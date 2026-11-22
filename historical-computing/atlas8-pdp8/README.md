@@ -1,71 +1,86 @@
-![ATLAS-8 logo](assets/atlas8-brand.svg)
+![ATLAS-8 historical front-panel mark](assets/atlas8-brand.svg)
 
-# ATLAS-8 — PDP-8 Dashboard & MicroPython Emulator
+# ATLAS-8 — PDP-8 Dashboard and MicroPython Emulator
 
-**Project Atlas · Historical Computing · v0.5 (development release)**
+**Project Atlas | Historical Computing | v0.5 educational alpha**
 
-ATLAS-8 reconstructs a 12-bit Digital Equipment Corporation PDP-8 as an educational, inspectable software-defined laboratory. The RP2040 runs the MicroPython CPU core; the dedicated PC supplies a Chrome/JavaScript operator's console.
+A working, inspectable PDP-8 educational emulator. Run it directly on a dedicated PC with a professional, five-tab Chrome dashboard, or select a Raspberry Pi Pico running the **same Python CPU core** under MicroPython. The computer being emulated is a DEC PDP-8-style 12-bit machine; the Raspberry Pi Pico is its modern physical host.
 
-## Start here
+> **Compatibility warning:** 26 PC automated tests pass, and calculator/Teletype browser exercises were smoke-tested. Physical RP2040 USB serial, native FOCAL and OS/8 execution have **not yet been demonstrated**. This is a development/teaching release, not a certified complete PDP-8 implementation.
 
-1. For the **complete tabbed dashboard**, use the ATLAS-8 v0.5 ZIP bundle provided in the originating ChatGPT conversation; not every runtime file has been committed to GitHub yet.
-2. Install Python 3 on a Windows PC.
-3. Run `START_DASHBOARD_WINDOWS.bat` and open `http://127.0.0.1:8765/` in Chrome.
-4. Select **SIMULATE** for PC-hosted exercises or **LIVE PICO** when an RP2040 is connected through USB serial.
-5. Begin with **Calculator** and examine genuine PDP-8 octal instructions and register changes.
+## Quick start — no hardware required
 
-**Dashboard design:** Five viewport-fitted, no-scroll tabs — Calculator · Front Panel · Programs · Teletype · Guide.
+1. Clone or download this repository and open `historical-computing/atlas8-pdp8/`.
+2. Install Python 3.
+3. On Windows, run `START_DASHBOARD_WINDOWS.bat`. On macOS or Linux, run `python3 pc_dashboard_server.py --mode sim --open`.
+4. If Chrome does not open automatically, visit **http://127.0.0.1:8765/**.
+5. Begin in **Calculator**, run 7+6, 7−6, or 7×6, then single-step PDP-8 instructions while watching the accumulator (AC), link (L), and program counter (PC).
 
-## System architecture
+### Five tabs — no page scrolling
 
-```text
-Chrome/JavaScript dashboard (dedicated PC)
-           |
-           +-- PC simulation transport --> PDP-8 Python core (desktop)
-           |
-           +-- USB serial transport -----> RP2040 running MicroPython
-                                            PDP-8 CPU, memory, IOT
-                                                    |
-                                             future MSP430 laboratory I/O
-```
+**Calculator | Front Panel | Programs | Teletype | Guide**
 
-The programmable calculator runs authentic PDP-8 instruction sequences, including addition, subtraction, and multiplication by repeated addition. A Teletype exercise emits `HELLO PDP-8`.
+The header switches between **SIMULATE** (CPU executes in Python on your PC) and **LIVE PICO** (the same CPU code executes in MicroPython on RP2040, connected over USB serial). No second JavaScript CPU implementation is maintained.
 
-## Intended repository layout
+## What is included
 
-- `dashboard/` — Browser console (HTML, CSS, JS)
-- `pdp8.py` — 12-bit CPU implementation
-- `dashboard_bridge.py`, `pc_dashboard_server.py` — Communications and host
-- `monitor.py`, `tape.py`, `programs.py` — Monitor, loading and examples
-- `tests/` — CPU and dashboard tests
-- `docs/` — Installation, operation, protocol and compatibility documentation
-- `ATLAS8_Operators_and_Programmers_Manual_v0.5.pdf` — Complete manual
-- `assets/` — ATLAS-8 identity and dashboard preview
+| Component | Path | Purpose |
+|---|---|---|
+| PDP-8 CPU | [`pdp8.py`](pdp8.py) | 12-bit registers, memory addressing, IOT and OPR instruction execution |
+| Browser dashboard | [`dashboard/`](dashboard/) | Responsive fixed-viewport UI: lamps, switches, trace, Teletype and calculator |
+| PC host | [`pc_dashboard_server.py`](pc_dashboard_server.py) | localhost HTTP API and optional USB-serial transport |
+| Shared transport | [`dashboard_bridge.py`](dashboard_bridge.py) | Identical JSON-line operations for PC/Pico |
+| Pico boot | [`main_dashboard.py`](main_dashboard.py) | Copy to Pico as `main.py` for live dashboard mode |
+| Native programs | [`programs.py`](programs.py) | PDP-8 machine-code examples and arithmetic |
+| Loader and monitor | [`tape.py`](tape.py), [`monitor.py`](monitor.py) | RIM/BIN experiments and octal operator shell |
+| Test suite | [`tests/`](tests/) | 26 CPU, loader and dashboard-host tests; optional browser smoke |
+| PDF manual | [`ATLAS8_Operators_and_Programmers_Manual_v0.5.pdf`](ATLAS8_Operators_and_Programmers_Manual_v0.5.pdf) | Operator, programmer, installation and troubleshooting guide |
+| Documentation | [`docs/`](docs/) | Protocol, installation, operator procedures, compatibility and release status |
 
-## What has been verified
+## Pico LIVE mode
 
-- Initial desktop software checks: **26 tests passing**.
-- Browser smoke exercises: 7+6 = 13; 7×6 = 42; Teletype prints HELLO PDP-8.
-- Desktop no-scroll tab interface tested.
+1. Install a board-matched MicroPython UF2 on the Raspberry Pi Pico.
+2. Copy `pdp8.py`, `programs.py`, `dashboard_bridge.py` and **`main_dashboard.py` renamed as `main.py`** to the Pico filesystem. Do not copy `main.py` from the stand-alone monitor for dashboard operation.
+3. Close Thonny/mpremote serial REPLs, attach the Pico via USB, select **LIVE PICO** in the dashboard header, enter the port (e.g. `COM7`) and connect.
+4. On the PC, install `pyserial` with `python -m pip install pyserial` if it is not already installed.
 
-**Not verified:** Physical Pico USB serial operation, original FOCAL-69, OS/8 booting, or a complete PDP-12/LINC implementation. The first release is a teaching and development emulator, not a claim of full historical device coverage.
+See [dashboard communication protocol](docs/DASHBOARD_PROTOCOL.md), [installation](docs/INSTALL.md), [operator walkthrough](docs/OPERATOR.md), and [limitations](docs/COMPATIBILITY.md).
 
-## Educational sequence
-
-**Experience before equation · Need before technology · History before abstraction**
-
-Start with the PDP-8 as a programmable calculator; progress to machine language, the front panel, Teletype, historically native programs, and instrument I/O. ATLAS-8 is the historical-computing entry point for the broader SDL curriculum.
-
-## Standalone calculator exercise (already in this repository)
-
-With Python 3 and no hardware required:
+## Tests
 
 ```bash
-python examples/quickstart.py
+python -m unittest discover -s tests -v
 ```
 
-The example exercises machine-language addition, subtraction and repeated-addition multiplication and prints PDP-8 register state. Source: [pdp8.py](pdp8.py) · [programs.py](programs.py).
+The suite has 26 passing checks in the original v0.5 desktop environment. The optional `tests/browser_smoke.py` requires an appropriate browser automation setup and is not included in that unittest count. No physical Pico test result is claimed.
 
-**Publication status:** The GitHub directory is a **partial staging checkout**, not yet a complete installable release. The verified full dashboard and PDF manual remain available as downloadable artifacts in the originating ChatGPT conversation. See [release status](docs/RELEASE_STATUS.md).
+## Architecture
 
-See the umbrella repository: https://github.com/RandoSY/project-atlas
+```text
+Chrome / JavaScript frontend (no-scroll five-tab dashboard)
+                  | localhost JSON HTTP
+      pc_dashboard_server.py
+                  |
+            target selector
+        /                    \
+   SIMULATE                 LIVE PICO
+   Python CPU             USB serial bridge
+   on PC                  MicroPython RP2040
+        \                    /
+              pdp8.py
+  12-bit instructions, memory, TTY IOT, core state
+```
+
+Hardware MSP430 I/O, LINC/PDP-12 mode and original FOCAL/OS/8 demonstrations are **future work**.
+
+## Origin and educational goal
+
+ATLAS-8 begins with a programmable calculator and leads to actual PDP-8 machine instructions, operating a historically inspired front panel, I/O and Teletype. It is the PDP-8 chapter of Project Atlas's history-first Software-Defined Laboratory curriculum.
+
+**Experience before equation. Need before technology. History before abstraction.**
+
+[Project Atlas root](https://github.com/RandoSY/project-atlas) · [Release status](docs/RELEASE_STATUS.md) · [Manual PDF](ATLAS8_Operators_and_Programmers_Manual_v0.5.pdf)
+
+## License
+
+New original code is MIT-licensed; see [`LICENSE`](LICENSE). Historical software media and external reference projects are not bundled and retain their original rights.

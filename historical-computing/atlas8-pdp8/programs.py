@@ -54,6 +54,8 @@ CALC_PROGRAMS = {
     'add': [0o7300, 0o1250, 0o1251, 0o3252, 0o1252, 0o7402],
     'subtract': [0o7300, 0o1251, 0o7040, 0o7001,
                  0o1250, 0o3252, 0o1252, 0o7402],
+    # Repeated addition, with a two's-complement ISZ loop counter.
+    # B=0 is handled explicitly to avoid a 4096-iteration zero loop.
     'multiply': [
         0o7300,  # 0200 CLA CLL
         0o1251,  # 0201 TAD B
@@ -76,6 +78,7 @@ CALC_PROGRAMS = {
     ],
 }
 
+# Real console interaction: OSR reads the 12 physical front-panel switches.
 PROGRAMS['switchadd'] = {
     'entry': 0o200,
     'description': 'Desk calculator: OSR reads switches; TAD adds constant at 0250.',
