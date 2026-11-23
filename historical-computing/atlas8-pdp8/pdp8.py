@@ -5,7 +5,8 @@ words and register values use DEC octal conventions in the documentation.
 
 Supported: 4K-32K 12-bit core, six MRI, autoindex, group-1/group-2 OPR,
 PDP-8/E MQ basics, TTY IOT, PR8/I high-speed paper tape IOT, memory extension, basic interrupts.
-Not supported: EAE, user-mode protection, disk, DECtape, calibrated time.
+Not supported: EAE, user-mode protection, DECtape, calibrated time.
+An optional RK8-E adapter provides early disk IOT coverage; OS/8 unverified.
 """
 from array import array
 
@@ -47,11 +48,12 @@ class UnsupportedEAE(PDP8Error):
 
 
 class PDP8:
-    def __init__(self, fields=1, output=None, strict=True, lab=None):
+    def __init__(self, fields=1, output=None, strict=True, lab=None, rk8e=None):
         if fields < 1 or fields > 8:
             raise ValueError('fields must be from 1 to 8')
         self.fields = fields
         self.lab = lab  # Optional ATLAS device 54; absent on unextended PDP-8.
+        self.rk8e = rk8e  # Optional DEC RK8-E disk controller.
         # Build in small chunks to avoid a giant temporary Python list on Pico.
         self.memory = array('H', [0] * 512)
         for _ in range(fields * (FIELD_SIZE // 512) - 1):
@@ -111,6 +113,8 @@ class PDP8:
         self.last_iot = 0
         if self.lab is not None and getattr(self, "_initialized", False):
             self.lab.clear()
+        if self.rk8e is not None and getattr(self, '_initialized', False):
+            self.rk8e.reset()
         self._initialized = True
 
     def _addr(self, field, offset):
@@ -251,7 +255,8 @@ class PDP8:
             self.ion_delay -= 1
 
     def _interrupt_pending(self):
-        return self.tty_ie and (self.kbd_flag or self.tty_flag)
+        return ((self.tty_ie and (self.kbd_flag or self.tty_flag)) or
+                (self.rk8e is not None and self.rk8e.irq))
 
     def _take_interrupt(self):
         # Store the return PC at 0000 of field 0, enter 0001 of field 0.
@@ -351,6 +356,14 @@ class PDP8:
 
     def _iot(self, ir):
         self.last_iot = ir
+        if 0o6740 <= ir <= 0o6747:
+            if self.rk8e is None:
+                raise UnsupportedIOT('RK8-E disk controller absent: %04o' % ir)
+            try:
+                self.rk8e.iot(ir, self)
+            except ValueError as exc:
+                raise UnsupportedIOT(str(exc))
+            return
         if 0o6540 <= ir <= 0o6547:
             if self.lab is None:
                 raise UnsupportedIOT('ATLAS laboratory controller absent: %04o' % ir)
@@ -380,6 +393,8 @@ class PDP8:
                 self.tty_ie = False
                 self.kbd_flag = False
                 self.tty_flag = False
+                if self.rk8e is not None:
+                    self.rk8e.reset()
             elif self.strict:
                 raise UnsupportedIOT('CPU IOT %04o not implemented' % ir)
             return

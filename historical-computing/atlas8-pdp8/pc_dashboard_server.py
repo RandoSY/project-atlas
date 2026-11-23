@@ -20,6 +20,7 @@ from urllib.request import urlopen
 
 from dashboard_bridge import Bridge, PROTOCOL
 from lab_device import SimTransport
+from rk8e import RK8E
 
 BASE = Path(__file__).resolve().parent
 WEB = BASE / 'dashboard'
@@ -32,8 +33,12 @@ FALLBACK_PORTS = 20       # If 8878 is occupied, find another free ATLAS-8 port.
 
 
 class DesktopTransport:
-    def __init__(self, fields):
-        self.bridge = Bridge(fields=fields, lab_transport=SimTransport())
+    def __init__(self, fields, rk05_path=None, rk05_write=False):
+        self.rk8e = None
+        if rk05_path:
+            self.rk8e = RK8E()
+            self.rk8e.attach(0, rk05_path, read_only=not rk05_write)
+        self.bridge = Bridge(fields=fields, lab_transport=SimTransport(), rk8e=self.rk8e)
         self.lock = threading.Lock()
 
     def request(self, msg):
@@ -41,7 +46,8 @@ class DesktopTransport:
             return self.bridge.handle(msg)
 
     def close(self):
-        pass
+        if self.rk8e is not None:
+            self.rk8e.close()
 
 
 class PicoSerialTransport:
@@ -86,11 +92,14 @@ class SwitchableTransport:
     When switching to serial, acquire and validate the Pico before retiring
     the previous backend; a failed connection leaves SIM available.
     """
-    def __init__(self, fields=1, mode='sim', port=None, baud=115200):
+    def __init__(self, fields=1, mode='sim', port=None, baud=115200,
+                 rk05_path=None, rk05_write=False):
         self.lock = threading.RLock()
         self.fields = fields
         self.baud = baud
         self.port = port
+        self.rk05_path = rk05_path
+        self.rk05_write = rk05_write
         self.active = None
         self.mode = 'sim'
         if mode == 'serial':
@@ -99,7 +108,7 @@ class SwitchableTransport:
             self.active = PicoSerialTransport(port, baud)
             self.mode = 'serial'
         else:
-            self.active = DesktopTransport(fields)
+            self.active = DesktopTransport(fields, rk05_path, rk05_write)
 
     def info(self):
         with self.lock:
@@ -120,7 +129,7 @@ class SwitchableTransport:
                     raise ValueError('Serial port name too long')
                 new = PicoSerialTransport(target_port, self.baud)
             else:
-                new = DesktopTransport(self.fields)
+                new = DesktopTransport(self.fields, self.rk05_path, self.rk05_write)
                 target_port = self.port
             old = self.active
             self.active = new
@@ -253,10 +262,16 @@ def main(argv=None):
     ap.add_argument('--fields', type=int, default=1, choices=range(1, 9))
     ap.add_argument('--http-port', type=int, default=None, help='Override default port 8878 (disables automatic fallback)')
     ap.add_argument('--open', action='store_true', help='Open default browser after starting')
+    ap.add_argument('--rk05', help='Attach an existing RK05/SIMH 12-bit disk image as drive 0 in PC SIM mode')
+    ap.add_argument('--rk05-write', action='store_true', help='Allow writes to the RK05 WORKING COPY (not the historical master)')
     opts = ap.parse_args(argv)
     if opts.mode == 'serial' and not opts.port:
         ap.error('--port is required for serial mode')
-    transport = SwitchableTransport(opts.fields, mode=opts.mode, port=opts.port, baud=opts.baud)
+    if opts.rk05_write and not opts.rk05:
+        ap.error('--rk05-write requires --rk05 IMAGE')
+    transport = SwitchableTransport(opts.fields, mode=opts.mode, port=opts.port,
+                                    baud=opts.baud, rk05_path=opts.rk05,
+                                    rk05_write=opts.rk05_write)
     server = None
     runner = None
     try:
