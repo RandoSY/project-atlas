@@ -30,10 +30,10 @@ def _number(value, label='number', maximum=None):
 
 
 class Bridge:
-    def __init__(self, fields=1, lab_transport=None):
+    def __init__(self, fields=1, lab_transport=None, rk8e=None):
         # Desktop explicitly uses a labeled simulation; Pico passes hardware UART.
         self.lab = LabPeripheral(lab_transport)
-        self.cpu = PDP8(fields=fields, output=self.tty_char, lab=self.lab)
+        self.cpu = PDP8(fields=fields, output=self.tty_char, lab=self.lab, rk8e=rk8e)
         self.tty_pending = bytearray()
         self.cursor = 0
         self.mb = 0
@@ -61,6 +61,7 @@ class Bridge:
             'reason': cpu.reason, 'instructions': cpu.instructions,
             'tape': cpu.reader_status(),
             'lab': self.lab.state(),
+            'rk8e': cpu.rk8e.state() if cpu.rk8e is not None else None,
             'fields': cpu.fields, 'tty_kbd_ready': cpu.kbd_flag,
             'tty_print_ready': cpu.tty_flag, 'ion': cpu.ion,
             'breakpoints': [[f, a] for f, a in sorted(cpu.breakpoints)],
@@ -104,8 +105,12 @@ class Bridge:
             data['version'] = VERSION
             data['model'] = 'PDP-8 MicroPython alpha'
             data['features'] = ['cpu', 'tty', 'memory', 'octal-load', 'demos', 'breakpoints', 'calculator', 'pdp8i-panel', 'high-speed-paper-tape', 'native-rim-loader', 'reader-speed', 'reader-transport', 'lab-device-54', 'lab-adc10', 'lab-timer-capture']
+            if cpu.rk8e is not None:
+                data['features'].append('rk8e-experimental')
             if op == 'hello':
-                data['warning'] = 'Original FOCAL/OS8 unverified; high-speed reader works with RIM, no disk or LINC mode.'
+                data['warning'] = 'Original FOCAL/OS8 unverified; RK8-E is an experimental PC disk adapter; no LINC mode.'
+        elif op == 'disk_status':
+            data['rk8e'] = cpu.rk8e.state() if cpu.rk8e is not None else None
         elif op == 'lab_identify':
             self.lab._send(1, b'', 'identify')
         elif op == 'lab_status':
