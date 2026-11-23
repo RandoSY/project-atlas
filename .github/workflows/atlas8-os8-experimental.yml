@@ -1,0 +1,30 @@
+name: ATLAS-8 experimental OS8 and RK8-E tests
+on:
+  push:
+    branches:
+      - feature/atlas8-os8-pascal-rk8e
+  pull_request:
+    paths:
+      - 'historical-computing/atlas8-pdp8/**'
+  workflow_dispatch:
+
+jobs:
+  python-regression:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Syntax check
+        working-directory: historical-computing/atlas8-pdp8
+        run: python -m compileall -q pdp8.py rk8e.py dashboard_bridge.py pc_dashboard_server.py
+      - name: Existing and new Python regressions
+        working-directory: historical-computing/atlas8-pdp8
+        run: python -m unittest discover -s tests -v
+      - name: Bash launcher help
+        working-directory: historical-computing/atlas8-pdp8
+        run: bash run-atlas8.sh help
