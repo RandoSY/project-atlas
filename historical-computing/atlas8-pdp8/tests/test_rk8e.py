@@ -60,7 +60,7 @@ class TestRK8E(unittest.TestCase):
             self.assertEqual(cpu.peek(0o7700, 2), 0)
             self.assertEqual(cpu.peek(0o7777, 2), 63)
             self.assertEqual(cpu.peek(0, 2), 64)
-            self.assertEqual(cpu.peek(0o277, 2), 255)
+            self.assertEqual(cpu.peek(0o377, 2), 255)
             self.assertEqual(controller.current_address, 0o300)
             self.assertEqual(controller.status, DONE)
             self.assertEqual(cpu.peek(0o6000, 0), 0)
