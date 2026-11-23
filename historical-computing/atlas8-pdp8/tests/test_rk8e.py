@@ -60,10 +60,10 @@ class TestRK8E(unittest.TestCase):
             self.assertEqual(cpu.peek(0o7700, 2), 0)
             self.assertEqual(cpu.peek(0o7777, 2), 63)
             self.assertEqual(cpu.peek(0, 2), 64)
-            self.assertEqual(cpu.peek(0o177, 2), 255)
-            self.assertEqual(controller.current_address, 0o100)
+            self.assertEqual(cpu.peek(0o277, 2), 255)
+            self.assertEqual(controller.current_address, 0o300)
             self.assertEqual(controller.status, DONE)
-            self.assertEqual(cpu.peek(0, 0), 0)
+            self.assertEqual(cpu.peek(0o6000, 0), 0)
             execute(cpu, 0o6745, 0o7777)  # DRST clears AC and loads status
             self.assertEqual(cpu.ac, DONE)
             before = cpu.pc
@@ -111,7 +111,7 @@ class TestRK8E(unittest.TestCase):
             controller.attach(0, make_image(tmp))
             cpu = PDP8(rk8e=controller)
             execute(cpu, 0o6746, 0o1)  # Extended cylinder bit
-            execute(cpu, 0o6743, 0o11300)  # Cylinder above 202
+            execute(cpu, 0o6743, 0o4700)  # Cylinder above 202
             self.assertTrue(controller.status & CYLINDER_ERROR)
             cpu.reset()
             self.assertEqual(controller.status, 0)
