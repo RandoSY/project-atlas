@@ -104,6 +104,18 @@ Maturity labels describe the strongest currently recorded state, not a promise t
 | AI-Laboratory Research / Writing Program | Implemented | P2 PACKAGE | `works-and-publications` |
 | Master Project Catalog / Historical Inventories | Validated / deployed | P3 ARCHIVE | `works-and-publications` / provenance |
 
+## RESEARCH / Cross-estate synthesis
+
+**Supplemental control date:** 24 November 2026 (earlier inventory retained).
+
+| System | Maturity | Priority / disposition | Canonical home |
+|---|---|---|---|
+| Circuits to Genomes | Active conceptual framework | P1 PRESERVE / DEVELOP | [project-atlas idea record](ideas/circuits-to-genomes.md) |
+| Architectural Economy | V7 preprint candidate; reported computational tests and exploratory negative genomic pilot | P1 VERIFY / ARCHIVE | [architectural-economy](https://github.com/RandoSY/architectural-economy) |
+| The Augmented Investigator | V0.1 retrospective draft; audit pending | P1 RECOVER EVIDENCE | [project-atlas research](research/augmented-investigator/The_Augmented_Investigator_v0.1.md) |
+
+No peer-review or independent replication claim. See [24 November checkpoint](research/2026-11-24-circuits-to-genomes.md).
+
 ## Protected system
 
 **IAS — Independence Assurance System:** proprietary / off-GitHub. No implementation inventory is published here.

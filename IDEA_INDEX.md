@@ -255,6 +255,18 @@ Project Atlas, manuals, source, validation records, comics, and this Idea Index 
 
 ---
 
+## 34. Circuits to Genomes / Architectural Economy
+
+**Central idea:** composition, reuse, coordination, emergence, robustness and functional continuity connect investigations from one-bit logic to computing architecture and regulatory genomics. This is an educational and research framework, not a claim of mechanistic equivalence.
+
+**Evidence and limits:** V7 reports computational benchmarks supporting model-specific trade-offs and an exploratory genomic pilot not supporting H2 as operationalized. H3/H3-M remain prospective. [Idea record](ideas/circuits-to-genomes.md); [canonical scientific repository](https://github.com/RandoSY/architectural-economy).
+
+## 35. The Augmented Investigator / Scientific Agility
+
+**Central idea:** interactive AI may expand the scope of scientific questions a human investigator can realistically pursue. The process that produced V7 becomes the subject of a separate metascience study; scientific agility must be measured alongside correctness, agency and reproducibility.
+
+**Evidence and limits:** selected manuscript versions and author statements support feasibility, not causal speed gains. Complete trace audit and independent reproduction pending. [Idea record](ideas/augmented-investigator.md); [working manuscript](research/augmented-investigator/The_Augmented_Investigator_v0.1.md).
+
 ## Protected idea estate
 
 A separate protected body of work exists outside public GitHub. Project Atlas deliberately records the existence of that boundary without publishing protected implementation material. Public recovery must never treat absence from this index as permission to expose protected material.

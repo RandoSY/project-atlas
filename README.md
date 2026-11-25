@@ -8,6 +8,16 @@ The governing questions are: **How much? Enough?** Measure reality, then judge s
 
 The estate is **not a file backup. It is an idea backup.** Files, repositories, manuals, code, comics, experiments, and validation records are evidence containers whose purpose is to preserve enough meaning for the work to survive its original author.
 
+## Current intellectual checkpoint — 24 November 2026
+
+**[Circuits to Genomes](ideas/circuits-to-genomes.md)** unifies the estate's progression from one-bit electronics through physical and historical computing to genomic organization and AI-augmented inquiry.
+
+- [Executive research checkpoint](research/2026-11-24-circuits-to-genomes.md) — rationale, reported evidence, limitations and next actions.
+- [Architectural Economy](https://github.com/RandoSY/architectural-economy) — Version 7 scientific preprint candidate; computational studies and exploratory negative genomic pilot. [V7 text](https://github.com/RandoSY/architectural-economy/blob/main/publication/Architectural_Economy_v7.txt).
+- [The Augmented Investigator](ideas/augmented-investigator.md) — independent metascience project investigating the research process behind V7; [V0.1 working manuscript](research/augmented-investigator/The_Augmented_Investigator_v0.1.md) and [trace audit protocol](research/augmented-investigator/TRACE_AUDIT.md).
+
+The new framework complements the existing estate map and does not change protected publication boundaries.
+
 ## Start here
 
 - [`IDEA_PRESERVATION_PRINCIPLE.md`](IDEA_PRESERVATION_PRINCIPLE.md) — the governing archival rule.
@@ -36,6 +46,7 @@ Each canonical repository now carries an `IDEAS.md` record where appropriate so 
 | [computing-observatories](https://github.com/RandoSY/computing-observatories) | CRCL, Forth observatories, visible CPUs, simulators, instrumented execution |
 | [embedded-tools](https://github.com/RandoSY/embedded-tools) | Debuggers, programmers, bridges, protocols, embedded infrastructure |
 | [works-and-publications](https://github.com/RandoSY/works-and-publications) | Papers, manuals, essays, guides, illustrated briefs, conceptual transmission |
+| [architectural-economy](https://github.com/RandoSY/architectural-economy) | Computational and genomic architectural-economy research; V7 preprint candidate |
 | **project-atlas** | Idea map, governance, status, lineage, recovery and handoff |
 
 ## Governance
@@ -75,6 +86,7 @@ When time or storage is limited, preserve in this order:
 - **How much? Enough?**
 - **Experience Before Equation**
 - **Need Before Technology**
+- **Inquiry Before Expertise** (proposed; verification and understanding remain essential)
 - **Not talk, do**
 - Prefer durable ideas over particular platforms.
 - Preserve broadly; publish selectively.
