@@ -148,6 +148,7 @@ def home(n):
 <a href="explore/">Explore the Work</a>
 </div>
 </section>
+<section class="atlas-start" aria-labelledby="home-c2g"><div><p class="atlas-kicker">Research and scholarship</p><h2 id="home-c2g"><a href="circuits-to-genomes/">From Circuits to Genomes</a></h2><p>From the PDP-8 to the regulatory genome and modern AI accelerators. Three research papers, 73 pages, plus reproducible computational experiments.</p></div><div class="atlas-start-actions"><a class="atlas-start-primary" href="circuits-to-genomes/">Read the research exhibit →</a></div></section>
 <section class="atlas-feature" aria-labelledby="home-singing">
 <div>
 <p class="atlas-kicker">Flagship activity · Experience before equation</p>
@@ -246,6 +247,8 @@ def start_here():
 
 def exhibits():
     cards = [
+        ("Research and scholarship", "../circuits-to-genomes/", "From Circuits to Genomes",
+         "Follow a question from the PDP-8 to genomic regulation and back to modern AI accelerators. Three research papers, 73 pages, plus experimental evidence." , "../circuits-to-genomes/media/pdp8.jpg", 4372, 2906),
         ("Flagship activity", "../singing-rule/", "The Singing Rule",
          "Pluck a ruler and follow the motion from the original bench photo to live traces, measured ringdown, and a model you can try.",
          "../singing-rule/media/bench.webp", 1440, 1084),
@@ -285,6 +288,8 @@ def exhibits():
     ]
     blocks = []
     for label, url, title, description, image, width, height in cards:
+        if url == "../circuits-to-genomes/":
+            description = description + " Photo: Todd Dailey, CC BY-SA 2.0 (see exhibit for attribution)."
         emphasis = " atlas-premier" if label.startswith("Premier") else ""
         blocks.append(f"""<article class="atlas-exhibit{emphasis}">
 <a class="atlas-exhibit-visual" href="{esc(url)}" aria-label="Open {esc(title)}">
@@ -579,6 +584,8 @@ def main():
             if body.count(cutebot_cell) != 1:
                 raise ValueError("The Cutebot inventory row changed. Update its exhibit cross-link.")
             body = body.replace(cutebot_cell, '<td><a href="../cutebot-motion-evidence/">Cutebot Motion Evidence Lab</a></td>', 1)
+        if name == "inventory":
+            body += "<p><strong><a href=\"../circuits-to-genomes/\">From Circuits to Genomes (C2G)</a></strong> — active research portfolio; Paper 1 v11, Paper 2 v1.2, Paper 3 v0.5 (73 pages). <a href=\"https://github.com/RandoSY/circuits-to-genomes\">Canonical research repository</a>. Independent validation pending. Updated 26 November 2026.</p>"
         families = (f'<section class="atlas-family-list" aria-labelledby="families">'
                     f'<h2 id="families">Project families</h2>{homes("../")}</section>') if name == "inventory" else ""
         page(name, title, summary, f'<article>{body}</article>{families}', source=f"{ATLAS_MAIN}/{file}")

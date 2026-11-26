@@ -1,0 +1,2 @@
+# PDP-8 photograph
+Todd Dailey, 29 May 2009, Wikimedia Commons. [Source](https://commons.wikimedia.org/wiki/File:PDP-8_at_the_Computer_History_Museum.jpg). [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0/). Original: https://upload.wikimedia.org/wikipedia/commons/1/16/PDP-8_at_the_Computer_History_Museum.jpg. SHA-1 92b33981b19ad1082ee2fe3738db65f379ec8c93. The site displays a cropped view using CSS. The original file is unmodified. No endorsement implied.
