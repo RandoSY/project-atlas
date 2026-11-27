@@ -1,9 +1,9 @@
-# C2G portal 1.0 — deployment and preservation
-27 November 2026. Author-approved website refocus. Portal content commit 08c89ba55cb5ab78aa27c43e5d502de5c7757666; previous branch head 337a29d887d761407da17d733a53794e8a58d3bc retains the old site. No research manuscripts or prior figures changed. New current Paper 2 is peroxide-management v0.1 Markdown; Paper 3 v0.6 Markdown; Paper 1 v11 PDF. Primate FEM v1.2 and all other versions remain independently accessible; v1.3 is uninspected. No current total page count asserted. Open Lab v1.1 ZIP and original installer present under web/releases/catalase-open-lab/v1.1/; live downloads previously reported linked, not independently checked by assistant.
+# C2G portal 1.1 — synchronized release
+27 November 2026. Portal v1.0 remains in Git history. Visual revision 016e8cd2998b5fcbd30bdced6d1c39d0fcf8b743 provides distinct original SVG covers for both catalase exhibits and synchronizes their landing pages, the C2G portal and the gallery. The illustrations are conceptual, not atomic structure data or bench photographs. The lab PDFs and original v1.1 ZIP are unchanged.
 
-## Run on the Atlas Ubuntu server
+## Install on Atlas Ubuntu
 ```bash
 work=$(mktemp -d)
-git clone --depth 1 --single-branch --branch atlas-web-preview https://github.com/RandoSY/project-atlas.git "$work/repo" && python3 "$work/repo/web/deploy-c2g-portal.py"
+git clone --depth 1 --single-branch --branch atlas-web-preview https://github.com/RandoSY/project-atlas.git "$work/repo" && sudo python3 "$work/repo/web/deploy-c2g-portal.py"
 ```
-Use sudo if not root. Default /var/www/html/atlas, override --site and --url if needed. No raw GitHub downloads, no binary transfer required. Preflight checks existing images and Open Lab downloads, checks tab IDs, selectively merges only three relevant gallery cards, preserves the old catalase research page and all unrelated pages, backs up four target files, checks public bytes and rolls back on failure. --local-only is for staging tests, not production. Existing historical image assets were generated or installed in previous deployments and not recreated here. If any missing, restore the named file before rerunning. Previous historical anchor links map to current panels. With JavaScript disabled all sections remain visible. Browser/production validation pending.
+Default site /var/www/html/atlas. Override --site and --url if necessary. Checks the installed lab archive and all seven members against their recorded SHA-256 hashes before modifying anything. Updates six assets and four pages; merges only the three relevant gallery cards, backs up files and checks live bytes. Rolls back on failure. Distinct versioned cover names avoid cached old graphics. Success message: C2G PORTAL v1.1 DEPLOYED. Production execution and browser inspection remain pending.
