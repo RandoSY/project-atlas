@@ -163,9 +163,8 @@ def home(n):
 
 <header class="atlas-home-header">
 <div>
-<p class="atlas-home-eyebrow">Randall Young · Public Working Archive</p>
 <h1>Project Atlas</h1>
-<p class="atlas-home-lead"><strong>How much? Enough?</strong> Measure what happened, then decide whether it was enough for the purpose—across teaching labs, instruments, movement, and research.</p>
+<p class="atlas-home-lead"><strong>How much? Enough?</strong> Randall Young’s working archive—measure what happened, then decide whether it was enough for the purpose.</p>
 </div>
 <div class="atlas-guide-actions">
 <a class="atlas-btn-primary" href="start-here/">Start Here <span aria-hidden="true">→</span></a>
@@ -174,172 +173,214 @@ def home(n):
 </div>
 </header>
 
-<div class="atlas-tabs" role="tablist" aria-label="Filter work by territory">
-<button type="button" class="atlas-tab" role="tab" id="tab-highlights" data-tab="highlights" aria-controls="panel-highlights" aria-selected="true">Highlights</button>
-<button type="button" class="atlas-tab" role="tab" id="tab-experiments" data-tab="experiments" aria-controls="panel-experiments" aria-selected="false">Experiments &amp; Teaching</button>
-<button type="button" class="atlas-tab" role="tab" id="tab-instruments" data-tab="instruments" aria-controls="panel-instruments" aria-selected="false">Instruments &amp; Robotics</button>
-<button type="button" class="atlas-tab" role="tab" id="tab-movement" data-tab="movement" aria-controls="panel-movement" aria-selected="false">Movement &amp; Fitness</button>
-<button type="button" class="atlas-tab" role="tab" id="tab-research" data-tab="research" aria-controls="panel-research" aria-selected="false">Circuits &amp; Genomes</button>
+<div class="atlas-tabs" role="tablist" aria-label="Choose a domain">
+<button type="button" class="atlas-tab" role="tab" id="tab-overview" data-tab="overview" aria-controls="panel-overview" aria-selected="true">Overview</button>
+<button type="button" class="atlas-tab" role="tab" id="tab-experiments" data-tab="experiments" aria-controls="panel-experiments" aria-selected="false">Experiments</button>
+<button type="button" class="atlas-tab" role="tab" id="tab-instruments" data-tab="instruments" aria-controls="panel-instruments" aria-selected="false">Instruments</button>
+<button type="button" class="atlas-tab" role="tab" id="tab-movement" data-tab="movement" aria-controls="panel-movement" aria-selected="false">Movement</button>
+<button type="button" class="atlas-tab" role="tab" id="tab-research" data-tab="research" aria-controls="panel-research" aria-selected="false">Research</button>
 </div>
 
-<section class="atlas-panel" id="panel-highlights" data-panel="highlights" role="tabpanel" aria-labelledby="tab-highlights">
-<div class="atlas-pair">
-<article class="atlas-card atlas-card-warm">
-<a class="atlas-card-media" href="singing-rule/" aria-label="Open The Singing Rule"><img src="singing-rule/media/bench.webp" width="1440" height="1084" alt="A green ruler with a wireless motion sensor fastened near its free end"></a>
-<div class="atlas-card-body">
-<p class="atlas-kicker">Flagship bench activity · Experience before equation</p>
+<section class="atlas-panel" id="panel-overview" data-panel="overview" role="tabpanel" aria-labelledby="tab-overview">
+<div class="atlas-compact-grid">
+<article class="atlas-item">
+<a class="atlas-thumb" href="singing-rule/" aria-label="Open The Singing Rule"><img src="singing-rule/media/bench.webp" width="1440" height="1084" alt="Green ruler with wireless motion sensor"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">01 · Experiments &amp; Teaching</p>
 <h2 id="home-singing"><a href="singing-rule/">The Singing Rule</a></h2>
-<p>Pluck a ruler at a table edge. Follow the bench run from a Bluetooth trace to a model you can test yourself.</p>
-<div class="atlas-card-actions"><a class="atlas-btn-primary" href="singing-rule/">Open exhibit <span aria-hidden="true">→</span></a><a href="singing-rule/#evidence">Measured run</a><a href="singing-rule/#model">Model</a><a href="singing-rule/#classroom">Teach it</a></div>
+<p class="atlas-item-desc">Hands-on bench inquiries where real measurements earn the equation.</p>
+<p class="atlas-item-links"><a href="pop-can-calorimeter/">Calorimeter</a> · <a href="water-clock/">Water Clock</a> · <a href="teatime/">TeaTime</a> · <a href="core-10/">CORE 10</a></p>
 </div>
 </article>
-<article class="atlas-card atlas-card-research">
-<a class="atlas-card-media atlas-media-light" href="circuits-to-genomes/" aria-label="Open From Circuits to Genomes"><img src="circuits-to-genomes/media/reciprocal.svg" width="1200" height="430" alt="Diagram of the golden thread connecting the PDP-8, regulatory genome, and H100-inspired parallel computation"></a>
-<div class="atlas-card-body">
-<p class="atlas-kicker">Research &amp; scholarship · Three papers + open lab</p>
+
+<article class="atlas-item">
+<a class="atlas-thumb" href="instruments/" aria-label="Open Virtual Instruments"><img src="instruments/screens/frequency-meter.webp" width="1240" height="945" alt="Wireless frequency meter dashboard"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">02 · Instruments &amp; Robotics</p>
+<h2 id="home-instruments"><a href="instruments/">Virtual Instruments</a></h2>
+<p class="atlas-item-desc">Low-cost wireless builds, browser dashboards, and mapping robots.</p>
+<p class="atlas-item-links"><a href="lazy-lidar/">Lazy LiDAR</a> · <a href="cutebot-motion-evidence/">Cutebot Lab</a> · <a href="explore/#build">Build pathway</a></p>
+</div>
+</article>
+
+<article class="atlas-item">
+<a class="atlas-thumb atlas-thumb-contain" href="sqm-plus/" aria-label="Open SQM+ Hallway Observatory"><img src="sqm-plus/media/hallway.svg" width="1280" height="610" alt="11-meter hallway observatory diagram"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">03 · Movement &amp; Fitness</p>
+<h2 id="home-sqm"><a href="sqm-plus/">SQM+ Hallway Observatory</a></h2>
+<p class="atlas-item-desc">Marked walking trials, step validation, and fair physical workload testing.</p>
+<p class="atlas-item-links"><a href="fair-fitness-testing/">Fair Fitness Testing</a> · <a href="explore/#movement">Movement path</a></p>
+</div>
+</article>
+
+<article class="atlas-item">
+<a class="atlas-thumb atlas-thumb-light" href="circuits-to-genomes/" aria-label="Open From Circuits to Genomes"><img src="circuits-to-genomes/media/reciprocal.svg" width="1200" height="430" alt="Golden thread diagram connecting PDP-8, genome, and parallel computing"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">04 · Research &amp; Scholarship</p>
 <h2 id="home-c2g"><a href="circuits-to-genomes/">From Circuits to Genomes</a></h2>
-<p>Can function endure as implementation changes? Follow one question from the PDP-8 to peroxide-managing enzymes and AI-assisted inquiry.</p>
-<div class="atlas-card-actions"><a class="atlas-btn-primary" href="circuits-to-genomes/">Open portal <span aria-hidden="true">→</span></a><a href="circuits-to-genomes/#architecture">Paper 1</a><a href="circuits-to-genomes/#peroxide">Paper 2</a><a href="catalase-fem/open-lab/">Open Lab</a></div>
+<p class="atlas-item-desc">PDP-8 to peroxide-managing enzymes: three papers and an open lab.</p>
+<p class="atlas-item-links"><a href="circuits-to-genomes/#architecture">Papers 1–3</a> · <a href="catalase-fem/">Catalase</a> · <a href="catalase-fem/open-lab/">Open Lab</a></p>
 </div>
 </article>
-</div>
-<div class="atlas-strip-4" aria-label="Featured exhibits across territories">
-<a class="atlas-tile" href="sqm-plus/">
-<span class="atlas-tile-media atlas-media-contain"><img src="sqm-plus/media/hallway.svg" width="1280" height="610" alt=""></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Movement</p><b id="home-sqm">SQM+ Hallway</b><span>11 meters, a stopwatch, and a step detector under test.</span></div>
-</a>
-<a class="atlas-tile" href="instruments/">
-<span class="atlas-tile-media"><img src="instruments/screens/frequency-meter.webp" width="1240" height="945" alt=""></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Instruments</p><b id="home-instruments">Virtual Instruments</b><span>Five wireless builds and live browser dashboards.</span></div>
-</a>
-<a class="atlas-tile" href="water-clock/">
-<span class="atlas-tile-media atlas-media-light"><img src="water-clock/media/apparatus.webp" width="1350" height="1043" alt=""></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Bench lab</p><b id="home-water-clock">Galileo’s Water Clock</b><span>Weigh water, infer time, and test it on a ramp.</span></div>
-</a>
-<a class="atlas-tile" href="teatime/">
-<span class="atlas-tile-media"><img src="teatime/media/optical-bench.svg" width="1040" height="650" alt=""></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Optics</p><b id="home-teatime">TeaTime</b><span>Use light to estimate an unknown tea dilution.</span></div>
-</a>
 </div>
 </section>
 
 <section class="atlas-panel" id="panel-experiments" data-panel="experiments" role="tabpanel" aria-labelledby="tab-experiments" hidden>
-<div class="atlas-panel-bar">
-<p><strong>Experience before equation:</strong> ordinary phenomena first so equations are earned through measurement.</p>
-<div class="atlas-panel-links"><a href="core-10/">CORE 10 hub</a><a href="ideas/#2-experience-before-equation">Idea note</a><a href="explore/#teach">Curriculum map →</a></div>
+<div class="atlas-panel-intro">
+<p><strong>Experience before equation:</strong> ordinary phenomena measured first.</p>
+<div class="atlas-panel-links"><a href="core-10/">CORE 10</a><a href="ideas/#2-experience-before-equation">Idea note</a><a href="explore/#teach">Curriculum map →</a></div>
 </div>
-<div class="atlas-strip-3">
-<a class="atlas-tile" href="singing-rule/">
-<span class="atlas-tile-media"><img src="singing-rule/media/bench.webp" width="1440" height="1084" alt="Green ruler with wireless motion sensor"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Flagship bench lab</p><b>The Singing Rule</b><span>Bluetooth ringdown trace to interactive vibration model.</span></div>
-</a>
-<a class="atlas-tile" href="pop-can-calorimeter/">
-<span class="atlas-tile-media atlas-media-light"><img src="pop-can-calorimeter/media/picoscale.webp" width="1440" height="847" alt="Pop-can calorimeter apparatus with scale"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">CORE 10 · Energy</p><b>Pop-Can Calorimeter</b><span>Follow a candle from grams of fuel to joules in water.</span></div>
-</a>
-<a class="atlas-tile" href="water-clock/">
-<span class="atlas-tile-media atlas-media-light"><img src="water-clock/media/apparatus.webp" width="1350" height="1043" alt="Water clock apparatus schematic"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Physical calculus</p><b>Galileo’s Water Clock</b><span>Weigh water, calibrate flow, and time a ramp.</span></div>
-</a>
-<a class="atlas-tile" href="teatime/">
-<span class="atlas-tile-media"><img src="teatime/media/optical-bench.svg" width="1040" height="650" alt="TeaTime optical bench schematic"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Kitchen Inquiry</p><b>TeaTime · Beer–Lambert</b><span>Calibrate light transmission to identify an unknown.</span></div>
-</a>
-<a class="atlas-tile" href="sphericity-meter/">
-<span class="atlas-tile-media"><img src="sphericity-meter/media/opening-rocks.webp" width="1450" height="551" alt="Selection of rocks for comparing sphericity"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Inquiry design</p><b>Invent a Sphericity Meter</b><span>Invent a repeatable rule for shape and test its limits.</span></div>
-</a>
-<a class="atlas-tile" href="catalase-fem/open-lab/">
-<span class="atlas-tile-media atlas-media-dark"><img src="catalase-fem/media/open-lab-cover-v1.1.svg" width="1200" height="720" alt="Oxygen collection apparatus and balloon calibration"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Open Lab · Biology</p><b>Catalase Open Lab</b><span>Yeast, peroxide, gas collection, and teacher/student guides.</span></div>
-</a>
+<div class="atlas-compact-grid">
+<article class="atlas-item">
+<a class="atlas-thumb" href="singing-rule/" aria-label="Open The Singing Rule"><img src="singing-rule/media/bench.webp" width="1440" height="1084" alt="Green ruler with wireless motion sensor"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Flagship bench lab</p>
+<h3><a href="singing-rule/">The Singing Rule</a></h3>
+<p class="atlas-item-desc">Pluck a ruler: Bluetooth trace to interactive vibration model.</p>
+<p class="atlas-item-links"><a href="singing-rule/#evidence">Run</a> · <a href="singing-rule/#model">Model</a> · <a href="singing-rule/#classroom">Teach</a></p>
+</div>
+</article>
+<article class="atlas-item">
+<a class="atlas-thumb atlas-thumb-light" href="pop-can-calorimeter/" aria-label="Open Pop-Can Calorimeter"><img src="pop-can-calorimeter/media/picoscale.webp" width="1440" height="847" alt="Pop-can calorimeter apparatus"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">CORE 10 · Energy</p>
+<h3><a href="pop-can-calorimeter/">Pop-Can Calorimeter</a></h3>
+<p class="atlas-item-desc">Trace a tea light from grams of fuel to joules in water.</p>
+</div>
+</article>
+<article class="atlas-item">
+<a class="atlas-thumb atlas-thumb-light" href="water-clock/" aria-label="Open Galileo’s Water Clock"><img src="water-clock/media/apparatus.webp" width="1350" height="1043" alt="Water clock apparatus schematic"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Physical calculus</p>
+<h3><a href="water-clock/">Galileo’s Water Clock</a></h3>
+<p class="atlas-item-desc">Weigh water, calibrate flow, and time motion on a ramp.</p>
+</div>
+</article>
+<article class="atlas-item">
+<a class="atlas-thumb" href="teatime/" aria-label="Open TeaTime"><img src="teatime/media/optical-bench.svg" width="1040" height="650" alt="TeaTime optical bench schematic"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Optics · Calibration</p>
+<h3><a href="teatime/">TeaTime · Beer–Lambert</a></h3>
+<p class="atlas-item-desc">Measure light transmission to estimate an unknown tea dilution.</p>
+</div>
+</article>
+<article class="atlas-item">
+<a class="atlas-thumb" href="sphericity-meter/" aria-label="Open Invent a Sphericity Meter"><img src="sphericity-meter/media/opening-rocks.webp" width="1450" height="551" alt="Rocks for comparing sphericity"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Classroom inquiry</p>
+<h3><a href="sphericity-meter/">Invent a Sphericity Meter</a></h3>
+<p class="atlas-item-desc">Invent a repeatable rule for rock shape and test what it misses.</p>
+</div>
+</article>
+<article class="atlas-item">
+<a class="atlas-thumb atlas-thumb-dark" href="catalase-fem/open-lab/" aria-label="Open Catalase Open Lab"><img src="catalase-fem/media/open-lab-cover-v1.1.svg" width="1200" height="720" alt="Oxygen collection and balloon calibration"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Open Lab · Biology</p>
+<h3><a href="catalase-fem/open-lab/">Catalase Open Lab</a></h3>
+<p class="atlas-item-desc">Yeast, peroxide, gas collection, and 21 pages of illustrated guides.</p>
+</div>
+</article>
 </div>
 </section>
 
 <section class="atlas-panel" id="panel-instruments" data-panel="instruments" role="tabpanel" aria-labelledby="tab-instruments" hidden>
-<div class="atlas-panel-bar">
-<p><strong>Software-defined laboratory &amp; robotics:</strong> low-cost wireless builds, browser dashboards, and visible machines.</p>
-<div class="atlas-panel-links"><a href="ideas/#4-the-software-defined-laboratory">SDL architecture</a><a href="ideas/#32-low-cost-is-an-engineering-constraint-not-an-apology">Low-cost rule</a><a href="explore/#build">Build pathway →</a></div>
+<div class="atlas-panel-intro">
+<p><strong>Software-defined laboratory &amp; robotics:</strong> inspectable hardware and browser tools.</p>
+<div class="atlas-panel-links"><a href="ideas/#4-the-software-defined-laboratory">SDL idea</a><a href="ideas/#32-low-cost-is-an-engineering-constraint-not-an-apology">Low-cost rule</a><a href="explore/#build">Build pathway →</a></div>
 </div>
-<div class="atlas-strip-3">
-<a class="atlas-tile" href="instruments/">
-<span class="atlas-tile-media"><img src="instruments/screens/frequency-meter.webp" width="1240" height="945" alt="Wireless frequency meter browser dashboard"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Instrument workshop</p><b>Virtual Instruments</b><span>Five wireless builds—voltmeter, frequency meter, scale, ToF ruler, thermometer.</span></div>
-</a>
-<a class="atlas-tile" href="lazy-lidar/">
-<span class="atlas-tile-media"><img src="lazy-lidar/media/cutebot-console.webp" width="1680" height="1142" alt="Lazy LiDAR browser console"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Bargain Bin Robotics</p><b>Lazy LiDAR</b><span>Build a room map from patient readings and inspect heading bias.</span></div>
-</a>
-<a class="atlas-tile" href="cutebot-motion-evidence/">
-<span class="atlas-tile-media"><img src="cutebot-motion-evidence/media/cutebot-card.webp" width="900" height="500" alt="Cutebot robot for motion evidence lab"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">ROBOT_EDU preview</p><b>Cutebot Motion Evidence</b><span>Separate what a robot was told to do from what it actually did.</span></div>
-</a>
+<div class="atlas-compact-grid">
+<article class="atlas-item">
+<a class="atlas-thumb" href="instruments/" aria-label="Open Virtual Instruments"><img src="instruments/screens/frequency-meter.webp" width="1240" height="945" alt="Wireless frequency meter dashboard"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Instrument workshop</p>
+<h3><a href="instruments/">Virtual Instruments</a></h3>
+<p class="atlas-item-desc">Five wireless builds—voltmeter, frequency meter, scale, ToF ruler, thermometer.</p>
+</div>
+</article>
+<article class="atlas-item">
+<a class="atlas-thumb" href="lazy-lidar/" aria-label="Open Lazy LiDAR"><img src="lazy-lidar/media/cutebot-console.webp" width="1680" height="1142" alt="Lazy LiDAR console"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Bargain Bin Robotics</p>
+<h3><a href="lazy-lidar/">Lazy LiDAR</a></h3>
+<p class="atlas-item-desc">Map a room from patient readings and inspect heading bias.</p>
+</div>
+</article>
+<article class="atlas-item">
+<a class="atlas-thumb" href="cutebot-motion-evidence/" aria-label="Open Cutebot Motion Evidence Lab"><img src="cutebot-motion-evidence/media/cutebot-card.webp" width="900" height="500" alt="Cutebot robot"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">ROBOT_EDU preview</p>
+<h3><a href="cutebot-motion-evidence/">Cutebot Motion Evidence</a></h3>
+<p class="atlas-item-desc">Compare what a robot was told to do with what it actually did.</p>
+</div>
+</article>
 </div>
 </section>
 
 <section class="atlas-panel" id="panel-movement" data-panel="movement" role="tabpanel" aria-labelledby="tab-movement" hidden>
-<div class="atlas-panel-bar">
-<p><strong>Measured human performance:</strong> interpretable gait trials, step validation, and fair physical workload testing.</p>
+<div class="atlas-panel-intro">
+<p><strong>Measured human performance:</strong> gait quality and fair physical workload testing.</p>
 <div class="atlas-panel-links"><a href="ideas/#23-movement-quality--sqm">SQM+ idea</a><a href="ideas/#22-fair-fitness--dynametics">Fair Fitness idea</a><a href="explore/#movement">Movement path →</a></div>
 </div>
-<div class="atlas-pair">
-<article class="atlas-card">
-<a class="atlas-card-media atlas-media-contain" href="sqm-plus/" aria-label="Open SQM+ Hallway Observatory"><img src="sqm-plus/media/hallway.svg" width="1280" height="610" alt="Diagram of an 11-meter hallway observatory leg"></a>
-<div class="atlas-card-body">
-<p class="atlas-kicker">Gait metrology · Sensor validation</p>
+<div class="atlas-compact-grid">
+<article class="atlas-item">
+<a class="atlas-thumb atlas-thumb-contain" href="sqm-plus/" aria-label="Open SQM+ Hallway Observatory"><img src="sqm-plus/media/hallway.svg" width="1280" height="610" alt="11-meter hallway observatory diagram"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Gait metrology</p>
 <h3><a href="sqm-plus/">SQM+ Hallway Observatory</a></h3>
-<p>Start with a marked 11-meter leg and an independent clock, then test what a wearable step detector actually catches.</p>
-<div class="atlas-card-actions"><a class="atlas-btn-primary" href="sqm-plus/">Open exhibit <span aria-hidden="true">→</span></a></div>
+<p class="atlas-item-desc">Eleven marked meters, an independent clock, and a wearable under test.</p>
 </div>
 </article>
-<article class="atlas-card">
-<a class="atlas-card-media atlas-media-dark" href="fair-fitness-testing/" aria-label="Open Fair Fitness Testing"><img src="fair-fitness-testing/media/three-checks.svg" width="1200" height="630" alt="Three jobs in Fair Fitness Testing: prescribe work, confirm motion, observe heart rate"></a>
-<div class="atlas-card-body">
-<p class="atlas-kicker">Release preview · Workload prescription</p>
+<article class="atlas-item">
+<a class="atlas-thumb atlas-thumb-dark" href="fair-fitness-testing/" aria-label="Open Fair Fitness Testing"><img src="fair-fitness-testing/media/three-checks.svg" width="1200" height="630" alt="Fair Fitness Testing diagram"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Release preview</p>
 <h3><a href="fair-fitness-testing/">Fair Fitness Testing</a></h3>
-<p>Separate prescribing physical work, verifying motion evidence, and supervising heart-rate response in an Android prototype walkthrough.</p>
-<div class="atlas-card-actions"><a class="atlas-btn-primary" href="fair-fitness-testing/">Open exhibit <span aria-hidden="true">→</span></a></div>
+<p class="atlas-item-desc">Prescribe physical work, confirm motion evidence, and watch heart rate separately.</p>
 </div>
 </article>
 </div>
 </section>
 
 <section class="atlas-panel" id="panel-research" data-panel="research" role="tabpanel" aria-labelledby="tab-research" hidden>
-<div class="atlas-panel-bar">
-<p><strong>Circuits to Genomes:</strong> architectural economy, evolutionary peroxide management, and accountable AI-assisted inquiry.</p>
+<div class="atlas-panel-intro">
+<p><strong>Circuits to Genomes:</strong> architectural economy, peroxide continuity, and accountable inquiry.</p>
 <div class="atlas-panel-links"><a href="circuits-to-genomes/#architecture">Paper 1</a><a href="circuits-to-genomes/#peroxide">Paper 2</a><a href="circuits-to-genomes/#investigator">Paper 3</a><a href="ideas/#11-fidelity-mirrors--one-phenomenon-many-realizations">Fidelity Mirrors</a></div>
 </div>
-<div class="atlas-strip-3">
-<a class="atlas-tile" href="circuits-to-genomes/">
-<span class="atlas-tile-media atlas-media-light"><img src="circuits-to-genomes/media/reciprocal.svg" width="1200" height="430" alt="Golden thread connecting PDP-8, regulatory genome, and parallel computation"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Research portal · v1.2</p><b>From Circuits to Genomes</b><span>Three scholarly tracks, computational evidence, and preserved companion archive.</span></div>
-</a>
-<a class="atlas-tile" href="catalase-fem/">
-<span class="atlas-tile-media atlas-media-dark"><img src="catalase-fem/media/research-cover-v1.1.svg" width="1200" height="720" alt="Conceptual catalase molecular architecture"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Biochemical benchmark</p><b>Catalase &amp; Continuity</b><span>One reaction, diverse molecular architectures and complementary scavenging.</span></div>
-</a>
-<a class="atlas-tile" href="catalase-fem/open-lab/">
-<span class="atlas-tile-media atlas-media-dark"><img src="catalase-fem/media/open-lab-cover-v1.1.svg" width="1200" height="720" alt="Catalase Open Lab apparatus illustration"></span>
-<div class="atlas-tile-body"><p class="atlas-kicker">Open Lab · 21 pp. guides</p><b>Catalase Open Lab</b><span>Kitchen-table yeast &amp; peroxide entry point with guides, Python, and data templates.</span></div>
-</a>
+<div class="atlas-compact-grid">
+<article class="atlas-item">
+<a class="atlas-thumb atlas-thumb-light" href="circuits-to-genomes/" aria-label="Open From Circuits to Genomes"><img src="circuits-to-genomes/media/reciprocal.svg" width="1200" height="430" alt="Golden thread diagram"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Research portal · v1.2</p>
+<h3><a href="circuits-to-genomes/">From Circuits to Genomes</a></h3>
+<p class="atlas-item-desc">Three working papers, computational tests, and companion archive.</p>
+</div>
+</article>
+<article class="atlas-item">
+<a class="atlas-thumb atlas-thumb-dark" href="catalase-fem/" aria-label="Open Catalase Research"><img src="catalase-fem/media/research-cover-v1.1.svg" width="1200" height="720" alt="Conceptual catalase schematic"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Biochemical benchmark</p>
+<h3><a href="catalase-fem/">Catalase &amp; Continuity</a></h3>
+<p class="atlas-item-desc">One chemical reaction across diverse molecular architectures.</p>
+</div>
+</article>
+<article class="atlas-item">
+<a class="atlas-thumb atlas-thumb-dark" href="catalase-fem/open-lab/" aria-label="Open Catalase Open Lab"><img src="catalase-fem/media/open-lab-cover-v1.1.svg" width="1200" height="720" alt="Catalase Open Lab illustration"></a>
+<div class="atlas-item-body">
+<p class="atlas-kicker">Open Lab · 21 pp. guides</p>
+<h3><a href="catalase-fem/open-lab/">Catalase Open Lab</a></h3>
+<p class="atlas-item-desc">Kitchen-table yeast &amp; peroxide entry point with guides and Python templates.</p>
+</div>
+</article>
 </div>
 </section>
 
-<section class="atlas-archive-band" aria-label="Connecting ideas and archive index">
-<div class="atlas-idea-row">
-<span class="atlas-idea-label">Recurring ideas:</span>
-<a href="ideas/#1-how-much--enough">How Much? / Enough?</a>
-<a href="ideas/#2-experience-before-equation">Experience Before Equation</a>
-<a href="ideas/#4-the-software-defined-laboratory">Software-Defined Lab</a>
-<a href="ideas/#12-executable-transparency">Executable Transparency</a>
-<a href="ideas/#32-low-cost-is-an-engineering-constraint-not-an-apology">Low Cost Constraint</a>
-</div>
-<div class="atlas-index-row">
-<a href="exhibits/">All exhibits →</a>
-<a href="ideas/">33 ideas →</a>
-<a href="inventory/">Project inventory →</a>
-<a href="repositories/">Search {n} repositories →</a>
-<a href="explore/">Explore pathways →</a>
+<section class="atlas-resources" aria-label="Archive and other resources">
+<p class="atlas-resources-label">Archive &amp; Other Resources</p>
+<div class="atlas-resource-grid">
+<a class="atlas-resource" href="exhibits/"><b>All Exhibits →</b><span>Full illustrated gallery &amp; guides</span></a>
+<a class="atlas-resource" href="ideas/"><b>Idea Index →</b><span>33 recurring design principles</span></a>
+<a class="atlas-resource" href="inventory/"><b>Project Inventory →</b><span>Status &amp; 9 project families</span></a>
+<a class="atlas-resource" href="repositories/"><b>{n} Repositories →</b><span>Search all public GitHub repos</span></a>
 </div>
 </section>
 
@@ -362,7 +403,7 @@ def home(n):
     }});
     panels.forEach(p=>{{p.hidden=p.dataset.panel!==target;}});
     if(updateHash){{
-      const next=target==='highlights'?location.pathname+location.search:'#'+target;
+      const next=target==='overview'?location.pathname+location.search:'#'+target;
       history.replaceState(null,'',next);
     }}
   }}
@@ -378,7 +419,7 @@ def home(n):
   }});
   function fromHash(){{
     const h=decodeURIComponent(location.hash.slice(1));
-    activate(byName.has(h)?h:'highlights',false);
+    activate(byName.has(h)?h:'overview',false);
   }}
   window.addEventListener('hashchange',fromHash);
   fromHash();
