@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deploy C2G portal 1.1 from a local Git checkout, preserving other Atlas pages."""
+"""Deploy C2G portal 1.2 from a local Git checkout, preserving other Atlas pages."""
 import argparse, hashlib, os, re, shutil, tempfile, urllib.request
 from pathlib import Path
 from datetime import datetime, timezone
@@ -50,6 +50,7 @@ def c2g_card(doc):
     return matches[0]
 old=c2g_card(live); new=c2g_card(source)
 live=live[:old.start()]+new.group()+live[old.end():]
+live=live.replace('href="https://github.com/RandoSY/project-atlas">View the source on GitHub','href="https://github.com/RandoSY/project-atlas/tree/atlas-web-preview">View the deployed-branch source on GitHub')
 payload['exhibits/index.html']=live.encode('utf-8')
 
 # Earlier published photographs and figure crops are server assets; preserve them.
@@ -133,6 +134,6 @@ except BaseException as e:
         if (backup/f).is_file():atomic_write(site/f,(backup/f).read_bytes())
         else:(site/f).unlink(missing_ok=True)
     raise SystemExit('Deployment rolled back: '+str(e)+' | Backup: '+str(backup))
-print('C2G PORTAL v1.1 DEPLOYED' if not args.local_only else 'C2G PORTAL v1.1 LOCAL TEST INSTALLED')
+print('C2G PORTAL v1.2 DEPLOYED' if not args.local_only else 'C2G PORTAL v1.2 LOCAL TEST INSTALLED')
 print('Backup:',backup)
 print(args.url.rstrip('/')+'/circuits-to-genomes/')
