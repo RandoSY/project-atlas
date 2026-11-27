@@ -385,7 +385,7 @@ def home(n):
 </section>
 
 <footer>
-<p class="atlas-footer-line"><span><strong>Randall S. Young, Ed.S.</strong> · Independent researcher &amp; educator · <a href="https://orcid.org/0009-0003-1657-0243">ORCID</a></span><span><a href="https://github.com/RandoSY/project-atlas/tree/atlas-web-preview">View the source on GitHub</a></span></p>
+<p class="atlas-footer-line"><span class="atlas-author"><img class="atlas-avatar" src="assets/randall-young.webp" width="320" height="320" alt="Portrait of Randall S. Young, Ed.S."><span><strong>Randall S. Young, Ed.S.</strong> · Independent researcher &amp; educator · <a href="https://orcid.org/0009-0003-1657-0243">ORCID</a></span></span><span><a href="https://github.com/RandoSY/project-atlas/tree/atlas-web-preview">View the source on GitHub</a></span></p>
 </footer>
 </main>
 <script>

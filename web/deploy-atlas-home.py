@@ -62,7 +62,7 @@ def main() -> None:
     if not (site / "index.html").is_file() or not (site / "assets/navigation.css").is_file():
         raise SystemExit(f"Atlas site not found: {site}")
 
-    targets = ["index.html", "assets/navigation.css"]
+    targets = ["index.html", "assets/navigation.css", "assets/randall-young.webp"]
     payload = {rel: (src / rel).read_bytes() for rel in targets}
 
     inspector = HomeInspector()
@@ -92,9 +92,10 @@ def main() -> None:
 
     backup = Path(tempfile.mkdtemp(prefix="atlas-home-backup-", dir=args.backup_dir))
     for rel in targets:
-        dest = backup / rel
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(site / rel, dest)
+        if (site / rel).exists():
+            dest = backup / rel
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(site / rel, dest)
 
     changed = []
     try:
@@ -114,7 +115,10 @@ def main() -> None:
                 print("HTTP VERIFIED:", rel)
     except BaseException as exc:
         for rel in reversed(changed):
-            atomic_write(site / rel, (backup / rel).read_bytes())
+            if (backup / rel).is_file():
+                atomic_write(site / rel, (backup / rel).read_bytes())
+            else:
+                (site / rel).unlink(missing_ok=True)
         raise SystemExit(f"Deployment rolled back: {exc} | Backup: {backup}")
 
     print("ATLAS HOMEPAGE DEPLOYED" if not args.local_only else "ATLAS HOMEPAGE LOCAL TEST INSTALLED")
