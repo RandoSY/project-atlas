@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Safely deploy the upgraded Project Atlas homepage and navigation stylesheet."""
+"""Safely deploy the Atlas v3 homepage and its isolated stylesheet."""
 import argparse
 import os
 import shutil
@@ -62,7 +62,7 @@ def main() -> None:
     if not (site / "index.html").is_file() or not (site / "assets/navigation.css").is_file():
         raise SystemExit(f"Atlas site not found: {site}")
 
-    targets = ["index.html", "assets/navigation.css", "assets/randall-young.webp"]
+    targets = ["assets/atlas-home-v3.css", "index.html"]
     payload = {rel: (src / rel).read_bytes() for rel in targets}
 
     inspector = HomeInspector()

@@ -1,0 +1,7 @@
+# Atlas homepage v3 — editorial redesign
+
+27 November 2026. Based on `caac22c693a9765b5f955a3a467128c7789a42f8`. User-directed overhaul of the front page, not a change to research findings. Replaces uniform tiny-thumbnail tiles with four clearly differentiated domains, a concise editorial masthead, an explicit CAP method and a current research strip. Author information is in a short About panel with the existing 320px portrait rendered at 56 CSS pixels, not digitally enlarged. Source photographs and diagrams already in the repository are used rather than AI-generated substitutes. The native research SVG is displayed without cropping. Desktop layout targets a compact overview; narrow screens scroll naturally. No forced viewport clipping.
+
+The four detailed domain panels are carried forward from the prior homepage; the C2G portal, exhibits, lab files, manuscripts and shared navigation stylesheet are not changed. Old hash destinations remain functional. The source template and generated HTML are identical. The site builder reads the template. The existing deployment helper now replaces only the homepage and new scoped CSS, checks local destinations, backs up and verifies live bytes with rollback. Production deployment requires access to the Atlas Linux host. See `web/deploy-atlas-home.py`.
+
+Original source commit retained in Git history. Test on desktop/mobile and check actual server assets before declaring production success. The actual live server is not changed by a Git commit.
