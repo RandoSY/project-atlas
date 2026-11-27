@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Deploy C2G portal 1.0 from a local Git checkout, preserving other Atlas pages."""
-import argparse, os, re, shutil, tempfile, urllib.request
+"""Deploy C2G portal 1.1 from a local Git checkout, preserving other Atlas pages."""
+import argparse, hashlib, os, re, shutil, tempfile, urllib.request
 from pathlib import Path
 from datetime import datetime, timezone
 from html.parser import HTMLParser
@@ -15,7 +15,11 @@ site=Path(args.site).resolve()
 if not (site/'index.html').is_file() or not (site/'exhibits/index.html').is_file():
     raise SystemExit('Atlas site not found: '+str(site))
 portal='circuits-to-genomes/'
-targets=[portal+'media/research.css',portal+'media/peroxide-continuity.svg',portal+'index.html','exhibits/index.html']
+cat='catalase-fem/'
+targets=[portal+'media/research.css',portal+'media/peroxide-continuity.svg',
+         cat+'media/open-lab-cover-v1.1.svg',cat+'media/research-cover-v1.1.svg',
+         cat+'media/open-lab-apparatus.svg',cat+'media/open-lab-balloon.svg',
+         portal+'index.html',cat+'index.html',cat+'open-lab/index.html','exhibits/index.html']
 payload={f:(src/f).read_bytes() for f in targets[:-1]}
 source=(src/'exhibits/index.html').read_text(encoding='utf-8')
 live=(site/'exhibits/index.html').read_text(encoding='utf-8')
@@ -50,10 +54,28 @@ payload['exhibits/index.html']=live.encode('utf-8')
 
 # Earlier published photographs and figure crops are server assets; preserve them.
 required=[portal+'media/'+n for n in ['pdp8.jpg','reciprocal.svg','dependencies.svg','continuity.png','networks.png','equivalence.png','precision.png','framework.png']]
-required += ['catalase-fem/media/cover.svg','catalase-fem/open-lab/index.html']
+required += ['catalase-fem/media/cover.svg']
 required += ['catalase-fem/downloads/v1.1/'+n for n in ['Catalase_Open_Lab_v1.1.zip','01_Teacher_Guide.pdf','02_Student_Guide.pdf','03_Theory_and_Research.pdf']]
 missing=[f for f in required if not (site/f).is_file() or not (site/f).stat().st_size]
 if missing: raise SystemExit('Missing existing assets (no changes made): '+', '.join(missing))
+manifest=src/'catalase-fem/downloads/v1.1/SHA256SUMS.txt'
+for line in manifest.read_text(encoding='utf-8').splitlines():
+    digest,name=line.split('  ',1)
+    rel='catalase-fem/downloads/v1.1/'+name
+    f=site/rel
+    if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest()!=digest:
+        raise SystemExit('Lab release missing or checksum mismatch (no changes made): '+rel)
+    if rel not in required: required.append(rel)
+print('Verified existing Open Lab archive and all seven members.')
+a=cat+'media/open-lab-cover-v1.1.svg'
+b=cat+'media/research-cover-v1.1.svg'
+if payload[a]==payload[b]:
+    raise SystemExit('Duplicate cover content (no changes made)')
+for rel,expected_cover in [(cat+'index.html',b),(cat+'open-lab/index.html',a)]:
+    if Path(expected_cover).name.encode() not in payload[rel]:
+        raise SystemExit('Missing intended cover: '+rel)
+if not all(Path(x).name.encode() in payload['exhibits/index.html'] for x in (a,b)):
+    raise SystemExit('Gallery does not reference both covers')
 
 class Inspect(HTMLParser):
     def __init__(self):
@@ -106,11 +128,11 @@ try:
                 if response.status!=200 or response.read()!=(site/f).read_bytes():
                     raise IOError('Live existing resource differs: '+u)
             print('HTTP VERIFIED:',f)
-except Exception as e:
+except BaseException as e:
     for f in reversed(changed):
         if (backup/f).is_file():atomic_write(site/f,(backup/f).read_bytes())
         else:(site/f).unlink(missing_ok=True)
     raise SystemExit('Deployment rolled back: '+str(e)+' | Backup: '+str(backup))
-print('C2G PORTAL v1.0 DEPLOYED' if not args.local_only else 'C2G PORTAL v1.0 LOCAL TEST INSTALLED')
+print('C2G PORTAL v1.1 DEPLOYED' if not args.local_only else 'C2G PORTAL v1.1 LOCAL TEST INSTALLED')
 print('Backup:',backup)
 print(args.url.rstrip('/')+'/circuits-to-genomes/')
