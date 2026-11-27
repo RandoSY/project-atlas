@@ -86,7 +86,12 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
             attr = ' class="atlas-nav-section" aria-current="location"'
         url = (prefix or "./") + ((dest + "/") if dest else "")
         nav.append(f'<a href="{url}"{attr}>{name}</a>')
-    footer_home = link("Project Atlas home", "../") + " · " if directory else ""
+    footer_html = (
+        f'<p>{link("Project Atlas home", "../")} · {link("View the source on GitHub", source)}</p>'
+        if directory else
+        '<p class="atlas-footer-meta"><strong>Randall S. Young, Ed.S.</strong> · Independent researcher and educator · <a href="https://orcid.org/0009-0003-1657-0243">ORCID 0009-0003-1657-0243</a></p>\n'
+        '<p class="atlas-footer-links"><a href="https://github.com/RandoSY/project-atlas/tree/atlas-web-preview">View the source on GitHub</a> · <a href="start-here/">Start Here</a> · <a href="exhibits/">All exhibits</a> · <a href="repositories/">89 public repositories</a></p>'
+    )
     full = f"""<!doctype html>
 <html lang="en">
 <head>
@@ -105,7 +110,7 @@ def page(directory, title, description, body, source=ATLAS, extra="", header="PR
 <p>{esc(description)}</p>
 {body}
 <footer>
-<p>{footer_home}{link('View the source on GitHub', source)}</p>
+{footer_html}
 </footer>
 </main></body>
 </html>
@@ -135,52 +140,124 @@ def homes(prefix=""):
     return "\n".join(output)
 
 def home(n):
-    page("", "Project Atlas", "Randall Young’s public working archive of experiments, instruments, and the ideas that connect them.", f"""
-<section class="atlas-start" aria-labelledby="atlas-start-title">
-<div>
-<p class="atlas-kicker">New to Project Atlas?</p>
-<h2 id="atlas-start-title"><a href="start-here/">Start Here</a></h2>
-<p>Choose one thing to try, teach, or build. Then find your way to the evidence and source.</p>
-</div>
-<div class="atlas-start-actions">
-<a class="atlas-start-primary" href="start-here/">Open the guide <span aria-hidden="true">→</span></a>
-<a href="start-here/Project-Atlas-Start-Here.pdf" download>Download PDF</a>
-<a href="explore/">Explore the Work</a>
+    page("", "Project Atlas", "Randall Young’s public working archive of experiments, instruments, research papers, and the ideas that connect them.", f"""
+<section class="atlas-thesis" aria-label="Guiding question and quick start">
+<p class="atlas-thesis-copy"><strong>How much? Enough?</strong> Measure what happened, then decide whether it was enough for the purpose—whether plucking a ruler, timing a hallway walk, building a wireless sensor, or comparing computer and biological architectures.</p>
+<div class="atlas-guide-actions">
+<a class="atlas-btn-primary" href="start-here/">Start Here <span aria-hidden="true">→</span></a>
+<a href="start-here/Project-Atlas-Start-Here.pdf" download>PDF guide</a>
+<a href="explore/">Explore by interest</a>
 </div>
 </section>
-<section class="atlas-start" aria-labelledby="home-c2g"><div><p class="atlas-kicker">Research and scholarship</p><h2 id="home-c2g"><a href="circuits-to-genomes/">From Circuits to Genomes</a></h2><p>From the PDP-8 to the regulatory genome and modern AI accelerators. Three research papers, 73 pages, plus reproducible computational experiments.</p></div><div class="atlas-start-actions"><a class="atlas-start-primary" href="circuits-to-genomes/">Read the research exhibit →</a></div></section>
+
+<section class="atlas-territories" aria-labelledby="territories-title">
+<div class="atlas-section-head">
+<h2 id="territories-title">Four doors into the work</h2>
+<a href="explore/">Compare all pathways →</a>
+</div>
+<div class="atlas-door-grid">
+<article class="atlas-door">
+<div>
+<p class="atlas-kicker">01 · Experiments &amp; Teaching</p>
+<h3>Experience before equation</h3>
+<p>Ordinary phenomena first—rulers, cups of tea, candles, rocks, and water clocks—so equations are earned through real measurements.</p>
+</div>
+<p class="atlas-door-links"><a href="singing-rule/">The Singing Rule</a><a href="core-10/">CORE 10</a><a href="pop-can-calorimeter/">Calorimeter</a></p>
+</article>
+<article class="atlas-door">
+<div>
+<p class="atlas-kicker">02 · Instruments &amp; Machines</p>
+<h3>Software-defined lab &amp; robotics</h3>
+<p>Low-cost wireless sensors, browser dashboards, bargain-bin robots, and visible computers built to expose how measurements travel.</p>
+</div>
+<p class="atlas-door-links"><a href="instruments/">Virtual Instruments</a><a href="lazy-lidar/">Lazy LiDAR</a><a href="explore/#build">Build pathway</a></p>
+</article>
+<article class="atlas-door">
+<div>
+<p class="atlas-kicker">03 · Movement &amp; Independence</p>
+<h3>Measured human performance</h3>
+<p>Marked hallway trials, step-detector validation, and fair physical-workload testing that separate effort, motion, and heart-rate response.</p>
+</div>
+<p class="atlas-door-links"><a href="sqm-plus/">SQM+ Hallway</a><a href="fair-fitness-testing/">Fair Fitness Testing</a></p>
+</article>
+<article class="atlas-door atlas-door-research">
+<div>
+<p class="atlas-kicker">04 · Research &amp; Scholarship</p>
+<h3>Circuits, genomes &amp; inquiry</h3>
+<p>Can function endure as implementation changes? Three working manuscripts, computational tests, and a hands-on catalase open lab.</p>
+</div>
+<p class="atlas-door-links"><a href="circuits-to-genomes/">Research portal</a><a href="catalase-fem/open-lab/">Catalase Open Lab</a></p>
+</article>
+</div>
+</section>
+
 <section class="atlas-feature" aria-labelledby="home-singing">
 <div>
-<p class="atlas-kicker">Flagship activity · Experience before equation</p>
+<p class="atlas-kicker">Flagship bench activity · Experience before equation</p>
 <h2 id="home-singing"><a href="singing-rule/">The Singing Rule</a></h2>
 <p>Pluck a ruler at the edge of a table. Follow the original bench experiment from a Bluetooth trace to a model you can test yourself.</p>
-<p class="atlas-feature-links"><a href="singing-rule/#evidence">See the measured run</a><a href="singing-rule/#model">Pluck the model</a><a href="singing-rule/#classroom">Teach it</a></p>
+<p class="atlas-feature-links"><a class="atlas-btn-primary" href="singing-rule/">Open exhibit <span aria-hidden="true">→</span></a><a href="singing-rule/#evidence">Measured run</a><a href="singing-rule/#model">Pluck the model</a><a href="singing-rule/#classroom">Teach it</a></p>
+<p class="atlas-feature-ideas"><a href="ideas/#2-experience-before-equation">Idea: Experience Before Equation</a><a href="ideas/#10-the-measurement-ladder">Idea: Measurement Ladder</a></p>
 </div>
 <a href="singing-rule/"><img src="singing-rule/media/bench.webp" width="1440" height="1084" alt="A green ruler with a wireless motion sensor fastened near its free end"></a>
 </section>
-<div class="atlas-mini-grid" aria-label="More featured exhibits">
-<a class="atlas-mini" href="sqm-plus/">
-<img src="sqm-plus/media/hallway.svg" width="1280" height="610" alt="">
-<div><b id="home-sqm">SQM+ Hallway Observatory</b><span>Eleven meters, a stopwatch, and a step detector under test.</span></div></a>
-<a class="atlas-mini" href="instruments/">
-<img src="instruments/screens/frequency-meter.webp" width="1240" height="945" alt="">
-<div><b id="home-instruments">Virtual Instruments</b><span>Five wireless builds and the dashboards that make them usable.</span></div></a>
-<a class="atlas-mini" href="water-clock/">
-<img src="water-clock/media/apparatus.webp" width="1350" height="1043" alt="">
-<div><b id="home-water-clock">Galileo’s Water Clock</b><span>Weigh water, infer elapsed time, and test the clock on a ramp.</span></div></a>
-<a class="atlas-mini" href="teatime/">
-<img src="teatime/media/optical-bench.svg" width="1040" height="650" alt="">
-<div><b id="home-teatime">TeaTime</b><span>Use light to estimate the strength of an unknown tea dilution.</span></div></a>
+
+<section class="atlas-feature atlas-feature-research" aria-labelledby="home-c2g">
+<div>
+<p class="atlas-kicker">Research &amp; scholarship · Three papers + open lab</p>
+<h2 id="home-c2g"><a href="circuits-to-genomes/">From Circuits to Genomes</a></h2>
+<p>Follow one question from the DEC PDP-8 to peroxide-managing enzymes, modern parallel architectures, and accountable AI-assisted science.</p>
+<p class="atlas-feature-links"><a class="atlas-btn-primary" href="circuits-to-genomes/">Open portal <span aria-hidden="true">→</span></a><a href="circuits-to-genomes/#architecture">Paper 1</a><a href="circuits-to-genomes/#peroxide">Paper 2</a><a href="catalase-fem/open-lab/">Open Lab</a></p>
+<p class="atlas-feature-ideas"><a href="ideas/#11-fidelity-mirrors--one-phenomenon-many-realizations">Idea: Fidelity Mirrors</a><a href="ideas/#33-publication-as-handoff">Idea: Publication as Handoff</a></p>
 </div>
-<p class="atlas-all"><a href="exhibits/">Browse all exhibits →</a></p>
+<a href="circuits-to-genomes/"><img src="circuits-to-genomes/media/reciprocal.svg" width="1200" height="430" alt="Diagram of the golden thread connecting the PDP-8, regulatory genome, and H100-inspired parallel computation"></a>
+</section>
+
+<section aria-labelledby="selected-exhibits">
+<div class="atlas-section-head">
+<h2 id="selected-exhibits">Selected exhibits</h2>
+<a href="exhibits/">Browse all exhibits →</a>
+</div>
+<div class="atlas-mini-grid">
+<a class="atlas-mini" href="sqm-plus/">
+<span class="atlas-mini-media atlas-mini-contain"><img src="sqm-plus/media/hallway.svg" width="1280" height="610" alt=""></span>
+<div class="atlas-mini-body"><p class="atlas-kicker">Movement · Sensor test</p><b id="home-sqm">SQM+ Hallway Observatory</b><span>Eleven meters, a stopwatch, and a step detector under test.</span></div></a>
+<a class="atlas-mini" href="instruments/">
+<span class="atlas-mini-media"><img src="instruments/screens/frequency-meter.webp" width="1240" height="945" alt=""></span>
+<div class="atlas-mini-body"><p class="atlas-kicker">Hardware · Dashboards</p><b id="home-instruments">Virtual Instruments</b><span>Five wireless builds and the dashboards that make them usable.</span></div></a>
+<a class="atlas-mini" href="water-clock/">
+<span class="atlas-mini-media atlas-mini-light"><img src="water-clock/media/apparatus.webp" width="1350" height="1043" alt=""></span>
+<div class="atlas-mini-body"><p class="atlas-kicker">Bench lab · Physical calculus</p><b id="home-water-clock">Galileo’s Water Clock</b><span>Weigh water, infer elapsed time, and test the clock on a ramp.</span></div></a>
+<a class="atlas-mini" href="teatime/">
+<span class="atlas-mini-media"><img src="teatime/media/optical-bench.svg" width="1040" height="650" alt=""></span>
+<div class="atlas-mini-body"><p class="atlas-kicker">Optics lab · Calibration</p><b id="home-teatime">TeaTime</b><span>Use light to estimate the strength of an unknown tea dilution.</span></div></a>
+</div>
+</section>
+
 <section class="atlas-directory" aria-labelledby="read">
-<h2 id="read">Read the Atlas</h2>
-<p><strong>How much? Enough?</strong> Measure what happened, then decide whether it was enough for the purpose.</p>
-<ul>
-<li><a href="ideas/">Ideas</a> · the principles and designs that recur across the work</li>
-<li><a href="inventory/">Projects</a> · what was built, what is still under test, and where to find it</li>
-<li><a href="repositories/">Repositories</a> · search all {n} public repositories, including earlier versions and upstream forks</li>
-</ul>
+<h2 id="read">Connecting threads &amp; archive index</h2>
+<p>Across different domains, the same working principles return. Follow an idea sideways, inspect project maturity, or search the full public codebase.</p>
+<div class="atlas-idea-pills" aria-label="Recurring ideas">
+<a href="ideas/#1-how-much--enough">How Much? / Enough?</a>
+<a href="ideas/#2-experience-before-equation">Experience Before Equation</a>
+<a href="ideas/#4-the-software-defined-laboratory">Software-Defined Laboratory</a>
+<a href="ideas/#12-executable-transparency">Executable Transparency</a>
+<a href="ideas/#32-low-cost-is-an-engineering-constraint-not-an-apology">Low Cost as Design Constraint</a>
+</div>
+<div class="atlas-index-grid">
+<article class="atlas-index-card">
+<div><h3><a href="ideas/">Ideas</a></h3><p>33 durable principles and designs that recur across experiments, instruments, and research.</p></div>
+<a class="atlas-index-cta" href="ideas/">Browse the idea index →</a>
+</article>
+<article class="atlas-index-card">
+<div><h3><a href="inventory/">Projects</a></h3><p>What was built, what is still under test, and how the nine project families fit together.</p></div>
+<a class="atlas-index-cta" href="inventory/">Open project inventory →</a>
+</article>
+<article class="atlas-index-card">
+<div><h3><a href="repositories/">Repositories</a></h3><p>Filter and search all {n} public GitHub repositories, including earlier versions and forks.</p></div>
+<a class="atlas-index-cta" href="repositories/">Search {n} repositories →</a>
+</article>
+</div>
 </section>
 """, header="HOW MUCH? ENOUGH?")
 
