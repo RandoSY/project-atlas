@@ -5,6 +5,7 @@ on:
     branches: [atlas-web-preview]
     paths:
       - 'web/atlas/**'
+      - 'web/releases/catalase-open-lab/v1.1/**'
       - '.github/workflows/atlas-pages.yml'
   workflow_dispatch:
 
@@ -34,7 +35,7 @@ jobs:
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import os, re, shutil
+          import os, re, shutil, hashlib, zipfile
           from html.parser import HTMLParser
           from urllib.parse import urlsplit, unquote
           src = Path('web/atlas')
@@ -44,6 +45,19 @@ jobs:
           assert (src / 'index.html').is_file()
           assert not any(p.is_symlink() for p in src.rglob('*')), 'Review symlinks before publishing'
           shutil.copytree(src, out / 'atlas')
+          # Install the exact versioned Open Lab download package from the repository.
+          release = Path('web/releases/catalase-open-lab/v1.1/Catalase_Open_Lab_v1.1.zip')
+          data = release.read_bytes()
+          assert hashlib.sha256(data).hexdigest() == 'e2e0173c913f814d196a4c622f1ff1c8f0f8d471bb3c295bd0817e76537de84f', 'Catalase archive checksum mismatch'
+          dest = out / 'atlas/catalase-fem/downloads/v1.1'
+          dest.mkdir(parents=True, exist_ok=True)
+          (dest / release.name).write_bytes(data)
+          names = ['01_Teacher_Guide.pdf', '02_Student_Guide.pdf', '03_Theory_and_Research.pdf', 'START_HERE.txt', 'analyze.py', 'measurements_template.csv', 'balloon_template.csv']
+          with zipfile.ZipFile(release) as z:
+              assert z.testzip() is None
+              for name in names:
+                  (dest / name).write_bytes(z.read('catalase_open_lab/' + name))
+          (dest / 'SHA256SUMS.txt').write_text(''.join(hashlib.sha256((dest / name).read_bytes()).hexdigest() + '  ' + name + '\n' for name in [release.name, *names]), encoding='utf-8')
           (out / '.nojekyll').touch()
           (out / 'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=atlas/"><title>Project Atlas</title><a href="atlas/">Open Project Atlas</a></html>', encoding='utf-8')
           for p in (out / 'atlas').rglob('*'):
