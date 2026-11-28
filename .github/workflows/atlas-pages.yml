@@ -1,0 +1,102 @@
+name: Publish Project ATLAS
+
+on:
+  push:
+    branches: [atlas-web-preview]
+    paths:
+      - 'web/atlas/**'
+      - '.github/workflows/atlas-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: atlas-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: atlas-web-preview
+          persist-credentials: false
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+      - name: Stage only the public Atlas site
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os, re, shutil
+          from html.parser import HTMLParser
+          from urllib.parse import urlsplit, unquote
+          src = Path('web/atlas')
+          out = Path('_site')
+          base = os.environ['BASE_PATH'].rstrip('/')
+          origin = 'https://project-atlas-lab.duckdns.org'
+          assert (src / 'index.html').is_file()
+          assert not any(p.is_symlink() for p in src.rglob('*')), 'Review symlinks before publishing'
+          shutil.copytree(src, out / 'atlas')
+          (out / '.nojekyll').touch()
+          (out / 'index.html').write_text('<!doctype html><html lang="en"><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=atlas/"><title>Project Atlas</title><a href="atlas/">Open Project Atlas</a></html>', encoding='utf-8')
+          for p in (out / 'atlas').rglob('*'):
+              if not p.is_file() or p.suffix.lower() not in {'.html','.css','.js','.mjs','.json','.svg','.xml','.webmanifest'}:
+                  continue
+              old = p.read_text(encoding='utf-8')
+              new = re.sub(r'(?<![\w/.-])/atlas(?=/|["\x27])', lambda m: base + m[0], old)
+              # Existing fully qualified Atlas links are migrated as well.
+              new = new.replace(origin + '/atlas/', base + '/atlas/')
+              # Calculus is a separate website; do not deploy or overwrite it.
+              new = re.sub(r'(?<![\w/.-])/calculus(?=/|["\x27])', lambda m: origin + m[0], new)
+              if new != old:
+                  p.write_text(new, encoding='utf-8')
+          class Links(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.refs = []
+              def handle_starttag(self, tag, attrs):
+                  self.refs.extend(v for k,v in attrs if k in ('href','src','poster') and v)
+          missing = set()
+          for p in (out / 'atlas').rglob('*.html'):
+              page = Links()
+              page.feed(p.read_text(encoding='utf-8'))
+              for ref in page.refs:
+                  url = urlsplit(ref)
+                  if url.scheme or url.netloc or not url.path:
+                      continue
+                  if url.path.startswith('/'):
+                      if base and not url.path.startswith(base + '/'):
+                          missing.add((str(p), ref))
+                          continue
+                      target = out / unquote(url.path[len(base):].lstrip('/'))
+                  else:
+                      target = p.parent / unquote(url.path)
+                  if target.is_dir():
+                      target = target / 'index.html'
+                  if not target.is_file():
+                      missing.add((str(p), ref))
+          for page, ref in sorted(missing):
+              print(f'::warning::{page}: unresolved local reference {ref}')
+          print(f'Local link audit: {len(missing)} unresolved references; review warnings.')
+          print(f'Publishing {sum(p.is_file() for p in out.rglob("*"))} files.')
+          PY
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
