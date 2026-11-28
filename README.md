@@ -8,6 +8,14 @@ The governing questions are: **How much? Enough?** Measure reality, then judge s
 
 The estate is **not a file backup. It is an idea backup.** Files, repositories, manuals, code, comics, experiments, and validation records are evidence containers whose purpose is to preserve enough meaning for the work to survive its original author.
 
+## Visit the public exhibition
+
+**[Open Project Atlas](https://randosy.github.io/project-atlas/atlas/)** — scientific inquiry, STEM education, low-cost instrumentation, robotics, human performance and open research exhibits. The GitHub Pages exhibition is the public entry point; this repository preserves the source and intellectual lineage.
+
+[Exhibits](https://randosy.github.io/project-atlas/atlas/exhibits/) · [Circuits to Genomes](https://randosy.github.io/project-atlas/atlas/circuits-to-genomes/) · [Catalase Open Lab](https://randosy.github.io/project-atlas/atlas/catalase-fem/open-lab/) · [CORE 10](https://randosy.github.io/project-atlas/atlas/core-10/)
+
+[Discoverability and outreach plan](DISCOVERABILITY.md)
+
 ## Current intellectual checkpoint — 24 November 2026
 
 **[Circuits to Genomes](ideas/circuits-to-genomes.md)** unifies the estate's progression from one-bit electronics through physical and historical computing to genomic organization and AI-augmented inquiry.
