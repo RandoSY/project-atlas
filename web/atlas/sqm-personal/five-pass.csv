@@ -1,0 +1,6 @@
+pass,distance_m,start_rule,mount_axis,device_duration_s,reference_duration_s,reference_steps,candidate_steps,samples,gaps,velocity_m_s,quality_0_1,qgv_m_s,bob_g_rms,lurch_g_rms,totter_g_rms,raw_csv,summary_json,validity_notes
+1,11,standing,,,,,,,,,,,,,,,,
+2,11,standing,,,,,,,,,,,,,,,,
+3,11,standing,,,,,,,,,,,,,,,,
+4,11,standing,,,,,,,,,,,,,,,,
+5,11,standing,,,,,,,,,,,,,,,,
