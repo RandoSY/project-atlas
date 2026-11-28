@@ -207,7 +207,7 @@ jobs:
           print(f'Local link audit: {len(missing)} unresolved references; review warnings.')
           print(f'Publishing {sum(p.is_file() for p in out.rglob("*"))} files.')
           PY
-      - name: Render and validate illustrated successor handbook
+      - name: Render and validate both successor handbook editions
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0
@@ -220,7 +220,6 @@ jobs:
           from pypdf import PdfReader
           import hashlib
           root = Path('_site/atlas/handbook')
-          source = root / 'index.html'
           class Images(HTMLParser):
               def __init__(self):
                   super().__init__()
@@ -228,22 +227,31 @@ jobs:
               def handle_starttag(self, tag, attrs):
                   if tag == 'img':
                       self.images.append(dict(attrs)['src'])
-          p = Images()
-          p.feed(source.read_text(encoding='utf-8'))
-          assert len(p.images) >= 36, 'Missing handbook illustrations'
-          for src in p.images:
-              assert not urlsplit(src).scheme, src
-              asset = root / src
-              assert asset.is_file() and asset.stat().st_size > 0, src
-          target = root / 'Project_Atlas_Successors_Curriculum_Handbook_v1.1.pdf'
-          HTML(filename=str(source.resolve())).write_pdf(str(target))
-          pdf = PdfReader(target)
-          assert 18 <= len(pdf.pages) <= 25, f'Unexpected handbook pagination: {len(pdf.pages)}'
-          assert target.stat().st_size > 200000, 'PDF unexpectedly small'
-          assert 'Successor' in (pdf.pages[0].extract_text() or '')
-          digest = hashlib.sha256(target.read_bytes()).hexdigest()
-          (root / 'SHA256SUMS.txt').write_text(digest + '  ' + target.name + '\n', encoding='utf-8')
-          print(f'Illustrated handbook: {len(pdf.pages)} pages; {len(p.images)} image placements; {target.stat().st_size} bytes; SHA256 {digest}')
+          checksums = []
+          for version, source_name in [('1.1', 'index_v1.1_archive.html'), ('1.2', 'index.html')]:
+              source = root / source_name
+              p = Images()
+              p.feed(source.read_text(encoding='utf-8'))
+              assert len(p.images) == 36, (version, 'Missing handbook illustrations')
+              for src in p.images:
+                  assert not urlsplit(src).scheme, src
+                  asset = root / src
+                  assert asset.is_file() and asset.stat().st_size > 0, src
+              target = root / f'Project_Atlas_Successors_Curriculum_Handbook_v{version}.pdf'
+              HTML(filename=str(source.resolve())).write_pdf(str(target))
+              pdf = PdfReader(target)
+              assert len(pdf.pages) == 18, f'Unexpected handbook v{version} pagination: {len(pdf.pages)}'
+              assert target.stat().st_size > 200000, 'PDF unexpectedly small'
+              assert 'Successor' in (pdf.pages[0].extract_text() or '')
+              assert 'Keep the ideas alive' in (pdf.pages[-1].extract_text() or '')
+              if version == '1.2':
+                  contents = pdf.pages[1].extract_text() or ''
+                  assert 'If you only do one thing' in contents and 'Terms:' in contents, 'Contents-page additions missing'
+                  assert 'Begin with the world' in (pdf.pages[2].extract_text() or ''), 'Contents overflow'
+              digest = hashlib.sha256(target.read_bytes()).hexdigest()
+              checksums.append(digest + '  ' + target.name + '\n')
+              print(f'Handbook v{version}: {len(pdf.pages)} pages; {len(p.images)} image placements; {target.stat().st_size} bytes; SHA256 {digest}')
+          (root / 'SHA256SUMS.txt').write_text(''.join(checksums), encoding='utf-8')
           PY
       - uses: actions/upload-pages-artifact@v4
         with:
