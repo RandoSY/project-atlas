@@ -71,6 +71,110 @@ jobs:
               new = re.sub(r'(?<![\w/.-])/calculus(?=/|["\x27])', lambda m: origin + m[0], new)
               if new != old:
                   p.write_text(new, encoding='utf-8')
+          # Discovery metadata is generated on the staged site, never in source exhibits.
+          import html
+          import xml.etree.ElementTree as ET
+          from urllib.parse import quote
+          public = 'https://randosy.github.io' + base
+          root_url = public + '/atlas/'
+          descriptions = {
+              'catalase-fem/open-lab/index.html': 'An open catalase laboratory with downloadable teacher and student guides, experimental procedures, data templates and analysis tools.',
+              'lazy-lidar/model.html': 'Interactive virtual robot laboratory for exploring sparse LiDAR measurements, motion and mapping.',
+              'cutebot-motion-evidence/viewer.html': 'Interactive viewer for examining evidence of Cutebot robot motion.',
+              'teatime/model.html': 'Interactive model for investigating the TeaTime experiment.',
+              'water-clock/model.html': 'Interactive water clock model for investigating measurement and time.',
+          }
+          images = {
+              'index.html': 'assets/randall-young.webp',
+              'circuits-to-genomes/index.html': 'circuits-to-genomes/media/pdp8.jpg',
+              'cutebot-motion-evidence/index.html': 'cutebot-motion-evidence/media/cutebot-card.webp',
+              'fair-fitness-testing/index.html': 'fair-fitness-testing/media/android-test-complete.png',
+              'instruments/index.html': 'instruments/screens/dvm-controls.webp',
+              'lazy-lidar/index.html': 'lazy-lidar/media/virtual-lab.webp',
+              'lazy-lidar/model.html': 'lazy-lidar/media/virtual-lab.webp',
+              'pop-can-calorimeter/index.html': 'pop-can-calorimeter/media/apparatus.webp',
+              'singing-rule/index.html': 'singing-rule/media/bench.webp',
+              'sphericity-meter/index.html': 'sphericity-meter/media/bench.webp',
+              'sqm-plus/index.html': 'sqm-plus/media/setup.webp',
+              'teatime/index.html': 'teatime/media/dashboard.webp',
+              'water-clock/index.html': 'water-clock/media/apparatus.webp',
+          }
+          class Head(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.in_head = self.in_title = False
+                  self.title = ''
+                  self.meta = {}
+                  self.canonical = False
+              def handle_starttag(self, tag, attrs):
+                  a = dict(attrs)
+                  if tag == 'head':
+                      self.in_head = True
+                  if not self.in_head:
+                      return
+                  if tag == 'title':
+                      self.in_title = True
+                  if tag == 'meta':
+                      key = a.get('name') or a.get('property')
+                      if key:
+                          self.meta[key.lower()] = a.get('content', '')
+                  if tag == 'link' and 'canonical' in (a.get('rel') or '').lower().split():
+                      self.canonical = True
+              def handle_endtag(self, tag):
+                  if tag == 'head':
+                      self.in_head = False
+                  if tag == 'title':
+                      self.in_title = False
+              def handle_data(self, data):
+                  if self.in_title:
+                      self.title += data
+          ns = 'http://www.sitemaps.org/schemas/sitemap/0.9'
+          ET.register_namespace('', ns)
+          sitemap = ET.Element('{'+ns+'}urlset')
+          count = 0
+          for p in sorted((out / 'atlas').rglob('*.html')):
+              rel = p.relative_to(out / 'atlas').as_posix()
+              page_path = rel[:-len('index.html')] if rel.endswith('/index.html') or rel == 'index.html' else rel
+              url = root_url + quote(page_path, safe='/')
+              content = p.read_text(encoding='utf-8')
+              head = Head()
+              head.feed(content)
+              if not re.search(r'</head\s*>', content, re.I):
+                  raise ValueError(f'HTML page has no closing head: {rel}')
+              title = ' '.join(head.title.split()) or 'Project Atlas'
+              desc = head.meta.get('description') or descriptions.get(rel) or f'{title}. Explore the exhibit and its resources in Project Atlas, an open scientific and educational archive.'
+              tags = []
+              def meta(key, value, attr='name'):
+                  if key not in head.meta:
+                      tags.append(f'<meta {attr}="{key}" content="{html.escape(value, quote=True)}">')
+              if not head.canonical:
+                  tags.append(f'<link rel="canonical" href="{html.escape(url, quote=True)}">')
+              meta('description', desc)
+              meta('og:type', 'website', 'property')
+              meta('og:site_name', 'Project Atlas', 'property')
+              meta('og:title', title, 'property')
+              meta('og:description', desc, 'property')
+              meta('og:url', url, 'property')
+              image = images.get(rel)
+              if image:
+                  assert (out / 'atlas' / image).is_file(), image
+                  meta('og:image', root_url + quote(image, safe='/'), 'property')
+                  meta('twitter:image', root_url + quote(image, safe='/'))
+              meta('twitter:card', 'summary' if not image or rel == 'index.html' else 'summary_large_image')
+              meta('twitter:title', title)
+              meta('twitter:description', desc)
+              if tags:
+                  content = re.sub(r'</head\s*>', lambda _: '\n' + '\n'.join(tags) + '\n</head>', content, count=1, flags=re.I)
+                  p.write_text(content, encoding='utf-8')
+              if not any(re.search(r'\b(?:noindex|none)\b', head.meta.get(key, ''), re.I) for key in ('robots', 'googlebot', 'bingbot')):
+                  node = ET.SubElement(sitemap, '{'+ns+'}url')
+                  ET.SubElement(node, '{'+ns+'}loc').text = url
+                  count += 1
+          ET.indent(sitemap)
+          ET.ElementTree(sitemap).write(out / 'sitemap.xml', encoding='utf-8', xml_declaration=True)
+          redirect = out / 'index.html'
+          redirect.write_text(redirect.read_text(encoding='utf-8').replace('<title>', f'<link rel="canonical" href="{root_url}"><title>', 1), encoding='utf-8')
+          print(f'Discovery: {count} indexable Atlas URLs in {public}/sitemap.xml')
           class Links(HTMLParser):
               def __init__(self):
                   super().__init__()
