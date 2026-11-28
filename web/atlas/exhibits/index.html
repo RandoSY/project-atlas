@@ -8,100 +8,150 @@
 <link rel="stylesheet" href="../assets/calculus-theme.css">
 <link rel="stylesheet" href="../assets/atlas.css">
 <link rel="stylesheet" href="../assets/navigation.css">
+<style>
+.exhibit-page{max-width:76rem}
+.learning-intro{padding:clamp(1rem,3vw,1.65rem);margin:1.5rem 0 2rem;border:1px solid #c2d1c5;border-radius:.85rem;background:#eef2e9}
+.level-kicker{margin:0 0 .3rem;font-size:.72rem;letter-spacing:.13em;font-weight:750;color:#3f6d61}
+.learning-intro h2{margin:.15rem 0 .45rem;font-size:clamp(1.65rem,4vw,2.45rem);color:#173c3a}
+.learning-intro p{margin:.4rem 0 .8rem}
+.learning-steps{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:.5rem;margin:1rem 0}
+.learning-steps a{display:flex;flex-direction:column;padding:.75rem .65rem;border:1px solid #c4d2c6;background:#fdfbf4;border-radius:.5rem;min-width:0;text-decoration:none;color:#174d46}
+.learning-steps a:hover,.learning-steps a:focus-visible{border-color:#36756b;background:#e4eee4;text-decoration:underline}
+.step-num{font-size:.75rem;font-variant-numeric:tabular-nums;color:#5d756a}
+.learning-steps strong{font-size:1.03rem}.learning-steps small{font-size:.72rem;color:#4b635c}
+.learning-intro .learning-note{font-size:.84rem;color:#405c55;margin-bottom:0}
+.learning-level{margin:2rem 0 3rem;scroll-margin-top:1rem;--level:#31685a}
+.learning-level#measure{--level:#6c6739}.learning-level#build{--level:#365f78}.learning-level#apply{--level:#76572e}.learning-level#investigate{--level:#655272}
+.level-heading{display:grid;grid-template-columns:auto minmax(0,1fr);gap:1rem;align-items:center;border-top:2px solid var(--level);padding:1.15rem 0 .15rem}
+.level-index{font-family:Georgia,serif;font-size:clamp(2.3rem,5vw,3.7rem);line-height:1;color:var(--level);font-variant-numeric:tabular-nums;letter-spacing:-.06em;min-width:1.35em}
+.level-heading .level-kicker{color:var(--level)}.level-heading h2{margin:0 0 .3rem;color:#203b39;font-size:clamp(1.55rem,3.5vw,2.3rem)}
+.level-heading p:not(.level-kicker){font-size:.96rem;color:#49605a;margin:0;max-width:58rem}
+.learning-level .atlas-exhibits{grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.learning-level .atlas-exhibit{background:#fdfbf5;border-color:#c5d2c8;min-width:0}
+.learning-level .atlas-exhibit.atlas-premier{background:#f4eddb;border-color:#ccbea0}
+.learning-level .atlas-exhibit-body{display:flex;flex-direction:column;flex:1;padding:.85rem .95rem 1rem}
+.learning-level .atlas-exhibit-body h3{font-family:Georgia,serif;line-height:1.14;font-size:clamp(1.2rem,2vw,1.6rem);margin:.32rem 0 .5rem}
+.learning-level .atlas-exhibit-body h3 a{color:#0e4742;text-decoration:none}.learning-level .atlas-exhibit-body h3 a:hover{text-decoration:underline}
+.learning-level .atlas-exhibit-visual img{aspect-ratio:1.7;object-fit:contain;background:#173d40}
+.exhibit-facts{margin:auto 0 0;padding:.8rem 0 0;font-size:.77rem;line-height:1.35;color:#38574f}
+.exhibit-facts div{display:grid;grid-template-columns:5.2rem minmax(0,1fr);gap:.4rem;padding:.28rem 0;border-top:1px solid #d7dfd5}
+.exhibit-facts dt{font-weight:700}.exhibit-facts dd{margin:0;overflow-wrap:anywhere}
+.back-to-levels{font-size:.8rem;display:inline-block;margin-top:.8rem}
+@media(max-width:950px){.learning-level .atlas-exhibits{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:600px){.learning-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.learning-level .atlas-exhibits{grid-template-columns:1fr}.learning-level .atlas-exhibit-visual img{aspect-ratio:1.75}.level-heading{gap:.6rem}.level-index{font-size:2.4rem}.exhibit-page{padding-left:1rem;padding-right:1rem}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
 </head>
-<body><main>
+<body><main class="exhibit-page">
 <nav class="atlas-nav" aria-label="Project Atlas"><a href="../">Home</a> <a href="../exhibits/" aria-current="page">Exhibits</a> <a href="../ideas/">Ideas</a> <a href="../inventory/">Projects</a> <a href="../repositories/">Repositories</a></nav>
 <p>RANDALL YOUNG · EXPERIENCE BEFORE EQUATION</p>
 <h1>Exhibits</h1>
 <p>Experiments you can try, instruments you can build, and models you can test.</p>
 
-<div class="atlas-exhibits"><article class="atlas-exhibit"><a class="atlas-exhibit-visual" href="../lunar-ranging/"><img src="../lunar-ranging/cover.svg" width="1200" height="650" alt="Earth Moon laser ranging illustration"></a><div class="atlas-exhibit-body"><p class="atlas-kicker">New Open Lab · Astronomy &amp; metrology</p><h2><a href="../lunar-ranging/">From Parallax to Picoseconds</a></h2><p class="atlas-exhibit-summary">Fire a virtual lunar laser, explore Apollo reflectors and tidal recession, then build an Arduino ultrasonic echo-ranging instrument.</p></div></article><!-- SQM-PERSONAL start --><article class="atlas-exhibit"><a class="atlas-exhibit-visual" href="../sqm-personal/" aria-label="Open SQM+ Personal"><img src="../sqm-personal/sqm-personal-cover.webp" onerror="this.onerror=null;this.src='../sqm-personal/cover.svg'" width="1619" height="971" alt="Waist-mounted sensor and 11 meter walk, illustrating the QGV composite"></a><div class="atlas-exhibit-body"><p class="atlas-kicker">New experiment · Active Independence · Source prototype</p><h2><a href="../sqm-personal/">SQM+ Personal: the sixth vital sign</a></h2><p class="atlas-exhibit-summary">Build a personal mobility monitor. Explore walking velocity, motion quality and a proposed composite, then test the instrument against independent timing and step counts.</p></div></article><!-- SQM-PERSONAL end --><!-- C2G-OPEN-LAB start --><article class="atlas-exhibit"><a class="atlas-exhibit-visual" href="../catalase-fem/open-lab/" aria-label="Open Catalase Open Lab"><img src="../catalase-fem/media/open-lab-cover-v1.1.svg" width="1200" height="720" alt="Illustrated oxygen collection apparatus and separate balloon calibration"></a><div class="atlas-exhibit-body"><p class="atlas-kicker">Open Laboratory · CORE 10 · C2G</p><h2><a href="../catalase-fem/open-lab/">Catalase Open Lab</a></h2><p class="atlas-exhibit-summary">Measure oxygen production, calibrate a balloon and explore the biological science behind C2G Paper 2. Teacher and student guides, theory PDF, Python and data templates.</p></div></article><!-- C2G-OPEN-LAB end --><!-- CAT-FEM exhibit start --><article class="atlas-exhibit"><a class="atlas-exhibit-visual" href="../catalase-fem/" aria-label="Open Catalase: one reaction, many implementations"><img src="../catalase-fem/media/research-cover-v1.1.svg" width="1200" height="720" alt="Conceptual heme catalase molecular architecture and peroxide management" decoding="async"></a><div class="atlas-exhibit-body"><p class="atlas-kicker">C2G · Biochemical research benchmark</p><h2><a href="../catalase-fem/">Catalase: one reaction, many implementations</a></h2><p class="atlas-exhibit-summary">Compare published enzyme measurements and complementary peroxide-management mechanisms. Explore the biological research behind the Open Lab.</p></div></article><!-- CAT-FEM exhibit end --><article class="atlas-exhibit">
+<section class="learning-intro" id="learning-path" aria-labelledby="path-title"><p class="level-kicker">CHOOSE YOUR STARTING POINT</p><h2 id="path-title">A staircase of intellectual capability</h2><p>Start with an ordinary observation and progress toward scientific research. Follow the levels in order, or jump directly to an exhibit that interests you. The levels describe a learning progression, not prerequisites.</p><nav class="learning-steps" aria-label="Five learning levels"><a href="#discover"><span class="step-num">01</span><strong>Discover</strong><small>4 exhibits</small></a><a href="#measure"><span class="step-num">02</span><strong>Measure</strong><small>4 exhibits</small></a><a href="#build"><span class="step-num">03</span><strong>Build</strong><small>3 exhibits</small></a><a href="#apply"><span class="step-num">04</span><strong>Apply</strong><small>3 exhibits</small></a><a href="#investigate"><span class="step-num">05</span><strong>Investigate</strong><small>3 exhibits</small></a></nav><p class="learning-note">Difficulty and first-visit times are editorial estimates for introductory exploration, not full build times. Check each exhibit’s safety guidance, equipment details and release status before physical work. For a complete course, use the <a href="../handbook/">Successor’s Curriculum Handbook</a>.</p></section>
+<section class="learning-level" id="discover" aria-labelledby="discover-title"><header class="level-heading"><div class="level-index" aria-hidden="true">01</div><div><p class="level-kicker">LEVEL 1 · DISCOVER</p><h2 id="discover-title">Experience the physical world</h2><p>Start with everyday phenomena. Observe, predict and invent a repeatable way to describe what you see.</p></div></header><div class="atlas-exhibits"><article class="atlas-exhibit">
 <a class="atlas-exhibit-visual" href="../singing-rule/" aria-label="Open The Singing Rule">
 <img src="../singing-rule/media/bench.webp" width="1440" height="1084" alt="" decoding="async"></a>
 <div class="atlas-exhibit-body">
 <p class="atlas-kicker">Flagship activity</p>
-<h2><a href="../singing-rule/">The Singing Rule</a></h2>
+<h3><a href="../singing-rule/">The Singing Rule</a></h3>
 <p class="atlas-exhibit-summary">Pluck a ruler and follow the motion from the original bench photo to live traces, measured ringdown, and a model you can try.</p>
-</div></article><article class="atlas-exhibit">
-<a class="atlas-exhibit-visual" href="../circuits-to-genomes/" aria-label="Open From Circuits to Genomes"><img src="../circuits-to-genomes/media/pdp8.jpg" width="4372" height="2906" alt="DEC PDP-8 computer at the Computer History Museum" decoding="async"></a>
-<div class="atlas-exhibit-body"><p class="atlas-kicker">Research portal · Three papers and Open Lab</p><h2><a href="../circuits-to-genomes/">From Circuits to Genomes</a></h2><p class="atlas-exhibit-summary">From PDP-8 architecture to evolutionary peroxide management and AI-assisted inquiry. Three scholarly tracks, an open laboratory and the preserved primate enhancer companion study. <small>Photo: <a href="https://commons.wikimedia.org/wiki/File:PDP-8_at_the_Computer_History_Museum.jpg">Todd Dailey</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>.</small></p></div></article><article class="atlas-exhibit">
-<a class="atlas-exhibit-visual" href="../sphericity-meter/" aria-label="Open Invent a Sphericity Meter">
-<img src="../sphericity-meter/media/opening-rocks.webp" width="1450" height="551" alt="" decoding="async"></a>
-<div class="atlas-exhibit-body">
-<p class="atlas-kicker">New exhibit · Classroom inquiry design</p>
-<h2><a href="../sphericity-meter/">Invent a Sphericity Meter</a></h2>
-<p class="atlas-exhibit-summary">Which rock is more nearly spherical? Invent a rule another team can repeat, then test what your rule misses.</p>
-</div></article><article class="atlas-exhibit">
-<a class="atlas-exhibit-visual" href="../fair-fitness-testing/" aria-label="Open Fair Fitness Testing">
-<img src="../fair-fitness-testing/media/three-checks.svg" width="1200" height="630" alt="" decoding="async"></a>
-<div class="atlas-exhibit-body">
-<p class="atlas-kicker">New exhibit · Release preview</p>
-<h2><a href="../fair-fitness-testing/">Fair Fitness Testing</a></h2>
-<p class="atlas-exhibit-summary">Compare two workload prescriptions and follow a documented Android prototype walkthrough.</p>
-</div></article><article class="atlas-exhibit atlas-premier">
-<a class="atlas-exhibit-visual" href="../pop-can-calorimeter/" aria-label="Open Pop-Can Calorimeter">
-<img src="../pop-can-calorimeter/media/picoscale.webp" width="1440" height="847" alt="" decoding="async"></a>
-<div class="atlas-exhibit-body">
-<p class="atlas-kicker">Premier CORE 10 activity</p>
-<h2><a href="../pop-can-calorimeter/">Pop-Can Calorimeter</a></h2>
-<p class="atlas-exhibit-summary">Follow a tea light from grams of fuel to joules in the water, compare heating rates, and account for where the rest of the energy went.</p>
-</div></article><article class="atlas-exhibit">
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Equipment</dt><dd>Browser or ruler</dd></div><div><dt>First visit</dt><dd>15–30 min</dd></div></dl></div></article>
+<article class="atlas-exhibit">
 <a class="atlas-exhibit-visual" href="../water-clock/" aria-label="Open Galileo’s Water Clock">
 <img src="../water-clock/media/apparatus.webp" width="1350" height="1043" alt="" decoding="async"></a>
 <div class="atlas-exhibit-body">
 <p class="atlas-kicker">Physical calculus</p>
-<h2><a href="../water-clock/">Galileo’s Water Clock</a></h2>
+<h3><a href="../water-clock/">Galileo’s Water Clock</a></h3>
 <p class="atlas-exhibit-summary">Make time measurable with a cup and scale. Calibrate the flow, try the original interactive lab, and transfer the clock to an inclined plane.</p>
-</div></article><article class="atlas-exhibit">
-<a class="atlas-exhibit-visual" href="../teatime/" aria-label="Open TeaTime · Beer–Lambert’s Law">
-<img src="../teatime/media/optical-bench.svg" width="1040" height="650" alt="" decoding="async"></a>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Equipment</dt><dd>Browser or cup, scale</dd></div><div><dt>First visit</dt><dd>20–40 min</dd></div></dl></div></article>
+<article class="atlas-exhibit">
+<a class="atlas-exhibit-visual" href="../sphericity-meter/" aria-label="Open Invent a Sphericity Meter">
+<img src="../sphericity-meter/media/opening-rocks.webp" width="1450" height="551" alt="" decoding="async"></a>
 <div class="atlas-exhibit-body">
-<p class="atlas-kicker">Kitchen Inquiry Lab</p>
-<h2><a href="../teatime/">TeaTime · Beer–Lambert’s Law</a></h2>
-<p class="atlas-exhibit-summary">Make a dilution series, measure how much light gets through, and use the calibration to identify an unknown.</p>
-</div></article><article class="atlas-exhibit">
-<a class="atlas-exhibit-visual" href="../sqm-plus/" aria-label="Open SQM+ Hallway Observatory">
-<img src="../sqm-plus/media/hallway.svg" width="1280" height="610" alt="" decoding="async"></a>
-<div class="atlas-exhibit-body">
-<p class="atlas-kicker">Current experiment</p>
-<h2><a href="../sqm-plus/">SQM+ Hallway Observatory</a></h2>
-<p class="atlas-exhibit-summary">Run a marked 11-meter leg and see why a stopwatch and a wearable answer two different questions.</p>
-</div></article><article class="atlas-exhibit">
-<a class="atlas-exhibit-visual" href="../instruments/" aria-label="Open Virtual Instruments">
-<img src="../instruments/screens/frequency-meter.webp" width="1240" height="945" alt="" decoding="async"></a>
-<div class="atlas-exhibit-body">
-<p class="atlas-kicker">Instrument workshop</p>
-<h2><a href="../instruments/">Virtual Instruments</a></h2>
-<p class="atlas-exhibit-summary">See original dashboards and build a wireless voltmeter, frequency meter, scale, ToF ruler, or thermometer.</p>
-</div></article><article class="atlas-exhibit">
-<a class="atlas-exhibit-visual" href="../lazy-lidar/" aria-label="Open Lazy LiDAR">
-<img src="../lazy-lidar/media/cutebot-console.webp" width="1680" height="1142" alt="" decoding="async"></a>
-<div class="atlas-exhibit-body">
-<p class="atlas-kicker">Robotics · Interactive simulation</p>
-<h2><a href="../lazy-lidar/">Lazy LiDAR</a></h2>
-<p class="atlas-exhibit-summary">Make a map from ranges and bearings. Then change the heading and see what a repeatable measurement still gets wrong.</p>
-</div></article><article class="atlas-exhibit">
-<a class="atlas-exhibit-visual" href="../cutebot-motion-evidence/" aria-label="Open Cutebot Motion Evidence Lab">
-<img src="../cutebot-motion-evidence/media/cutebot-card.webp" width="900" height="500" alt="" decoding="async"></a>
-<div class="atlas-exhibit-body">
-<p class="atlas-kicker">ROBOT_EDU · Classroom preview</p>
-<h2><a href="../cutebot-motion-evidence/">Cutebot Motion Evidence Lab</a></h2>
-<p class="atlas-exhibit-summary">Repeat a short drive command and use a tape measure and a motion trace to decide whether the car did what you asked.</p>
-</div></article><article class="atlas-exhibit">
-<a class="atlas-exhibit-visual" href="/calculus/" aria-label="Open Ten Problems That Teach Calculus">
-<img src="/calculus/assets/calculus-tangent-cover.svg" width="1600" height="800" alt="" decoding="async"></a>
-<div class="atlas-exhibit-body">
-<p class="atlas-kicker">Mathematics</p>
-<h2><a href="/calculus/">Ten Problems That Teach Calculus</a></h2>
-<p class="atlas-exhibit-summary">Start with the cart that reverses direction. Learn why total distance and net change are not the same thing.</p>
-</div></article><article class="atlas-exhibit">
+<p class="atlas-kicker">New exhibit · Classroom inquiry design</p>
+<h3><a href="../sphericity-meter/">Invent a Sphericity Meter</a></h3>
+<p class="atlas-exhibit-summary">Which rock is more nearly spherical? Invent a rule another team can repeat, then test what your rule misses.</p>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Equipment</dt><dd>Rocks, ruler</dd></div><div><dt>First visit</dt><dd>20–40 min</dd></div></dl></div></article>
+<article class="atlas-exhibit">
 <a class="atlas-exhibit-visual" href="../core-10/" aria-label="Open CORE 10">
 <img src="../assets/core10-cover.svg" width="1600" height="800" alt="" decoding="async"></a>
 <div class="atlas-exhibit-body">
 <p class="atlas-kicker">Curriculum</p>
-<h2><a href="../core-10/">CORE 10</a></h2>
+<h3><a href="../core-10/">CORE 10</a></h3>
 <p class="atlas-exhibit-summary">Use an ordinary cup of water to distinguish the heat it gains from the electricity an appliance uses.</p>
-</div></article></div>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Beginner</dd></div><div><dt>Equipment</dt><dd>Browser or kitchen tools</dd></div><div><dt>First visit</dt><dd>20–45 min</dd></div></dl></div></article></div><a class="back-to-levels" href="#learning-path">Back to learning path ↑</a></section>
+<section class="learning-level" id="measure" aria-labelledby="measure-title"><header class="level-heading"><div class="level-index" aria-hidden="true">02</div><div><p class="level-kicker">LEVEL 2 · MEASURE</p><h2 id="measure-title">Make the invisible measurable</h2><p>Connect an observable signal to a physical quantity. Calibrate, compare and account for uncertainty.</p></div></header><div class="atlas-exhibits"><article class="atlas-exhibit atlas-premier">
+<a class="atlas-exhibit-visual" href="../pop-can-calorimeter/" aria-label="Open Pop-Can Calorimeter">
+<img src="../pop-can-calorimeter/media/picoscale.webp" width="1440" height="847" alt="" decoding="async"></a>
+<div class="atlas-exhibit-body">
+<p class="atlas-kicker">Premier CORE 10 activity</p>
+<h3><a href="../pop-can-calorimeter/">Pop-Can Calorimeter</a></h3>
+<p class="atlas-exhibit-summary">Follow a tea light from grams of fuel to joules in the water, compare heating rates, and account for where the rest of the energy went.</p>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Equipment</dt><dd>Browser or supervised lab</dd></div><div><dt>First visit</dt><dd>20–45 min</dd></div></dl></div></article>
+<article class="atlas-exhibit">
+<a class="atlas-exhibit-visual" href="../teatime/" aria-label="Open TeaTime · Beer–Lambert’s Law">
+<img src="../teatime/media/optical-bench.svg" width="1040" height="650" alt="" decoding="async"></a>
+<div class="atlas-exhibit-body">
+<p class="atlas-kicker">Kitchen Inquiry Lab</p>
+<h3><a href="../teatime/">TeaTime · Beer–Lambert’s Law</a></h3>
+<p class="atlas-exhibit-summary">Make a dilution series, measure how much light gets through, and use the calibration to identify an unknown.</p>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Equipment</dt><dd>Browser or optical bench</dd></div><div><dt>First visit</dt><dd>20–45 min</dd></div></dl></div></article>
+<!-- C2G-OPEN-LAB start --><article class="atlas-exhibit"><a class="atlas-exhibit-visual" href="../catalase-fem/open-lab/" aria-label="Open Catalase Open Lab"><img src="../catalase-fem/media/open-lab-cover-v1.1.svg" width="1200" height="720" alt="Illustrated oxygen collection apparatus and separate balloon calibration"></a><div class="atlas-exhibit-body"><p class="atlas-kicker">Open Laboratory · CORE 10 · C2G</p><h3><a href="../catalase-fem/open-lab/">Catalase Open Lab</a></h3><p class="atlas-exhibit-summary">Measure oxygen production, calibrate a balloon and explore the biological science behind C2G Paper 2. Teacher and student guides, theory PDF, Python and data templates.</p><dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Equipment</dt><dd>Supervised wet lab</dd></div><div><dt>First visit</dt><dd>30–60 min</dd></div></dl></div></article><!-- C2G-OPEN-LAB end -->
+<article class="atlas-exhibit"><a class="atlas-exhibit-visual" href="../lunar-ranging/"><img src="../lunar-ranging/cover.svg" width="1200" height="650" alt="Earth Moon laser ranging illustration"></a><div class="atlas-exhibit-body"><p class="atlas-kicker">New Open Lab · Astronomy &amp; metrology</p><h3><a href="../lunar-ranging/">From Parallax to Picoseconds</a></h3><p class="atlas-exhibit-summary">Fire a virtual lunar laser, explore Apollo reflectors and tidal recession, then build an Arduino ultrasonic echo-ranging instrument.</p><dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Beginner → intermediate</dd></div><div><dt>Equipment</dt><dd>Browser; Uno + HC-SR04 optional</dd></div><div><dt>First visit</dt><dd>15–45 min</dd></div></dl></div></article></div><a class="back-to-levels" href="#learning-path">Back to learning path ↑</a></section>
+<section class="learning-level" id="build" aria-labelledby="build-title"><header class="level-heading"><div class="level-index" aria-hidden="true">03</div><div><p class="level-kicker">LEVEL 3 · BUILD</p><h2 id="build-title">Create instruments and intelligent machines</h2><p>Put sensors, code and machines to work. Test what your instruments measure and what your robot actually does.</p></div></header><div class="atlas-exhibits"><article class="atlas-exhibit">
+<a class="atlas-exhibit-visual" href="../instruments/" aria-label="Open Virtual Instruments">
+<img src="../instruments/screens/frequency-meter.webp" width="1240" height="945" alt="" decoding="async"></a>
+<div class="atlas-exhibit-body">
+<p class="atlas-kicker">Instrument workshop</p>
+<h3><a href="../instruments/">Virtual Instruments</a></h3>
+<p class="atlas-exhibit-summary">See original dashboards and build a wireless voltmeter, frequency meter, scale, ToF ruler, or thermometer.</p>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Equipment</dt><dd>Browser; sensor hardware optional</dd></div><div><dt>First visit</dt><dd>20–40 min</dd></div></dl></div></article>
+<article class="atlas-exhibit">
+<a class="atlas-exhibit-visual" href="../cutebot-motion-evidence/" aria-label="Open Cutebot Motion Evidence Lab">
+<img src="../cutebot-motion-evidence/media/cutebot-card.webp" width="900" height="500" alt="" decoding="async"></a>
+<div class="atlas-exhibit-body">
+<p class="atlas-kicker">ROBOT_EDU · Classroom preview</p>
+<h3><a href="../cutebot-motion-evidence/">Cutebot Motion Evidence Lab</a></h3>
+<p class="atlas-exhibit-summary">Repeat a short drive command and use a tape measure and a motion trace to decide whether the car did what you asked.</p>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Equipment</dt><dd>Browser; Cutebot optional</dd></div><div><dt>First visit</dt><dd>20–45 min</dd></div></dl></div></article>
+<article class="atlas-exhibit">
+<a class="atlas-exhibit-visual" href="../lazy-lidar/" aria-label="Open Lazy LiDAR">
+<img src="../lazy-lidar/media/cutebot-console.webp" width="1680" height="1142" alt="" decoding="async"></a>
+<div class="atlas-exhibit-body">
+<p class="atlas-kicker">Robotics · Interactive simulation</p>
+<h3><a href="../lazy-lidar/">Lazy LiDAR</a></h3>
+<p class="atlas-exhibit-summary">Make a map from ranges and bearings. Then change the heading and see what a repeatable measurement still gets wrong.</p>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Intermediate → advanced</dd></div><div><dt>Equipment</dt><dd>Browser; robot optional</dd></div><div><dt>First visit</dt><dd>20–45 min</dd></div></dl></div></article></div><a class="back-to-levels" href="#learning-path">Back to learning path ↑</a></section>
+<section class="learning-level" id="apply" aria-labelledby="apply-title"><header class="level-heading"><div class="level-index" aria-hidden="true">04</div><div><p class="level-kicker">LEVEL 4 · APPLY</p><h2 id="apply-title">Solve meaningful human problems</h2><p>Bring measurement into human performance. Separate observations from what an instrument or model infers.</p></div></header><div class="atlas-exhibits"><article class="atlas-exhibit">
+<a class="atlas-exhibit-visual" href="../sqm-plus/" aria-label="Open SQM+ Hallway Observatory">
+<img src="../sqm-plus/media/hallway.svg" width="1280" height="610" alt="" decoding="async"></a>
+<div class="atlas-exhibit-body">
+<p class="atlas-kicker">Current experiment</p>
+<h3><a href="../sqm-plus/">SQM+ Hallway Observatory</a></h3>
+<p class="atlas-exhibit-summary">Run a marked 11-meter leg and see why a stopwatch and a wearable answer two different questions.</p>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Equipment</dt><dd>Marked hallway, timer; sensor optional</dd></div><div><dt>First visit</dt><dd>20–40 min</dd></div></dl></div></article>
+<!-- SQM-PERSONAL start --><article class="atlas-exhibit"><a class="atlas-exhibit-visual" href="../sqm-personal/" aria-label="Open SQM+ Personal"><img src="../sqm-personal/sqm-personal-cover.webp" onerror="this.onerror=null;this.src='../sqm-personal/cover.svg'" width="1619" height="971" alt="Waist-mounted sensor and 11 meter walk, illustrating the QGV composite"></a><div class="atlas-exhibit-body"><p class="atlas-kicker">New experiment · Active Independence · Source prototype</p><h3><a href="../sqm-personal/">SQM+ Personal: the sixth vital sign</a></h3><p class="atlas-exhibit-summary">Build a personal mobility monitor. Explore walking velocity, motion quality and a proposed composite, then test the instrument against independent timing and step counts.</p><dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Intermediate → advanced</dd></div><div><dt>Equipment</dt><dd>Browser; M5Stick S3 optional</dd></div><div><dt>First visit</dt><dd>20–45 min</dd></div></dl></div></article><!-- SQM-PERSONAL end -->
+<article class="atlas-exhibit">
+<a class="atlas-exhibit-visual" href="../fair-fitness-testing/" aria-label="Open Fair Fitness Testing">
+<img src="../fair-fitness-testing/media/three-checks.svg" width="1200" height="630" alt="" decoding="async"></a>
+<div class="atlas-exhibit-body">
+<p class="atlas-kicker">New exhibit · Release preview</p>
+<h3><a href="../fair-fitness-testing/">Fair Fitness Testing</a></h3>
+<p class="atlas-exhibit-summary">Compare two workload prescriptions and follow a documented Android prototype walkthrough.</p>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Intermediate</dd></div><div><dt>Equipment</dt><dd>Browser; Android prototype optional</dd></div><div><dt>First visit</dt><dd>15–30 min</dd></div></dl></div></article></div><a class="back-to-levels" href="#learning-path">Back to learning path ↑</a></section>
+<section class="learning-level" id="investigate" aria-labelledby="investigate-title"><header class="level-heading"><div class="level-index" aria-hidden="true">05</div><div><p class="level-kicker">LEVEL 5 · INVESTIGATE</p><h2 id="investigate-title">Advance scientific understanding</h2><p>Use mathematical models and comparative evidence to explore open research questions, limitations and reproducibility.</p></div></header><div class="atlas-exhibits"><article class="atlas-exhibit">
+<a class="atlas-exhibit-visual" href="/calculus/" aria-label="Open Ten Problems That Teach Calculus">
+<img src="/calculus/assets/calculus-tangent-cover.svg" width="1600" height="800" alt="" decoding="async"></a>
+<div class="atlas-exhibit-body">
+<p class="atlas-kicker">Mathematics</p>
+<h3><a href="/calculus/">Ten Problems That Teach Calculus</a></h3>
+<p class="atlas-exhibit-summary">Start with the cart that reverses direction. Learn why total distance and net change are not the same thing.</p>
+<dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Intermediate → advanced</dd></div><div><dt>Equipment</dt><dd>Browser</dd></div><div><dt>First visit</dt><dd>20–45 min</dd></div></dl></div></article>
+<article class="atlas-exhibit"><a class="atlas-exhibit-visual" href="../catalase-fem/" aria-label="Open Catalase: one reaction, many implementations"><img src="../catalase-fem/media/research-cover-v1.1.svg" width="1200" height="720" alt="Conceptual heme catalase molecular architecture and peroxide management" decoding="async"></a><div class="atlas-exhibit-body"><p class="atlas-kicker">C2G · Biochemical research benchmark</p><h3><a href="../catalase-fem/">Catalase: one reaction, many implementations</a></h3><p class="atlas-exhibit-summary">Compare published enzyme measurements and complementary peroxide-management mechanisms. Explore the biological research behind the Open Lab.</p><dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Advanced</dd></div><div><dt>Equipment</dt><dd>Browser; published data</dd></div><div><dt>First visit</dt><dd>30–60 min</dd></div></dl></div></article>
+<article class="atlas-exhibit">
+<a class="atlas-exhibit-visual" href="../circuits-to-genomes/" aria-label="Open From Circuits to Genomes"><img src="../circuits-to-genomes/media/pdp8.jpg" width="4372" height="2906" alt="DEC PDP-8 computer at the Computer History Museum" decoding="async"></a>
+<div class="atlas-exhibit-body"><p class="atlas-kicker">Research portal · Three papers and Open Lab</p><h3><a href="../circuits-to-genomes/">From Circuits to Genomes</a></h3><p class="atlas-exhibit-summary">From PDP-8 architecture to evolutionary peroxide management and AI-assisted inquiry. Three scholarly tracks, an open laboratory and the preserved primate enhancer companion study. <small>Photo: <a href="https://commons.wikimedia.org/wiki/File:PDP-8_at_the_Computer_History_Museum.jpg">Todd Dailey</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a>.</small></p><dl class="exhibit-facts"><div><dt>Difficulty</dt><dd>Advanced</dd></div><div><dt>Equipment</dt><dd>Browser; research tools optional</dd></div><div><dt>First visit</dt><dd>30–60 min</dd></div></dl></div></article></div><a class="back-to-levels" href="#learning-path">Back to learning path ↑</a></section>
 <p class="atlas-collection-note">Looking for work beyond this gallery? Browse the <a href="../inventory/">project inventory</a> or search the <a href="../repositories/">public repositories</a>.</p>
 
 <footer>
