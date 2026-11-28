@@ -43,6 +43,8 @@ jobs:
           base = os.environ['BASE_PATH'].rstrip('/')
           origin = 'https://project-atlas-lab.duckdns.org'
           assert (src / 'index.html').is_file()
+          for name in ['pdp8.jpg','continuity.png','networks.png','equivalence.png','precision.png','framework.png']:
+              assert (src / 'circuits-to-genomes/media' / name).stat().st_size > 0, name
           assert not any(p.is_symlink() for p in src.rglob('*')), 'Review symlinks before publishing'
           shutil.copytree(src, out / 'atlas')
           # Install the exact versioned Open Lab download package from the repository.
