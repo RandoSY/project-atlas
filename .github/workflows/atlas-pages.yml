@@ -207,10 +207,10 @@ jobs:
           print(f'Local link audit: {len(missing)} unresolved references; review warnings.')
           print(f'Publishing {sum(p.is_file() for p in out.rglob("*"))} files.')
           PY
-      - name: Render and validate both successor handbook editions
+      - name: Render and validate successor handbook editions
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y -qq libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0
+          sudo apt-get install -y -qq libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 fonts-croscore fonts-noto-core
           python3 -m pip install --disable-pip-version-check weasyprint==68.0 pypdf
           python3 - <<'PY'
           from pathlib import Path
@@ -228,7 +228,7 @@ jobs:
                   if tag == 'img':
                       self.images.append(dict(attrs)['src'])
           checksums = []
-          for version, source_name in [('1.1', 'index_v1.1_archive.html'), ('1.2', 'index.html')]:
+          for version, source_name in [('1.1', 'index_v1.1_archive.html'), ('1.2', 'index_v1.2_archive.html'), ('1.2.1', 'index.html')]:
               source = root / source_name
               p = Images()
               p.feed(source.read_text(encoding='utf-8'))
@@ -244,7 +244,7 @@ jobs:
               assert target.stat().st_size > 200000, 'PDF unexpectedly small'
               assert 'Successor' in (pdf.pages[0].extract_text() or '')
               assert 'Keep the ideas alive' in (pdf.pages[-1].extract_text() or '')
-              if version == '1.2':
+              if version in ('1.2', '1.2.1'):
                   contents = pdf.pages[1].extract_text() or ''
                   assert 'If you only do one thing' in contents and 'Terms:' in contents, 'Contents-page additions missing'
                   assert 'Begin with the world' in (pdf.pages[2].extract_text() or ''), 'Contents overflow'
