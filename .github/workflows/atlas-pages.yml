@@ -228,11 +228,11 @@ jobs:
                   if tag == 'img':
                       self.images.append(dict(attrs)['src'])
           checksums = []
-          for version, source_name in [('1.1', 'index_v1.1_archive.html'), ('1.2', 'index_v1.2_archive.html'), ('1.2.1', 'index.html')]:
+          for version, source_name in [('1.1', 'index_v1.1_archive.html'), ('1.2', 'index_v1.2_archive.html'), ('1.2.1', 'index_v1.2.1_archive.html'), ('1.3', 'index.html')]:
               source = root / source_name
               p = Images()
               p.feed(source.read_text(encoding='utf-8'))
-              assert len(p.images) == 36, (version, 'Missing handbook illustrations')
+              assert len(p.images) == (37 if version == '1.3' else 36), (version, 'Missing handbook illustrations')
               for src in p.images:
                   assert not urlsplit(src).scheme, src
                   asset = root / src
@@ -240,14 +240,18 @@ jobs:
               target = root / f'Project_Atlas_Successors_Curriculum_Handbook_v{version}.pdf'
               HTML(filename=str(source.resolve())).write_pdf(str(target))
               pdf = PdfReader(target)
-              assert len(pdf.pages) == 18, f'Unexpected handbook v{version} pagination: {len(pdf.pages)}'
+              assert len(pdf.pages) == (19 if version == '1.3' else 18), f'Unexpected handbook v{version} pagination: {len(pdf.pages)}'
               assert target.stat().st_size > 200000, 'PDF unexpectedly small'
               assert 'Successor' in (pdf.pages[0].extract_text() or '')
               assert 'Keep the ideas alive' in (pdf.pages[-1].extract_text() or '')
-              if version in ('1.2', '1.2.1'):
+              if version in ('1.2', '1.2.1', '1.3'):
                   contents = pdf.pages[1].extract_text() or ''
                   assert 'If you only do one thing' in contents and 'Terms:' in contents, 'Contents-page additions missing'
                   assert 'Begin with the world' in (pdf.pages[2].extract_text() or ''), 'Contents overflow'
+              if version == '1.3':
+                  lunar = pdf.pages[9].extract_text() or ''
+                  assert 'From Parallax to Picoseconds' in lunar and 'Evidence of understanding' in lunar, 'Lunar lab missing or split'
+                  assert 'Software-Defined Laboratory' in (pdf.pages[10].extract_text() or ''), 'Lunar lab overflow'
               digest = hashlib.sha256(target.read_bytes()).hexdigest()
               checksums.append(digest + '  ' + target.name + '\n')
               print(f'Handbook v{version}: {len(pdf.pages)} pages; {len(p.images)} image placements; {target.stat().st_size} bytes; SHA256 {digest}')
