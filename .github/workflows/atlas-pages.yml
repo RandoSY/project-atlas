@@ -228,11 +228,11 @@ jobs:
                   if tag == 'img':
                       self.images.append(dict(attrs)['src'])
           checksums = []
-          for version, source_name in [('1.1', 'index_v1.1_archive.html'), ('1.2', 'index_v1.2_archive.html'), ('1.2.1', 'index_v1.2.1_archive.html'), ('1.3', 'index.html')]:
+          for version, source_name in [('1.1', 'index_v1.1_archive.html'), ('1.2', 'index_v1.2_archive.html'), ('1.2.1', 'index_v1.2.1_archive.html'), ('1.3', 'index_v1.3_archive.html'), ('2.0', 'index.html')]:
               source = root / source_name
               p = Images()
               p.feed(source.read_text(encoding='utf-8'))
-              assert len(p.images) == (37 if version == '1.3' else 36), (version, 'Missing handbook illustrations')
+              assert len(p.images) == {'1.3': 37, '2.0': 47}.get(version, 36), (version, 'Missing handbook illustrations')
               for src in p.images:
                   assert not urlsplit(src).scheme, src
                   asset = root / src
@@ -240,7 +240,7 @@ jobs:
               target = root / f'Project_Atlas_Successors_Curriculum_Handbook_v{version}.pdf'
               HTML(filename=str(source.resolve())).write_pdf(str(target))
               pdf = PdfReader(target)
-              assert len(pdf.pages) == (19 if version == '1.3' else 18), f'Unexpected handbook v{version} pagination: {len(pdf.pages)}'
+              assert len(pdf.pages) == {'1.3': 19, '2.0': 24}.get(version, 18), f'Unexpected handbook v{version} pagination: {len(pdf.pages)}'
               assert target.stat().st_size > 200000, 'PDF unexpectedly small'
               assert 'Successor' in (pdf.pages[0].extract_text() or '')
               assert 'Keep the ideas alive' in (pdf.pages[-1].extract_text() or '')
@@ -252,6 +252,28 @@ jobs:
                   lunar = pdf.pages[9].extract_text() or ''
                   assert 'From Parallax to Picoseconds' in lunar and 'Evidence of understanding' in lunar, 'Lunar lab missing or split'
                   assert 'Software-Defined Laboratory' in (pdf.pages[10].extract_text() or ''), 'Lunar lab overflow'
+              if version == '2.0':
+                  expected = {
+                      1: 'Successor', 2: 'Five levels. One method.',
+                      3: 'LEVEL 1 / DISCOVER', 4: 'Begin with the world',
+                      5: 'The method that holds it together', 6: 'Kitchen Inquiry Lab',
+                      7: 'LEVEL 2 / MEASURE', 8: 'One Cup Chemistry',
+                      9: 'Chemistry becomes biology', 10: 'NOTHING IS FREE',
+                      11: 'The measured world', 12: 'From Parallax to Picoseconds',
+                      13: 'LEVEL 3 / BUILD', 14: 'Software-Defined Laboratory',
+                      15: 'Physical computing: bits to behavior', 16: 'Computing observatories',
+                      17: 'Bargain Bin Robotics', 18: 'LEVEL 4 / APPLY',
+                      19: 'Measure human performance', 20: 'LEVEL 5 / INVESTIGATE',
+                      21: 'Mathematics becomes necessary', 22: 'From Circuits to Genomes',
+                      23: 'The 24-week learning itinerary', 24: 'Keep the ideas alive',
+                  }
+                  import re
+                  for number, phrase in expected.items():
+                      content = re.sub(r'\s+', ' ', pdf.pages[number-1].extract_text() or '')
+                      assert phrase.casefold() in content.casefold(), f'v2.0 page {number}: missing {phrase}'
+                  for number in (3, 7, 13, 18, 20):
+                      content = pdf.pages[number-1].extract_text() or ''
+                      assert 'learning objectives' in content.casefold() and 'ready for the next level?' in content.casefold(), f'Incomplete division page {number}'
               digest = hashlib.sha256(target.read_bytes()).hexdigest()
               checksums.append(digest + '  ' + target.name + '\n')
               print(f'Handbook v{version}: {len(pdf.pages)} pages; {len(p.images)} image placements; {target.stat().st_size} bytes; SHA256 {digest}')
